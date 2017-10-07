@@ -36,5 +36,6 @@ const querySensorData = (database, count, callback) => {
     .sort({ date: -1 })
     .limit(count)
     .toArray()
+    .then(result => result.reverse())
     .then(callback);
 };
