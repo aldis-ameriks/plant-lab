@@ -21,7 +21,7 @@ class Chart extends React.Component {
   }
 
   fetchNewData() {
-    fetch('http://localhost:3001/sensor/data')
+    fetch('http://localhost:3001/sensor/data?count=1000')
       .then(response => response.json())
       .then(this.updateChart.bind(this))
       .catch(err => console.log(err));
