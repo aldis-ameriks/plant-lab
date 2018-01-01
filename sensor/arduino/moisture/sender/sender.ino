@@ -22,7 +22,7 @@
 uint8_t KEY[] = "!Encrypted123%$£";
 RFM12B radio;
 
-float MOISTURE_DRY = 260;
+int MOISTURE_DRY = 260;
 int MOISTURE_WET = 560;
 I2CSoilMoistureSensor sensor;
 
@@ -47,19 +47,20 @@ void setup() {
 
 void loop() {
   while (sensor.isBusy()) delay(500);
+  int moisture = sensor.getCapacitance();
+  float moisturePrecentage = (1 - (MOISTURE_WET-moisture)/(MOISTURE_WET-(float)MOISTURE_DRY)) * 100;
+  int temperature = sensor.getTemperature()/(float)10;
 
   Serial.print("Soil Moisture Capacitance: ");
-  int moisture = sensor.getCapacitance();
   Serial.print(moisture); //read capacitance register
   Serial.print(", Temperature: ");
-  Serial.println(sensor.getTemperature()/(float)10); //temperature register
+  Serial.println(); //temperature register
   //Serial.print(", Light: ");
   //Serial.println(sensor.getLight(true)); //request light measurement, wait and read light register
   sensor.sleep();
 
-  float moisturePrecentage = (1 - (MOISTURE_WET-moisture)/(MOISTURE_WET-MOISTURE_DRY)) * 100;
-  String value = "";
-  sendData(value + NODEID + ":M:" + moisture + ":" + moisturePrecentage + ":" + MOISTURE_DRY + ":" + MOISTURE_WET);
+  sendData((String)"" + NODEID + ":M:" + moisture + ":" + moisturePrecentage + ":" + MOISTURE_DRY + ":" + MOISTURE_WET);
+  sendData((String)"" + NODEID + ":T:" + temperature+"::");
   delay(DELAY_BETWEEN_SENDS);
 }
 
