@@ -4,6 +4,8 @@
 
 #include <RFM12B.h>
 #include <avr/sleep.h>
+#include <I2CSoilMoistureSensor.h>
+#include <Wire.h>
 
 // You will need to initialize the radio by telling it what ID it has and what network it's on
 // The NodeID takes values from 1-127, 0 is reserved for sending broadcast messages (send to all nodes)
@@ -20,26 +22,45 @@
 uint8_t KEY[] = "!Encrypted123%$£";
 RFM12B radio;
 
-float DRY_AF = 1023;
-int WET_AF = 180;
-
-int sensorPin = A0;
+float MOISTURE_DRY = 260;
+int MOISTURE_WET = 560;
+I2CSoilMoistureSensor sensor;
 
 void setup() {
-	Serial.begin(SERIAL_BAUD);
-	radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
-	radio.Encrypt(KEY);
-	radio.Sleep();
-	Serial.println("Transmitting...\n\n");
-  pinMode(sensorPin, INPUT);
+  Serial.begin(SERIAL_BAUD);
+
+  // Init sensor
+  Wire.begin();
+  sensor.begin(); // reset sensor
+  delay(1000); // give some time to boot up
+  Serial.print("I2C Soil Moisture Sensor Address: ");
+  Serial.println(sensor.getAddress(), HEX);
+  Serial.print("Sensor Firmware version: ");
+  Serial.println(sensor.getVersion(), HEX);
+
+  // Init RFM12B in transmit mode
+  radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
+  radio.Encrypt(KEY);
+  radio.Sleep();
+  Serial.println("Transmitting...\n\n");
 }
 
 void loop() {
-  int sensorValue = analogRead(sensorPin);
-  float moisturePrecentage = (1 - (sensorValue-WET_AF)/(DRY_AF-WET_AF)) * 100;
+  while (sensor.isBusy()) delay(500);
+
+  Serial.print("Soil Moisture Capacitance: ");
+  int moisture = sensor.getCapacitance();
+  Serial.print(moisture); //read capacitance register
+  Serial.print(", Temperature: ");
+  Serial.println(sensor.getTemperature()/(float)10); //temperature register
+  //Serial.print(", Light: ");
+  //Serial.println(sensor.getLight(true)); //request light measurement, wait and read light register
+  sensor.sleep();
+
+  float moisturePrecentage = (1 - (MOISTURE_WET-moisture)/(MOISTURE_WET-MOISTURE_DRY)) * 100;
   String value = "";
-	sendData(value + NODEID + ":M:" + sensorValue + ":" + moisturePrecentage + ":" + WET_AF);
-	delay(DELAY_BETWEEN_SENDS);
+  sendData(value + NODEID + ":M:" + moisture + ":" + moisturePrecentage + ":" + MOISTURE_DRY + ":" + MOISTURE_WET);
+  delay(DELAY_BETWEEN_SENDS);
 }
 
 void sendData(String payload) {
