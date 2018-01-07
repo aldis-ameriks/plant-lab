@@ -12,22 +12,27 @@ while 1:
         print(str(datetime.datetime.now()) + " : response: ", response)
         parsed_response = response.split(':')
 
-        # id:type:raw_value:precentage:calibrated_offset
+        # id:type:raw_value:parsed_value:min:max
         id = parsed_response[0]
         type = parsed_response[1]
         raw_value = parsed_response[2]
-        precentage = parsed_response[3]
-        calibrated_offset = parsed_response[4]
-
         sensor_data_entry = {
             "id": id,
-            "calibrated_offset": calibrated_offset,
+            "type": type,
             "raw_value": raw_value,
             "response": response,
-            "precentage": precentage,
-            "type": type,
             "date": datetime.datetime.now()
         }
+
+        if type == 'M':
+            psensor_data_entry.recentage = parsed_response[3]
+            sensor_data_entry.moisture_dry = parsed_response[4]
+            sensor_data_entry.moisture_wet = parsed_response[5]
+        elif type == 'T':
+            sensor_data_entry.temperature = raw_value
+        elif type == 'L':
+            sensor_data_entry.light = parsed_response[3]
+            
         sensor_data_id = db.sensor_data.insert_one(sensor_data_entry).inserted_id
     except Exception as e:
         print("Error: ", e)

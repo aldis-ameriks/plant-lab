@@ -60,7 +60,7 @@ void loop() {
   sensor.sleep();
 
   sendData((String)"" + NODEID + ":M:" + moisture + ":" + moisturePrecentage + ":" + MOISTURE_DRY + ":" + MOISTURE_WET);
-  sendData((String)"" + NODEID + ":T:" + temperature+"::");
+  sendData((String)"" + NODEID + ":T:" + temperature);
   delay(DELAY_BETWEEN_SENDS);
 }
 
