@@ -18,7 +18,7 @@
 #define SERIAL_BAUD  115200
 #define REQUEST_ACK  true
 #define ACK_TIME     50
-#define DELAY_BETWEEN_SENDS (long)1000 * 60 * 5
+#define DELAY_BETWEEN_SENDS (long)1000 * 60 * 30
 
 uint8_t KEY[] = "!Encrypted123%$£";
 RFM12B radio;
