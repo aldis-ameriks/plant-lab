@@ -1,6 +1,6 @@
 import React from 'react';
-import {Line, defaults} from 'react-chartjs-2';
-import {chartConfig} from './ChartConfig';
+import { Line, defaults } from 'react-chartjs-2';
+import { chartConfig } from './ChartConfig';
 
 defaults.global.animation = false;
 
@@ -8,7 +8,7 @@ class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {labels: [], datasets: [{label: 'Moisture sensor', ...chartConfig, data: []}]}
+      data: { labels: [], datasets: [{ label: 'Moisture sensor', ...chartConfig, data: [] }] }
     };
   }
 
@@ -31,11 +31,11 @@ class Chart extends React.Component {
     let state = this.state.data;
     state.datasets[0].data = data.map(d => d.precentage);
     state.labels = data.map(d => d.date);
-    this.setState({data: state});
+    this.setState({ data: state });
   }
 
   render() {
-    return <Line data={this.state.data} redraw={true}/>;
+    return <Line data={this.state.data} redraw={true} />;
   }
 }
 
