@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   fetchNewData () {
-    fetch('http://localhost:3001/sensor/data?count=1000')
+    fetch('http://localhost:3001/sensor/data?count=500')
       .then(response => response.json())
       .then(dataArray => {
         const moistureValues = dataArray.map(data => data.moisture_precentage)
