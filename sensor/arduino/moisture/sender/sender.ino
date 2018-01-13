@@ -6,6 +6,7 @@
 #include <avr/sleep.h>
 #include <I2CSoilMoistureSensor.h>
 #include <Wire.h>
+#include <ArduinoJson.h>
 
 // You will need to initialize the radio by telling it what ID it has and what network it's on
 // The NodeID takes values from 1-127, 0 is reserved for sending broadcast messages (send to all nodes)
@@ -22,8 +23,8 @@
 uint8_t KEY[] = "!Encrypted123%$£";
 RFM12B radio;
 
-int MOISTURE_DRY = 260;
-int MOISTURE_WET = 560;
+int MOISTURE_DRY = 156;
+int MOISTURE_WET = 707;
 I2CSoilMoistureSensor sensor;
 
 void setup() {
@@ -47,20 +48,29 @@ void setup() {
 
 void loop() {
   while (sensor.isBusy()) delay(500);
+  
   int moisture = sensor.getCapacitance();
   float moisturePrecentage = (1 - (MOISTURE_WET-moisture)/(MOISTURE_WET-(float)MOISTURE_DRY)) * 100;
   int temperature = sensor.getTemperature()/(float)10;
-
-  Serial.print("Soil Moisture Capacitance: ");
-  Serial.print(moisture); //read capacitance register
-  Serial.print(", Temperature: ");
-  Serial.println(); //temperature register
-  //Serial.print(", Light: ");
-  //Serial.println(sensor.getLight(true)); //request light measurement, wait and read light register
+  unsigned int light = sensor.getLight(true);
   sensor.sleep();
+  
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject& root = jsonBuffer.createObject();
+  root["moisture"] = moisture;
+  root["moisture_precentage"] = moisturePrecentage;
+  root["m_dry"] = MOISTURE_DRY;
+  root["m_wet"] = MOISTURE_WET;
+  root["temperature"] = temperature;
+  root["light"] = light;
+  root["nodeid"] = NODEID;
 
-  sendData((String)"" + NODEID + ":M:" + moisture + ":" + moisturePrecentage + ":" + MOISTURE_DRY + ":" + MOISTURE_WET);
-  sendData((String)"" + NODEID + ":T:" + temperature);
+  String result;
+  root.printTo(result);
+  Serial.print(result);
+  Serial.println("");
+  
+  sendData(result);
   delay(DELAY_BETWEEN_SENDS);
 }
 
