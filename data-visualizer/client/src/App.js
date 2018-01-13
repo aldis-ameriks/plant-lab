@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import MyChart from './chart/Chart';
+import Chart from './chart/Chart';
 
 class App extends Component {
   render() {
-    return <MyChart/>;
+    return <Chart />;
   }
 }
 
