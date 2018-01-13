@@ -1,42 +1,24 @@
-import React from 'react';
-import { Line, defaults } from 'react-chartjs-2';
-import { chartConfig } from './ChartConfig';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Line, defaults } from 'react-chartjs-2'
+import { chartConfig } from './ChartConfig'
+import styled from 'styled-components'
 
-defaults.global.animation = false;
+defaults.global.animation = false
 
-class Chart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: { labels: [], datasets: [{ label: 'Moisture sensor', ...chartConfig, data: [] }] }
-    };
-  }
+const ChartContainer = styled.div`
+  display: inline-block;
+`
 
-  componentDidMount() {
-    this.interval = setInterval(this.fetchNewData.bind(this), 10000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  fetchNewData() {
-    fetch('http://localhost:3001/sensor/data?count=1000')
-      .then(response => response.json())
-      .then(this.updateChart.bind(this))
-      .catch(err => console.log(err));
-  }
-
-  updateChart(data) {
-    let state = this.state.data;
-    state.datasets[0].data = data.map(d => d.precentage);
-    state.labels = data.map(d => d.date);
-    this.setState({ data: state });
-  }
-
-  render() {
-    return <Line data={this.state.data} redraw={true} />;
-  }
+const Chart = ({ legend, values, labels }) => {
+  const data = { labels: labels, datasets: [{ label: legend, ...chartConfig, data: values }] }
+  return <ChartContainer><Line data={data} redraw width={600} height={400} /></ChartContainer>
 }
 
-export default Chart;
+Chart.propTypes = {
+  legend: PropTypes.string.isRequired,
+  values: PropTypes.array.isRequired,
+  labels: PropTypes.array.isRequired
+}
+
+export default Chart
