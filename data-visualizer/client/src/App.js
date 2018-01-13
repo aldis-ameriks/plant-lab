@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Chart from './chart/Chart'
 import fetch from 'isomorphic-fetch'
+import moment from 'moment'
 
 class App extends Component {
   constructor (props) {
@@ -25,7 +26,7 @@ class App extends Component {
         const moistureValues = dataArray.map(data => data.moisture_precentage)
         const temperatureValues = dataArray.map(data => data.temperature)
         const lightValues = dataArray.map(data => data.light)
-        const labels = dataArray.map(data => data.date)
+        const labels = dataArray.map(data => parseDate(data.date))
         this.setState({ moistureValues, temperatureValues, lightValues, labels })
       })
       .catch(err => console.log(err))
@@ -39,5 +40,7 @@ class App extends Component {
     clearInterval(this.interval)
   }
 }
+
+const parseDate = dateString => moment(dateString).format('DD.MM.YYYY HH:mm')
 
 export default App

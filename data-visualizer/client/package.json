@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "chart.js": "^2.7.0",
+    "moment": "^2.20.1",
     "react": "^16.0.0",
     "react-chartjs-2": "^2.6.2",
     "react-dom": "^16.0.0",
