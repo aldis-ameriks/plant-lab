@@ -3,6 +3,7 @@
 #include <I2CSoilMoistureSensor.h>
 #include <Wire.h>
 #include <ArduinoJson.h>
+#include <LowPower.h>
 
 // You will need to initialize the radio by telling it what ID it has and what network it's on
 // The NodeID takes values from 1-127, 0 is reserved for sending broadcast messages (send to all nodes)
@@ -14,13 +15,13 @@
 #define SERIAL_BAUD  115200
 #define REQUEST_ACK  true
 #define ACK_TIME     50
-#define DELAY_BETWEEN_SENDS (long)1000 * 60 * 30
+#define DELAY_BEFORE_SLEEP (long)1000
 
 uint8_t KEY[] = "!Encrypted123%$£";
 RFM12B radio;
 
-int MOISTURE_DRY = 156;
-int MOISTURE_WET = 707;
+int MOISTURE_DRY = 210;
+int MOISTURE_WET = 730;
 I2CSoilMoistureSensor sensor;
 
 void setup() {
@@ -67,7 +68,7 @@ void loop() {
   Serial.println("");
   
   sendData(result);
-  delay(DELAY_BETWEEN_SENDS);
+  enterSleep();
 }
 
 void sendData(String payload) {
@@ -95,6 +96,17 @@ static bool waitForAck() {
     if (radio.ACKReceived(GATEWAYID))
       return true;
   return false;
+}
+
+void enterSleep() {
+  delay(DELAY_BEFORE_SLEEP); // delay to avoid cutting off serial output
+    
+  // 30 minutes = 60x30 = 1800s
+  // 1800 s / 8 s = 225
+  unsigned int sleepCounter;
+  for (sleepCounter = 225; sleepCounter > 0; sleepCounter--) {
+    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
+  }
 }
 
 
