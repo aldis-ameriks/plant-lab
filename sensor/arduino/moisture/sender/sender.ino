@@ -1,7 +1,3 @@
-// Simple RFM12B sender program, with ACK and optional encryption
-// It initializes the RFM12B radio with optional encryption and passes through any valid messages to the serial port
-// felix@lowpowerlab.com
-
 #include <RFM12B.h>
 #include <avr/sleep.h>
 #include <I2CSoilMoistureSensor.h>
