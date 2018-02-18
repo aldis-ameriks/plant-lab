@@ -26,7 +26,7 @@ void setup()
   radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
   radio.Encrypt(KEY);      //comment this out to disable encryption
   Serial.begin(SERIAL_BAUD);
-//  Serial.println("Listening...");
+  //  Serial.println("Listening...");
 }
 
 void loop()
@@ -35,9 +35,9 @@ void loop()
   {
     if (radio.CRCPass())
     {
-//      Serial.print('[');
-//      Serial.print(radio.GetSender());
-//      Serial.print("] ");
+      //      Serial.print('[');
+      //      Serial.print(radio.GetSender());
+      //      Serial.print("] ");
       for (byte i = 0; i < *radio.DataLen; i++) //can also use radio.GetDataLen() if you don't like pointers
         Serial.print((char)radio.Data[i]);
 
@@ -49,7 +49,7 @@ void loop()
     }
     else
       Serial.print("BAD-CRC");
-    
+
     Serial.println();
   }
 }

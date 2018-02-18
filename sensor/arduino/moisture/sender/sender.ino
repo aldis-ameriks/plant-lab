@@ -45,13 +45,13 @@ void setup() {
 
 void loop() {
   while (sensor.isBusy()) delay(500);
-  
+
   int moisture = sensor.getCapacitance();
   float moisturePrecentage = (1 - (MOISTURE_WET-moisture)/(MOISTURE_WET-(float)MOISTURE_DRY)) * 100;
   int temperature = sensor.getTemperature()/(float)10;
   unsigned int light = sensor.getLight(true);
   sensor.sleep();
-  
+
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   root["moisture"] = moisture;
@@ -66,7 +66,7 @@ void loop() {
   root.printTo(result);
   Serial.print(result);
   Serial.println("");
-  
+
   sendData(result);
   enterSleep();
 }
@@ -76,18 +76,18 @@ void sendData(String payload) {
   int payload_len = payload.length() + 1;
   char payload_array[payload_len];
   payload.toCharArray(payload_array, payload_len);
-  
-	radio.Wakeup();
-	radio.Send(GATEWAYID, payload_array, payload_len, REQUEST_ACK);
-	if (REQUEST_ACK) {
-		if (waitForAck()) {
-			Serial.print("ACK RECEIVED");
-		} else {
-			Serial.print("ACK NOT RECEIVED");
-		}
-	}
-	radio.Sleep();
-	Serial.print(" Done\n");
+
+  radio.Wakeup();
+  radio.Send(GATEWAYID, payload_array, payload_len, REQUEST_ACK);
+  if (REQUEST_ACK) {
+    if (waitForAck()) {
+      Serial.print("ACK RECEIVED");
+    } else {
+      Serial.print("ACK NOT RECEIVED");
+    }
+  }
+  radio.Sleep();
+  Serial.print(" Done\n");
 }
 
 static bool waitForAck() {
@@ -100,7 +100,7 @@ static bool waitForAck() {
 
 void enterSleep() {
   delay(DELAY_BEFORE_SLEEP); // delay to avoid cutting off serial output
-    
+
   // 30 minutes = 60x30 = 1800s
   // 1800 s / 8 s = 225
   unsigned int sleepCounter;
