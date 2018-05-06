@@ -1,20 +1,21 @@
-#include <RFM12B.h>
-#include <avr/sleep.h>
-#include <I2CSoilMoistureSensor.h>
-#include <Wire.h>
 #include <ArduinoJson.h>
+#include <I2CSoilMoistureSensor.h>
 #include <LowPower.h>
+#include <RFM12B.h>
+#include <Wire.h>
+#include <avr/sleep.h>
 
-// You will need to initialize the radio by telling it what ID it has and what network it's on
-// The NodeID takes values from 1-127, 0 is reserved for sending broadcast messages (send to all nodes)
-// The Network ID takes values from 0-255
-// By default the SPI-SS line used is D10 on Atmega328. You can change it by calling .SetCS(pin) where pin can be {8,9,10}
-#define NODEID        2  //network ID used for this unit
-#define NETWORKID    99  //the network ID we are on
-#define GATEWAYID     1  //the node ID we're sending to
-#define SERIAL_BAUD  115200
-#define REQUEST_ACK  true
-#define ACK_TIME     50
+// You will need to initialize the radio by telling it what ID it has and what
+// network it's on The NodeID takes values from 1-127, 0 is reserved for sending
+// broadcast messages (send to all nodes) The Network ID takes values from 0-255
+// By default the SPI-SS line used is D10 on Atmega328. You can change it by
+// calling .SetCS(pin) where pin can be {8,9,10}
+#define NODEID 2     // network ID used for this unit
+#define NETWORKID 99 // the network ID we are on
+#define GATEWAYID 1  // the node ID we're sending to
+#define SERIAL_BAUD 115200
+#define REQUEST_ACK true
+#define ACK_TIME 50
 #define DELAY_BEFORE_SLEEP (long)1000
 
 uint8_t KEY[] = "!Encrypted123%$£";
@@ -30,7 +31,7 @@ void setup() {
   // Init sensor
   Wire.begin();
   sensor.begin(); // reset sensor
-  delay(1000); // give some time to boot up
+  delay(1000);    // give some time to boot up
   Serial.print("I2C Soil Moisture Sensor Address: ");
   Serial.println(sensor.getAddress(), HEX);
   Serial.print("Sensor Firmware version: ");
@@ -44,16 +45,20 @@ void setup() {
 }
 
 void loop() {
-  while (sensor.isBusy()) delay(500);
+  while (sensor.isBusy()) {
+    delay(500);
+  }
 
   int moisture = sensor.getCapacitance();
-  float moisturePrecentage = (1 - (MOISTURE_WET-moisture)/(MOISTURE_WET-(float)MOISTURE_DRY)) * 100;
-  int temperature = sensor.getTemperature()/(float)10;
+  float moisturePrecentage =
+      (1 - (MOISTURE_WET - moisture) / (MOISTURE_WET - (float)MOISTURE_DRY)) *
+      100;
+  int temperature = sensor.getTemperature() / (float)10;
   unsigned int light = sensor.getLight(true);
   sensor.sleep();
 
   StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& root = jsonBuffer.createObject();
+  JsonObject &root = jsonBuffer.createObject();
   root["moisture"] = moisture;
   root["moisture_precentage"] = moisturePrecentage;
   root["m_dry"] = MOISTURE_DRY;
@@ -105,8 +110,6 @@ void enterSleep() {
   // 1800 s / 8 s = 225
   unsigned int sleepCounter;
   for (sleepCounter = 225; sleepCounter > 0; sleepCounter--) {
-    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);  
+    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
   }
 }
-
-
