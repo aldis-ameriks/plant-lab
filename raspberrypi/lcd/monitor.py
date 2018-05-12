@@ -2,6 +2,7 @@ import time
 from dateutil import parser
 from influxdb import InfluxDBClient
 from lcd import initialize_lcd, draw_text
+from pytz import timezone
 
 
 def get_measurements(client, nodeid):
@@ -30,8 +31,9 @@ def draw_measurements(display, measurements):
                                                            measurement['temperature'])
         light = 'light:{0}'.format(measurement['light'])
         parsed_time = parser.parse(measurement['time'])
-        time = 'time:{0}'.format(parsed_time.time().strftime('%H:%M:%S'))
-        date = 'date:{0}'.format(parsed_time.date())
+        local_time = parsed_time.astimezone(timezone('Europe/Riga'))
+        time = 'time:{0}'.format(local_time.time().strftime('%H:%M:%S'))
+        date = 'date:{0}'.format(local_time.date())
         parsed_measurements.extend([sensor_id, moisture_temperature, light, time, date])
     draw_text(display, parsed_measurements)
 
