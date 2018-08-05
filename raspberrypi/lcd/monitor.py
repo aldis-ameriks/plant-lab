@@ -1,4 +1,5 @@
 import time
+import datetime
 from dateutil import parser
 from influxdb import InfluxDBClient
 from lcd import initialize_lcd, draw_text
@@ -27,14 +28,10 @@ def draw_measurements(display, measurements):
     parsed_measurements = []
     for measurement in measurements:
         sensor_id = 'sensor id:{0}'.format(measurement['nodeid'])
-        moisture_temperature = 'moist:{0} temp:{1}'.format(measurement['moisture_percentage'],
-                                                           measurement['temperature'])
-        light = 'light:{0}'.format(measurement['light'])
+        moisture_temperature = 'moist:{0} temp:{1}'.format(measurement['moisture_percentage'], measurement['temperature'])
         parsed_time = parser.parse(measurement['time'])
-        local_time = parsed_time.astimezone(timezone('Europe/Riga'))
-        time = 'time:{0}'.format(local_time.time().strftime('%H:%M:%S'))
-        date = 'date:{0}'.format(local_time.date())
-        parsed_measurements.extend([sensor_id, moisture_temperature, light, time, date])
+        minutes_since_last_reading = 'updated:{0}min'.format((datetime.datetime.now(timezone('Europe/Riga')) - parsed_time).seconds / 60)
+        parsed_measurements.extend([sensor_id, moisture_temperature, minutes_since_last_reading])
     draw_text(display, parsed_measurements)
 
 
