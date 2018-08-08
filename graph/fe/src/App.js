@@ -1,9 +1,9 @@
 import React from 'react';
 import Jumbotron from 'reactstrap/lib/Jumbotron';
-import NavigationBar from '../components/NavigationBar';
-import Chart from '../components/chart/Chart';
+import NavigationBar from './components/NavigationBar';
+import Chart from './components/chart/Chart';
 
-const HomePage = () => (
+const App = () => (
   <div>
     <NavigationBar />
     <Jumbotron>
@@ -12,4 +12,4 @@ const HomePage = () => (
   </div>
 );
 
-export default HomePage;
+export default App;
