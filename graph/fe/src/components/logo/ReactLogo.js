@@ -1,20 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { rotate360 } from './keyframes';
 import logo from './ReactLogo.svg';
 
 const StyledImg = styled.img`
-  animation: App-logo-spin infinite 20s linear;
+  animation: ${rotate360} 2s linear infinite;
   height: 35px;
-
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 `;
 
 const ReactLogo = () => <StyledImg src={logo} alt="logo" />;

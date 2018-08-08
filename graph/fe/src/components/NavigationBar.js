@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'reactstrap/lib/Navbar';
 
-import ReactLogo from './logo/ReactLogo';
+import PlantLogo from './logo/PlantLogo';
 
 const NavigationBar = () => (
   <Navbar
@@ -12,7 +12,7 @@ const NavigationBar = () => (
   >
     <a className="navbar-brand" href="/">
       Plant monitoring
-      <ReactLogo />
+      <PlantLogo />
     </a>
   </Navbar>
 );
