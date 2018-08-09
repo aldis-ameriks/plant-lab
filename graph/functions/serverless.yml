@@ -1,0 +1,48 @@
+service: plant
+
+custom:
+  tableName: 'plants'
+  dynamodb:
+    start:
+      migrate: true
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  profile: serverless
+  region: eu-west-1
+  stage: dev
+  memorySize: 256 # default is 1024
+  versionFunctions: false
+  apiKeys:
+    - plant
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: '*'
+  environment:
+    PLANTS_TABLE: ${self:custom.tableName}
+
+functions:
+  teapot:
+    handler: src/handler.handleTeapot
+    events:
+      - http:
+          path: teapot
+          method: get
+          private: true
+          cors: true
+  postReading:
+    handler: src/handler.handlePostReading
+    events:
+      - http:
+          path: sensor
+          method: post
+          private: true
+          cors: true
