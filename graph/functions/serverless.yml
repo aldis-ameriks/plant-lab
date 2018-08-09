@@ -1,7 +1,7 @@
-service: plant
+service: sensors
 
 custom:
-  tableName: 'plants'
+  tableName: 'sensors'
   dynamodb:
     start:
       migrate: true
@@ -15,7 +15,7 @@ provider:
   memorySize: 256 # default is 1024
   versionFunctions: false
   apiKeys:
-    - plant
+    - sensors
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -27,17 +27,9 @@ provider:
         - dynamodb:DeleteItem
       Resource: '*'
   environment:
-    PLANTS_TABLE: ${self:custom.tableName}
+    SENSORS_TABLE: ${self:custom.tableName}
 
 functions:
-  teapot:
-    handler: src/handler.handleTeapot
-    events:
-      - http:
-          path: teapot
-          method: get
-          private: true
-          cors: true
   getReadings:
     handler: src/handler.handleGetReadings
     events:
@@ -55,19 +47,30 @@ functions:
           private: true
           cors: true
 
-#resources:
-#  Resources:
-#    PlantDynamoDBTable:
-#      Type: AWS::DynamoDB::Table
-#      DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
-#        - AttributeName: date
-#          AttributeType: S
-#        KeySchema:
-#        - AttributeName: date
-#          KeyType: HASH
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: ${self:custom.tableName}
+resources:
+  Resources:
+    SensorDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: sensor_date
+          AttributeType: S
+        - AttributeName: sensor_type
+          AttributeType: S
+        KeySchema:
+        - AttributeName: sensor_date
+          KeyType: HASH
+        GlobalSecondaryIndexes:
+        - IndexName: sensor_type
+          KeySchema:
+          - AttributeName: sensor_type
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}

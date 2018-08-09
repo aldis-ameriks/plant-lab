@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient({ region: 'eu-west-1' });
 
-const getItemByKey = async (key, value, table) => {
+const getItemByKey = async (key, value, limit = 100, table) => {
   console.log(`Getting item by key: ${key} and value: ${value} in table: ${table}`);
   const params = {
     TableName: table,
@@ -11,6 +11,7 @@ const getItemByKey = async (key, value, table) => {
     ExpressionAttributeValues: {
       ':value': value,
     },
+    Limit: limit,
   };
   const result = await dynamoDb.query(params).promise();
   if (result.Count === 1) {
@@ -22,18 +23,12 @@ const getItemByKey = async (key, value, table) => {
   return null;
 };
 
-const getItems = (table, limit) => {
-  console.log('Getting items');
-  return dynamoDb.scan({ TableName: table, Limit: limit }).promise();
-};
-
 const createItem = (item, table) => {
   console.log(`Creating item: ${item} in table: ${table}`);
   return dynamoDb.put({ TableName: table, Item: { ...item } }).promise();
 };
 
 module.exports = {
-  getItems,
   getItemByKey,
   createItem,
 };
