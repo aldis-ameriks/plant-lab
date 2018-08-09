@@ -13,7 +13,15 @@ const handlePostReading = async (event, context, callback) => {
   callback(null, { statusCode: 200, body: JSON.stringify({ message: 'success' }) });
 };
 
+const handleGetReadings = async (event, context, callback) => {
+  console.log(JSON.stringify(event));
+  const { limit } = event.queryStringParameters;
+  const result = await PlantService.getReadings(limit);
+  callback(null, { statusCode: 200, body: JSON.stringify(result) });
+};
+
 module.exports = {
   handleTeapot,
   handlePostReading,
+  handleGetReadings,
 };

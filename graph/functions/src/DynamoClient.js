@@ -15,10 +15,16 @@ const getItemByKey = async (key, value, table) => {
   const result = await dynamoDb.query(params).promise();
   if (result.Count === 1) {
     return result.Items[0];
-  } if (result.Count > 1) {
+  }
+  if (result.Count > 1) {
     return result.Items;
   }
   return null;
+};
+
+const getItems = (table, limit) => {
+  console.log('Getting items');
+  return dynamoDb.scan({ TableName: table, Limit: limit }).promise();
 };
 
 const createItem = (item, table) => {
@@ -27,6 +33,7 @@ const createItem = (item, table) => {
 };
 
 module.exports = {
+  getItems,
   getItemByKey,
   createItem,
 };

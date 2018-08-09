@@ -38,6 +38,14 @@ functions:
           method: get
           private: true
           cors: true
+  getReadings:
+    handler: src/handler.handleGetReadings
+    events:
+      - http:
+          path: sensor
+          method: get
+          private: true
+          cors: true
   postReading:
     handler: src/handler.handlePostReading
     events:
@@ -46,3 +54,20 @@ functions:
           method: post
           private: true
           cors: true
+
+#resources:
+#  Resources:
+#    PlantDynamoDBTable:
+#      Type: AWS::DynamoDB::Table
+#      DeletionPolicy: Retain
+#      Properties:
+#        AttributeDefinitions:
+#        - AttributeName: date
+#          AttributeType: S
+#        KeySchema:
+#        - AttributeName: date
+#          KeyType: HASH
+#        ProvisionedThroughput:
+#          ReadCapacityUnits: 1
+#          WriteCapacityUnits: 1
+#        TableName: ${self:custom.tableName}
