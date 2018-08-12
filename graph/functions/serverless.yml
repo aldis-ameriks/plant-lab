@@ -1,11 +1,5 @@
 service: sensors
 
-custom:
-  tableName: 'sensors'
-  dynamodb:
-    start:
-      migrate: true
-
 provider:
   name: aws
   runtime: nodejs8.10
@@ -16,18 +10,19 @@ provider:
   versionFunctions: false
   apiKeys:
     - sensors
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource: '*'
+  usagePlan:
+    quota:
+      limit: 500000
+      offset: 1
+      period: MONTH
+    throttle:
+      burstLimit: 200
+      rateLimit: 10
   environment:
-    SENSORS_TABLE: ${self:custom.tableName}
+    INFLUX_HOST: ${ssm:influx_host}
+    INFLUX_PORT: ${ssm:influx_port}
+    INFLUX_USER: ${ssm:influx_user}
+    INFLUX_PASSWORD: ${ssm:influx_password}
 
 functions:
   getReadings:
@@ -46,31 +41,3 @@ functions:
           method: post
           private: true
           cors: true
-
-resources:
-  Resources:
-    SensorDynamoDBTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        AttributeDefinitions:
-        - AttributeName: sensor_date
-          AttributeType: S
-        - AttributeName: sensor_type
-          AttributeType: S
-        KeySchema:
-        - AttributeName: sensor_date
-          KeyType: HASH
-        GlobalSecondaryIndexes:
-        - IndexName: sensor_type
-          KeySchema:
-          - AttributeName: sensor_type
-            KeyType: HASH
-          Projection:
-            ProjectionType: ALL
-          ProvisionedThroughput:
-            ReadCapacityUnits: 1
-            WriteCapacityUnits: 1
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${self:custom.tableName}

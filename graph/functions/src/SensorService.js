@@ -1,13 +1,43 @@
-const DynamoClient = require('./DynamoClient');
+const Influx = require('influx');
 
-const { SENSORS_TABLE } = process.env;
+const { INFLUX_HOST, INFLUX_PORT, INFLUX_USER, INFLUX_PASSWORD } = process.env;
+
+const client = new Influx.InfluxDB({
+  host: INFLUX_HOST,
+  database: 'plants',
+  port: INFLUX_PORT,
+  username: INFLUX_USER,
+  password: INFLUX_PASSWORD,
+  schema: [
+    {
+      measurement: 'plant',
+      fields: {
+        moisture: Influx.FieldType.INTEGER,
+        m_wet: Influx.FieldType.INTEGER,
+        m_dry: Influx.FieldType.INTEGER,
+        temperature: Influx.FieldType.INTEGER,
+        moisture_precentage: Influx.FieldType.FLOAT,
+        nodeid: Influx.FieldType.INTEGER,
+        type: Influx.FieldType.STRING,
+      },
+      tags: ['nodeid', 'type']
+    }
+  ],
+});
 
 const saveReading = async (reading) => {
-  const item = { ...reading, sensor_date: new Date().toISOString() };
-  await DynamoClient.createItem(item, SENSORS_TABLE);
+  const item = {
+    measurement: 'plant',
+    tags: { nodeid: reading.nodeid, type: reading.type },
+    time: new Date().toISOString(),
+    fields: reading
+  };
+  await client.writePoints([item]);
 };
 
-const getReadings = (type = 'moisture', limit = 100) => DynamoClient.getItemByKey('sensor_type', type, limit, SENSORS_TABLE);
+const getReadings = (nodeid = 99, limit = 100) => {
+  return client.query(`select * from plant where nodeid=${nodeid} order by time desc limit ${limit}`);
+};
 
 module.exports = {
   saveReading,

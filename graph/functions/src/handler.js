@@ -9,8 +9,8 @@ const handlePostReading = async (event, context, callback) => {
 
 const handleGetReadings = async (event, context, callback) => {
   console.log(JSON.stringify(event));
-  const { type, limit } = event.queryStringParameters;
-  const result = await SensorService.getReadings(type, limit);
+  const { nodeid, limit } = event.queryStringParameters;
+  const result = await SensorService.getReadings(nodeid, limit);
   callback(null, { statusCode: 200, body: JSON.stringify(result) });
 };
 
