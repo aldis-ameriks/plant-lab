@@ -31,7 +31,7 @@ functions:
       - http:
           path: sensor
           method: get
-          private: true
+          private: false
           cors: true
   postReading:
     handler: src/handler.handlePostReading
