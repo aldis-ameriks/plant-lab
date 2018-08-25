@@ -1,26 +1,79 @@
 import React from 'react';
 import ApexCharts from 'apexcharts';
+import axios from 'axios';
 
 class Chart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fetchData = this.fetchData.bind(this);
+    this.state = {
+      data: null,
+      chart: null,
+    };
+  }
+
   componentDidMount() {
-    const options = {
+    setInterval(this.fetchData, 30000);
+    const chart = new ApexCharts(document.querySelector('#chart'), this.getChartOptions());
+    chart.render();
+    this.setState({ chart });
+    this.fetchData();
+  }
+
+  componentDidUpdate() {
+    if (!this.state.data) {
+      return;
+    }
+    const data = this.state.data.map(data => data.moisture_precentage).reverse();
+    const categories = this.state.data.map(data => data.time).reverse();
+    this.state.chart.updateSeries([{ data, name: 'moisture' }]);
+    this.state.chart.updateOptions({ xaxis: { categories } });
+  }
+
+  getChartOptions(data = [], categories = []) {
+    return {
       chart: {
-        type: 'line'
+        type: 'line',
+        animations: {
+          dynamicAnimation: {
+            enabled: false,
+          },
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
       },
       series: [
         {
-          name: 'sales',
-          data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-        }
+          name: 'moisture',
+          data,
+        },
       ],
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-      }
+        categories,
+        labels: {
+          show: false,
+        },
+      },
+      stroke: {
+        width: 2,
+        curve: 'smooth',
+      },
+      markers: {
+        size: 0,
+      },
+      legend: {
+        show: false,
+      },
     };
+  }
 
-    const chart = new ApexCharts(document.querySelector('#chart'), options);
-
-    chart.render();
+  async fetchData() {
+    const result = await axios.get('https://api.cleverhome.link/sensor?limit=200&nodeid=3');
+    this.setState({ data: result.data });
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'reactstrap/lib/Navbar';
 
-import PlantLogo from './logo/PlantLogo';
+import PlantShieldLogo from './logo/PlantShieldLogo';
 
 const NavigationBar = () => (
   <Navbar
@@ -11,8 +11,8 @@ const NavigationBar = () => (
     className="border-bottom shadow-sm mb-4"
   >
     <a className="navbar-brand" href="/">
-      Plant monitoring
-      <PlantLogo />
+      Clever Home - Plant Savior
+      <PlantShieldLogo />
     </a>
   </Navbar>
 );
