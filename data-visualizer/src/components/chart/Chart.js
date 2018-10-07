@@ -8,7 +8,7 @@ class Chart extends React.Component {
     this.fetchData = this.fetchData.bind(this);
     this.state = {
       data: null,
-      chart: null,
+      chart: null
     };
   }
 
@@ -36,38 +36,38 @@ class Chart extends React.Component {
         type: 'line',
         animations: {
           dynamicAnimation: {
-            enabled: false,
-          },
+            enabled: false
+          }
         },
         toolbar: {
-          show: false,
-        },
+          show: false
+        }
       },
       dataLabels: {
-        enabled: false,
+        enabled: false
       },
       series: [
         {
           name: 'moisture',
-          data,
-        },
+          data
+        }
       ],
       xaxis: {
         categories,
         labels: {
-          show: false,
-        },
+          show: false
+        }
       },
       stroke: {
         width: 2,
-        curve: 'smooth',
+        curve: 'smooth'
       },
       markers: {
-        size: 0,
+        size: 0
       },
       legend: {
-        show: false,
-      },
+        show: false
+      }
     };
   }
 

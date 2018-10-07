@@ -8,7 +8,9 @@ import PlantShieldLogo from './logo/PlantLogo';
 const NavigationBar = () => (
   <AppBar position="static" color="default">
     <Toolbar>
-      <Typography variant="title" color="inherit">Clever Home - Plant Savior</Typography>
+      <Typography variant="title" color="inherit">
+        Clever Home - Plant Savior
+      </Typography>
       <PlantShieldLogo />
     </Toolbar>
   </AppBar>
