@@ -9,7 +9,7 @@ const NavigationBar = () => (
   <AppBar position="static" color="default">
     <Toolbar>
       <Typography variant="title" color="inherit">
-        Clever Home - Plant Savior
+        Save the plants, save the planet
       </Typography>
       <PlantShieldLogo />
     </Toolbar>
