@@ -11,9 +11,10 @@ import DataProvider from './DataProvider';
 
 const styles = theme => ({
   layout: {
-    marginLeft: theme.spacing.unit * 4,
-    marginRight: theme.spacing.unit * 4,
-    marginTop: theme.spacing.unit * 2
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: theme.spacing.unit * 2,
+    maxWidth: 1000
   },
   paper: {
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
