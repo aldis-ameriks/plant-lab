@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'reactstrap/lib/Navbar';
 
-import PlantShieldLogo from './logo/PlantShieldLogo';
+import PlantShieldLogo from './logo/PlantLogo';
 
 const NavigationBar = () => (
   <Navbar
