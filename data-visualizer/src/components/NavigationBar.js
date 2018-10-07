@@ -1,20 +1,17 @@
 import React from 'react';
-import Navbar from 'reactstrap/lib/Navbar';
+import AppBar from '@material-ui/core/AppBar';
+import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
 
 import PlantShieldLogo from './logo/PlantLogo';
 
 const NavigationBar = () => (
-  <Navbar
-    color="light"
-    light
-    expand="sm"
-    className="border-bottom shadow-sm mb-4"
-  >
-    <a className="navbar-brand" href="/">
-      Clever Home - Plant Savior
+  <AppBar position="static" color="default">
+    <Toolbar>
+      <Typography variant="title" color="inherit">Clever Home - Plant Savior</Typography>
       <PlantShieldLogo />
-    </a>
-  </Navbar>
+    </Toolbar>
+  </AppBar>
 );
 
 export default NavigationBar;

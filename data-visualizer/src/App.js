@@ -1,14 +1,15 @@
 import React from 'react';
-import Jumbotron from 'reactstrap/lib/Jumbotron';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import NavigationBar from './components/NavigationBar';
 import Chart from './components/chart/Chart';
 
 const App = () => (
   <div>
+    <CssBaseline />
     <NavigationBar />
-    <Jumbotron>
+    <div>
       <Chart />
-    </Jumbotron>
+    </div>
   </div>
 );
 
