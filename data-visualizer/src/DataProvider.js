@@ -25,6 +25,7 @@ class DataProvider extends React.Component {
   }
 
   getFormattedTimeSinceLastReading(lastReadingTime) {
+    // TODO: use date-fns
     const offsetInMilis = new Date() - lastReadingTime;
     const minutes = Math.floor((offsetInMilis / (1000 * 60)) % 60);
     const hours = Math.floor((offsetInMilis / (1000 * 60 * 60)) % 24);
