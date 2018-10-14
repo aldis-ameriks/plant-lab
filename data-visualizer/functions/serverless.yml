@@ -6,7 +6,7 @@ provider:
   profile: serverless
   region: eu-west-1
   stage: dev
-  memorySize: 256 # default is 1024
+  memorySize: 128
   versionFunctions: false
   apiKeys:
     - sensors
