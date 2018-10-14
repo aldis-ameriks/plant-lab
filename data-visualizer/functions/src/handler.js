@@ -1,12 +1,8 @@
 const SensorService = require('./SensorService');
+const GraphqlServer = require('./graphql');
+const { ALLOWED_ORIGINS } = require('./config');
 
-const ALLOWED_ORIGINS = [
-  'http://localhost:3000',
-  'http://cleverhome.link',
-  'https://cleverhome.link',
-];
-
-const getCorsHeaders = (origin) => {
+const getCorsHeaders = origin => {
   if (ALLOWED_ORIGINS.includes(origin)) {
     return {
       'Access-Control-Allow-Origin': origin,
@@ -35,4 +31,5 @@ const handleGetReadings = async (event, context, callback) => {
 module.exports = {
   handlePostReading,
   handleGetReadings,
+  graphql: GraphqlServer
 };

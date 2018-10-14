@@ -10,6 +10,9 @@
     "serverless": "^1.29.2"
   },
   "dependencies": {
+    "apollo-server-lambda": "^2.1.0",
+    "graphql": "^14.0.2",
+    "graphql-iso-date": "^3.6.1",
     "influx": "^5.0.7"
   }
 }

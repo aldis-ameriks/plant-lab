@@ -41,3 +41,11 @@ functions:
           method: post
           private: true
           cors: true
+  graphql:
+    handler: src/handler.graphql
+    events:
+    - http:
+        path: graphql
+        method: post
+        private: false
+        cors: true
