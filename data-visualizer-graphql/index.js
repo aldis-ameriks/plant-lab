@@ -53,14 +53,14 @@ const typeDefs = gql`
   }
 
   type Query {
-    readings: [Reading]
+    readings(nodeid: Int, limit: Int): [Reading]
   }
 `;
 
 const resolvers = {
   DateTime: GraphQLDateTime,
   Query: {
-    readings: () => getReadings()
+    readings: (obj, { nodeid, limit }) => getReadings(nodeid, limit)
   },
 };
 
