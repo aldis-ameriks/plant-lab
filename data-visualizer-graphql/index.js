@@ -27,14 +27,19 @@ const client = new Influx.InfluxDB({
   ]
 });
 
-const saveReading = async reading => {
+const saveReading = async input => {
+  // Without copying the input object, influx client was failing with
+  // TypeError: fields.hasOwnProperty is not a function
+  const reading = { ...input };
+  const time = new Date().toISOString();
   const item = {
     measurement: 'plant',
     tags: { nodeid: reading.nodeid, type: reading.type },
-    time: new Date().toISOString(),
+    time,
     fields: reading
   };
   await client.writePoints([item]);
+  return {...reading, time};
 };
 
 const getReadings = (nodeid = 99, limit = 100) =>
@@ -50,6 +55,21 @@ const typeDefs = gql`
     moisture_precentage: Float
     nodeid: Int
     temperature: Int
+    type: String
+  }
+
+  input ReadingInput {
+    m_dry: Int
+    m_wet: Int
+    moisture: Int
+    moisture_precentage: Float
+    nodeid: Int
+    temperature: Int
+    type: String
+  }
+
+  type Mutation {
+    addReading(reading: ReadingInput!): Reading
   }
 
   type Query {
@@ -62,6 +82,9 @@ const resolvers = {
   Query: {
     readings: (obj, { nodeid, limit }) => getReadings(nodeid, limit)
   },
+  Mutation: {
+    addReading: async (root, {reading}) => saveReading(reading)
+  }
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
