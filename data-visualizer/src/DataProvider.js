@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { differenceInMinutes } from 'date-fns';
 
 const getFormattedTimeSinceLastReading = lastReadingTime => {
-  // TODO: use date-fns
-  const offsetInMilis = new Date() - lastReadingTime;
-  const minutes = Math.floor((offsetInMilis / (1000 * 60)) % 60);
-  const hours = Math.floor((offsetInMilis / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(offsetInMilis / (1000 * 60 * 60 * 24));
-  return `${days} days ${hours} hours ${minutes} minutes`;
+  const minutes = differenceInMinutes(new Date(), lastReadingTime);
+  const formattedTime = `${minutes} minutes ago`;
+  if (minutes > 60) {
+    return `${formattedTime} 😰`;
+  }
+  return formattedTime;
 };
 
 const DataProvider = ({ render }) => (
