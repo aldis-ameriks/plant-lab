@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const SensorService = require('./SensorService');
 const GraphqlServer = require('./graphql');
 const { ALLOWED_ORIGINS } = require('./config');
