@@ -49,7 +49,7 @@ const App = ({ classes }) => (
             <DataBox classes={classes}>
               <div>Last reading</div>
               <div>{time}</div>
-              <div>({timeSinceLastReading} ago) 😰</div>
+              <div>({timeSinceLastReading} ago)</div>
             </DataBox>
 
             <ChartBox classes={classes} data={data} labels={labels} />

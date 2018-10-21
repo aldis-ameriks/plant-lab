@@ -16,7 +16,7 @@ class Chart extends React.Component {
   }
 
   componentDidMount() {
-    const chart = new ApexCharts(document.querySelector('#chart'), this.getChartOptions());
+    const chart = new ApexCharts(document.querySelector('#chart'), Chart.getChartOptions());
     chart.render();
     this.setState({ chart });
   }
@@ -28,44 +28,15 @@ class Chart extends React.Component {
     chart.updateOptions({ xaxis: { categories: labels } });
   }
 
-  getChartOptions(data = [], categories = []) {
+  static getChartOptions(data = [], categories = []) {
     return {
-      chart: {
-        type: 'line',
-        animations: {
-          dynamicAnimation: {
-            enabled: false
-          }
-        },
-        toolbar: {
-          show: false
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      series: [
-        {
-          name: 'moisture',
-          data
-        }
-      ],
-      xaxis: {
-        categories,
-        labels: {
-          show: false
-        }
-      },
-      stroke: {
-        width: 2,
-        curve: 'smooth'
-      },
-      markers: {
-        size: 0
-      },
-      legend: {
-        show: false
-      }
+      chart: { type: 'line', animations: { dynamicAnimation: { enabled: false } }, toolbar: { show: false } },
+      dataLabels: { enabled: false },
+      series: [{ name: 'moisture', data }],
+      xaxis: { categories, labels: { show: false } },
+      stroke: { width: 2, curve: 'smooth' },
+      markers: { size: 0 },
+      legend: { show: false }
     };
   }
 
