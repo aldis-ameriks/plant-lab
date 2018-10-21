@@ -18,14 +18,14 @@ const client = new Influx.InfluxDB({
         temperature: Influx.FieldType.INTEGER,
         moisture_precentage: Influx.FieldType.FLOAT,
         nodeid: Influx.FieldType.INTEGER,
-        type: Influx.FieldType.STRING,
+        type: Influx.FieldType.STRING
       },
       tags: ['nodeid', 'type']
     }
-  ],
+  ]
 });
 
-const saveReading = async (reading) => {
+const saveReading = async reading => {
   const item = {
     measurement: 'plant',
     tags: { nodeid: reading.nodeid, type: reading.type },
@@ -35,11 +35,15 @@ const saveReading = async (reading) => {
   await client.writePoints([item]);
 };
 
-const getReadings = (nodeid = 99, limit = 100) => {
-  return client.query(`select * from plant where nodeid=${nodeid} order by time desc limit ${limit}`);
+const getReadings = async (nodeid = 99, limit = 100, every = 1) => {
+  const result = await client.query(`select * from plant where nodeid=${nodeid} order by time desc limit ${limit}`);
+  if (every > 1) {
+    return result.filter((r, i) => !(i % every));
+  }
+  return result;
 };
 
 module.exports = {
   saveReading,
-  getReadings,
+  getReadings
 };
