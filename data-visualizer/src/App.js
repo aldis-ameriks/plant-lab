@@ -28,6 +28,12 @@ const styles = theme => ({
   }
 });
 
+const stylesProps = PropTypes.shape({
+  layout: PropTypes.string.isRequired,
+  paper: PropTypes.string.isRequired,
+  inlinePaper: PropTypes.string.isRequired
+});
+
 const App = ({ classes }) => (
   <div>
     <CssBaseline />
@@ -61,7 +67,7 @@ const App = ({ classes }) => (
 );
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: stylesProps.isRequired
 };
 
 const ChartBox = ({ classes, data, labels }) => (
@@ -71,9 +77,9 @@ const ChartBox = ({ classes, data, labels }) => (
 );
 
 ChartBox.propTypes = {
-  classes: PropTypes.object.isRequired,
-  data: PropTypes.array.isRequired,
-  labels: PropTypes.array.isRequired
+  classes: stylesProps.isRequired,
+  data: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
 };
 
 const DataBox = ({ classes, children }) => (
@@ -85,7 +91,7 @@ const DataBox = ({ classes, children }) => (
 );
 
 DataBox.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: stylesProps.isRequired,
   children: PropTypes.node.isRequired
 };
 

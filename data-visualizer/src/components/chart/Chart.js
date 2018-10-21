@@ -4,8 +4,8 @@ import ApexCharts from 'apexcharts';
 
 class Chart extends React.Component {
   static propTypes = {
-    data: PropTypes.array.isRequired,
-    labels: PropTypes.array.isRequired
+    data: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+    labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
   };
 
   constructor(props) {
