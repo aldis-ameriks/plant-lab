@@ -15,5 +15,8 @@ module.exports = {
     'prettier/prettier': ['error', { singleQuote: true, printWidth: 120 }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'max-len': ['error', { code: 120 }]
+  },
+  globals: {
+    document: true
   }
 };
