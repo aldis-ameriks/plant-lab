@@ -1,4 +1,4 @@
-import { createServer, Next, Request, Response } from 'restify';
+import { createServer, Next, plugins, Request, Response } from 'restify';
 
 import { initCluster } from './cluster';
 import { getReadings, saveReading } from './sensor.service';
@@ -16,8 +16,10 @@ async function getReadingsHandler(req: Request, res: Response, next: Next) {
 
 async function saveReadingsHandler(req: Request, res: Response, next: Next) {
   try {
-    const reading = {} as any;
-    const readings = await saveReading(reading);
+    throw new Error('Not implemented');
+    // const body = req.body;
+    // const readings = await saveReading(reading);
+    // console.log(req.body);
     res.send({ message: 'success' });
     next();
   } catch (err) {
@@ -31,5 +33,6 @@ initCluster(() => {
   server.get('/readings', getReadingsHandler);
   server.post('/readings', saveReadingsHandler);
   server.head('/readings', getReadingsHandler);
+  server.use(plugins.bodyParser());
   return server;
 });
