@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-plugin-prettier",
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "no-console": false,
+    "no-empty-interface": false,
+    "import-name": false,
+    "indent": 2,
+    "object-literal-sort-keys": false,
+    "object-shorthand-properties-first": false,
+    "ter-arrow-parens": false,
+    "prettier": [
+      true,
+      {
+        "singleQuote": true,
+        "printWidth": 100,
+        "trailingComma": "all"
+      }
+    ],
+    "variable-name": [
+      true,
+      "allow-pascal-case"
+    ],
+    "interface-over-type-literal": false,
+    "no-var-requires": false
+  }
+}
