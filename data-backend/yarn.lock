@@ -33,6 +33,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.9.tgz#a07bfa74331471e1dc22a47eb72026843f7b95c8"
   integrity sha512-eajkMXG812/w3w4a1OcBlaTwsFPO5F7fJ/amy+tieQxEMWBlbV1JGSjkFM+zkHNf81Cad+dfIRA+IBkvmvdAeA==
 
+"@types/restify-errors@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@types/restify-errors/-/restify-errors-4.3.3.tgz#2ae7d7e3f7cbf2117267d56daa8cf37ac113ba77"
+  integrity sha512-kIjSIPHH12R4ivtqnZ0FKpMBt/5EoU2EuGpAF9AcYNGm3cXYDC2foxYlhsN89A1xU5AfnnxhKrHJVXA9Zi/NxQ==
+  dependencies:
+    "@types/verror" "*"
+
 "@types/restify@^7.2.6":
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/@types/restify/-/restify-7.2.6.tgz#0b63688d3d628cc1f8ed7c685dc52d013648384d"
@@ -48,6 +55,11 @@
   integrity sha512-N9LBlbVRRYq6HgYpPkqQc3a9HJ/iEtVZToW6xlTtJiMhmRJ7jJdV7TaZQJw/Ve/1ePUsQiCTDc4JMuzzag94GA==
   dependencies:
     "@types/node" "*"
+
+"@types/verror@*":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@types/verror/-/verror-1.10.3.tgz#8be16b0e750018fd4e2e4a766b8f2351d8b5df6a"
+  integrity sha512-7Jz0MPsW2pWg5dJfEp9nJYI0RDCYfgjg2wIo5HfQ8vOJvUq0/BxT7Mv2wNQvkKBmV9uT++6KF3reMnLmh/0HrA==
 
 abbrev@1:
   version "1.1.1"
@@ -1290,7 +1302,7 @@ lodash.get@~4.4.2:
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
-lodash@^4.17.10, lodash@^4.2.1:
+lodash@^4.17.10, lodash@^4.17.4, lodash@^4.2.1:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
@@ -1829,6 +1841,17 @@ restify-errors@^5.0.0:
   optionalDependencies:
     safe-json-stringify "^1.0.3"
 
+restify-errors@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/restify-errors/-/restify-errors-6.1.1.tgz#a39bd00c1902c2e19f3030f6aeb9271f6c1b31f2"
+  integrity sha512-QSwjp1b0pHB8QQQwqaPJu+VroGHAGX+HeHqz50awIb8334SAENCKeCI1VAhN099n4h0UVNupJ99ozx0pkHdqew==
+  dependencies:
+    assert-plus "^1.0.0"
+    lodash "^4.17.4"
+    verror "^1.10.0"
+  optionalDependencies:
+    safe-json-stringify "^1.0.4"
+
 restify@^7.2.2:
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/restify/-/restify-7.2.2.tgz#cb98580a444071148a356413fc40dc1613fa261c"
@@ -1882,7 +1905,7 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
 
-safe-json-stringify@^1.0.3, safe-json-stringify@~1:
+safe-json-stringify@^1.0.3, safe-json-stringify@^1.0.4, safe-json-stringify@~1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/safe-json-stringify/-/safe-json-stringify-1.2.0.tgz#356e44bc98f1f93ce45df14bcd7c01cda86e0afd"
   integrity sha512-gH8eh2nZudPQO6TytOvbxnuhYBOvDBBLW52tz5q6X58lJcd/tkmqFR+5Z9adS8aJtURSXWThWy/xJtJwixErvg==

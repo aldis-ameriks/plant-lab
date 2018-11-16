@@ -4,9 +4,11 @@
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
+    "@types/restify-errors": "^4.3.3",
     "dotenv": "^6.1.0",
     "influx": "^5.0.7",
-    "restify": "^7.2.2"
+    "restify": "^7.2.2",
+    "restify-errors": "^6.1.1"
   },
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",

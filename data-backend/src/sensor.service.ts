@@ -26,7 +26,7 @@ const client = new influx.InfluxDB({
   ],
 });
 
-type Reading = {
+export type Reading = {
   nodeid: number;
   type: string;
   moisture: number;
