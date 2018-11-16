@@ -35,8 +35,7 @@ const saveReadingsHandler = async (req: Request, res: Response, next: Next) => {
       !reading.moisture_precentage ||
       !reading.m_dry ||
       !reading.m_wet ||
-      !reading.temperature ||
-      !reading.type
+      !reading.temperature
     ) {
       throw new BadRequestError();
     }
