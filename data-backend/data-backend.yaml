@@ -44,7 +44,11 @@ spec:
             secretKeyRef:
               name: influx
               key: password
-
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: databackend
+              key: api-key
 ---
 
 kind: Service
