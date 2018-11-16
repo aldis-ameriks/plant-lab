@@ -9,7 +9,8 @@
     "restify": "^7.2.2"
   },
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts"
+    "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
+    "start": "ts-node src/index.ts"
   },
   "devDependencies": {
     "@types/restify": "^7.2.6",

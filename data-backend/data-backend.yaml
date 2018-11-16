@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-backend
+  labels:
+    app: data-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-backend
+  template:
+    metadata:
+      labels:
+        app: data-backend
+    spec:
+      containers:
+      - name: data-backend
+        image: gcr.io/the-affordable-project/data-backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: NODE_ENV
+          value: prod
+        - name: NODE_PORT
+          value: "8080"
+        - name: INFLUX_HOST
+          valueFrom:
+            secretKeyRef:
+              name: influx
+              key: host
+        - name: INFLUX_PORT
+          valueFrom:
+            secretKeyRef:
+              name: influx
+              key: port
+        - name: INFLUX_USER
+          valueFrom:
+            secretKeyRef:
+              name: influx
+              key: user
+        - name: INFLUX_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: influx
+              key: password
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: data-backend
+spec:
+  selector:
+    app: data-backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
