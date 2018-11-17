@@ -1,7 +1,10 @@
 import * as cluster from 'cluster';
-import { Server } from 'restify';
 
 const { NODE_ENV, NODE_PORT = 8080 } = process.env;
+
+type Server = {
+  listen: (port: string | number, done: () => void) => void;
+};
 
 export const initCluster = (initializeServer: () => Server) => {
   if (NODE_ENV === 'dev') {

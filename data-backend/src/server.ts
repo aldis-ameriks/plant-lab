@@ -1,59 +1,54 @@
-import { createServer, Next, plugins, Request, Response } from 'restify';
-import { BadRequestError } from 'restify-errors';
+import * as Koa from 'koa';
+import * as bodyparser from 'koa-bodyparser';
+import * as Router from 'koa-router';
 
 import { initCluster } from './cluster';
 import { getReadings, saveReading } from './sensor.service';
-import { authorizationMiddleware } from './server.middlewares';
+import { authorizationMiddleware, errorHandler, requestLogger } from './server.middlewares';
 
-const getReadingsHandler = async (req: Request, res: Response, next: Next) => {
-  try {
-    const { nodeid, limit, every } = req.query;
-    const readings = await getReadings(nodeid, limit, every);
-    res.send(readings);
-    next();
-  } catch (err) {
-    console.log('Failed to get readings:', err.message);
-    next(err);
-  }
+const getReadingsHandler = async (ctx: Koa.Context, next: any) => {
+  const { nodeid, limit, every } = ctx.query;
+  ctx.body = await getReadings(nodeid, limit, every);
+  next();
 };
 
-const saveReadingsHandler = async (req: Request, res: Response, next: Next) => {
-  try {
-    const reading = {
-      nodeid: req.body.nodeid,
-      moisture: req.body.moisture,
-      moisture_precentage: req.body.moisture_precentage,
-      m_dry: req.body.m_dry,
-      m_wet: req.body.m_wet,
-      temperature: req.body.temperature,
-      type: req.body.type,
-    };
-    console.log('Saving reading: ', reading);
-    if (
-      !reading.nodeid ||
-      !reading.moisture ||
-      !reading.moisture_precentage ||
-      !reading.m_dry ||
-      !reading.m_wet ||
-      !reading.temperature
-    ) {
-      throw new BadRequestError();
-    }
-    await saveReading(reading);
-    res.send({ message: 'success' });
-    next();
-  } catch (err) {
-    console.log('Failed to save reading', err.message);
-    next(err);
+const saveReadingsHandler = async (ctx: Koa.Context, next: any) => {
+  const { body } = ctx.request as any;
+  const reading = {
+    nodeid: body.nodeid,
+    moisture: body.moisture,
+    moisture_precentage: body.moisture_precentage,
+    m_dry: body.m_dry,
+    m_wet: body.m_wet,
+    temperature: body.temperature,
+    type: body.type,
+  };
+  console.log('Saving reading: ', reading);
+  if (
+    !reading.nodeid ||
+    !reading.moisture ||
+    !reading.moisture_precentage ||
+    !reading.m_dry ||
+    !reading.m_wet ||
+    !reading.temperature
+  ) {
+    ctx.throw(400, 'Missing parameters');
   }
+  await saveReading(reading);
+  ctx.body = { message: 'success' };
+  next();
 };
 
 initCluster(() => {
-  const server = createServer();
-  server.use(plugins.bodyParser());
-  server.use(plugins.queryParser());
-  server.head('/readings', getReadingsHandler);
-  server.get('/readings', getReadingsHandler);
-  server.post('/readings', [authorizationMiddleware, saveReadingsHandler]);
+  const server = new Koa();
+  const router = new Router();
+  server.use(errorHandler);
+  server.use(requestLogger);
+  server.use(bodyparser());
+
+  router.get('/readings', getReadingsHandler);
+  router.post('/readings', authorizationMiddleware, saveReadingsHandler);
+
+  server.use(router.routes()).use(router.allowedMethods());
   return server;
 });
