@@ -14,7 +14,8 @@ export const requestLogger = async (ctx: Context, next: any) => {
   const start = Date.now();
   await next();
   const ms = Date.now() - start;
-  console.log(`${ctx.method} ${ctx.url} ${ctx.status} - ${ms}ms ${ctx.response.length}b`);
+  const responseLength = ctx.response.length ? `${ctx.response.length}b` : '-';
+  console.log(`${ctx.method} ${ctx.url} ${ctx.status} - ${ms}ms ${responseLength}`);
 };
 
 export const authorizationMiddleware = async (ctx: Context, next: any) => {
