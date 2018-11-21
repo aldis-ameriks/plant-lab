@@ -1,5 +1,5 @@
 {
-  "name": "data-visualizer",
+  "name": "sensor-visualizer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

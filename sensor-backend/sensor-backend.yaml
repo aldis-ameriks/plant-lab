@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: data-backend
+  name: sensor-backend
   labels:
-    app: data-backend
+    app: sensor-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: data-backend
+      app: sensor-backend
   template:
     metadata:
       labels:
-        app: data-backend
+        app: sensor-backend
     spec:
       containers:
-      - name: data-backend
-        image: gcr.io/the-affordable-project/data-backend:latest
+      - name: sensor-backend
+        image: gcr.io/the-affordable-project/sensor-backend:latest
         ports:
         - containerPort: 8080
         env:
@@ -54,10 +54,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: data-backend
+  name: sensor-backend
 spec:
   selector:
-    app: data-backend
+    app: sensor-backend
   ports:
   - protocol: TCP
     port: 8080
