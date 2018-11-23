@@ -5,9 +5,9 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-import NavigationBar from './components/NavigationBar';
-import Chart from './components/chart/Chart';
-import DataProvider from './DataProvider';
+import Chart from 'components/chart/Chart';
+import NavigationBar from 'components/NavigationBar';
+import DataProvider from 'DataProvider';
 
 const styles = theme => ({
   layout: {

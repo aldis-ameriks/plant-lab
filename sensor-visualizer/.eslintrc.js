@@ -18,5 +18,12 @@ module.exports = {
   },
   globals: {
     document: true
-  }
+  },
+  'settings': {
+    'import/resolver': {
+      'node': {
+        'paths': ['src']
+      }
+    },
+  },
 };
