@@ -20,7 +20,12 @@ const App = () => (
     <section className="section">
       <div className="container">
         <DataProvider
-          render={({ data, labels, lastReadings: { moisture, temperature, time, timeSinceLastReading } }) => (
+          render={({
+            moistures,
+            temperatures,
+            labels,
+            lastReadings: { moisture, temperature, time, timeSinceLastReading }
+          }) => (
             <>
               <div className="tile is-ancestor has-text-centered">
                 <div className="tile">
@@ -46,8 +51,21 @@ const App = () => (
                 </div>
               </div>
 
+              <div className="columns">
+                <div className="column">
+                  <div className="box">
+                    <Chart data={moistures} labels={labels} label="Moisture" />
+                  </div>
+                </div>
+                <div className="column">
+                  <div className="box">
+                    <Chart data={temperatures} labels={labels} label="Temperature" />
+                  </div>
+                </div>
+              </div>
+
               <div className="box">
-                <Chart data={data} labels={labels} />
+                <Chart data={moistures} labels={labels} label="Moisture" />
               </div>
             </>
           )}

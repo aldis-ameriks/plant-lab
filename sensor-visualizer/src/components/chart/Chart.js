@@ -37,13 +37,13 @@ const options = {
 class Chart extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+    labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    label: PropTypes.string.isRequired
   };
 
   render() {
-    const { labels, data } = this.props;
-    const dataset = { labels, datasets: [{ label: 'Moisture', ...chartConfig, data }] };
-    return <Line data={dataset} options={options} />;
+    const { labels, data, label } = this.props;
+    return <Line data={{ labels, datasets: [{ label, ...chartConfig, data }] }} options={options} />;
   }
 }
 

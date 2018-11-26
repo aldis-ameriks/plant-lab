@@ -37,7 +37,8 @@ const DataProvider = ({ render }) => (
       }
 
       const { readings } = data;
-      const orderedData = readings.map(d => d.moisture_precentage).reverse();
+      const moistures = readings.map(d => d.moisture_precentage).reverse();
+      const temperatures = readings.map(d => d.temperature).reverse();
       const labels = readings.map(d => d.time).reverse();
       const lastReadingTime = new Date(readings[0].time);
 
@@ -48,7 +49,7 @@ const DataProvider = ({ render }) => (
         timeSinceLastReading: getFormattedTimeSinceLastReading(lastReadingTime)
       };
 
-      return render({ data: orderedData, labels, lastReadings });
+      return render({ moistures, temperatures, labels, lastReadings });
     }}
   </Query>
 );
