@@ -52,12 +52,12 @@ const App = () => (
               </div>
 
               <div className="columns">
-                <div className="column">
+                <div className="column is-full-tablet is-half-desktop">
                   <div className="box">
                     <Chart data={moistures} labels={labels} label="Moisture" />
                   </div>
                 </div>
-                <div className="column">
+                <div className="column is-full-tablet is-half-desktop">
                   <div className="box">
                     <Chart data={temperatures} labels={labels} label="Temperature" />
                   </div>
