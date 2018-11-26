@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { differenceInMinutes } from 'date-fns';
@@ -30,8 +29,9 @@ const DataProvider = ({ render }) => (
   >
     {({ loading, error, data }) => {
       if (loading) {
-        return <CircularProgress style={{ display: 'block', margin: 'auto' }} />;
+        return null;
       }
+
       if (error) {
         return <p>Error :(</p>;
       }

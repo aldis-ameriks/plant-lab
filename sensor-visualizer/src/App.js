@@ -1,98 +1,60 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 
 import Chart from 'components/chart/Chart';
 import NavigationBar from 'components/NavigationBar';
 import DataProvider from 'DataProvider';
+import './App.scss';
 
-const styles = theme => ({
-  layout: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: theme.spacing.unit * 2,
-    maxWidth: 1000
-  },
-  paper: {
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    margin: `${theme.spacing.unit * 2}px`
-  },
-  inlinePaper: {
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    margin: `${theme.spacing.unit * 2}px`,
-    display: 'inline-block',
-    verticalAlign: 'middle'
-  }
-});
-
-const stylesProps = PropTypes.shape({
-  layout: PropTypes.string.isRequired,
-  paper: PropTypes.string.isRequired,
-  inlinePaper: PropTypes.string.isRequired
-});
-
-const App = ({ classes }) => (
+const App = () => (
   <div>
-    <CssBaseline />
     <NavigationBar />
-    <main className={classes.layout}>
-      <DataProvider
-        render={({ data, labels, lastReadings: { moisture, temperature, time, timeSinceLastReading } }) => (
-          <>
-            <DataBox classes={classes}>
-              <div>Moisture</div>
-              <div>{moisture}%</div>
-            </DataBox>
+    <section className="hero is-primary">
+      <div className="hero-body">
+        <div className="container has-shadow">
+          <h1 className="title">Plant monitoring</h1>
+          <h2 className="subtitle">A simple plant monitoring system to keep 'em alive.</h2>
+        </div>
+      </div>
+    </section>
 
-            <DataBox classes={classes}>
-              <div>Temperature</div>
-              <div>{temperature}</div>
-            </DataBox>
+    <section className="section">
+      <div className="container">
+        <DataProvider
+          render={({ data, labels, lastReadings: { moisture, temperature, time, timeSinceLastReading } }) => (
+            <>
+              <div className="tile is-ancestor has-text-centered">
+                <div className="tile">
+                  <div className="tile is-parent">
+                    <div className="tile is-child notification is-info">
+                      <div>Moisture</div>
+                      <div>{moisture}%</div>
+                    </div>
+                  </div>
+                  <div className="tile is-parent">
+                    <div className="tile is-child notification is-info">
+                      <div>Temperature</div>
+                      <div>{temperature}</div>
+                    </div>
+                  </div>
+                  <div className="tile is-parent">
+                    <div className="tile is-child notification is-info">
+                      <div>Last reading</div>
+                      <div>{time}</div>
+                      <div>({timeSinceLastReading})</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <DataBox classes={classes}>
-              <div>Last reading</div>
-              <div>{time}</div>
-              <div>({timeSinceLastReading})</div>
-            </DataBox>
-
-            <ChartBox classes={classes} data={data} labels={labels} />
-          </>
-        )}
-      />
-    </main>
+              <div className="box">
+                <Chart data={data} labels={labels} />
+              </div>
+            </>
+          )}
+        />
+      </div>
+    </section>
   </div>
 );
 
-App.propTypes = {
-  classes: stylesProps.isRequired
-};
-
-const ChartBox = ({ classes, data, labels }) => (
-  <Paper className={classes.paper}>
-    <Chart data={data} labels={labels} />
-  </Paper>
-);
-
-ChartBox.propTypes = {
-  classes: stylesProps.isRequired,
-  data: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-  labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
-};
-
-const DataBox = ({ classes, children }) => (
-  <Paper className={classes.inlinePaper}>
-    <Typography variant="title" align="center">
-      {children}
-    </Typography>
-  </Paper>
-);
-
-DataBox.propTypes = {
-  classes: stylesProps.isRequired,
-  children: PropTypes.node.isRequired
-};
-
-export default withStyles(styles)(App);
+export default App;
