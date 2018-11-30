@@ -63,10 +63,6 @@ const App = () => (
                   </div>
                 </div>
               </div>
-
-              <div className="box">
-                <Chart data={moistures} labels={labels} label="Moisture" />
-              </div>
             </>
           )}
         />
