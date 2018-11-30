@@ -4,6 +4,7 @@ import Chart from 'components/chart/Chart';
 import NavigationBar from 'components/NavigationBar';
 import DataProvider from 'DataProvider';
 import './App.scss';
+import ChartBox from './components/ChartBox';
 
 const App = () => (
   <div>
@@ -53,14 +54,14 @@ const App = () => (
 
               <div className="columns is-desktop">
                 <div className="column is-half-desktop">
-                  <div className="box">
+                  <ChartBox>
                     <Chart data={moistures} labels={labels} label="Moisture" />
-                  </div>
+                  </ChartBox>
                 </div>
                 <div className="column is-half-desktop">
-                  <div className="box">
+                  <ChartBox>
                     <Chart data={temperatures} labels={labels} label="Temperature" />
-                  </div>
+                  </ChartBox>
                 </div>
               </div>
             </>
