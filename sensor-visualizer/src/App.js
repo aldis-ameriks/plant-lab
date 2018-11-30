@@ -51,13 +51,13 @@ const App = () => (
                 </div>
               </div>
 
-              <div className="columns">
-                <div className="column is-full-tablet is-half-desktop">
+              <div className="columns is-desktop">
+                <div className="column is-half-desktop">
                   <div className="box">
                     <Chart data={moistures} labels={labels} label="Moisture" />
                   </div>
                 </div>
-                <div className="column is-full-tablet is-half-desktop">
+                <div className="column is-half-desktop">
                   <div className="box">
                     <Chart data={temperatures} labels={labels} label="Temperature" />
                   </div>
