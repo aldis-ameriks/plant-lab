@@ -15,7 +15,7 @@ const Overlay = posed.div({
 });
 
 const transition = {
-  duration: 400,
+  duration: 150,
   ease: [0.08, 0.69, 0.2, 0.99]
 };
 
@@ -64,12 +64,6 @@ class ChartBox extends React.Component {
   zoomIn() {
     this.setState({ isZoomed: true });
   }
-
-  zoomOut = () => {
-    this.setState({ isZoomed: false });
-  };
-
-  toggleZoom = () => (this.state.isZoomed ? this.zoomOut() : this.zoomIn());
 
   render() {
     const { isZoomed } = this.state;
