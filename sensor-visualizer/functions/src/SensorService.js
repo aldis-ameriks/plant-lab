@@ -36,7 +36,9 @@ const saveReading = async reading => {
 };
 
 const getReadings = async (nodeid = 99, limit = 100, every = 1) => {
-  const result = await client.query(`select * from plant where nodeid=${nodeid} order by time desc limit ${limit}`);
+  const result = await client.query(
+    `select * from plant where nodeid=${Number(nodeid)} order by time desc limit ${Number(limit)}`
+  );
   if (every > 1) {
     return result.filter((r, i) => !(i % every));
   }
