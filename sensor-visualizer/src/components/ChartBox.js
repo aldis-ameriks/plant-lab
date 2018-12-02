@@ -39,8 +39,7 @@ const ChartBoxStyled = styled(
     },
   })
 )`
-  position: relative;
-  ${props => (props.pose === 'zoomedIn' ? 'z-index: 9000' : '')};
+  ${props => props.pose === 'zoomedIn' && 'z-index: 9000'};
 `;
 
 const ZoomIcon = ({ toggleZoom, isZoomed }) => (
