@@ -46,7 +46,7 @@ const DataProvider = ({ render }) => (
         moisture: Number(readings[0].moisture_precentage).toFixed(2),
         temperature: readings[0].temperature,
         time: lastReadingTime.toLocaleString(),
-        timeSinceLastReading: getFormattedTimeSinceLastReading(lastReadingTime)
+        timeSinceLastReading: getFormattedTimeSinceLastReading(lastReadingTime),
       };
 
       return render({ moistures, temperatures, labels, lastReadings });
@@ -55,7 +55,7 @@ const DataProvider = ({ render }) => (
 );
 
 DataProvider.propTypes = {
-  render: PropTypes.func.isRequired
+  render: PropTypes.func.isRequired,
 };
 
 export default DataProvider;

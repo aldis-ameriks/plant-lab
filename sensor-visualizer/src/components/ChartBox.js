@@ -6,17 +6,17 @@ import styled from 'styled-components';
 const Overlay = posed.div({
   zoomedOut: {
     applyAtEnd: { display: 'none' },
-    opacity: 0
+    opacity: 0,
   },
   zoomedIn: {
     applyAtStart: { display: 'block' },
-    opacity: 1
-  }
+    opacity: 1,
+  },
 });
 
 const transition = {
   duration: 150,
-  ease: [0.08, 0.69, 0.2, 0.99]
+  ease: [0.08, 0.69, 0.2, 0.99],
 };
 
 const ChartBoxStyled = styled(
@@ -26,7 +26,7 @@ const ChartBoxStyled = styled(
       width: 'auto',
       height: 'auto',
       transition,
-      flip: true
+      flip: true,
     },
     zoomedIn: {
       position: 'fixed',
@@ -35,8 +35,8 @@ const ChartBoxStyled = styled(
       right: 0,
       bottom: 0,
       transition,
-      flip: true
-    }
+      flip: true,
+    },
   })
 )`
   position: relative;
@@ -55,11 +55,17 @@ const ZoomIcon = ({ toggleZoom, isZoomed }) => (
 
 ZoomIcon.propTypes = {
   toggleZoom: PropTypes.func.isRequired,
-  isZoomed: PropTypes.bool.isRequired
+  isZoomed: PropTypes.bool.isRequired,
 };
 
 class ChartBox extends React.Component {
   state = { isZoomed: false };
+
+  toggleZoom = () => (this.state.isZoomed ? this.zoomOut() : this.zoomIn());
+
+  zoomOut = () => {
+    this.setState({ isZoomed: false });
+  };
 
   zoomIn() {
     this.setState({ isZoomed: true });
@@ -83,7 +89,7 @@ class ChartBox extends React.Component {
 }
 
 ChartBox.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default ChartBox;

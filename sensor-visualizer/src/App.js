@@ -25,7 +25,7 @@ const App = () => (
             moistures,
             temperatures,
             labels,
-            lastReadings: { moisture, temperature, time, timeSinceLastReading }
+            lastReadings: { moisture, temperature, time, timeSinceLastReading },
           }) => (
             <>
               <div className="tile is-ancestor has-text-centered">

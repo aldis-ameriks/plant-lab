@@ -12,9 +12,9 @@ module.exports = {
         aspects: ['noHref', 'invalidHref', 'preferButton']
       }
     ],
-    'prettier/prettier': ['error', { singleQuote: true, printWidth: 120 }],
+    'prettier/prettier': ['error', { singleQuote: true, printWidth: 100, 'trailingComma': 'es5' }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-     'max-len': ['error', { code: 100 }],
+    'max-len': ['error', { code: 100 }],
     'react/destructuring-assignment': ['warn', 'always', { 'ignoreClassFields': true }],
   },
   globals: {

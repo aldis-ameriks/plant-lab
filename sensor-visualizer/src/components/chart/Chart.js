@@ -19,7 +19,7 @@ export const chartConfig = {
   pointHoverBorderColor: 'rgba(32,156,238,1)',
   pointHoverBorderWidth: 2,
   pointRadius: 1,
-  pointHitRadius: 10
+  pointHitRadius: 10,
 };
 
 const options = {
@@ -27,23 +27,25 @@ const options = {
     xAxes: [
       {
         ticks: {
-          display: false
-        }
-      }
-    ]
-  }
+          display: false,
+        },
+      },
+    ],
+  },
 };
 
 class Chart extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
   };
 
   render() {
     const { labels, data, label } = this.props;
-    return <Line data={{ labels, datasets: [{ label, ...chartConfig, data }] }} options={options} />;
+    return (
+      <Line data={{ labels, datasets: [{ label, ...chartConfig, data }] }} options={options} />
+    );
   }
 }
 
