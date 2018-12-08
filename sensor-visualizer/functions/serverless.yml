@@ -49,3 +49,6 @@ functions:
         method: post
         private: false
         cors: true
+
+plugins:
+  - serverless-offline
