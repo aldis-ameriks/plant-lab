@@ -16,6 +16,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'max-len': ['error', { code: 100 }],
     'react/destructuring-assignment': ['warn', 'always', { 'ignoreClassFields': true }],
+    'no-use-before-define': ['error', { 'functions': false, 'classes': false }]
   },
   globals: {
     document: true
