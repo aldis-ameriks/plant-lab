@@ -18,11 +18,11 @@ const client = new Influx.InfluxDB({
         temperature: Influx.FieldType.INTEGER,
         moisture_precentage: Influx.FieldType.FLOAT,
         nodeid: Influx.FieldType.INTEGER,
-        type: Influx.FieldType.STRING
+        type: Influx.FieldType.STRING,
       },
-      tags: ['nodeid', 'type']
-    }
-  ]
+      tags: ['nodeid', 'type'],
+    },
+  ],
 });
 
 const saveReading = async reading => {
@@ -30,7 +30,7 @@ const saveReading = async reading => {
     measurement: 'plant',
     tags: { nodeid: reading.nodeid, type: reading.type },
     time: new Date().toISOString(),
-    fields: reading
+    fields: reading,
   };
   await client.writePoints([item]);
 };
@@ -47,5 +47,5 @@ const getReadings = async (nodeid = 99, limit = 100, every = 1) => {
 
 module.exports = {
   saveReading,
-  getReadings
+  getReadings,
 };

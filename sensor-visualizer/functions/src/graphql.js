@@ -24,16 +24,16 @@ const typeDefs = gql`
 const resolvers = {
   DateTime: GraphQLDateTime,
   Query: {
-    readings: (obj, { nodeid, limit, every }) => SensorService.getReadings(nodeid, limit, every)
-  }
+    readings: (obj, { nodeid, limit, every }) => SensorService.getReadings(nodeid, limit, every),
+  },
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
 const handler = server.createHandler({
   cors: {
     origin: ALLOWED_ORIGINS,
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 module.exports = handler;

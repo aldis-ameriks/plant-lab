@@ -7,7 +7,7 @@ const getCorsHeaders = origin => {
   if (ALLOWED_ORIGINS.includes(origin)) {
     return {
       'Access-Control-Allow-Origin': origin,
-      'Access-Control-Allow-Credentials': true
+      'Access-Control-Allow-Credentials': true,
     };
   }
   return {};
@@ -32,5 +32,5 @@ const handleGetReadings = async (event, context, callback) => {
 module.exports = {
   handlePostReading,
   handleGetReadings,
-  graphql: GraphqlServer
+  graphql: GraphqlServer,
 };
