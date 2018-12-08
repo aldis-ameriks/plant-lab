@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { differenceInMinutes } from 'date-fns';
+import { differenceInMinutes, subDays } from 'date-fns';
 
 const getFormattedTimeSinceLastReading = lastReadingTime => {
   const minutes = differenceInMinutes(new Date(), lastReadingTime);
@@ -13,20 +13,19 @@ const getFormattedTimeSinceLastReading = lastReadingTime => {
   return formattedTime;
 };
 
-const DataProvider = ({ render }) => (
-  <Query
-    pollInterval={30000}
-    query={gql`
-      {
-        readings(nodeid: 3) {
-          nodeid
-          time
-          temperature
-          moisture_precentage
-        }
-      }
-    `}
-  >
+const query = gql`
+  query($nodeid: Int, $date: DateTime) {
+    readings(nodeid: $nodeid, date: $date) {
+      nodeid
+      time
+      moisture_precentage
+      temperature
+    }
+  }
+`;
+
+const DataProvider = ({ date, nodeid, render }) => (
+  <Query pollInterval={30000} variables={{ date, nodeid }} query={query}>
     {({ loading, error, data }) => {
       if (loading) {
         return null;
@@ -56,6 +55,13 @@ const DataProvider = ({ render }) => (
 
 DataProvider.propTypes = {
   render: PropTypes.func.isRequired,
+  date: PropTypes.instanceOf(Date),
+  nodeid: PropTypes.number,
+};
+
+DataProvider.defaultProps = {
+  nodeid: 3,
+  date: subDays(new Date(), 7),
 };
 
 export default DataProvider;
