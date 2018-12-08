@@ -18,7 +18,7 @@ const DataProvider = ({ render }) => (
     pollInterval={30000}
     query={gql`
       {
-        readings(nodeid: 3, limit: 2000, every: 50) {
+        readings(nodeid: 3) {
           nodeid
           time
           temperature

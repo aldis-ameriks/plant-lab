@@ -17,14 +17,14 @@ const typeDefs = gql`
   }
 
   type Query {
-    readings(nodeid: Int, limit: Int, every: Int): [Reading]
+    readings(nodeid: Int, date: DateTime): [Reading]
   }
 `;
 
 const resolvers = {
   DateTime: GraphQLDateTime,
   Query: {
-    readings: (obj, { nodeid, limit, every }) => SensorService.getReadings(nodeid, limit, every),
+    readings: (obj, { nodeid, date }) => SensorService.getReadings(nodeid, date),
   },
 };
 

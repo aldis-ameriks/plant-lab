@@ -35,15 +35,29 @@ const saveReading = async reading => {
   await client.writePoints([item]);
 };
 
-const getReadings = async (nodeid = 99, limit = 100, every = 1) => {
-  const result = await client.query(
-    `select * from plant where nodeid=${Number(nodeid)} order by time desc limit ${Number(limit)}`
+const getReadings = (nodeid = 99, date) => {
+  const time = getTimestamp(date);
+  const nanoEpoch = formatToNanoEpoch(time);
+
+  return client.query(
+    `select * from plant where nodeid=${Number(nodeid)} and time > ${nanoEpoch} order by time desc`
   );
-  if (every > 1) {
-    return result.filter((r, i) => !(i % every));
-  }
-  return result;
 };
+
+function getTimestamp(date) {
+  if (date) {
+    return new Date(date);
+  }
+
+  // 7 days ago
+  const now = new Date();
+  now.setDate(now.getDate() - 7);
+  return now;
+}
+
+function formatToNanoEpoch(date) {
+  return `${date.getTime()}000000`;
+}
 
 module.exports = {
   saveReading,
