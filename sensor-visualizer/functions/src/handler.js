@@ -13,20 +13,20 @@ const getCorsHeaders = origin => {
   return {};
 };
 
-const handlePostReading = async (event, context, callback) => {
+const handlePostReading = async event => {
   console.log(JSON.stringify(event));
   const headers = getCorsHeaders(event.headers.origin);
   const parsedBody = JSON.parse(event.body);
   await SensorService.saveReading(parsedBody);
-  callback(null, { statusCode: 200, headers, body: JSON.stringify({ message: 'success' }) });
+  return { statusCode: 200, headers, body: JSON.stringify({ message: 'success' }) };
 };
 
-const handleGetReadings = async (event, context, callback) => {
+const handleGetReadings = async event => {
   console.log(JSON.stringify(event));
   const headers = getCorsHeaders(event.headers.origin);
-  const { nodeid, limit, every } = event.queryStringParameters;
-  const result = await SensorService.getReadings(nodeid, limit, every);
-  callback(null, { statusCode: 200, headers, body: JSON.stringify(result) });
+  const { nodeid, date } = event.queryStringParameters;
+  const result = await SensorService.getReadings(nodeid, date);
+  return { statusCode: 200, headers, body: JSON.stringify(result) };
 };
 
 module.exports = {
