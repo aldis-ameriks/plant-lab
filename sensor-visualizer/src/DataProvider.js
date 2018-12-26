@@ -36,6 +36,10 @@ const DataProvider = ({ date, nodeid, render }) => (
       }
 
       const { readings } = data;
+      if (!readings || readings.length < 1) {
+        return <p>No readings for past 7 days.</p>;
+      }
+
       const moistures = readings.map(d => d.moisture_precentage).reverse();
       const temperatures = readings.map(d => d.temperature).reverse();
       const labels = readings.map(d => d.time).reverse();
