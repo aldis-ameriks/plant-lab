@@ -49,9 +49,9 @@ function getTimestamp(date) {
     return new Date(date);
   }
 
-  // 7 days ago
+  // default to fetching readings since 30 days ago
   const now = new Date();
-  now.setDate(now.getDate() - 7);
+  now.setDate(now.getDate() - 30);
   return now;
 }
 
