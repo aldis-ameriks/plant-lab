@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { differenceInMinutes, subDays } from 'date-fns';
+import { differenceInMinutes, differenceInDays, subDays } from 'date-fns';
 
 const getFormattedTimeSinceLastReading = lastReadingTime => {
   const minutes = differenceInMinutes(new Date(), lastReadingTime);
@@ -16,9 +16,12 @@ const getFormattedTimeSinceLastReading = lastReadingTime => {
 const query = gql`
   query($nodeid: Int, $date: DateTime) {
     readings(nodeid: $nodeid, date: $date) {
-      time
-      humidity
-      temperature
+      readings {
+        time
+        humidity
+        temperature
+      }
+      watered
     }
   }
 `;
@@ -34,7 +37,9 @@ const DataProvider = ({ date, nodeid, render }) => (
         return <p>Error :(</p>;
       }
 
-      const { readings } = data;
+      const {
+        readings: { readings, watered },
+      } = data;
       if (!readings || readings.length < 1) {
         return <p>No readings for past 7 days.</p>;
       }
@@ -51,7 +56,13 @@ const DataProvider = ({ date, nodeid, render }) => (
         timeSinceLastReading: getFormattedTimeSinceLastReading(lastReadingTime),
       };
 
-      return render({ moistures, temperatures, labels, lastReadings });
+      return render({
+        moistures,
+        temperatures,
+        labels,
+        lastReadings,
+        watered: differenceInDays(new Date(), new Date(watered)),
+      });
     }}
   </Query>
 );

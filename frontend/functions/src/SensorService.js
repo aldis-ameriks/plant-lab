@@ -48,25 +48,46 @@ const getReadings = async (nodeid = 99, date) => {
 
 function parseReadings(readings) {
   const tolerance = 2;
+  const reversedReadings = readings.reverse();
 
   const humidity = simplify(
-    readings.map(reading => ({
+    reversedReadings.map(reading => ({
       x: reading.moisture_precentage,
       y: new Date(reading.time).getTime(),
     })),
     tolerance
-  ).reverse();
+  );
 
   const temperature = simplify(
-    readings.map(reading => ({ x: reading.temperature, y: new Date(reading.time).getTime() })),
+    reversedReadings.map(reading => ({
+      x: reading.temperature,
+      y: new Date(reading.time).getTime(),
+    })),
     tolerance
-  ).reverse();
+  );
 
-  return humidity.map((value, i) => ({
+  const parsedReadings = humidity.map((value, i) => ({
     humidity: Math.round(value.x),
     time: new Date(value.y),
     temperature: temperature[i].x,
   }));
+
+  const watered = getLastWateredDate(reversedReadings);
+  return { readings: parsedReadings, watered };
+}
+
+function getLastWateredDate(readings) {
+  const treshold = 10;
+  let watered;
+  readings.reduce((previousValue, currentValue) => {
+    if (currentValue.moisture_precentage - previousValue.moisture_precentage > treshold) {
+      watered = currentValue.time;
+      return currentValue;
+    }
+    return currentValue;
+  }, readings[0]);
+
+  return watered;
 }
 
 function getTimestamp(date) {

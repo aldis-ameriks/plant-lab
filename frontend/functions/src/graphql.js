@@ -12,8 +12,13 @@ const typeDefs = gql`
     temperature: Int
   }
 
+  type Readings {
+    readings: [Reading]
+    watered: DateTime
+  }
+
   type Query {
-    readings(nodeid: Int, date: DateTime): [Reading]
+    readings(nodeid: Int, date: DateTime): Readings
   }
 `;
 

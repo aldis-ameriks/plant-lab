@@ -76,7 +76,7 @@ const navigateToChartScreen = (navigator, title, data, labels) =>
 
 const HomeScreen = ({ navigator }) => (
   <Container scrollEnabled={false}>
-    <Heading>Zamioculcas Zamifolia</Heading>
+    <Heading>Ficus carica</Heading>
     <PlantImage source={require('../assets/plant.jpg')} />
     <CardContainer>
       <DataProvider
@@ -84,6 +84,7 @@ const HomeScreen = ({ navigator }) => (
           moistures,
           temperatures,
           labels,
+          watered,
           lastReadings: { moisture, temperature, minutesSinceLastReading }
         }) => (
           <React.Fragment>
@@ -118,7 +119,7 @@ const HomeScreen = ({ navigator }) => (
             <Card>
               <CardIcon source={require('../assets/watercan.png')} />
               <Text>watered</Text>
-              <Text>4 days ago</Text>
+              <Text>{watered} days ago</Text>
             </Card>
           </React.Fragment>
         )}
