@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "sls offline start",
+    "deploy": "sls --profile personal deploy"
+  },
   "devDependencies": {
     "serverless": "^1.29.2",
     "serverless-offline": "^3.31.3"
