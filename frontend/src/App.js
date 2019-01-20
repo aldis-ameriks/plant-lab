@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Chart from 'components/chart/Chart';
-import NavigationBar from 'components/NavigationBar';
-import DataProvider from 'DataProvider';
+import Chart from './components/chart/Chart';
+import NavigationBar from './components/NavigationBar';
+import DataProvider from './DataProvider';
 import './App.scss';
 import ChartBox from './components/ChartBox';
 
