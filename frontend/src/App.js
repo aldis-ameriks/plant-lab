@@ -13,7 +13,7 @@ const App = () => (
       <div className="hero-body">
         <div className="container has-shadow">
           <h1 className="title">Plant monitoring</h1>
-          <h2 className="subtitle">A simple plant monitoring system to keep 'em alive.</h2>
+          <h2 className="subtitle">A simple plant monitoring system to keep &#39;em alive.</h2>
         </div>
       </div>
     </section>
