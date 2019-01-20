@@ -6,14 +6,13 @@ import { differenceInMinutes, subDays } from 'date-fns';
 import { Text } from 'react-native';
 
 const query = gql`
-    query($nodeid: Int, $date: DateTime) {
-        readings(nodeid: $nodeid, date: $date) {
-            nodeid
-            time
-            moisture_precentage
-            temperature
-        }
+  query($nodeid: Int, $date: DateTime) {
+    readings(nodeid: $nodeid, date: $date) {
+      time
+      humidity
+      temperature
     }
+  }
 `;
 
 const DataProvider = ({ date, nodeid, render }) => (
@@ -32,16 +31,16 @@ const DataProvider = ({ date, nodeid, render }) => (
         return <Text>No readings for past 7 days.</Text>;
       }
 
-      const moistures = readings.map(d => d.moisture_precentage).reverse();
-      const temperatures = readings.map(d => d.temperature).reverse();
-      const labels = readings.map(d => d.time).reverse();
-      const lastReadingTime = new Date(readings[0].time);
+      const moistures = readings.map(reading => reading.humidity);
+      const temperatures = readings.map(reading => reading.temperature);
+      const labels = readings.map(reading => reading.time);
+      const lastReadingTime = new Date(readings[readings.length - 1].time);
 
       const lastReadings = {
-        moisture: Number(readings[0].moisture_precentage).toFixed(),
+        moisture: readings[0].humidity,
         temperature: readings[0].temperature,
         time: lastReadingTime.toLocaleString(),
-        minutesSinceLastReading: differenceInMinutes(new Date(), lastReadingTime)
+        minutesSinceLastReading: differenceInMinutes(new Date(), lastReadingTime),
       };
 
       return render({ moistures, temperatures, labels, lastReadings });
@@ -52,7 +51,7 @@ const DataProvider = ({ date, nodeid, render }) => (
 DataProvider.propTypes = {
   render: PropTypes.func.isRequired,
   date: PropTypes.instanceOf(Date),
-  nodeid: PropTypes.number,
+  nodeid: PropTypes.number
 };
 
 DataProvider.defaultProps = {

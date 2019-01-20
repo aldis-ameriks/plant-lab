@@ -5,15 +5,11 @@ const SensorService = require('./SensorService');
 
 const typeDefs = gql`
   scalar DateTime
+
   type Reading {
     time: DateTime
-    m_dry: Int
-    m_wet: Int
-    moisture: Int
-    moisture_precentage: Float
-    nodeid: Int
+    humidity: Int
     temperature: Int
-    type: String
   }
 
   type Query {

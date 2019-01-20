@@ -1,4 +1,5 @@
 const Influx = require('influx');
+const simplify = require('simplify-js');
 
 const { INFLUX_HOST, INFLUX_PORT, INFLUX_USER, INFLUX_PASSWORD } = process.env;
 
@@ -35,14 +36,38 @@ const saveReading = async reading => {
   await client.writePoints([item]);
 };
 
-const getReadings = (nodeid = 99, date) => {
+const getReadings = async (nodeid = 99, date) => {
   const time = getTimestamp(date);
   const nanoEpoch = formatToNanoEpoch(time);
 
-  return client.query(
+  const readings = await client.query(
     `select * from plant where nodeid=${Number(nodeid)} and time > ${nanoEpoch} order by time desc`
   );
+  return parseReadings(readings);
 };
+
+function parseReadings(readings) {
+  const tolerance = 2;
+
+  const humidity = simplify(
+    readings.map(reading => ({
+      x: reading.moisture_precentage,
+      y: new Date(reading.time).getTime(),
+    })),
+    tolerance
+  ).reverse();
+
+  const temperature = simplify(
+    readings.map(reading => ({ x: reading.temperature, y: new Date(reading.time).getTime() })),
+    tolerance
+  ).reverse();
+
+  return humidity.map((value, i) => ({
+    humidity: Math.round(value.x),
+    time: new Date(value.y),
+    temperature: temperature[i].x,
+  }));
+}
 
 function getTimestamp(date) {
   if (date) {

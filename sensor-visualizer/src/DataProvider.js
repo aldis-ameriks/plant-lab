@@ -16,9 +16,8 @@ const getFormattedTimeSinceLastReading = lastReadingTime => {
 const query = gql`
   query($nodeid: Int, $date: DateTime) {
     readings(nodeid: $nodeid, date: $date) {
-      nodeid
       time
-      moisture_precentage
+      humidity
       temperature
     }
   }
@@ -40,13 +39,13 @@ const DataProvider = ({ date, nodeid, render }) => (
         return <p>No readings for past 7 days.</p>;
       }
 
-      const moistures = readings.map(d => d.moisture_precentage).reverse();
-      const temperatures = readings.map(d => d.temperature).reverse();
-      const labels = readings.map(d => d.time).reverse();
-      const lastReadingTime = new Date(readings[0].time);
+      const moistures = readings.map(reading => reading.humidity);
+      const temperatures = readings.map(reading => reading.temperature);
+      const labels = readings.map(reading => reading.time);
+      const lastReadingTime = new Date(readings[readings.length - 1].time);
 
       const lastReadings = {
-        moisture: Number(readings[0].moisture_precentage).toFixed(2),
+        moisture: readings[0].humidity,
         temperature: readings[0].temperature,
         time: lastReadingTime.toLocaleString(),
         timeSinceLastReading: getFormattedTimeSinceLastReading(lastReadingTime),
