@@ -1,0 +1,10 @@
+Sensor:
+[ ] - Include battery voltage in sensor readings
+
+Mobile:
+[ ] - Add Splash Screen https://docs.expo.io/versions/latest/guides/splash-screens/
+[ ] - Add AppLoading https://docs.expo.io/versions/latest/sdk/app-loading/
+[ ] - App Settings (configure sensor id, endpoints, etc)
+[ ] - Adapt for all iPhone screen sizes
+[ ] - Publish on App Store
+[ ] - Add support for multiple sensors
