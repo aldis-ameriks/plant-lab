@@ -1,27 +1,15 @@
 import React from 'react';
-import { Alert, Text, TouchableWithoutFeedback } from 'react-native';
+import { Text } from 'react-native';
 import styled from 'styled-components';
 import DataProvider from './DataProvider';
-import ChartScreen from './ChartScreen';
 
-// const Container = styled.View`
-//   flex: 1;
-//   background-color: #eeeeee;
-//   align-items: center;
-//   justify-content: center;
-//   padding-top: 50px;
-// `;
-
-const Container = styled.ScrollView.attrs(props => ({
-  contentContainerStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 70,
-    marginTop: -50,
-    backgroundColor: '#eeeeee',
-    flex: 1
-  }
-}))``;
+const Container = styled.View`
+  flex: 1;
+  background-color: #eeeeee;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+`;
 
 const Heading = styled.Text`
   font-size: 20px;
@@ -53,8 +41,8 @@ const CardIcon = styled.Image`
   height: 40px;
   margin-bottom: 5px;
   ${props =>
-    props.smaller &&
-    `
+  props.smaller &&
+  `
     width: 35px;
     height: 35px;
   `};
@@ -66,46 +54,30 @@ const PlantImage = styled.Image`
   margin-bottom: 20px;
 `;
 
-const navigateToChartScreen = (navigator, title, data, labels) =>
-  navigator.push({
-    component: ChartScreen,
-    title,
-    navigationBarHidden: false,
-    passProps: { data, labels }
-  });
-
-const HomeScreen = ({ navigator }) => (
-  <Container scrollEnabled={false}>
+const HomeScreen = () => (
+  <Container>
     <Heading>Ficus carica</Heading>
     <PlantImage source={require('../assets/plant.jpg')} />
     <CardContainer>
       <DataProvider
         render={({
-          moistures,
-          temperatures,
-          labels,
-          watered,
-          lastReadings: { moisture, temperature, minutesSinceLastReading }
-        }) => (
+                   moistures,
+                   temperatures,
+                   labels,
+                   watered,
+                   lastReadings: { moisture, temperature, minutesSinceLastReading },
+                 }) => (
           <React.Fragment>
-            <TouchableWithoutFeedback
-              onPress={() => navigateToChartScreen(navigator, 'Humidity', moistures, labels)}
-            >
-              <Card>
-                <CardIcon source={require('../assets/water-droplet.png')} />
-                <Text>{moisture}%</Text>
-                <Text>humidity</Text>
-              </Card>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              onPress={() => navigateToChartScreen(navigator, 'Temperature', temperatures, labels)}
-            >
-              <Card>
-                <CardIcon source={require('../assets/temperature.png')} />
-                <Text>{temperature}</Text>
-                <Text>temperature</Text>
-              </Card>
-            </TouchableWithoutFeedback>
+            <Card>
+              <CardIcon source={require('../assets/water-droplet.png')} />
+              <Text>{moisture}%</Text>
+              <Text>humidity</Text>
+            </Card>
+            <Card>
+              <CardIcon source={require('../assets/temperature.png')} />
+              <Text>{temperature}</Text>
+              <Text>temperature</Text>
+            </Card>
             <Card>
               <CardIcon source={require('../assets/sunlight.png')} />
               <Text>low</Text>
