@@ -2,9 +2,10 @@ Sensor:
 [ ] - Include battery voltage in sensor readings
 
 Mobile:
+[ ] - Find better icons https://www.flaticon.com/home
 [ ] - Add Splash Screen https://docs.expo.io/versions/latest/guides/splash-screens/
 [ ] - Add AppLoading https://docs.expo.io/versions/latest/sdk/app-loading/
 [ ] - App Settings (configure sensor id, endpoints, etc)
 [ ] - Adapt for all iPhone screen sizes
-[ ] - Publish on App Store
+[ ] - Publish on App Store https://docs.expo.io/versions/latest/distribution/app-stores/
 [ ] - Add support for multiple sensors
