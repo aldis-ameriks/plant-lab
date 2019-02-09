@@ -1,18 +1,24 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Dimensions } from 'react-native';
 import styled from 'styled-components';
 import DataProvider from './DataProvider';
+
+const { width, height } = Dimensions.get('window');
+const paddingTop = height / 16;
+const cardSize = width / 4 + 5;
+const iconSize = width / 10;
+const plantImageSize = height / 2.3;
 
 const Container = styled.View`
   flex: 1;
   background-color: #eeeeee;
   align-items: center;
   justify-content: center;
-  padding-top: 50px;
+  padding-top: ${paddingTop}px;
 `;
 
 const Heading = styled.Text`
-  font-size: 20px;
+  font-size: ${width/18.75}px;
   font-weight: bold;
   margin-bottom: 15px;
 `;
@@ -29,29 +35,33 @@ const Card = styled.View`
   border-radius: 15px;
   align-items: center;
   justify-content: center;
-  height: 100px;
-  width: 100px;
+  height: ${cardSize}px;
+  width: ${cardSize}px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   margin: 10px;
 `;
 
 const CardIcon = styled.Image`
   opacity: 0.8;
-  width: 40px;
-  height: 40px;
+  width: ${iconSize}px;
+  height: ${iconSize}px;
   margin-bottom: 5px;
   ${props =>
   props.smaller &&
   `
-    width: 35px;
-    height: 35px;
+    width: ${iconSize -5}px;
+    height: ${iconSize -5}px;
   `};
 `;
 
 const PlantImage = styled.Image`
-  width: 400px;
-  height: 400px;
+  width: ${plantImageSize}px;
+  height: ${plantImageSize}px;
   margin-bottom: 20px;
+`;
+
+const Text = styled.Text`
+  font-size: ${width/26.78}px;
 `;
 
 const HomeScreen = () => (
