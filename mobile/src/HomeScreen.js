@@ -64,7 +64,7 @@ const HomeScreen = () => (
                    moistures,
                    temperatures,
                    labels,
-                   watered,
+                   lastWatered,
                    lastReadings: { moisture, temperature, minutesSinceLastReading },
                  }) => (
           <React.Fragment>
@@ -91,7 +91,7 @@ const HomeScreen = () => (
             <Card>
               <CardIcon source={require('../assets/watercan.png')} />
               <Text>watered</Text>
-              <Text>{watered} days ago</Text>
+              <Text>{lastWatered ? `${lastWatered} days ago` : 'long time ago'}</Text>
             </Card>
           </React.Fragment>
         )}

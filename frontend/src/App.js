@@ -25,7 +25,7 @@ const App = () => (
             moistures,
             temperatures,
             labels,
-            watered,
+            lastWatered,
             lastReadings: { moisture, temperature, time, timeSinceLastReading },
           }) => (
             <>
@@ -46,7 +46,7 @@ const App = () => (
                   <div className="tile is-parent">
                     <div className="tile is-child notification is-info">
                       <div>Last watered</div>
-                      <div>{watered} days ago</div>
+                      <div>{lastWatered ? `${lastWatered} days ago` : 'Long time ago'}</div>
                     </div>
                   </div>
                   <div className="tile is-parent">

@@ -48,12 +48,14 @@ const DataProvider = ({ date, nodeid, render }) => (
         minutesSinceLastReading: differenceInMinutes(new Date(), lastReadingTime)
       };
 
+      const lastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
+
       return render({
         moistures,
         temperatures,
         labels,
         lastReadings,
-        watered: differenceInDays(new Date(), new Date(watered))
+        lastWatered
       });
     }}
   </Query>
