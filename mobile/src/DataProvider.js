@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { differenceInMinutes, subDays, differenceInDays } from 'date-fns';
 import { Text } from 'react-native';
+import { AppLoading } from 'expo';
 
 const query = gql`
   query($nodeid: Int, $date: DateTime) {
@@ -22,7 +23,7 @@ const DataProvider = ({ date, nodeid, render }) => (
   <Query pollInterval={30000} variables={{ date, nodeid }} query={query}>
     {({ loading, error, data }) => {
       if (loading) {
-        return <Text>Loading</Text>;
+        return <AppLoading onError={console.warn} />;
       }
 
       if (error) {
