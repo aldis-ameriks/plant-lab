@@ -86,7 +86,7 @@ const HomeScreen = () => (
             <Card>
               <CardIcon source={require('../assets/clock.png')} smaller />
               <Text>last reading</Text>
-              <Text>{minutesSinceLastReading} min. ago</Text>
+              <Text>{minutesSinceLastReading} min ago</Text>
             </Card>
             <Card>
               <CardIcon source={require('../assets/watercan.png')} />
