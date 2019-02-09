@@ -77,7 +77,7 @@ DataProvider.propTypes = {
 
 DataProvider.defaultProps = {
   nodeid: 3,
-  date: subDays(new Date(), 30),
+  date: subDays(new Date(), 90),
 };
 
 export default DataProvider;
