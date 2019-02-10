@@ -4,15 +4,6 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { differenceInMinutes, differenceInDays, subDays } from 'date-fns';
 
-const getFormattedTimeSinceLastReading = lastReadingTime => {
-  const minutes = differenceInMinutes(new Date(), lastReadingTime);
-  const formattedTime = `${minutes} minutes ago`;
-  if (minutes > 60) {
-    return `${formattedTime} 😰`;
-  }
-  return formattedTime;
-};
-
 const query = gql`
   query($nodeid: Int, $date: DateTime) {
     readings(nodeid: $nodeid, date: $date) {
@@ -34,35 +25,29 @@ const DataProvider = ({ date, nodeid, render }) => (
       }
 
       if (error) {
-        return <p>Error :(</p>;
+        return <p>Error loading sensor data.</p>;
       }
 
       const {
         readings: { readings, watered },
       } = data;
       if (!readings || readings.length < 1) {
-        return <p>No readings for past 7 days.</p>;
+        return <p>No readings for a long time. Check your sensors.</p>;
       }
 
-      const moistures = readings.map(reading => reading.humidity);
+      const moistures = readings.map(reading => reading.moisture);
       const temperatures = readings.map(reading => reading.temperature);
       const labels = readings.map(reading => reading.time);
-      const lastReadingTime = new Date(readings[readings.length - 1].time);
-
-      const lastReadings = {
-        moisture: readings[0].humidity,
-        temperature: readings[0].temperature,
-        time: lastReadingTime.toLocaleString(),
-        timeSinceLastReading: getFormattedTimeSinceLastReading(lastReadingTime),
-      };
-
+      const currentReading = readings[readings.length - 1];
       const lastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
+      const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
 
       return render({
         moistures,
         temperatures,
         labels,
-        lastReadings,
+        currentReading,
+        minutesSinceLastReading,
         lastWatered,
       });
     }}

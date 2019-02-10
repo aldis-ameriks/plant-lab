@@ -75,7 +75,8 @@ const HomeScreen = () => (
                    temperatures,
                    labels,
                    lastWatered,
-                   lastReadings: { moisture, temperature, minutesSinceLastReading },
+                   minutesSinceLastReading,
+                   currentReading: { moisture, temperature, time},
                  }) => (
           <React.Fragment>
             <Card>

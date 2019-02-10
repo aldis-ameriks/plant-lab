@@ -26,7 +26,8 @@ const App = () => (
             temperatures,
             labels,
             lastWatered,
-            lastReadings: { moisture, temperature, time, timeSinceLastReading },
+            minutesSinceLastReading,
+            currentReading: { moisture, temperature, time },
           }) => (
             <>
               <div className="tile is-ancestor has-text-centered">
@@ -52,8 +53,8 @@ const App = () => (
                   <div className="tile is-parent">
                     <div className="tile is-child notification is-info">
                       <div>Last reading</div>
-                      <div>{time}</div>
-                      <div>({timeSinceLastReading})</div>
+                      <div>{new Date(time).toLocaleString()}</div>
+                      <div>({minutesSinceLastReading} minutes ago)</div>
                     </div>
                   </div>
                 </div>

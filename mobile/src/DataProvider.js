@@ -27,36 +27,30 @@ const DataProvider = ({ date, nodeid, render }) => (
       }
 
       if (error) {
-        return <Text>Error :(</Text>;
+        return <Text>Error loading sensor data.</Text>;
       }
 
       const {
         readings: { readings, watered }
       } = data;
       if (!readings || readings.length < 1) {
-        return <Text>No readings for past 7 days.</Text>;
+        return <Text>No readings for a long time. Check your sensors.</Text>;
       }
 
-      const moistures = readings.map(reading => reading.humidity);
+      const moistures = readings.map(reading => reading.moisture);
       const temperatures = readings.map(reading => reading.temperature);
       const labels = readings.map(reading => reading.time);
-      const lastReadingTime = new Date(readings[readings.length - 1].time);
-
-      const lastReadings = {
-        moisture: readings[0].humidity,
-        temperature: readings[0].temperature,
-        time: lastReadingTime.toLocaleString(),
-        minutesSinceLastReading: differenceInMinutes(new Date(), lastReadingTime)
-      };
-
+      const currentReading = readings[readings.length - 1];
       const lastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
+      const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
 
       return render({
         moistures,
         temperatures,
         labels,
-        lastReadings,
-        lastWatered
+        currentReading,
+        minutesSinceLastReading,
+        lastWatered,
       });
     }}
   </Query>
