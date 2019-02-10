@@ -18,7 +18,7 @@ const Container = styled.View`
 `;
 
 const Heading = styled.Text`
-  font-size: ${width/18.75}px;
+  font-size: ${width / 18.75}px;
   font-weight: bold;
   margin-bottom: 15px;
 `;
@@ -47,10 +47,10 @@ const CardIcon = styled.Image`
   height: ${iconSize}px;
   margin-bottom: 5px;
   ${props =>
-  props.smaller &&
-  `
-    width: ${iconSize -5}px;
-    height: ${iconSize -5}px;
+    props.smaller &&
+    `
+    width: ${iconSize - 5}px;
+    height: ${iconSize - 5}px;
   `};
 `;
 
@@ -61,7 +61,7 @@ const PlantImage = styled.Image`
 `;
 
 const Text = styled.Text`
-  font-size: ${width/26.78}px;
+  font-size: ${width / 26.78}px;
 `;
 
 const HomeScreen = () => (
@@ -71,13 +71,10 @@ const HomeScreen = () => (
     <CardContainer>
       <DataProvider
         render={({
-                   moistures,
-                   temperatures,
-                   labels,
-                   lastWatered,
-                   minutesSinceLastReading,
-                   currentReading: { moisture, temperature, time},
-                 }) => (
+          lastWatered,
+          minutesSinceLastReading,
+          currentReading: { moisture, temperature },
+        }) => (
           <React.Fragment>
             <Card>
               <CardIcon source={require('../assets/water-droplet.png')} />

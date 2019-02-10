@@ -31,7 +31,7 @@ const DataProvider = ({ date, nodeid, render }) => (
       }
 
       const {
-        readings: { readings, watered }
+        readings: { readings, watered },
       } = data;
       if (!readings || readings.length < 1) {
         return <Text>No readings for a long time. Check your sensors.</Text>;
@@ -59,12 +59,12 @@ const DataProvider = ({ date, nodeid, render }) => (
 DataProvider.propTypes = {
   render: PropTypes.func.isRequired,
   date: PropTypes.instanceOf(Date),
-  nodeid: PropTypes.number
+  nodeid: PropTypes.number,
 };
 
 DataProvider.defaultProps = {
   nodeid: 3,
-  date: subDays(new Date(), 90)
+  date: subDays(new Date(), 90),
 };
 
 export default DataProvider;
