@@ -50,7 +50,7 @@ function parseReadings(readings) {
   const tolerance = 2;
   const reversedReadings = readings.reverse();
 
-  const humidity = simplify(
+  const moisture = simplify(
     reversedReadings.map(reading => ({
       x: reading.moisture_precentage,
       y: new Date(reading.time).getTime(),
@@ -66,8 +66,8 @@ function parseReadings(readings) {
     tolerance
   );
 
-  const parsedReadings = humidity.map((value, i) => ({
-    humidity: Math.round(value.x),
+  const parsedReadings = moisture.map((value, i) => ({
+    moisture: Math.round(value.x),
     time: new Date(value.y),
     temperature: temperature[i].x,
   }));
