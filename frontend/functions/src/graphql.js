@@ -8,7 +8,7 @@ const typeDefs = gql`
 
   type Reading {
     time: DateTime
-    humidity: Int
+    moisture: Int
     temperature: Int
   }
 

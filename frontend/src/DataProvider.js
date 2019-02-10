@@ -9,7 +9,7 @@ const query = gql`
     readings(nodeid: $nodeid, date: $date) {
       readings {
         time
-        humidity
+        moisture
         temperature
       }
       watered
