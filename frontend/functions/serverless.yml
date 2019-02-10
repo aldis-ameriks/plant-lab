@@ -3,7 +3,7 @@ service: sensors
 provider:
   name: aws
   runtime: nodejs8.10
-  profile: serverless
+  profile: personal
   region: eu-west-1
   stage: dev
   memorySize: 128
