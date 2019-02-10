@@ -1,11 +1,16 @@
 Sensor:
 [ ] - Include battery voltage in sensor readings
+https://jeelabs.org/2013/05/16/measuring-the-battery-without-draining-it/
 
 Mobile:
-[ ] - Find better icons https://www.flaticon.com/home
-[ ] - Add Splash Screen https://docs.expo.io/versions/latest/guides/splash-screens/
-[ ] - Add AppLoading https://docs.expo.io/versions/latest/sdk/app-loading/
+[x] - Add Splash Screen https://docs.expo.io/versions/latest/guides/splash-screens/
+[x] - Add AppLoading https://docs.expo.io/versions/latest/sdk/app-loading/
+[x] - Adapt for all iPhone screen sizes
 [ ] - App Settings (configure sensor id, endpoints, etc)
-[ ] - Adapt for all iPhone screen sizes
 [ ] - Publish on App Store https://docs.expo.io/versions/latest/distribution/app-stores/
 [ ] - Add support for multiple sensors
+
+[ ] - Find better icons https://www.flaticon.com/home
+https://www.flaticon.com/authors/surang
+https://www.flaticon.com/packs/weather-78
+https://www.flaticon.com/packs/weather-linear
