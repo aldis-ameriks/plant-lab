@@ -79,7 +79,7 @@ const HomeScreen = () => (
             <Card>
               <CardIcon source={require('../assets/water-droplet.png')} />
               <Text>{moisture}%</Text>
-              <Text>humidity</Text>
+              <Text>moisture</Text>
             </Card>
             <Card>
               <CardIcon source={require('../assets/temperature.png')} />
