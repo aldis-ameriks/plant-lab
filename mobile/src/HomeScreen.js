@@ -71,7 +71,7 @@ const HomeScreen = () => (
     <CardContainer>
       <DataProvider
         render={({
-          lastWatered,
+          daysSinceLastWatered,
           minutesSinceLastReading,
           currentReading: { moisture, temperature },
         }) => (
@@ -99,7 +99,9 @@ const HomeScreen = () => (
             <Card>
               <CardIcon source={require('../assets/watercan.png')} />
               <Text>watered</Text>
-              <Text>{lastWatered ? `${lastWatered} days ago` : 'long time ago'}</Text>
+              {daysSinceLastWatered === 0 && <Text>today</Text>}
+              {daysSinceLastWatered > 0 && <Text>{daysSinceLastWatered} days ago</Text>}
+              {!daysSinceLastWatered && daysSinceLastWatered !== 0 && <Text>long time ago</Text>}
             </Card>
           </React.Fragment>
         )}

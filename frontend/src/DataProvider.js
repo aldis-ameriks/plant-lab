@@ -39,7 +39,7 @@ const DataProvider = ({ date, nodeid, render }) => (
       const temperatures = readings.map(reading => reading.temperature);
       const labels = readings.map(reading => reading.time);
       const currentReading = readings[readings.length - 1];
-      const lastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
+      const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
       const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
 
       return render({
@@ -48,7 +48,7 @@ const DataProvider = ({ date, nodeid, render }) => (
         labels,
         currentReading,
         minutesSinceLastReading,
-        lastWatered,
+        daysSinceLastWatered,
       });
     }}
   </Query>
