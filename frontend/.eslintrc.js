@@ -9,23 +9,24 @@ module.exports = {
       {
         components: ['Link'],
         specialLink: ['to'],
-        aspects: ['noHref', 'invalidHref', 'preferButton']
-      }
+        aspects: ['noHref', 'invalidHref', 'preferButton'],
+      },
     ],
     'prettier/prettier': ['error', { singleQuote: true, printWidth: 100, 'trailingComma': 'es5' }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'max-len': ['error', { code: 100 }],
     'react/destructuring-assignment': ['warn', 'always', { 'ignoreClassFields': true }],
-    'no-use-before-define': ['error', { 'functions': false, 'classes': false }]
+    'no-use-before-define': ['error', { 'functions': false, 'classes': false }],
   },
   globals: {
-    document: true
+    document: true,
+    window: true,
   },
   'settings': {
     'import/resolver': {
       'node': {
-        'paths': ['src']
-      }
+        'paths': ['src'],
+      },
     },
   },
 };
