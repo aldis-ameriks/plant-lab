@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
 import App from 'App';
+import React from 'react';
+import { ApolloProvider } from 'react-apollo';
+import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 
 if (process.env.REACT_APP_GA_TRACKING_ID) {

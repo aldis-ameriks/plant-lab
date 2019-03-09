@@ -1,10 +1,10 @@
 import React from 'react';
+import './App.scss';
 
 import Chart from './components/chart/Chart';
+import ChartBox from './components/ChartBox';
 import NavigationBar from './components/NavigationBar';
 import DataProvider from './DataProvider';
-import './App.scss';
-import ChartBox from './components/ChartBox';
 
 const App = () => (
   <div>
@@ -56,15 +56,14 @@ const App = () => (
                         </div>
                       )}
                       {daysSinceLastWatered > 0 && <div>{daysSinceLastWatered} days ago</div>}
-                      {!daysSinceLastWatered &&
-                        daysSinceLastWatered !== 0 && (
-                          <div>
-                            Long time ago&nbsp;
-                            <span role="img" aria-label="status">
-                              😰
-                            </span>
-                          </div>
-                        )}
+                      {!daysSinceLastWatered && daysSinceLastWatered !== 0 && (
+                        <div>
+                          Long time ago&nbsp;
+                          <span role="img" aria-label="status">
+                            😰
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="tile is-parent">

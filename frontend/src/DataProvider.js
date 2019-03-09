@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { differenceInDays, differenceInMinutes, subDays } from 'date-fns';
 import gql from 'graphql-tag';
-import { differenceInMinutes, differenceInDays, subDays } from 'date-fns';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Query } from 'react-apollo';
 
 const query = gql`
   query($nodeid: Int, $date: DateTime) {
