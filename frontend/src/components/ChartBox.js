@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import posed from 'react-pose';
 import styled from 'styled-components';
 
@@ -57,35 +57,19 @@ ZoomIcon.propTypes = {
   isZoomed: PropTypes.bool.isRequired,
 };
 
-class ChartBox extends React.Component {
-  state = { isZoomed: false };
-
-  toggleZoom = () => (this.state.isZoomed ? this.zoomOut() : this.zoomIn());
-
-  zoomOut = () => {
-    this.setState({ isZoomed: false });
-  };
-
-  zoomIn() {
-    this.setState({ isZoomed: true });
-  }
-
-  render() {
-    const { isZoomed } = this.state;
-    const { children } = this.props;
-    const pose = isZoomed ? 'zoomedIn' : 'zoomedOut';
-
-    return (
-      <div>
-        <Overlay pose={pose} className="overlay" style={{ zIndex: 8999 }} />
-        <ChartBoxStyled className="box" pose={isZoomed ? 'zoomedIn' : 'zoomedOut'}>
-          <ZoomIcon toggleZoom={this.toggleZoom} isZoomed={isZoomed} />
-          {children}
-        </ChartBoxStyled>
-      </div>
-    );
-  }
-}
+const ChartBox = ({ children }) => {
+  const [isZoomed, setZoomed] = useState(false);
+  const pose = isZoomed ? 'zoomedIn' : 'zoomedOut';
+  return (
+    <div>
+      <Overlay pose={pose} className="overlay" style={{ zIndex: 8999 }} />
+      <ChartBoxStyled className="box" pose={isZoomed ? 'zoomedIn' : 'zoomedOut'}>
+        <ZoomIcon toggleZoom={() => setZoomed(!isZoomed)} isZoomed={isZoomed} />
+        {children}
+      </ChartBoxStyled>
+    </div>
+  );
+};
 
 ChartBox.propTypes = {
   children: PropTypes.node.isRequired,
