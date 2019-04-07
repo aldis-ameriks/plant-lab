@@ -8,12 +8,12 @@
     "deploy": "sls --profile personal deploy"
   },
   "devDependencies": {
-    "serverless": "^1.29.2",
-    "serverless-offline": "^3.31.3"
+    "serverless": "^1.40.0",
+    "serverless-offline": "^4.9.4"
   },
   "dependencies": {
-    "apollo-server-lambda": "^2.1.0",
-    "graphql": "^14.0.2",
+    "apollo-server-lambda": "^2.4.8",
+    "graphql": "^14.2.1",
     "graphql-iso-date": "^3.6.1",
     "influx": "^5.0.7",
     "simplify-js": "^1.2.3"
