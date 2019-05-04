@@ -6,7 +6,7 @@ influxdb==5.2.1
 iso8601==0.1.12
 Pillow==5.4.1
 pyserial==3.4
-python-dateutil==2.7.5
+python-dateutil==2.8.0
 pytz==2018.9
 pyyaml>=4.2b1
 requests==2.21.0
