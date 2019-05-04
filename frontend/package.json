@@ -37,7 +37,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "node-sass": "^4.11.0",
-    "prettier": "^1.16.4"
+    "prettier": "^1.17.0"
   },
   "browserslist": [
     ">0.2%",
