@@ -2,7 +2,7 @@ certifi==2018.11.29
 chardet==3.0.4
 future==0.17.1
 idna==2.8
-influxdb==5.2.1
+influxdb==5.2.2
 iso8601==0.1.12
 Pillow==5.4.1
 pyserial==3.4
