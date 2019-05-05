@@ -2803,10 +2803,10 @@ serverless-offline@^4.9.4:
     trim-newlines "^2.0.0"
     velocityjs "^1.1.3"
 
-serverless@^1.40.0:
-  version "1.40.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-1.40.0.tgz#e1af270b4d83f6efb4116faf8166b0dd62c42d4c"
-  integrity sha512-guyc9qgcEPzLsZ4bdw/xAU+N33e1MuRQfOXpDiwjrAr4/lGFMkOItJcLfT5FVJd/bwtbLWg8uChwMzgUNjmsKg==
+serverless@^1.41.1:
+  version "1.41.1"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-1.41.1.tgz#c8278058eaa3a3c154b3a21fcc6536c165377a02"
+  integrity sha512-mVB8TSOWmLPvG07twtqPTZ9OToNDATZPY+6XIr63/kjbC9mU+ghrhVudLJRRjew0YewPZh+g1KXy5OyfnWZ5Rg==
   dependencies:
     archiver "^1.1.0"
     async "^1.5.2"
