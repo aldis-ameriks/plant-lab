@@ -9,6 +9,6 @@ pyserial==3.4
 python-dateutil==2.8.0
 pytz==2018.9
 pyyaml>=4.2b1
-requests==2.21.0
+requests==2.22.0
 six==1.12.0
 urllib3==1.25.2
