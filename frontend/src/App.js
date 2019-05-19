@@ -24,6 +24,7 @@ const App = () => (
           render={({
             moistures,
             temperatures,
+            temperatureTrend,
             labels,
             daysSinceLastWatered,
             minutesSinceLastReading,
@@ -79,12 +80,34 @@ const App = () => (
               <div className="columns is-desktop">
                 <div className="column is-half-desktop">
                   <ChartBox>
-                    <Chart data={moistures} labels={labels} label="Moisture" />
+                    <Chart
+                      data={[
+                        {
+                          data: moistures,
+                          label: 'Moisture',
+                        },
+                      ]}
+                      labels={labels}
+                    />
                   </ChartBox>
                 </div>
                 <div className="column is-half-desktop">
                   <ChartBox>
-                    <Chart data={temperatures} labels={labels} label="Temperature" />
+                    <Chart
+                      data={[
+                        { data: temperatures, label: 'Temperature' },
+                        {
+                          data: temperatureTrend,
+                          borderColor: 'red',
+                          backgroundColor: 'rgba(255, 0, 0, 0.4)',
+                          pointBorderColor: 'red',
+                          pointHoverBackgroundColor: 'red',
+                          pointHoverBorderColor: 'red',
+                          label: 'Temperature trend',
+                        },
+                      ]}
+                      labels={labels}
+                    />
                   </ChartBox>
                 </div>
               </div>

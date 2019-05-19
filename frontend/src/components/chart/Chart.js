@@ -34,14 +34,14 @@ const options = {
   },
 };
 
-const Chart = ({ labels, data, label }) => (
-  <Line data={{ labels, datasets: [{ label, ...chartConfig, data }] }} options={options} />
-);
+const Chart = ({ labels, data }) => {
+  const datasets = data.map(dataEntry => ({ ...chartConfig, ...dataEntry }));
+  return <Line data={{ labels, datasets }} options={options} />;
+};
 
 Chart.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
   labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  label: PropTypes.string.isRequired,
 };
 
 export default Chart;

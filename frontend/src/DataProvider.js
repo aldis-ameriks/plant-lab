@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Query } from 'react-apollo';
+import { ema } from 'moving-averages';
 
 const query = gql`
   query($nodeid: Int, $date: DateTime) {
@@ -41,10 +42,12 @@ const DataProvider = ({ date, nodeid, render }) => (
       const currentReading = readings[readings.length - 1];
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
       const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
+      const temperatureTrend = ema(temperatures, temperatures.length / 2);
 
       return render({
         moistures,
         temperatures,
+        temperatureTrend,
         labels,
         currentReading,
         minutesSinceLastReading,
@@ -62,7 +65,7 @@ DataProvider.propTypes = {
 
 DataProvider.defaultProps = {
   nodeid: 3,
-  date: subDays(new Date(), 90),
+  date: subDays(new Date(), 120),
 };
 
 export default DataProvider;
