@@ -7,7 +7,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.28",
+    "apollo-boost": "^0.3.1",
     "babel-plugin-module-resolver": "^3.1.2",
     "date-fns": "^1.30.1",
     "expo": "^32.0.6",
