@@ -28,7 +28,7 @@
     "deploy": "cross-env NODE_PATH=src react-scripts build && aws --profile personal s3 sync build/ s3://cleverhome"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.11.0",
+    "babel-plugin-import": "^1.11.2",
     "cross-env": "^5.2.0",
     "eslint": "5.12.0",
     "eslint-config-airbnb": "^17.1.0",
