@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import Info from './components/Info';
+import InfoToggle from './components/InfoToggle';
 import LineChart from './components/LineChart';
 import RadialChart from './components/RadialChart';
 import DataProvider from './DataProvider';
@@ -12,36 +14,36 @@ const CardWrapper = styled.div`
 `;
 
 const Card = styled.div`
+  position: relative;
   box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.25);
   background-color: #ededed;
-  max-width: 600px;
+  width: 600px;
   border-radius: 30px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   transition: all 500ms ease;
 
-  > div {
-    transition: all 500ms ease;
-    width: 300px;
-  }
-
   @media (min-width: 500px) {
     padding: 1rem;
-
-    > div {
-      width: 400px;
-    }
-  }
-
-  @media (min-width: 700px) {
-    > div {
-      width: 600px;
-    }
   }
 
   @media (min-width: 1300px) {
-    max-width: 1200px;
+    width: 1200px;
+    height: 880px;
+  }
+`;
+
+const CardSection = styled.div`
+  transition: all 500ms ease;
+  width: 300px;
+
+  @media (min-width: 500px) {
+    width: 400px;
+  }
+
+  @media (min-width: 700px) {
+    width: 600px;
   }
 `;
 
@@ -83,63 +85,71 @@ const Reading = styled.div`
   }
 `;
 
-const App = () => (
-  <CardWrapper>
-    <DataProvider
-      render={({
-        moistures,
-        temperatures,
-        moistureTrend,
-        temperatureTrend,
-        labels,
-        daysSinceLastWatered,
-        minutesSinceLastReading,
-        currentReading: { moisture, temperature, time },
-      }) => (
-        <Card>
-          <div>
-            <CardTitle>Rubber tree</CardTitle>
-            <ImageWrapper>
-              <img src={plantImg} alt="" width="70%" />
-            </ImageWrapper>
+const App = () => {
+  const [isInfoVisible, setInfoVisibility] = useState(false);
 
-            <RowWrapper>
-              <GaugeWrapper>
-                <RadialChart label="moisture" value={moisture} type="percentage" />
-              </GaugeWrapper>
-              <GaugeWrapper>
-                <RadialChart label="temp." value={temperature} type="temperature" />
-              </GaugeWrapper>
-            </RowWrapper>
+  return (
+    <CardWrapper>
+      <DataProvider
+        render={({
+          moistures,
+          temperatures,
+          moistureTrend,
+          temperatureTrend,
+          labels,
+          daysSinceLastWatered,
+          minutesSinceLastReading,
+          currentReading: { moisture, temperature, time },
+        }) => (
+          <Card>
+            <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
+            <Info isVisible={isInfoVisible} />
+            <CardSection>
+              <CardTitle>Rubber tree</CardTitle>
+              <ImageWrapper>
+                <img src={plantImg} alt="" width="70%" />
+              </ImageWrapper>
 
-            <RowWrapper>
-              <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
-              <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
-            </RowWrapper>
-          </div>
+              <RowWrapper>
+                <GaugeWrapper>
+                  <RadialChart label="moisture" value={moisture} type="percentage" />
+                </GaugeWrapper>
+                <GaugeWrapper>
+                  <RadialChart label="temp." value={temperature} type="temperature" />
+                </GaugeWrapper>
+              </RowWrapper>
 
-          <LineChartsWrapper>
-            <LineChart
-              categories={labels}
-              series={[
-                { name: 'Moisture', data: moistures },
-                { name: 'Moisture moving average', data: moistureTrend },
-              ]}
-              title="Moisture"
-            />
-            <LineChart
-              categories={labels}
-              series={[
-                { name: 'Temperature', data: temperatures },
-                { name: 'Temperature moving average', data: temperatureTrend },
-              ]}
-              title="Temperature"
-            />
-          </LineChartsWrapper>
-        </Card>
-      )}
-    />
-  </CardWrapper>
-);
+              <RowWrapper>
+                <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
+                <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
+              </RowWrapper>
+            </CardSection>
+
+            <CardSection>
+              <LineChartsWrapper>
+                <LineChart
+                  categories={labels}
+                  series={[
+                    { name: 'Moisture', data: moistures },
+                    { name: 'Moisture moving average', data: moistureTrend },
+                  ]}
+                  title="Moisture"
+                />
+                <LineChart
+                  categories={labels}
+                  series={[
+                    { name: 'Temperature', data: temperatures },
+                    { name: 'Temperature moving average', data: temperatureTrend },
+                  ]}
+                  title="Temperature"
+                />
+              </LineChartsWrapper>
+            </CardSection>
+          </Card>
+        )}
+      />
+    </CardWrapper>
+  );
+};
 
 export default App;
