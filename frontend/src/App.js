@@ -23,9 +23,10 @@ const Card = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   transition: all 500ms ease;
+  padding-top: 1em;
 
   @media (min-width: 500px) {
-    padding: 1rem;
+    padding: 1em;
   }
 
   @media (min-width: 1300px) {
@@ -86,7 +87,7 @@ const Reading = styled.div`
 `;
 
 const App = () => {
-  const [isInfoVisible, setInfoVisibility] = useState(false);
+  const [isInfoVisible, setInfoVisibility] = useState(true);
 
   return (
     <CardWrapper>

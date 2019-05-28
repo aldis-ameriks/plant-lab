@@ -3,12 +3,13 @@ import styled from 'styled-components';
 export const ToggleStyled = styled.button`
   position: absolute;
   cursor: pointer;
-  right: 25px;
+  top: 5px;
+  right: 10px;
   z-index: 3000;
   ${props => props.isVisible && 'color: white'};
   background-color: transparent;
   padding: 0.5em;
-  font-size: 1em;
+  font-size: 1.5em;
   border: 3px solid transparent;
 
   :focus {
