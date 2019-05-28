@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "sls offline start",
+    "start": "sls offline start --port 4000",
     "deploy": "sls --profile personal deploy"
   },
   "devDependencies": {
