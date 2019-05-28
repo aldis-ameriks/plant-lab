@@ -88,7 +88,7 @@ const Reading = styled.div`
 `;
 
 const App = () => {
-  const [isInfoVisible, setInfoVisibility] = useState(true);
+  const [isInfoVisible, setInfoVisibility] = useState(false);
 
   return (
     <CardWrapper>
