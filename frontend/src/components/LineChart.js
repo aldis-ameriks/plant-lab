@@ -58,6 +58,7 @@ class LineChart extends React.Component {
         },
         legend: {
           show: true,
+          offsetY: -10,
           labels: {
             colors: ['#ffffff', '#000000'],
           },
