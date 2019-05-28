@@ -54,6 +54,7 @@ class LineChart extends React.Component {
         title: {
           text: this.props.title,
           align: 'middle',
+          offsetX: 14,
         },
         legend: {
           show: true,
