@@ -79,6 +79,7 @@ const Reading = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   text-align: center;
+  width: 210px;
   //box-shadow: 2px 3px 10px 0px rgba(0, 0, 0, 0.2);
 
   &:not(:last-child) {
