@@ -21,8 +21,8 @@
 uint8_t KEY[] = "!Encrypted123%$£";
 RFM12B radio;
 
-int MOISTURE_DRY = 210;
-int MOISTURE_WET = 730;
+int MOISTURE_DRY = 355;
+int MOISTURE_WET = 650;
 I2CSoilMoistureSensor sensor;
 
 void setup() {
