@@ -12,7 +12,10 @@ const Info = ({ isVisible }) => (
           👋
         </span>
       </p>
-      <p>This is a dashboard for a plant monitoring system that I built.</p>
+      <p>
+        This is a dashboard for a plant monitoring system that I built to try to keep my precious
+        rubber tree alive.
+      </p>
       <p>
         The code is available{' '}
         <Link
