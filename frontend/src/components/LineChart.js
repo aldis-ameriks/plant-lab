@@ -7,6 +7,7 @@ class LineChart extends React.Component {
 
     this.state = {
       options: {
+        colors: ['#8a8a8a', '#b0b0b0'],
         chart: {
           fontFamily: 'inherit',
           zoom: {
@@ -20,7 +21,7 @@ class LineChart extends React.Component {
           enabled: false,
         },
         stroke: {
-          colors: 'black',
+          colors: ['#8a8a8a', '#b0b0b0'],
           curve: 'smooth', // "smooth" / "straight" / "stepline"
           width: 3,
           // lineCap: 'square', // round, butt , square
@@ -32,7 +33,7 @@ class LineChart extends React.Component {
           },
         },
         xaxis: {
-          categories: this.props.x,
+          categories: this.props.categories,
           labels: {
             show: false,
           },
@@ -41,7 +42,7 @@ class LineChart extends React.Component {
           },
         },
         markers: {
-          colors: '#999999',
+          colors: ['#8a8a8a', '#b0b0b0'],
           strokeColor: '#999999',
         },
         tooltip: {
@@ -51,16 +52,17 @@ class LineChart extends React.Component {
           },
         },
         title: {
-          text: this.props.label,
+          text: this.props.title,
           align: 'middle',
         },
-      },
-      series: [
-        {
-          name: this.props.label,
-          data: this.props.y,
+        legend: {
+          show: true,
+          labels: {
+            colors: ['#ffffff', '#000000'],
+          },
         },
-      ],
+      },
+      series: this.props.series,
     };
   }
 

@@ -118,8 +118,19 @@ const App = () => (
           </div>
 
           <LineChartsWrapper>
-            <LineChart x={labels} y={moistures} label="Moisture" />
-            <LineChart x={labels} y={temperatures} label="Temperature" />
+            <LineChart
+              categories={labels}
+              series={[{ name: 'Moisture', data: moistures }]}
+              title="Moisture"
+            />
+            <LineChart
+              categories={labels}
+              series={[
+                { name: 'Temperature', data: temperatures },
+                { name: 'Temperature moving average', data: temperatureTrend },
+              ]}
+              title="Temperature"
+            />
           </LineChartsWrapper>
         </Card>
       )}

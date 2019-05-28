@@ -42,7 +42,9 @@ const DataProvider = ({ date, nodeid, render }) => (
       const currentReading = readings[readings.length - 1];
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
       const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
-      const temperatureTrend = ema(temperatures, temperatures.length / 2);
+      const temperatureTrend = ema(temperatures, temperatures.length / 2).map(value =>
+        value.toFixed()
+      );
 
       return render({
         moistures,
