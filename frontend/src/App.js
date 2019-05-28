@@ -23,7 +23,7 @@ const Card = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   transition: all 500ms ease;
-  padding-top: 1em;
+  padding: 1em 0;
 
   @media (min-width: 500px) {
     padding: 1em;
