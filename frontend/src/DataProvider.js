@@ -38,7 +38,7 @@ const DataProvider = ({ date, nodeid, render }) => (
 
       const moistures = readings.map(reading => reading.moisture);
       const temperatures = readings.map(reading => reading.temperature);
-      const labels = readings.map(reading => reading.time);
+      const labels = readings.map(reading => new Date(reading.time).toLocaleDateString());
       const currentReading = readings[readings.length - 1];
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
       const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);

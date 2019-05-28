@@ -1,122 +1,130 @@
 import React from 'react';
-import './App.scss';
-
-import Chart from './components/chart/Chart';
-import ChartBox from './components/ChartBox';
-import NavigationBar from './components/NavigationBar';
+import styled from 'styled-components';
+import LineChart from './components/LineChart';
+import RadialChart from './components/RadialChart';
 import DataProvider from './DataProvider';
+import plantImg from './plant.jpg';
+
+const CardWrapper = styled.div`
+  margin: 2em 0;
+  display: flex;
+  justify-content: center;
+`;
+
+const Card = styled.div`
+  box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.25);
+  background-color: #ededed;
+  max-width: 600px;
+  border-radius: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  transition: all 500ms ease;
+
+  > div {
+    transition: all 500ms ease;
+    width: 300px;
+  }
+
+  @media (min-width: 500px) {
+    padding: 1rem;
+
+    > div {
+      width: 400px;
+    }
+  }
+
+  @media (min-width: 700px) {
+    > div {
+      width: 600px;
+    }
+  }
+
+  @media (min-width: 1300px) {
+    max-width: 1200px;
+  }
+`;
+
+const CardTitle = styled.h3`
+  text-align: center;
+`;
+
+const RowWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  max-height: 150px;
+  margin: 1rem 0;
+`;
+
+const GaugeWrapper = styled.div`
+  width: 100%;
+  min-width: 200px;
+  max-width: 250px;
+  margin: 0 -2em; // workaround to bring the apex chart gauges closer horizontally
+`;
+
+const LineChartsWrapper = styled.div`
+  margin-left: -2em; // workaround for the excessive left space for apex charts
+`;
+
+const ImageWrapper = styled.div`
+  text-align: center;
+`;
+
+const Reading = styled.div`
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  text-align: center;
+  //box-shadow: 2px 3px 10px 0px rgba(0, 0, 0, 0.2);
+
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+`;
 
 const App = () => (
-  <div>
-    <NavigationBar />
-    <section className="hero is-primary">
-      <div className="hero-body">
-        <div className="container has-shadow">
-          <h1 className="title">Plant monitoring</h1>
-          <h2 className="subtitle">A simple plant monitoring system to keep &#39;em alive.</h2>
-        </div>
-      </div>
-    </section>
+  <CardWrapper>
+    <DataProvider
+      render={({
+        moistures,
+        temperatures,
+        temperatureTrend,
+        labels,
+        daysSinceLastWatered,
+        minutesSinceLastReading,
+        currentReading: { moisture, temperature, time },
+      }) => (
+        <Card>
+          <div>
+            <CardTitle>Rubber tree</CardTitle>
+            <ImageWrapper>
+              <img src={plantImg} alt="" width="70%" />
+            </ImageWrapper>
 
-    <section className="section">
-      <div className="container">
-        <DataProvider
-          render={({
-            moistures,
-            temperatures,
-            temperatureTrend,
-            labels,
-            daysSinceLastWatered,
-            minutesSinceLastReading,
-            currentReading: { moisture, temperature, time },
-          }) => (
-            <>
-              <div className="tile is-ancestor has-text-centered">
-                <div className="tile">
-                  <div className="tile is-parent">
-                    <div className="tile is-child notification is-info">
-                      <div>Moisture</div>
-                      <div>{moisture}%</div>
-                    </div>
-                  </div>
-                  <div className="tile is-parent">
-                    <div className="tile is-child notification is-info">
-                      <div>Temperature</div>
-                      <div>{temperature}</div>
-                    </div>
-                  </div>
-                  <div className="tile is-parent">
-                    <div className="tile is-child notification is-info">
-                      <div>Last watered</div>
-                      {daysSinceLastWatered === 0 && (
-                        <div>
-                          Today&nbsp;
-                          <span role="img" aria-label="status">
-                            👍
-                          </span>
-                        </div>
-                      )}
-                      {daysSinceLastWatered > 0 && <div>{daysSinceLastWatered} days ago</div>}
-                      {!daysSinceLastWatered && daysSinceLastWatered !== 0 && (
-                        <div>
-                          Long time ago&nbsp;
-                          <span role="img" aria-label="status">
-                            😰
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="tile is-parent">
-                    <div className="tile is-child notification is-info">
-                      <div>Last reading</div>
-                      <div>{new Date(time).toLocaleString()}</div>
-                      <div>({minutesSinceLastReading} minutes ago)</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <RowWrapper>
+              <GaugeWrapper>
+                <RadialChart label="moisture" value={moisture} type="percentage" />
+              </GaugeWrapper>
+              <GaugeWrapper>
+                <RadialChart label="temp." value={temperature} type="temperature" />
+              </GaugeWrapper>
+            </RowWrapper>
 
-              <div className="columns is-desktop">
-                <div className="column is-half-desktop">
-                  <ChartBox>
-                    <Chart
-                      data={[
-                        {
-                          data: moistures,
-                          label: 'Moisture',
-                        },
-                      ]}
-                      labels={labels}
-                    />
-                  </ChartBox>
-                </div>
-                <div className="column is-half-desktop">
-                  <ChartBox>
-                    <Chart
-                      data={[
-                        { data: temperatures, label: 'Temperature' },
-                        {
-                          data: temperatureTrend,
-                          borderColor: 'red',
-                          backgroundColor: 'rgba(255, 0, 0, 0.4)',
-                          pointBorderColor: 'red',
-                          pointHoverBackgroundColor: 'red',
-                          pointHoverBorderColor: 'red',
-                          label: 'Temperature trend',
-                        },
-                      ]}
-                      labels={labels}
-                    />
-                  </ChartBox>
-                </div>
-              </div>
-            </>
-          )}
-        />
-      </div>
-    </section>
-  </div>
+            <RowWrapper>
+              <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
+              <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
+            </RowWrapper>
+          </div>
+
+          <LineChartsWrapper>
+            <LineChart x={labels} y={moistures} label="Moisture" />
+            <LineChart x={labels} y={temperatures} label="Temperature" />
+          </LineChartsWrapper>
+        </Card>
+      )}
+    />
+  </CardWrapper>
 );
 
 export default App;
