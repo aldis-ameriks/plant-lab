@@ -10,7 +10,7 @@ export const InfoOverlay = styled.div`
   z-index: -1;
   opacity: 0;
   border-radius: 30px;
-  transition: opacity 300ms ease;
+  transition: all 300ms ease;
   ${props =>
     props.isVisible &&
     `
@@ -28,7 +28,7 @@ export const TextWrapper = styled.div`
   color: white;
   font-size: 1.5em;
   text-align: center;
-  transition: opacity 300ms ease;
+  transition: all 300ms ease;
   z-index: -1;
   padding: 3em;
   opacity: 0;
