@@ -7,10 +7,16 @@ export const InfoOverlay = styled.div`
   left: 0;
   bottom: 0;
   background-color: black;
-  z-index: 1000;
-  opacity: ${props => (props.isVisible ? '0.7' : '0')};
+  z-index: -1;
+  opacity: 0;
   border-radius: 30px;
   transition: opacity 300ms ease;
+  ${props =>
+    props.isVisible &&
+    `
+      opacity: 0.7;
+      z-index: 1000;
+  `}
 `;
 
 export const TextWrapper = styled.div`
@@ -23,9 +29,15 @@ export const TextWrapper = styled.div`
   font-size: 1.5em;
   text-align: center;
   transition: opacity 300ms ease;
-  z-index: 2000;
+  z-index: -1;
   padding: 3em;
-  opacity: ${props => (props.isVisible ? 1 : 0)};
+  opacity: 0;
+  ${props =>
+    props.isVisible &&
+    `
+      opacity: 1;
+      z-index: 2000;
+  `}
 `;
 
 export const Link = styled.a`
