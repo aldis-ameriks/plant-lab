@@ -7,7 +7,7 @@ class LineChart extends React.Component {
 
     this.state = {
       options: {
-        colors: ['#8a8a8a', '#b0b0b0'],
+        colors: ['#8a8a8a', '#bbbbbb'],
         chart: {
           fontFamily: 'inherit',
           zoom: {
@@ -21,7 +21,7 @@ class LineChart extends React.Component {
           enabled: false,
         },
         stroke: {
-          colors: ['#8a8a8a', '#b0b0b0'],
+          colors: ['#8a8a8a', '#bbbbbb'],
           curve: 'smooth', // "smooth" / "straight" / "stepline"
           width: 3,
           // lineCap: 'square', // round, butt , square
@@ -42,7 +42,7 @@ class LineChart extends React.Component {
           },
         },
         markers: {
-          colors: ['#8a8a8a', '#b0b0b0'],
+          colors: ['#8a8a8a', '#bbbbbb'],
           strokeColor: '#999999',
         },
         tooltip: {

@@ -89,6 +89,7 @@ const App = () => (
       render={({
         moistures,
         temperatures,
+        moistureTrend,
         temperatureTrend,
         labels,
         daysSinceLastWatered,
@@ -120,7 +121,10 @@ const App = () => (
           <LineChartsWrapper>
             <LineChart
               categories={labels}
-              series={[{ name: 'Moisture', data: moistures }]}
+              series={[
+                { name: 'Moisture', data: moistures },
+                { name: 'Moisture moving average', data: moistureTrend },
+              ]}
               title="Moisture"
             />
             <LineChart

@@ -45,11 +45,13 @@ const DataProvider = ({ date, nodeid, render }) => (
       const temperatureTrend = ema(temperatures, temperatures.length / 2).map(value =>
         value.toFixed()
       );
+      const moistureTrend = ema(moistures, moistures.length / 2).map(value => value.toFixed());
 
       return render({
         moistures,
         temperatures,
         temperatureTrend,
+        moistureTrend,
         labels,
         currentReading,
         minutesSinceLastReading,
