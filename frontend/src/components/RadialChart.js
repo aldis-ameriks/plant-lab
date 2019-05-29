@@ -8,6 +8,14 @@ class RadialChart extends React.Component {
 
     this.state = {
       options: {
+        states: {
+          hover: {
+            filter: {
+              type: 'darken',
+              value: 1,
+            },
+          },
+        },
         plotOptions: {
           radialBar: {
             startAngle: -90,
