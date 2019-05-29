@@ -80,6 +80,7 @@ const Reading = styled.div`
   border-radius: 10px;
   text-align: center;
   width: 210px;
+  z-index: 10;
   //box-shadow: 2px 3px 10px 0px rgba(0, 0, 0, 0.2);
 
   &:not(:last-child) {
