@@ -16,7 +16,7 @@
     "react-dom": "^16.8.6",
     "react-ga": "^2.5.7",
     "react-scripts": "^2.1.8",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.3.2"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-scripts start",
