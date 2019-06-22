@@ -14,7 +14,7 @@ module.exports = {
     ],
     'prettier/prettier': ['error', { singleQuote: true, printWidth: 100, 'trailingComma': 'es5' }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-    'max-len': ['error', { code: 100 }],
+    'max-len': ['error', { code: 100, ignoreComments: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
     'react/destructuring-assignment': ['warn', 'always', { 'ignoreClassFields': true }],
     'no-use-before-define': ['error', { 'functions': false, 'classes': false }],
   },
