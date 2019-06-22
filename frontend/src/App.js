@@ -63,7 +63,7 @@ const GaugeWrapper = styled.div`
   width: 100%;
   min-width: 200px;
   max-width: 250px;
-  margin: 0 -2em; // workaround to bring the apex chart gauges closer horizontally
+  margin: 0 -3em; // workaround to bring the apex chart gauges closer horizontally
 `;
 
 const LineChartsWrapper = styled.div`
@@ -72,6 +72,13 @@ const LineChartsWrapper = styled.div`
 
 const ImageWrapper = styled.div`
   text-align: center;
+`;
+
+const Image = styled.img`
+  width: 70%;
+  @media (min-width: 1300px) {
+    width: 100%;
+  }
 `;
 
 const Reading = styled.div`
@@ -112,7 +119,7 @@ const App = () => {
             <CardSection>
               <CardTitle>Rubber tree</CardTitle>
               <ImageWrapper>
-                <img src={plantImg} alt="" width="70%" />
+                <Image src={plantImg} alt="" width="100%" />
               </ImageWrapper>
 
               <RowWrapper>
