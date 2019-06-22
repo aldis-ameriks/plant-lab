@@ -77,8 +77,8 @@ function parseReadings(readings) {
   const parsedReadings = moisture.map((value, i) => ({
     moisture: Math.round(value.x),
     time: new Date(value.y),
-    temperature: temperature[i].x,
-    batteryVoltage: batteryVoltage[i].x,
+    temperature: temperature[i] && temperature[i].x,
+    batteryVoltage: batteryVoltage[i] && batteryVoltage[i].x,
   }));
 
   const watered = getLastWateredDate(reversedReadings);
