@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 class RadialChart extends React.Component {
@@ -45,14 +45,18 @@ class RadialChart extends React.Component {
                 fontSize: '1.5em',
                 color: 'black',
                 fontFamily: 'inherit',
-                formatter(val) {
+                formatter: val => {
+                  const valueForLabel = this.getValueForLabel(val);
+                  // TODO: Chart component should not know about domain specific formatting types. Extract via `unit` prop.
                   switch (props.type) {
                     case 'percentage':
-                      return `${val}%`;
+                      return `${valueForLabel}%`;
                     case 'temperature':
-                      return `${val}°c`;
+                      return `${valueForLabel}°c`;
+                    case 'voltage':
+                      return `${valueForLabel} V`;
                     default:
-                      return val;
+                      return valueForLabel;
                   }
                 },
               },
@@ -73,8 +77,20 @@ class RadialChart extends React.Component {
         },
         labels: [this.props.label],
       },
-      series: [this.props.value],
+      series: [this.getValueForRadialBar()],
     };
+  }
+
+  getValueForRadialBar() {
+    // TODO: workaround due to apex radial chart not supporting value range.
+    //       https://github.com/apexcharts/apexcharts.js/issues/449
+    return (this.props.value * (100 / this.props.maxValue)).toFixed(this.props.decimals);
+  }
+
+  getValueForLabel(val) {
+    // TODO: workaround due to apex radial chart not supporting value range.
+    //       https://github.com/apexcharts/apexcharts.js/issues/449
+    return (val / (100 / this.props.maxValue)).toFixed(this.props.decimals);
   }
 
   render() {
@@ -85,11 +101,19 @@ class RadialChart extends React.Component {
 }
 
 RadialChart.propTypes = {
-  type: PropTypes.oneOf(['percentage', 'temperature']),
+  value: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['percentage', 'temperature', 'voltage']),
+  minValue: PropTypes.number,
+  maxValue: PropTypes.number,
+  decimals: PropTypes.number,
 };
 
 RadialChart.defaultProps = {
   type: null,
+  minValue: 0,
+  maxValue: 100,
+  decimals: 0,
 };
 
 export default RadialChart;

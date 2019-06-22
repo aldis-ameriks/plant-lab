@@ -14,14 +14,14 @@ const client = new Influx.InfluxDB({
       measurement: 'plant',
       fields: {
         moisture: Influx.FieldType.INTEGER,
-        m_wet: Influx.FieldType.INTEGER,
-        m_dry: Influx.FieldType.INTEGER,
+        moisture_percentage: Influx.FieldType.FLOAT,
+        moisture_wet: Influx.FieldType.INTEGER,
+        moisture_dry: Influx.FieldType.INTEGER,
         temperature: Influx.FieldType.INTEGER,
-        moisture_precentage: Influx.FieldType.FLOAT,
-        nodeid: Influx.FieldType.INTEGER,
-        type: Influx.FieldType.STRING,
+        light: Influx.FieldType.INTEGER,
+        battery_voltage: Influx.FieldType.FLOAT,
       },
-      tags: ['nodeid', 'type'],
+      tags: ['node_id'],
     },
   ],
 });
@@ -29,7 +29,7 @@ const client = new Influx.InfluxDB({
 const saveReading = async reading => {
   const item = {
     measurement: 'plant',
-    tags: { nodeid: reading.nodeid, type: reading.type },
+    tags: { node_id: reading.nodeid },
     time: new Date().toISOString(),
     fields: reading,
   };
@@ -41,7 +41,7 @@ const getReadings = async (nodeid = 99, date) => {
   const nanoEpoch = formatToNanoEpoch(time);
 
   const readings = await client.query(
-    `select * from plant where nodeid=${Number(nodeid)} and time > ${nanoEpoch} order by time desc`
+    `select * from plant where "node_id"='${nodeid}' and time > ${nanoEpoch} order by time desc`
   );
   return parseReadings(readings);
 };
@@ -52,7 +52,7 @@ function parseReadings(readings) {
 
   const moisture = simplify(
     reversedReadings.map(reading => ({
-      x: reading.moisture_precentage,
+      x: reading.moisture_percentage,
       y: new Date(reading.time).getTime(),
     })),
     tolerance
@@ -66,10 +66,19 @@ function parseReadings(readings) {
     tolerance
   );
 
+  const batteryVoltage = simplify(
+    reversedReadings.map(reading => ({
+      x: reading.battery_voltage,
+      y: new Date(reading.time).getTime(),
+    })),
+    tolerance
+  );
+
   const parsedReadings = moisture.map((value, i) => ({
     moisture: Math.round(value.x),
     time: new Date(value.y),
     temperature: temperature[i].x,
+    batteryVoltage: batteryVoltage[i].x,
   }));
 
   const watered = getLastWateredDate(reversedReadings);
@@ -80,7 +89,7 @@ function getLastWateredDate(readings) {
   const treshold = 10;
   let watered;
   readings.reduce((previousValue, currentValue) => {
-    if (currentValue.moisture_precentage - previousValue.moisture_precentage > treshold) {
+    if (currentValue.moisture_percentage - previousValue.moisture_percentage > treshold) {
       watered = currentValue.time;
       return currentValue;
     }

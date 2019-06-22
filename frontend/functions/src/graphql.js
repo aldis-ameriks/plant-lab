@@ -10,6 +10,7 @@ const typeDefs = gql`
     time: DateTime
     moisture: Int
     temperature: Int
+    batteryVoltage: Float
   }
 
   type Readings {

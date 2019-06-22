@@ -1,4 +1,3 @@
-#include <ArduinoJson.h>
 #include <I2CSoilMoistureSensor.h>
 #include <LowPower.h>
 #include <RFM12B.h>
@@ -10,7 +9,7 @@
 // broadcast messages (send to all nodes) The Network ID takes values from 0-255
 // By default the SPI-SS line used is D10 on Atmega328. You can change it by
 // calling .SetCS(pin) where pin can be {8,9,10}
-#define NODEID 2     // network ID used for this unit
+#define NODEID 4     // network ID used for this unit
 #define NETWORKID 99 // the network ID we are on
 #define GATEWAYID 1  // the node ID we're sending to
 #define SERIAL_BAUD 115200
@@ -25,10 +24,23 @@ int MOISTURE_DRY = 355;
 int MOISTURE_WET = 650;
 I2CSoilMoistureSensor sensor;
 
+float BATTERY_MEASUREMENT_RESISTOR_RATIO = 8.81;
+float INTERNAL_AREF = 1.1;
+
 void setup() {
   Serial.begin(SERIAL_BAUD);
+  delay(1000);    // give some time for serial to init
+
+  // Init RFM12B in transmit mode
+  Serial.println("Initializing Radio module");
+  radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
+  radio.Encrypt(KEY);
+  radio.Sleep();
+  Serial.println("Radio module initialized");
 
   // Init sensor
+  Serial.println("Initializing sensor");
+  delay(2000);    // give some time to boot up
   Wire.begin();
   sensor.begin(); // reset sensor
   delay(1000);    // give some time to boot up
@@ -36,43 +48,49 @@ void setup() {
   Serial.println(sensor.getAddress(), HEX);
   Serial.print("Sensor Firmware version: ");
   Serial.println(sensor.getVersion(), HEX);
+  Serial.println("Sensor initialized");
 
-  // Init RFM12B in transmit mode
-  radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
-  radio.Encrypt(KEY);
-  radio.Sleep();
-  Serial.println("Transmitting...\n\n");
+  // Init analog ref to internal voltage (1.1v)
+  analogReference(INTERNAL);
+
 }
 
 void loop() {
   while (sensor.isBusy()) {
+    Serial.println("Sensor is busy");
     delay(500);
   }
 
+  Serial.println("Reading sensor values");
   int moisture = sensor.getCapacitance();
-  float moisturePrecentage =
-      (1 - (MOISTURE_WET - moisture) / (MOISTURE_WET - (float)MOISTURE_DRY)) *
-      100;
+  float moisturePercentage = (1 - (MOISTURE_WET - moisture) / (MOISTURE_WET - (float)MOISTURE_DRY)) *100;
   int temperature = sensor.getTemperature() / (float)10;
-  unsigned int light = sensor.getLight(true);
+  // unsigned int light = sensor.getLight(true);
+  unsigned int light = 0; // light sensor is covered on the rugged version of sensor
+  Serial.println("Putting sensor to sleep");
   sensor.sleep();
+  Serial.println("Sensor sleeping");
+  float batteryVoltage = readBatteryVoltage();
 
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject &root = jsonBuffer.createObject();
-  root["moisture"] = moisture;
-  root["moisture_precentage"] = moisturePrecentage;
-  root["m_dry"] = MOISTURE_DRY;
-  root["m_wet"] = MOISTURE_WET;
-  root["temperature"] = temperature;
-  root["light"] = light;
-  root["nodeid"] = NODEID;
+  String payload = "";
+  payload += NODEID;
+  payload += ";";
+  payload += moisture;
+  payload += ";";
+  payload += (String)moisturePercentage;
+  payload += ";";
+  payload += MOISTURE_DRY;
+  payload += ";";
+  payload += MOISTURE_WET;
+  payload += ";";
+  payload += temperature;
+  payload += ";";
+  payload += light;
+  payload += ";";
+  payload += (String)batteryVoltage;
+  Serial.println(payload);
 
-  String result;
-  root.printTo(result);
-  Serial.print(result);
-  Serial.println("");
-
-  sendData(result);
+  sendData(payload);
   enterSleep();
 }
 
@@ -112,4 +130,12 @@ void enterSleep() {
   for (sleepCounter = 225; sleepCounter > 0; sleepCounter--) {
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
   }
+}
+
+float readBatteryVoltage() {
+  analogRead(0);
+  delay(50);
+  int rawReading = analogRead(0);
+  float batteryVoltage = (rawReading/(float)1023) * INTERNAL_AREF * BATTERY_MEASUREMENT_RESISTOR_RATIO;
+  return batteryVoltage;
 }

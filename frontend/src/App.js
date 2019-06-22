@@ -97,12 +97,14 @@ const App = () => {
         render={({
           moistures,
           temperatures,
+          batteryVoltages,
           moistureTrend,
           temperatureTrend,
+          batteryVoltageTrend,
           labels,
           daysSinceLastWatered,
           minutesSinceLastReading,
-          currentReading: { moisture, temperature, time },
+          currentReading: { moisture, temperature, batteryVoltage },
         }) => (
           <Card>
             <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
@@ -118,7 +120,17 @@ const App = () => {
                   <RadialChart label="moisture" value={moisture} type="percentage" />
                 </GaugeWrapper>
                 <GaugeWrapper>
-                  <RadialChart label="temp." value={temperature} type="temperature" />
+                  <RadialChart label="temp." value={temperature} type="temperature" maxValue={40} />
+                </GaugeWrapper>
+                <GaugeWrapper>
+                  <RadialChart
+                    label="battery"
+                    value={batteryVoltage}
+                    type="voltage"
+                    maxValue={4.3}
+                    minValue={2.8}
+                    decimals={2}
+                  />
                 </GaugeWrapper>
               </RowWrapper>
 
@@ -145,6 +157,14 @@ const App = () => {
                     { name: 'Temperature moving average', data: temperatureTrend },
                   ]}
                   title="Temperature"
+                />
+                <LineChart
+                  categories={labels}
+                  series={[
+                    { name: 'Battery voltage', data: batteryVoltages },
+                    { name: 'Battery voltage moving average', data: batteryVoltageTrend },
+                  ]}
+                  title="Battery voltage"
                 />
               </LineChartsWrapper>
             </CardSection>

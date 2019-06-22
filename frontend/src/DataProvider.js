@@ -12,6 +12,7 @@ const query = gql`
         time
         moisture
         temperature
+        batteryVoltage
       }
       watered
     }
@@ -38,6 +39,7 @@ const DataProvider = ({ date, nodeid, render }) => (
 
       const moistures = readings.map(reading => reading.moisture);
       const temperatures = readings.map(reading => reading.temperature);
+      const batteryVoltages = readings.map(reading => reading.batteryVoltage);
       const labels = readings.map(reading => new Date(reading.time).toLocaleDateString());
       const currentReading = readings[readings.length - 1];
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
@@ -46,12 +48,17 @@ const DataProvider = ({ date, nodeid, render }) => (
         value.toFixed()
       );
       const moistureTrend = ema(moistures, moistures.length / 2).map(value => value.toFixed());
+      const batteryVoltageTrend = ema(batteryVoltages, batteryVoltages.length / 2).map(value =>
+        value.toFixed(2)
+      );
 
       return render({
         moistures,
         temperatures,
+        batteryVoltages,
         temperatureTrend,
         moistureTrend,
+        batteryVoltageTrend,
         labels,
         currentReading,
         minutesSinceLastReading,
@@ -68,7 +75,7 @@ DataProvider.propTypes = {
 };
 
 DataProvider.defaultProps = {
-  nodeid: 3,
+  nodeid: 4,
   date: subDays(new Date(), 90),
 };
 
