@@ -31,7 +31,7 @@ const Card = styled.div`
 
   @media (min-width: 1300px) {
     width: 1200px;
-    height: 880px;
+    height: 1250px;
   }
 `;
 
