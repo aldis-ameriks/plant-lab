@@ -15,7 +15,7 @@
     "apollo-server-lambda": "^2.5.0",
     "graphql": "^14.2.1",
     "graphql-iso-date": "^3.6.1",
-    "influx": "^5.0.7",
+    "influx": "^5.2.0",
     "simplify-js": "^1.2.3"
   }
 }
