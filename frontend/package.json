@@ -19,16 +19,15 @@
     "styled-components": "^4.3.2"
   },
   "scripts": {
-    "start": "cross-env NODE_PATH=src react-scripts start",
-    "build": "cross-env NODE_PATH=src react-scripts build",
-    "test": "cross-env NODE_PATH=src react-scripts test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "cross-env NODE_PATH=src react-scripts build && aws --profile personal s3 sync build/ s3://cleverhome"
+    "deploy": "react-scripts build && aws --profile personal s3 sync build/ s3://cleverhome"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.11.2",
-    "cross-env": "^5.2.0",
-    "eslint": "5.12.0",
+    "eslint": "5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-import": "^2.17.3",
