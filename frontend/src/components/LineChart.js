@@ -87,6 +87,13 @@ class LineChart extends React.Component {
 }
 
 LineChart.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  series: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
+    })
+  ).isRequired,
   min: PropTypes.number,
   max: PropTypes.number,
 };

@@ -77,7 +77,7 @@ const ImageWrapper = styled.div`
 const Image = styled.img`
   width: 70%;
   @media (min-width: 1300px) {
-    width: 90%;
+    width: 80%;
   }
 `;
 
