@@ -166,6 +166,8 @@ const App = () => {
                   title="Temperature"
                 />
                 <LineChart
+                  min={0}
+                  max={5}
                   categories={labels}
                   series={[
                     { name: 'Battery voltage', data: batteryVoltages },

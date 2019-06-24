@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactApexChart from 'react-apexcharts';
 
 class LineChart extends React.Component {
@@ -41,6 +42,10 @@ class LineChart extends React.Component {
             enabled: false,
           },
         },
+        yaxis: {
+          min: this.props.min,
+          max: this.props.max,
+        },
         markers: {
           colors: ['#8a8a8a', '#bbbbbb'],
           strokeColor: '#999999',
@@ -80,5 +85,15 @@ class LineChart extends React.Component {
     );
   }
 }
+
+LineChart.propTypes = {
+  min: PropTypes.number,
+  max: PropTypes.number,
+};
+
+LineChart.defaultProps = {
+  min: undefined,
+  max: undefined,
+};
 
 export default LineChart;
