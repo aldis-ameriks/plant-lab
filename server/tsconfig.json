@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["es2017"],
+    "lib": ["es2017", "esnext.asynciterable"],
     "module": "commonjs",
     "target": "es2017",
     "noImplicitAny": false,
-    "outDir": "build"
+    "outDir": "build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

@@ -1,31 +1,32 @@
-import { client } from './influxdb/client';
+import { client } from '../common/influxClient';
+import { Reading } from './ReadingEntity';
 
-export async function saveReading(nodeId, readings) {
-  console.log(process.env.NODE_ENV);
-  const item = {
-    measurement: 'plant',
-    tags: { node_id: nodeId },
-    time: new Date().toISOString(),
-    fields: {
-      moisture: readings.moisturePercentage,
-      temperature: readings.temperature,
-      light: readings.light,
-      battery_voltage: readings.batteryVoltage,
-    },
-  };
+class ReadingService {
+  public async getReadings(nodeId = '99', date) {
+    const time = getTimestamp(date);
+    const nanoEpoch = formatToNanoEpoch(time);
 
-  console.log('Storing data:', item);
-  await client.writePoints([item]);
-}
+    const readings = await client.query(
+      `select * from plant where "node_id"='${nodeId}' and time > ${nanoEpoch} order by time desc`,
+    );
+    return parseReadings(readings);
+  }
 
-export async function getReadings(nodeId = '99', date) {
-  const time = getTimestamp(date);
-  const nanoEpoch = formatToNanoEpoch(time);
+  public async saveReading(nodeId: string, reading: Reading) {
+    const item = {
+      measurement: 'plant',
+      tags: { node_id: nodeId },
+      time: reading.time.toISOString(),
+      fields: {
+        moisture: reading.moisture,
+        temperature: reading.temperature,
+        light: reading.light,
+        battery_voltage: reading.batteryVoltage,
+      },
+    };
 
-  const readings = await client.query(
-    `select * from plant where "node_id"='${nodeId}' and time > ${nanoEpoch} order by time desc`,
-  );
-  return parseReadings(readings);
+    await client.writePoints([item]);
+  }
 }
 
 function parseReadings(readings) {
@@ -70,3 +71,5 @@ function getTimestamp(date: string) {
 function formatToNanoEpoch(date) {
   return `${date.getTime()}000000`;
 }
+
+export default ReadingService;

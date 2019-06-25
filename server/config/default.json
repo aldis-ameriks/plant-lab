@@ -4,5 +4,6 @@
     "PORT": "8086",
     "USERNAME": "",
     "PASSWORD": ""
-  }
+  },
+  "ACCESS_KEY": ""
 }

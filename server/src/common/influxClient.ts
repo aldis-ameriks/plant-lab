@@ -1,5 +1,5 @@
 const Influx = require('influx');
-import { INFLUX } from '../config'
+import { INFLUX } from './config'
 
 export const client = new Influx.InfluxDB({
   host: INFLUX.HOST,
