@@ -1,5 +1,6 @@
 import { GraphQLServer, Options } from 'graphql-yoga';
 import 'reflect-metadata';
+import { defaultErrorFormatter } from 'graphql-yoga/dist/defaultErrorFormatter';
 import { buildSchema } from 'type-graphql';
 import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
@@ -17,6 +18,10 @@ const morgan = require('morgan');
   const options = {
     port: 4000,
     endpoint: '/graphql',
+    formatError: err => {
+      console.error(err);
+      return defaultErrorFormatter(err);
+    },
   };
 
   const server = new GraphQLServer({
