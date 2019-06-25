@@ -32,12 +32,14 @@ class ReadingService {
 function parseReadings(readings) {
   const reversedReadings = readings.reverse();
 
-  const parsedReadings = reversedReadings.map(reading => ({
-    moisture: Math.round(reading.moisture_percentage),
-    time: new Date(reading.time),
-    temperature: reading.temperature,
-    batteryVoltage: reading.battery_voltage,
-  }));
+  const parsedReadings = reversedReadings
+    .filter(reading => !!reading.moisture_percentage)
+    .map(reading => ({
+      moisture: reading.moisture_percentage,
+      time: new Date(reading.time),
+      temperature: reading.temperature,
+      batteryVoltage: reading.battery_voltage,
+    }));
 
   const watered = getLastWateredDate(reversedReadings);
   return { readings: parsedReadings, watered };
