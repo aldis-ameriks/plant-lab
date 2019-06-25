@@ -1,7 +1,7 @@
-const Influx = require('influx');
-import { INFLUX } from './config'
+const influx = require('influx');
+import { INFLUX } from './config';
 
-export const client = new Influx.InfluxDB({
+export const client = new influx.InfluxDB({
   host: INFLUX.HOST,
   database: 'plants',
   port: INFLUX.PORT,
@@ -11,13 +11,13 @@ export const client = new Influx.InfluxDB({
     {
       measurement: 'plant',
       fields: {
-        moisture: Influx.FieldType.INTEGER,
-        moisture_percentage: Influx.FieldType.FLOAT,
-        moisture_wet: Influx.FieldType.INTEGER,
-        moisture_dry: Influx.FieldType.INTEGER,
-        temperature: Influx.FieldType.INTEGER,
-        light: Influx.FieldType.INTEGER,
-        battery_voltage: Influx.FieldType.FLOAT,
+        moisture: influx.FieldType.INTEGER,
+        moisture_percentage: influx.FieldType.FLOAT,
+        moisture_wet: influx.FieldType.INTEGER,
+        moisture_dry: influx.FieldType.INTEGER,
+        temperature: influx.FieldType.INTEGER,
+        light: influx.FieldType.INTEGER,
+        battery_voltage: influx.FieldType.FLOAT,
       },
       tags: ['node_id'],
     },

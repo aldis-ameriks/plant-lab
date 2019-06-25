@@ -3,14 +3,15 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
+
 import ReadingResolver from './reading/ReadingResolver';
 
 const morgan = require('morgan');
 
 (async () => {
   const schema = await buildSchema({
-    resolvers: [ReadingResolver],
     authChecker,
+    resolvers: [ReadingResolver],
   });
 
   const options = {
@@ -23,18 +24,13 @@ const morgan = require('morgan');
     context: ({ request }) => {
       const accessKey = request.headers['access-key'];
       const isAuthorized = accessKey === ACCESS_KEY;
-      return { isAuthorized }
+      return { isAuthorized };
     },
   });
 
   server.express.use(morgan('dev'));
 
   await server.start(options, ({ port }: Options) =>
-    console.log(
-      `Server started, listening on port ${port} for incoming requests.`,
-    ),
+    console.log(`Server started, listening on port ${port} for incoming requests.`)
   );
-
 })();
-
-

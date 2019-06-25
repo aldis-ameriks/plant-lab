@@ -7,7 +7,7 @@ class ReadingService {
     const nanoEpoch = formatToNanoEpoch(time);
 
     const readings = await client.query(
-      `select * from plant where "node_id"='${nodeId}' and time > ${nanoEpoch} order by time desc`,
+      `select * from plant where "node_id"='${nodeId}' and time > ${nanoEpoch} order by time desc`
     );
     return parseReadings(readings);
   }
@@ -42,7 +42,7 @@ function parseReadings(readings) {
     }));
 
   const watered = getLastWateredDate(reversedReadings);
-  return { readings: parsedReadings, watered };
+  return { watered, readings: parsedReadings };
 }
 
 function getLastWateredDate(readings: any) {
