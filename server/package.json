@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "docker:build": "docker build -t registry.kataldi.com/plant-server .",
+    "docker:push": "docker push registry.kataldi.com/plant-server",
+    "docker:run": "docker run -p 4000:4000 --rm registry.kataldi.com/plant-server"
+  },
+  "dependencies": {
+    "config": "^3.1.0",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-yoga": "^1.18.0",
+    "influx": "^5.2.0",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.10",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  }
+}
