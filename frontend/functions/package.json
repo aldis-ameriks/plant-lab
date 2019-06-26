@@ -8,7 +8,7 @@
     "deploy": "sls --profile personal deploy"
   },
   "devDependencies": {
-    "serverless": "^1.42.3",
+    "serverless": "^1.46.0",
     "serverless-offline": "^4.10.6"
   },
   "dependencies": {
