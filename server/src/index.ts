@@ -13,6 +13,7 @@ const morgan = require('morgan');
   const schema = await buildSchema({
     authChecker,
     resolvers: [ReadingResolver],
+    emitSchemaFile: true,
   });
 
   const options = {
