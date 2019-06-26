@@ -1,5 +1,5 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
-import { Reading, Readings } from './ReadingEntity';
+import { Readings } from './ReadingEntity';
 import ReadingService from './ReadingService';
 
 @Resolver(Readings)
@@ -15,7 +15,7 @@ class ReadingResolver {
     return this.readingService.getReadings(nodeId, date);
   }
 
-  @Mutation(returns => Reading)
+  @Mutation(returns => String)
   @Authorized()
   async saveReading(@Arg('input') readingInput: string) {
     const parsedInput = readingInput.split(';');
@@ -27,7 +27,7 @@ class ReadingResolver {
     const reading = { moisture, temperature, batteryVoltage, time };
 
     await this.readingService.saveReading(nodeId, reading);
-    return reading;
+    return 'success';
   }
 }
 
