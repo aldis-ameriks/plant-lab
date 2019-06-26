@@ -25,6 +25,7 @@ class ReadingService {
       },
     };
 
+    console.log('Saving reading', item);
     await client.writePoints([item]);
   }
 }
