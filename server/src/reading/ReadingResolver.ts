@@ -22,7 +22,7 @@ class ReadingResolver {
     const nodeId = parsedInput[0];
     const moisture = Number(parsedInput[2]);
     const temperature = Number(parsedInput[5]);
-    const batteryVoltage = Number(parsedInput[5]);
+    const batteryVoltage = Number(parsedInput[7]);
     const time = new Date();
     const reading = { moisture, temperature, batteryVoltage, time };
 
