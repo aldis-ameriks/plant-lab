@@ -34,7 +34,7 @@ const morgan = require('morgan');
     },
   });
 
-  server.express.use(morgan('combo'));
+  server.express.use(morgan('combined'));
 
   await server.start(options, ({ port }: Options) =>
     console.log(`Server started, listening on port ${port} for incoming requests.`)
