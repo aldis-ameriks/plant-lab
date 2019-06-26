@@ -13,7 +13,10 @@ const morgan = require('morgan');
   const schema = await buildSchema({
     authChecker,
     resolvers: [ReadingResolver],
-    emitSchemaFile: true,
+    emitSchemaFile: {
+      path: `${__dirname}/../schema.graphql`,
+      commentDescriptions: true,
+    },
   });
 
   const options = {
