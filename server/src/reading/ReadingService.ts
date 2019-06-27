@@ -18,7 +18,7 @@ class ReadingService {
       tags: { node_id: nodeId },
       time: reading.time.toISOString(),
       fields: {
-        moisture: Math.round(reading.moisture),
+        moisture_percentage: Math.round(reading.moisture),
         temperature: reading.temperature,
         light: reading.light,
         battery_voltage: reading.batteryVoltage,
