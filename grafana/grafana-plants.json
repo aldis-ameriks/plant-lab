@@ -23,11 +23,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Kataldi.com",
+      "datasource": "InfluxDB",
       "fill": 1,
       "gridPos": {
         "h": 11,
-        "w": 12,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -55,25 +55,13 @@
       "steppedLine": false,
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "alias": "Moisture",
+          "groupBy": [],
           "hide": false,
           "measurement": "plant",
           "orderByTime": "ASC",
-          "policy": "plant",
-          "query": "select moisture_precentage from plant where nodeid=3",
+          "policy": "autogen",
+          "query": "select moisture_percentage from autogen.plant where \"node_id\"='4'",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -89,7 +77,13 @@
           ],
           "tags": [
             {
-              "key": "nodeid",
+              "key": "type",
+              "operator": "=",
+              "value": "moisture"
+            },
+            {
+              "condition": "AND",
+              "key": "node_id",
               "operator": "=",
               "value": "3"
             }
@@ -98,6 +92,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Plant moisture",
       "tooltip": {
@@ -142,12 +137,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Kataldi.com",
+      "datasource": "InfluxDB",
       "fill": 1,
       "gridPos": {
         "h": 11,
-        "w": 12,
-        "x": 12,
+        "w": 8,
+        "x": 8,
         "y": 0
       },
       "id": 3,
@@ -174,6 +169,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "alias": "Temperature",
           "groupBy": [
             {
               "params": [
@@ -191,8 +187,8 @@
           "hide": false,
           "measurement": "plant",
           "orderByTime": "ASC",
-          "policy": "plant",
-          "query": "select temperature from plant where nodeid=3",
+          "policy": "autogen",
+          "query": "select temperature from autogen.plant where \"node_id\"='4'",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -200,7 +196,7 @@
             [
               {
                 "params": [
-                  "*"
+                  "temperature"
                 ],
                 "type": "field"
               }
@@ -208,15 +204,16 @@
           ],
           "tags": [
             {
-              "key": "nodeid",
+              "key": "node_id",
               "operator": "=",
-              "value": "3"
+              "value": "4"
             }
           ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Temperature",
       "tooltip": {
@@ -234,7 +231,7 @@
       },
       "yaxes": [
         {
-          "decimals": null,
+          "decimals": 0,
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -257,6 +254,131 @@
       }
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "InfluxDB",
+      "fill": 1,
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Battery voltage",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select battery_voltage from autogen.plant where \"node_id\"='4'",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "batteryVoltage"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Battery voltage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 1,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "decimals": 1,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -265,7 +387,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "Kataldi.com",
+      "datasource": "InfluxDB",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -333,7 +455,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select last(moisture_precentage) from plant where nodeid=3",
+          "query": "select last(moisture_percentage) from autogen.plant where \"node_id\"='4'",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -376,7 +498,8 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "Kataldi.com",
+      "datasource": "InfluxDB",
+      "decimals": null,
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -442,11 +565,228 @@
               "type": "fill"
             }
           ],
+          "hide": false,
+          "measurement": "plant",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select last(temperature) from plant where nodeid=3",
+          "query": "select last(temperature) from autogen.plant where \"node_id\"='4'",
           "rawQuery": true,
           "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "battery_voltage"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "node_id",
+              "operator": "=",
+              "value": "4"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "Last temperature reading",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "InfluxDB",
+      "decimals": 2,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 6,
+        "y": 11
+      },
+      "id": 8,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "plant",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select last(battery_voltage) from autogen.plant where \"node_id\"='4'",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "battery_voltage"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "node_id",
+              "operator": "=",
+              "value": "4"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "Last battery voltage reading",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "InfluxDB",
+      "fill": 1,
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Battery voltage",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select moisture_percentage from autogen.plant where \"node_id\"='99'",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -462,24 +802,60 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": "batteryVoltage"
+            }
+          ]
         }
       ],
-      "thresholds": "",
-      "title": "Last temperature reading",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Battery voltage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
         {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
+          "decimals": 1,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "decimals": 1,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
         }
       ],
-      "valueName": "avg"
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "refresh": false,
+  "refresh": "30m",
   "schemaVersion": 16,
   "style": "dark",
   "tags": [],
@@ -518,5 +894,5 @@
   "timezone": "",
   "title": "Plants",
   "uid": "sYazQuaiz",
-  "version": 4
+  "version": 2
 }
