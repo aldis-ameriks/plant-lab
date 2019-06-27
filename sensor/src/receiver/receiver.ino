@@ -5,6 +5,7 @@
 #include <RFM12B.h>
 #include <SPI.h>
 #include <Ethernet.h>
+#include "secrets.h"
 
 // You will need to initialize the radio by telling it what ID it has and what
 // network it's on The NodeID takes values from 1-127, 0 is reserved for sending
@@ -20,7 +21,7 @@
 // - provide a 16-byte encryption KEY (same on all nodes that talk encrypted)
 // - to call .Encrypt(KEY) to start encrypting
 // - to stop encrypting call .Encrypt(NULL)
-uint8_t KEY[] = "!Encrypted123%$£";
+uint8_t KEY[] = RADIO_ENCRYPTION_KEY;
 
 // Need an instance of the Radio Module
 RFM12B radio;
@@ -36,6 +37,7 @@ IPAddress myDns(192, 168, 0, 1);
 EthernetClient client;
 
 char server[] = "api.plant.kataldi.com";
+char apiAccessKey[] = API_ACCESS_KEY;
 
 void setup() {
   Serial.begin(SERIAL_BAUD);
@@ -86,7 +88,8 @@ void sendHttpRequestWithData(String data) {
     client.println("POST /graphql HTTP/1.1");
     client.println("Host: api.plant.kataldi.com");
     client.println("User-Agent: arduino-ethernet");
-    client.println("access-key: ---");
+    client.print("access-key: ");
+    client.println(apiAccessKey);
     client.println("content-type: application/json");
     client.println("Connection: close");
     client.print("Content-Length: ");

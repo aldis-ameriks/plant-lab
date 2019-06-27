@@ -3,6 +3,7 @@
 #include <RFM12B.h>
 #include <Wire.h>
 #include <avr/sleep.h>
+#include "secrets.h"
 
 // You will need to initialize the radio by telling it what ID it has and what
 // network it's on The NodeID takes values from 1-127, 0 is reserved for sending
@@ -17,7 +18,7 @@
 #define ACK_TIME 50
 #define DELAY_BEFORE_SLEEP (long)1000
 
-uint8_t KEY[] = "!Encrypted123%$£";
+uint8_t KEY[] = RADIO_ENCRYPTION_KEY;
 RFM12B radio;
 
 int MOISTURE_DRY = 355;
