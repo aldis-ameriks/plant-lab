@@ -4,12 +4,6 @@
 [submodule "sensor/lib/I2CSoilMoistureSensor"]
 	path = sensor/lib/I2CSoilMoistureSensor
 	url = https://github.com/Apollon77/I2CSoilMoistureSensor.git
-[submodule "sensor/lib/jeelib"]
-	path = sensor/lib/jeelib
-	url = https://github.com/jeelabs/jeelib.git
 [submodule "sensor/lib/Low-Power"]
 	path = sensor/lib/Low-Power
 	url = https://github.com/rocketscream/Low-Power.git
-[submodule "sensor/lib/Arduino-MemoryFree"]
-	path = sensor/lib/Arduino-MemoryFree
-	url = https://github.com/mpflaga/Arduino-MemoryFree.git
