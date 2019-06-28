@@ -23,7 +23,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && aws --profile personal s3 sync build/ s3://cleverhome"
+    "docker:build": "docker build -t registry.kataldi.com/plant-client .",
+    "docker:push": "docker push registry.kataldi.com/plant-client",
+    "docker:run": "docker run -p 80:80 --rm registry.kataldi.com/plant-client"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.11.2",
