@@ -87,6 +87,7 @@ class LineChart extends React.Component {
 }
 
 LineChart.propTypes = {
+  title: PropTypes.string.isRequired,
   categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   series: PropTypes.arrayOf(
     PropTypes.shape({

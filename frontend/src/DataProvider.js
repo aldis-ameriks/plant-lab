@@ -6,8 +6,8 @@ import { Query } from 'react-apollo';
 import { ema } from 'moving-averages';
 
 const query = gql`
-  query($nodeid: Int, $date: DateTime) {
-    readings(nodeid: $nodeid, date: $date) {
+  query($nodeId: String!, $date: String!) {
+    readings(nodeId: $nodeId, date: $date) {
       readings {
         time
         moisture
@@ -19,8 +19,8 @@ const query = gql`
   }
 `;
 
-const DataProvider = ({ date, nodeid, render }) => (
-  <Query pollInterval={30000} variables={{ date, nodeid }} query={query}>
+const DataProvider = ({ date, nodeId, render }) => (
+  <Query pollInterval={30000} variables={{ date, nodeId }} query={query}>
     {({ loading, error, data }) => {
       if (loading) {
         return null;
@@ -70,13 +70,13 @@ const DataProvider = ({ date, nodeid, render }) => (
 
 DataProvider.propTypes = {
   render: PropTypes.func.isRequired,
-  date: PropTypes.instanceOf(Date),
-  nodeid: PropTypes.number,
+  date: PropTypes.string,
+  nodeId: PropTypes.string,
 };
 
 DataProvider.defaultProps = {
-  nodeid: 4,
-  date: subDays(new Date(), 90),
+  nodeId: '4',
+  date: subDays(new Date(), 90).toISOString(),
 };
 
 export default DataProvider;
