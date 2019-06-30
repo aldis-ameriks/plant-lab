@@ -100,11 +100,13 @@ const Reading = styled.div`
 `;
 
 const App = () => {
+  const nodeId = getNodeId();
   const [isInfoVisible, setInfoVisibility] = useState(false);
 
   return (
     <CardWrapper>
       <DataProvider
+        nodeId={nodeId}
         render={({
           moistures,
           temperatures,
@@ -204,5 +206,10 @@ const App = () => {
     </CardWrapper>
   );
 };
+
+function getNodeId() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('nodeId') || undefined;
+}
 
 export default App;
