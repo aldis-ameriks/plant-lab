@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "server"
+  ],
+  "scripts": {
+    "start:all": "concurrently \"yarn workspace plant-server dev\" \"yarn workspace plant-client start\"",
+    "start:server": "yarn workspace plant-server dev",
+    "start:client": "yarn workspace plant-client start"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.1"
+  }
+}
