@@ -20,7 +20,7 @@ const morgan = require('morgan');
   });
 
   const options = {
-    port: 4000,
+    port: process.env.APP_PORT || 4000,
     endpoint: '/graphql',
     formatError: err => {
       console.error(err);
