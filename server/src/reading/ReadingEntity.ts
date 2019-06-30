@@ -23,6 +23,6 @@ export class Readings {
   @Field(type => [Reading])
   readings: [Reading];
 
-  @Field()
-  watered: Date;
+  @Field({ nullable: true })
+  watered?: Date;
 }
