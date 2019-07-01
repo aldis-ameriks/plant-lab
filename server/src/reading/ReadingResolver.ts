@@ -18,6 +18,7 @@ class ReadingResolver {
   @Mutation(returns => String)
   @Authorized()
   async saveReading(@Arg('input') readingInput: string) {
+    console.log('Received input:', readingInput);
     const parsedInput = readingInput.split(';');
     const nodeId = parsedInput[0];
     const moisture = Number(parsedInput[2]);
