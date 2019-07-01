@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Info from "./components/Info";
-import InfoToggle from "./components/InfoToggle";
-import LineChart from "./components/LineChart";
-import RadialChart from "./components/RadialChart";
-import DataProvider from "./DataProvider";
-import plantImg from "./plant.jpg";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Info from './components/Info';
+import InfoToggle from './components/InfoToggle';
+import LineChart from './components/LineChart';
+import RadialChart from './components/RadialChart';
+import DataProvider from './DataProvider';
+import plantImg from './plant.jpg';
 
 const CardWrapper = styled.div`
   margin: 2em 0;
@@ -117,13 +117,10 @@ const App = () => {
           labels,
           daysSinceLastWatered,
           minutesSinceLastReading,
-          currentReading: { moisture, temperature, batteryVoltage }
+          currentReading: { moisture, temperature, batteryVoltage },
         }) => (
           <Card>
-            <InfoToggle
-              isVisible={isInfoVisible}
-              setVisibility={setInfoVisibility}
-            />
+            <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
             <Info isVisible={isInfoVisible} />
             <CardSection>
               <CardTitle>Rubber tree</CardTitle>
@@ -133,19 +130,10 @@ const App = () => {
 
               <RowWrapper>
                 <GaugeWrapper>
-                  <RadialChart
-                    label="moisture"
-                    value={moisture}
-                    type="percentage"
-                  />
+                  <RadialChart label="moisture" value={moisture} type="percentage" />
                 </GaugeWrapper>
                 <GaugeWrapper>
-                  <RadialChart
-                    label="temp."
-                    value={temperature}
-                    type="temperature"
-                    maxValue={40}
-                  />
+                  <RadialChart label="temp." value={temperature} type="temperature" maxValue={40} />
                 </GaugeWrapper>
                 <GaugeWrapper>
                   <RadialChart
@@ -160,9 +148,7 @@ const App = () => {
               </RowWrapper>
 
               <RowWrapper>
-                <Reading>
-                  Last reading {minutesSinceLastReading} min. ago
-                </Reading>
+                <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
                 <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
               </RowWrapper>
             </CardSection>
@@ -172,7 +158,7 @@ const App = () => {
                 <LineChart
                   categories={labels}
                   series={[
-                    { name: "Moisture", data: moistures }
+                    { name: 'Moisture', data: moistures },
                     // { name: 'Moisture moving average', data: moistureTrend },
                   ]}
                   title="Moisture"
@@ -180,11 +166,11 @@ const App = () => {
                 <LineChart
                   categories={labels}
                   series={[
-                    { name: "Temperature", data: temperatures },
+                    { name: 'Temperature', data: temperatures },
                     {
-                      name: "Temperature moving average",
-                      data: temperatureTrend
-                    }
+                      name: 'Temperature moving average',
+                      data: temperatureTrend,
+                    },
                   ]}
                   title="Temperature"
                 />
@@ -193,7 +179,7 @@ const App = () => {
                   max={4.3}
                   categories={labels}
                   series={[
-                    { name: "Battery voltage", data: batteryVoltages }
+                    { name: 'Battery voltage', data: batteryVoltages },
                     // { name: 'Battery voltage moving average', data: batteryVoltageTrend },
                   ]}
                   title="Battery voltage"

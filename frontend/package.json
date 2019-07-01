@@ -24,6 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.jsx --ignore-path .gitignore",
+    "lint:fix": "eslint . --ext .js,.jsx --fix --ignore-path .gitignore",
     "lint:ci": "yarn lint --format junit -o ../results/eslint/result.xml",
     "docker:build": "docker build -t registry.kataldi.com/plant-client .",
     "docker:push": "docker push registry.kataldi.com/plant-client",
