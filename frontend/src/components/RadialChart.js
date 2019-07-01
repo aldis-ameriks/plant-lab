@@ -6,6 +6,8 @@ class RadialChart extends React.Component {
   constructor(props) {
     super(props);
 
+    const { label } = this.props;
+
     this.state = {
       options: {
         states: {
@@ -75,28 +77,29 @@ class RadialChart extends React.Component {
             stops: [0, 50, 53, 91],
           },
         },
-        labels: [this.props.label],
+        labels: [label],
       },
       series: [this.getValueForRadialBar()],
     };
   }
 
   getValueForRadialBar() {
+    const { value, maxValue, decimals } = this.props;
     // TODO: workaround due to apex radial chart not supporting value range.
     //       https://github.com/apexcharts/apexcharts.js/issues/449
-    return (this.props.value * (100 / this.props.maxValue)).toFixed(this.props.decimals);
+    return (value * (100 / maxValue)).toFixed(decimals);
   }
 
   getValueForLabel(val) {
+    const { maxValue, decimals } = this.props;
     // TODO: workaround due to apex radial chart not supporting value range.
     //       https://github.com/apexcharts/apexcharts.js/issues/449
-    return (val / (100 / this.props.maxValue)).toFixed(this.props.decimals);
+    return (val / (100 / maxValue)).toFixed(decimals);
   }
 
   render() {
-    return (
-      <ReactApexChart options={this.state.options} series={this.state.series} type="radialBar" />
-    );
+    const { options, series } = this.state;
+    return <ReactApexChart options={options} series={series} type="radialBar" />;
   }
 }
 
@@ -104,14 +107,12 @@ RadialChart.propTypes = {
   value: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['percentage', 'temperature', 'voltage']),
-  minValue: PropTypes.number,
   maxValue: PropTypes.number,
   decimals: PropTypes.number,
 };
 
 RadialChart.defaultProps = {
   type: null,
-  minValue: 0,
   maxValue: 100,
   decimals: 0,
 };

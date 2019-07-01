@@ -1,6 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { ToggleStyled } from './styles';
+import React from 'react';
+import ToggleStyled from './styles';
 
 const InfoToggle = ({ isVisible, setVisibility }) => (
   <ToggleStyled

@@ -1,11 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 class LineChart extends React.Component {
   constructor(props) {
     super(props);
 
+    const { categories, min, max, title, series } = this.props;
     this.state = {
       options: {
         colors: ['#8a8a8a', '#bbbbbb'],
@@ -34,7 +35,7 @@ class LineChart extends React.Component {
           },
         },
         xaxis: {
-          categories: this.props.categories,
+          categories,
           labels: {
             show: false,
           },
@@ -43,8 +44,8 @@ class LineChart extends React.Component {
           },
         },
         yaxis: {
-          min: this.props.min,
-          max: this.props.max,
+          min,
+          max,
         },
         markers: {
           colors: ['#8a8a8a', '#bbbbbb'],
@@ -57,7 +58,7 @@ class LineChart extends React.Component {
           },
         },
         title: {
-          text: this.props.title,
+          text: title,
           align: 'middle',
           offsetX: 14,
           offsetY: 24,
@@ -70,19 +71,13 @@ class LineChart extends React.Component {
           },
         },
       },
-      series: this.props.series,
+      series,
     };
   }
 
   render() {
-    return (
-      <ReactApexChart
-        options={this.state.options}
-        series={this.state.series}
-        type="line"
-        width="100%"
-      />
-    );
+    const { options, series } = this.state;
+    return <ReactApexChart options={options} series={series} type="line" width="100%" />;
   }
 }
 

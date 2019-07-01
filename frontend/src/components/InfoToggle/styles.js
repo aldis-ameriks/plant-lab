@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ToggleStyled = styled.button`
+const ToggleStyled = styled.button`
   position: absolute;
   cursor: pointer;
   top: 5px;
@@ -17,3 +17,5 @@ export const ToggleStyled = styled.button`
     border-radius: 5px;
   }
 `;
+
+export default ToggleStyled;
