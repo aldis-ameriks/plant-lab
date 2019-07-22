@@ -23,7 +23,7 @@
     "type-graphql": "^0.17.4"
   },
   "devDependencies": {
-    "@types/graphql": "^14.2.2",
+    "@types/graphql": "^14.2.3",
     "@types/node": "^12.6.8",
     "husky": "^3.0.1",
     "lint-staged": "^9.2.0",
