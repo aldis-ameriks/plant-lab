@@ -34,7 +34,7 @@ function parseReadings(readings) {
   const reversedReadings = readings.reverse();
 
   const parsedReadings = reversedReadings
-    .filter(reading => !!reading.moisture_percentage)
+    .filter(reading => !!reading.moisture_percentage && reading.moisture_percentage < 100)
     .map(reading => ({
       moisture: reading.moisture_percentage,
       time: new Date(reading.time),
