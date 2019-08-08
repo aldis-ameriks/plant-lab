@@ -21,7 +21,7 @@ export class Reading {
 @ObjectType()
 export class Readings {
   @Field(type => [Reading])
-  readings: [Reading];
+  readings: Reading[];
 
   @Field({ nullable: true })
   watered?: Date;

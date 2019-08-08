@@ -1,5 +1,6 @@
-const influx = require('influx');
 import { INFLUX } from './config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const influx = require('influx');
 
 export const client = new influx.InfluxDB({
   host: INFLUX.HOST,
@@ -33,4 +34,4 @@ export type InfluxReading = {
   light: number;
   battery_voltage: number;
   time: string;
-}
+};

@@ -7,7 +7,8 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "lint": "tslint --project tsconfig.json --config tslint.json",
+    "lint": "eslint . --ext .ts --ignore-path .gitignore",
+    "hooky": "bash ../.git/hooks/pre-commit",
     "lint:ci": "yarn lint --format junit -o ../results/tslint/result.xml",
     "docker:build": "docker build -t registry.kataldi.com/plant-server .",
     "docker:push": "docker push registry.kataldi.com/plant-server",
@@ -25,14 +26,15 @@
   "devDependencies": {
     "@types/graphql": "^14.2.3",
     "@types/node": "^12.7.1",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
     "husky": "^3.0.2",
     "lint-staged": "^9.2.1",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
     "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
-    "tslint-config-airbnb": "^5.11.1",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.3"
   },
   "prettier": {
@@ -51,7 +53,7 @@
       "git add"
     ],
     "*.{ts,js}": [
-      "tslint --fix",
+      "eslint --fix",
       "git add"
     ]
   }

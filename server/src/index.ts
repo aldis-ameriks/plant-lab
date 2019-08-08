@@ -7,6 +7,7 @@ import { ACCESS_KEY } from './common/config';
 
 import ReadingResolver from './reading/ReadingResolver';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const morgan = require('morgan');
 
 (async () => {

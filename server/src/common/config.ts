@@ -6,4 +6,4 @@ export const INFLUX: {
   USERNAME: string;
   PASSWORD: string;
 } = config.get('INFLUX');
-export const ACCESS_KEY: String = config.get('ACCESS_KEY');
+export const ACCESS_KEY: string = config.get('ACCESS_KEY');
