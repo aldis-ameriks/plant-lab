@@ -1,4 +1,4 @@
-import { client } from '../common/influxClient';
+import { client, InfluxReading } from '../common/influxClient';
 import { Reading } from './ReadingEntity';
 
 class ReadingService {
@@ -6,7 +6,7 @@ class ReadingService {
     const time = getTimestamp(date);
     const nanoEpoch = formatToNanoEpoch(time);
 
-    const readings = await client.query(
+    const readings: InfluxReading[] = await client.query(
       `select * from plant where "node_id"='${nodeId}' and time > ${nanoEpoch} order by time desc`
     );
     return parseReadings(readings);
@@ -30,7 +30,7 @@ class ReadingService {
   }
 }
 
-function parseReadings(readings) {
+function parseReadings(readings: InfluxReading[]) {
   const reversedReadings = readings.reverse();
 
   const parsedReadings = reversedReadings
@@ -46,7 +46,7 @@ function parseReadings(readings) {
   return { watered, readings: parsedReadings };
 }
 
-function getLastWateredDate(readings: any) {
+function getLastWateredDate(readings: InfluxReading[]) {
   const threshold = 10;
   let watered = undefined;
   readings.reduce((previousValue, currentValue) => {

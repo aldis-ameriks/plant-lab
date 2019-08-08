@@ -23,3 +23,14 @@ export const client = new influx.InfluxDB({
     },
   ],
 });
+
+export type InfluxReading = {
+  moisture: number;
+  moisture_percentage: number;
+  moisture_wet: number;
+  moisture_dry: number;
+  temperature: number;
+  light: number;
+  battery_voltage: number;
+  time: string;
+}
