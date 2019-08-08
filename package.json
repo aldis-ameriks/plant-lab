@@ -1,10 +1,9 @@
 {
   "private": true,
-  "workspaces": [
-    "frontend",
-    "server",
-    "e2e"
-  ],
+  "workspaces": {
+    "packages": ["frontend", "server", "e2e"],
+    "nohoist": ["**/husky"]
+  },
   "scripts": {
     "start:all": "concurrently \"yarn workspace plant-server dev\" \"yarn workspace plant-client start\"",
     "start:server": "yarn workspace plant-server dev",
