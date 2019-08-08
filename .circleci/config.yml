@@ -3,7 +3,7 @@ executors:
     parameters:
       image:
         type: string
-        default: "10"
+        default: "12"
     docker:
     - image: circleci/node:<< parameters.image >>
       environment:
@@ -12,7 +12,7 @@ executors:
 aliases:
   e2e-executor: &e2e-executor
     docker:
-    - image: cypress/browsers:chrome69
+    - image: cypress/browsers:node12.4.0-chrome76
       environment:
         TERM: xterm
 
