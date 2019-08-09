@@ -42,15 +42,15 @@ function parseReadings(readings: InfluxReading[]) {
       batteryVoltage: reading.battery_voltage,
     }));
 
-  const watered = getLastWateredDate(reversedReadings);
+  const watered = getLastWateredDate(parsedReadings);
   return { watered, readings: parsedReadings };
 }
 
-function getLastWateredDate(readings: InfluxReading[]) {
+function getLastWateredDate(readings: Reading[]) {
   const threshold = 10;
   let watered = undefined;
   readings.reduce((previousValue, currentValue) => {
-    if (currentValue.moisture_percentage - previousValue.moisture_percentage > threshold) {
+    if (currentValue.moisture - previousValue.moisture > threshold) {
       watered = currentValue.time;
       return currentValue;
     }
