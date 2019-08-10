@@ -16,13 +16,12 @@ type Query {
 
 type Reading {
   time: DateTime!
-  moisture: Float!
-  temperature: Float!
-  batteryVoltage: Float!
-  light: Float!
+  value: Float!
 }
 
 type Readings {
-  readings: [Reading!]!
+  moisture: [Reading!]!
+  temperature: [Reading!]!
+  batteryVoltage: [Reading!]!
   watered: DateTime
 }

@@ -6,7 +6,7 @@ class LineChart extends React.Component {
   constructor(props) {
     super(props);
 
-    const { categories, min, max, title, series } = this.props;
+    const { min, max, title, data } = this.props;
     this.state = {
       options: {
         colors: ['#8a8a8a', '#bbbbbb'],
@@ -35,7 +35,7 @@ class LineChart extends React.Component {
           },
         },
         xaxis: {
-          categories,
+          categories: data.map(({ time }) => new Date(time).toLocaleDateString()),
           labels: {
             show: false,
           },
@@ -71,7 +71,7 @@ class LineChart extends React.Component {
           },
         },
       },
-      series,
+      series: [{ name: title, data: data.map(({ value }) => value) }],
     };
   }
 
@@ -83,11 +83,10 @@ class LineChart extends React.Component {
 
 LineChart.propTypes = {
   title: PropTypes.string.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  series: PropTypes.arrayOf(
+  data: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
-      data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
+      value: PropTypes.number.isRequired,
+      time: PropTypes.string.isRequired,
     })
   ).isRequired,
   min: PropTypes.number,

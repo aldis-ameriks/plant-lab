@@ -3,16 +3,21 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Query } from 'react-apollo';
-import { ema } from 'moving-averages';
 
 const query = gql`
   query($nodeId: String!, $date: String!) {
     readings(nodeId: $nodeId, date: $date) {
-      readings {
+      moisture {
         time
-        moisture
-        temperature
-        batteryVoltage
+        value
+      }
+      temperature {
+        time
+        value
+      }
+      batteryVoltage {
+        time
+        value
       }
       watered
     }
@@ -31,35 +36,26 @@ const DataProvider = ({ date, nodeId, render }) => (
       }
 
       const {
-        readings: { readings, watered },
+        readings: { moisture, temperature, batteryVoltage, watered },
       } = data;
-      if (!readings || readings.length < 1) {
+      if (!moisture || moisture.length < 1) {
         return <p>No readings for a long time. Check your sensors.</p>;
       }
 
-      const moistures = readings.map(reading => reading.moisture);
-      const temperatures = readings.map(reading => reading.temperature);
-      const batteryVoltages = readings.map(reading => reading.batteryVoltage);
-      const labels = readings.map(reading => new Date(reading.time).toLocaleDateString());
-      const currentReading = readings[readings.length - 1];
+      const currentReading = {
+        time: moisture[moisture.length - 1].time,
+        moisture: moisture[moisture.length - 1].value,
+        temperature: temperature[temperature.length - 1].value,
+        batteryVoltage: batteryVoltage[batteryVoltage.length - 1].value,
+      };
+
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
       const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
-      const temperatureTrend = ema(temperatures, temperatures.length / 2).map(value =>
-        value.toFixed()
-      );
-      const moistureTrend = ema(moistures, moistures.length / 2).map(value => value.toFixed());
-      const batteryVoltageTrend = ema(batteryVoltages, batteryVoltages.length / 2).map(value =>
-        value.toFixed(2)
-      );
 
       return render({
-        moistures,
-        temperatures,
-        batteryVoltages,
-        temperatureTrend,
-        moistureTrend,
-        batteryVoltageTrend,
-        labels,
+        moisture,
+        temperature,
+        batteryVoltage,
         currentReading,
         minutesSinceLastReading,
         daysSinceLastWatered,

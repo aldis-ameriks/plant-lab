@@ -108,14 +108,12 @@ const App = () => {
       <DataProvider
         nodeId={nodeId}
         render={({
-          moistures,
-          temperatures,
-          batteryVoltages,
-          temperatureTrend,
-          labels,
+          moisture,
+          temperature,
+          batteryVoltage,
           daysSinceLastWatered,
           minutesSinceLastReading,
-          currentReading: { moisture, temperature, batteryVoltage },
+          currentReading,
         }) => (
           <Card>
             <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
@@ -128,15 +126,20 @@ const App = () => {
 
               <RowWrapper>
                 <GaugeWrapper>
-                  <RadialChart label="moisture" value={moisture} type="percentage" />
+                  <RadialChart label="moisture" value={currentReading.moisture} type="percentage" />
                 </GaugeWrapper>
                 <GaugeWrapper>
-                  <RadialChart label="temp." value={temperature} type="temperature" maxValue={40} />
+                  <RadialChart
+                    label="temp."
+                    value={currentReading.temperature}
+                    type="temperature"
+                    maxValue={40}
+                  />
                 </GaugeWrapper>
                 <GaugeWrapper>
                   <RadialChart
                     label="battery"
-                    value={batteryVoltage}
+                    value={currentReading.batteryVoltage}
                     type="voltage"
                     maxValue={4.3}
                     minValue={2.8}
@@ -153,35 +156,9 @@ const App = () => {
 
             <CardSection>
               <LineChartsWrapper>
-                <LineChart
-                  categories={labels}
-                  series={[
-                    { name: 'Moisture', data: moistures },
-                    // { name: 'Moisture moving average', data: moistureTrend },
-                  ]}
-                  title="Moisture"
-                />
-                <LineChart
-                  categories={labels}
-                  series={[
-                    { name: 'Temperature', data: temperatures },
-                    {
-                      name: 'Temperature moving average',
-                      data: temperatureTrend,
-                    },
-                  ]}
-                  title="Temperature"
-                />
-                <LineChart
-                  min={2.8}
-                  max={4.3}
-                  categories={labels}
-                  series={[
-                    { name: 'Battery voltage', data: batteryVoltages },
-                    // { name: 'Battery voltage moving average', data: batteryVoltageTrend },
-                  ]}
-                  title="Battery voltage"
-                />
+                <LineChart data={moisture} title="Moisture" />
+                <LineChart data={temperature} title="Temperature" />
+                <LineChart min={2.8} max={4.3} data={batteryVoltage} title="Battery voltage" />
               </LineChartsWrapper>
             </CardSection>
           </Card>

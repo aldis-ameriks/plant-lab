@@ -6,22 +6,19 @@ export class Reading {
   time: Date;
 
   @Field()
-  moisture: number;
-
-  @Field()
-  temperature: number;
-
-  @Field()
-  batteryVoltage: number;
-
-  @Field()
-  light?: number;
+  value: number;
 }
 
 @ObjectType()
 export class Readings {
   @Field(type => [Reading])
-  readings: Reading[];
+  moisture: Reading[];
+
+  @Field(type => [Reading])
+  temperature: Reading[];
+
+  @Field(type => [Reading])
+  batteryVoltage: Reading[];
 
   @Field({ nullable: true })
   watered?: Date;

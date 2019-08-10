@@ -1,5 +1,14 @@
 import { client, InfluxReading } from '../common/influxClient';
 import { Reading } from './ReadingEntity';
+import { reduceDataPoints } from '../common/dataUtils';
+
+type ReadingInput = {
+  time: Date;
+  moisture: number;
+  temperature: number;
+  light?: number;
+  batteryVoltage: number;
+};
 
 class ReadingService {
   public async getReadings(nodeId = '99', date) {
@@ -12,7 +21,7 @@ class ReadingService {
     return parseReadings(readings);
   }
 
-  public async saveReading(nodeId: string, reading: Reading) {
+  public async saveReading(nodeId: string, reading: ReadingInput) {
     const item = {
       measurement: 'plant',
       tags: { node_id: nodeId },
@@ -33,25 +42,48 @@ class ReadingService {
 function parseReadings(readings: InfluxReading[]) {
   const reversedReadings = readings.reverse();
 
-  const parsedReadings = reversedReadings
+  const { moisture, temperature, batteryVoltage } = reversedReadings
     .filter(reading => !!reading.moisture_percentage && reading.moisture_percentage < 100)
-    .map(reading => ({
-      moisture: reading.moisture_percentage,
-      time: new Date(reading.time),
-      temperature: reading.temperature,
-      batteryVoltage: reading.battery_voltage,
-    }));
+    .reduce(
+      (acc, cur) => {
+        acc.moisture.push({ x: new Date(cur.time), y: cur.moisture_percentage });
+        acc.temperature.push({ x: new Date(cur.time), y: cur.temperature });
+        acc.batteryVoltage.push({ x: new Date(cur.time), y: cur.battery_voltage });
+        return acc;
+      },
+      { moisture: [], temperature: [], batteryVoltage: [] }
+    );
 
-  const watered = getLastWateredDate(parsedReadings);
-  return { watered, readings: parsedReadings };
+  const reducedMoisture = reduceDataPoints(moisture).map(({ x, y }) => ({
+    time: x,
+    value: Math.round(y),
+  }));
+
+  const reducedTemperature = reduceDataPoints(temperature, 50).map(({ x, y }) => ({
+    time: x,
+    value: y,
+  }));
+
+  const reducedBatteryVoltage = reduceDataPoints(batteryVoltage).map(({ x, y }) => ({
+    time: x,
+    value: y,
+  }));
+
+  const watered = getLastWateredDate(moisture);
+  return {
+    watered,
+    moisture: reducedMoisture,
+    temperature: reducedTemperature,
+    batteryVoltage: reducedBatteryVoltage,
+  };
 }
 
-function getLastWateredDate(readings: Reading[]) {
+function getLastWateredDate(readings: any[]) {
   const threshold = 10;
   let watered = undefined;
   readings.reduce((previousValue, currentValue) => {
-    if (currentValue.moisture - previousValue.moisture > threshold) {
-      watered = currentValue.time;
+    if (currentValue.y - previousValue.y > threshold) {
+      watered = currentValue.x;
       return currentValue;
     }
     return currentValue;

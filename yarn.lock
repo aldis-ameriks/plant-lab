@@ -7945,11 +7945,6 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-moving-averages@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/moving-averages/-/moving-averages-4.0.5.tgz#f1afea7eda8f956694a98857904cee780a4dc03d"
-  integrity sha512-ofrBYz5tIiN3E24a9Q5evRprvb1AQLciE4fnblpv8P0zM/pwwEdGj7GgDQwSxyrAVNe3hfzn9IB5nXi0zt92AA==
-
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
