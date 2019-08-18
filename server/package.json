@@ -21,7 +21,7 @@
     "influx": "^5.4.0",
     "morgan": "^1.9.1",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^0.17.4"
+    "type-graphql": "^0.17.5"
   },
   "devDependencies": {
     "@types/graphql": "^14.2.3",
