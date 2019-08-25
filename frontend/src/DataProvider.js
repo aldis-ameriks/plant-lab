@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Query } from 'react-apollo';
+import { ema } from 'moving-averages';
 
 const query = gql`
   query($nodeId: String!, $date: String!) {
@@ -52,9 +53,17 @@ const DataProvider = ({ date, nodeId, render }) => (
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
       const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
 
+      const temperatureValues = temperature.map(t => t.value);
+      const emaValues = ema(temperatureValues, temperatureValues.length / 2).map(value =>
+        Math.round(value)
+      );
+      const temperatureMovingAverage = emaValues
+        .map((tr, index) => ({ time: temperature[index].time, value: tr }))
+        .filter(Boolean);
+
       return render({
         moisture,
-        temperature,
+        temperature: temperatureMovingAverage,
         batteryVoltage,
         currentReading,
         minutesSinceLastReading,

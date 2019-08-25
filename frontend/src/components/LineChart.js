@@ -44,6 +44,7 @@ class LineChart extends React.Component {
           },
         },
         yaxis: {
+          decimalsInFloat: 2,
           min,
           max,
         },
