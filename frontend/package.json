@@ -31,7 +31,7 @@
     "docker:run": "docker run -p 80:80 --rm registry.kataldi.com/plant-client"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.12.0",
+    "babel-plugin-import": "^1.12.1",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-config-prettier": "^6.1.0",
