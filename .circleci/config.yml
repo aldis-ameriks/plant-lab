@@ -20,17 +20,21 @@ aliases:
     restore_cache:
       name: Restore Yarn Package Cache
       keys:
-      - v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      - v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum "e2e/yarn.lock" }}-{{ checksum "frontend/yarn.lock" }}-{{ checksum "server/yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
 
   install_node_modules: &install_node_modules
     run:
       name: Install Yarn Packages
-      command: yarn install --frozen-lockfile
+      command:
+        - yarn install --frozen-lockfile
+        - yarn --cwd e2e install --frozen-lockfile
+        - yarn --cwd frontend install --frozen-lockfile
+        - yarn --cwd server install --frozen-lockfile
 
   save_cache: &save_cache
     save_cache:
       name: Save Yarn Package Cache
-      key: v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      key: v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum "e2e/yarn.lock" }}-{{ checksum "frontend/yarn.lock" }}-{{ checksum "server/yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
       paths:
       - /home/circleci/.cache
 
@@ -54,10 +58,10 @@ jobs:
     - <<: *save_cache
     - run:
         name: Run server lint
-        command: yarn workspace plant-server lint:ci
+        command: yarn --cwd server lint:ci
     - run:
         name: Run client lint
-        command: yarn workspace plant-client lint:ci
+        command: yarn --cwd frontend lint:ci
     - <<: *store_results
     - <<: *store_results_artifacts
 

@@ -1,15 +1,11 @@
 {
   "private": true,
-  "workspaces": {
-    "packages": ["frontend", "server", "e2e"],
-    "nohoist": ["**/husky"]
-  },
   "scripts": {
-    "start:all": "concurrently \"yarn workspace plant-server dev\" \"yarn workspace plant-client start\"",
-    "start:server": "yarn workspace plant-server dev",
-    "start:client": "yarn workspace plant-client start",
+    "start:all": "concurrently \"yarn --cwd server dev\" \"yarn --cwd frontend start\"",
+    "start:server": "yarn --cwd server dev",
+    "start:client": "yarn --cwd frontend start",
     "cypress:start:client-and-server": "CI=true SERVER_PORT=4001 PORT=3001 REACT_APP_GRAPHQL_URL=http://localhost:4001/graphql BROWSER=none start-test start:server 4001 start:client",
-    "cypress:run": "CYPRESS_baseUrl=http://localhost:3001 yarn workspace e2e run cypress:run",
+    "cypress:run": "CYPRESS_baseUrl=http://localhost:3001 yarn --cwd e2e cypress:run",
     "cypress:test": "start-test cypress:start:client-and-server 3001 cypress:run"
   },
   "devDependencies": {
