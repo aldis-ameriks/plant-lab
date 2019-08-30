@@ -18,7 +18,7 @@
     "config": "^3.2.2",
     "graphql-iso-date": "^3.6.1",
     "graphql-yoga": "^1.18.3",
-    "influx": "^5.4.0",
+    "influx": "^5.4.1",
     "morgan": "^1.9.1",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^0.17.5"
