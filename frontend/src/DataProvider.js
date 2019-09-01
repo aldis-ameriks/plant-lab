@@ -51,7 +51,10 @@ const DataProvider = ({ date, nodeId, render }) => (
       };
 
       const daysSinceLastWatered = watered ? differenceInDays(new Date(), new Date(watered)) : null;
-      const minutesSinceLastReading = differenceInMinutes(new Date(), currentReading.time);
+      const minutesSinceLastReading = differenceInMinutes(
+        new Date(),
+        new Date(currentReading.time)
+      );
 
       const temperatureValues = temperature.map(t => t.value);
       const emaValues = ema(temperatureValues, temperatureValues.length / 2).map(value =>
