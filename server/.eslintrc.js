@@ -13,6 +13,10 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': 0,
     '@typescript-eslint/prefer-interface': 0,
     '@typescript-eslint/no-unused-vars': 0,
+    'import/prefer-default-export': 0,
+    'no-console': 0,
+    'max-classes-per-file': 0,
+    'class-methods-use-this': 0,
   },
   settings: {
     'import/parsers': {

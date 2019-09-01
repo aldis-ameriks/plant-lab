@@ -4,7 +4,8 @@ export function reduceDataPoints(data, period = 30) {
   let pts = internalRamerDouglasPeucker(data, epsilon);
   let iteration = 0;
   // Iterate until the correct number of points is obtained
-  while (pts.length != finalPointCount && iteration++ < 20) {
+  while (pts.length !== finalPointCount && iteration + 1 < 20) {
+    iteration += 1;
     epsilon *= Math.sqrt(pts.length / finalPointCount);
     pts = internalRamerDouglasPeucker(data, epsilon);
   }
@@ -29,10 +30,11 @@ function ramerDouglasPeuckerRecursive(pts, first, last, eps) {
 
   let iMax = first;
   let max = -1;
-  let p, dy;
+  let p;
+  let dy;
 
   // Calculate vertical distance
-  for (let i = first + 1; i < last; i++) {
+  for (let i = first + 1; i < last; i += 1) {
     p = pts[i];
     const y = y0 + slope * (p.x - x0);
     dy = Math.abs(p.y - y);

@@ -4,6 +4,4 @@ type Context = {
   isAuthorized: boolean;
 };
 
-export const authChecker: AuthChecker<Context> = ({ context }, roles) => {
-  return context.isAuthorized;
-};
+export const authChecker: AuthChecker<Context> = ({ context }, roles) => context.isAuthorized;

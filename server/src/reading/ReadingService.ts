@@ -1,5 +1,4 @@
 import { client, InfluxReading } from '../common/influxClient';
-import { Reading } from './ReadingEntity';
 import { reduceDataPoints } from '../common/dataUtils';
 
 type ReadingInput = {
@@ -78,9 +77,9 @@ function parseReadings(readings: InfluxReading[]) {
   };
 }
 
-function getLastWateredDate(readings: any[]) {
+function getLastWateredDate(readings: { y: number; x: number }[]) {
   const threshold = 10;
-  let watered = undefined;
+  let watered;
   readings.reduce((previousValue, currentValue) => {
     if (currentValue.y - previousValue.y > threshold) {
       watered = currentValue.x;

@@ -25,7 +25,12 @@ class ReadingResolver {
     const temperature = Number(parsedInput[5]);
     const batteryVoltage = Number(parsedInput[7]);
     const time = new Date();
-    const reading = { moisture, temperature, batteryVoltage, time };
+    const reading = {
+      moisture,
+      temperature,
+      batteryVoltage,
+      time,
+    };
 
     await this.readingService.saveReading(nodeId, reading);
     return 'success';
