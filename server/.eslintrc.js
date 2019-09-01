@@ -1,6 +1,7 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: ['plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint'],
+  plugins: ['import'],
+  extends: ['airbnb-base', 'plugin:@typescript-eslint/recommended', 'prettier', 'prettier/@typescript-eslint'],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -12,5 +13,13 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': 0,
     '@typescript-eslint/prefer-interface': 0,
     '@typescript-eslint/no-unused-vars': 0,
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts'],
+    },
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
