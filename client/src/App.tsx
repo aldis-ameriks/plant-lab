@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { subDays } from 'date-fns';
 import Info from './components/Info';
 import InfoToggle from './components/InfoToggle';
 import LineChart from './components/LineChart';
 import RadialChart from './components/RadialChart';
-import DataProvider from './DataProvider';
+import { parseReadings } from './utils';
+import { useGetReadingsQuery } from './graphql';
 
 const CardWrapper = styled.div`
   margin: 2em 0;
@@ -98,73 +100,86 @@ const Reading = styled.div`
   }
 `;
 
+const defaultDate = subDays(new Date(), 90).toISOString();
+
 const App = () => {
-  const nodeId = getNodeId();
   const [isInfoVisible, setInfoVisibility] = useState(false);
+  const nodeId = getNodeId();
+  const { data, loading, error } = useGetReadingsQuery({ variables: { date: defaultDate, nodeId } });
+
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    return <p>Error loading sensor data.</p>;
+  }
+
+  const parsedReadings = parseReadings(data);
+  if (!parsedReadings) {
+    return <p>No readings for a long time. Check your sensors.</p>;
+  }
+
+  const {
+    moisture,
+    temperature,
+    batteryVoltage,
+    currentReading,
+    minutesSinceLastReading,
+    daysSinceLastWatered,
+  } = parsedReadings;
 
   return (
     <CardWrapper>
-      <DataProvider
-        nodeId={nodeId}
-        render={({
-          moisture,
-          temperature,
-          batteryVoltage,
-          daysSinceLastWatered,
-          minutesSinceLastReading,
-          currentReading,
-        }: any) => (
-          <Card>
-            <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
-            <Info isVisible={isInfoVisible} />
-            <CardSection>
-              <CardTitle>Rubber tree</CardTitle>
-              <ImageWrapper>
-                <Image src="./plant.jpg" alt="" width="100%" />
-              </ImageWrapper>
+      <Card>
+        <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
+        <Info isVisible={isInfoVisible} />
+        <CardSection>
+          <CardTitle>Rubber tree</CardTitle>
+          <ImageWrapper>
+            <Image src="./plant.jpg" alt="" width="100%" />
+          </ImageWrapper>
 
-              <RowWrapper>
-                <GaugeWrapper>
-                  <RadialChart label="moisture" value={currentReading.moisture} type="percentage" />
-                </GaugeWrapper>
-                <GaugeWrapper>
-                  <RadialChart label="temp." value={currentReading.temperature} type="temperature" maxValue={40} />
-                </GaugeWrapper>
-                <GaugeWrapper>
-                  <RadialChart
-                    label="battery"
-                    value={currentReading.batteryVoltage}
-                    type="voltage"
-                    maxValue={4.3}
-                    minValue={2.8}
-                    decimals={2}
-                  />
-                </GaugeWrapper>
-              </RowWrapper>
+          <RowWrapper>
+            <GaugeWrapper>
+              <RadialChart label="moisture" value={currentReading.moisture} type="percentage" />
+            </GaugeWrapper>
+            <GaugeWrapper>
+              <RadialChart label="temp." value={currentReading.temperature} type="temperature" maxValue={40} />
+            </GaugeWrapper>
+            <GaugeWrapper>
+              <RadialChart
+                label="battery"
+                value={currentReading.batteryVoltage}
+                type="voltage"
+                maxValue={4.3}
+                minValue={2.8}
+                decimals={2}
+              />
+            </GaugeWrapper>
+          </RowWrapper>
 
-              <RowWrapper>
-                <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
-                <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
-              </RowWrapper>
-            </CardSection>
+          <RowWrapper>
+            <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
+            <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
+          </RowWrapper>
+        </CardSection>
 
-            <CardSection>
-              <LineChartsWrapper>
-                <LineChart data={moisture} title="Moisture" />
-                <LineChart data={temperature} title="Average Temperature" />
-                <LineChart min={2.8} max={4.3} data={batteryVoltage} title="Battery voltage" />
-              </LineChartsWrapper>
-            </CardSection>
-          </Card>
-        )}
-      />
+        <CardSection>
+          <LineChartsWrapper>
+            <LineChart data={moisture} title="Moisture" />
+            <LineChart data={temperature} title="Average Temperature" />
+            <LineChart min={2.8} max={4.3} data={batteryVoltage} title="Battery voltage" />
+          </LineChartsWrapper>
+        </CardSection>
+      </Card>
     </CardWrapper>
   );
 };
 
 function getNodeId() {
   const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('nodeId') || undefined;
+  return urlParams.get('nodeId') || '4';
 }
 
 export default App;

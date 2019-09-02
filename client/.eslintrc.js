@@ -15,7 +15,9 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     'react/prop-types': 0,
-    'react/jsx-one-expression-per-line': 0
+    'react/jsx-one-expression-per-line': 0,
+    'no-unused-expressions': 0,
+    'import/prefer-default-export': 0
   },
   globals: {
     document: true,
