@@ -112,7 +112,7 @@ class RadialChart extends React.Component<Props, State> {
 
   render() {
     const { options, series } = this.state;
-    return <ReactApexChart options={options} series={series} type="radialBar"/>;
+    return <ReactApexChart options={options} series={series} type="radialBar" />;
   }
 }
 

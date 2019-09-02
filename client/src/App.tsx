@@ -113,7 +113,7 @@ const App = () => {
           daysSinceLastWatered,
           minutesSinceLastReading,
           currentReading,
-        }) => (
+        }: any) => (
           <Card>
             <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
             <Info isVisible={isInfoVisible} />
@@ -128,12 +128,7 @@ const App = () => {
                   <RadialChart label="moisture" value={currentReading.moisture} type="percentage" />
                 </GaugeWrapper>
                 <GaugeWrapper>
-                  <RadialChart
-                    label="temp."
-                    value={currentReading.temperature}
-                    type="temperature"
-                    maxValue={40}
-                  />
+                  <RadialChart label="temp." value={currentReading.temperature} type="temperature" maxValue={40} />
                 </GaugeWrapper>
                 <GaugeWrapper>
                   <RadialChart
@@ -148,8 +143,14 @@ const App = () => {
               </RowWrapper>
 
               <RowWrapper>
-                <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
-                <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
+                <Reading>
+                  Last reading
+                  {minutesSinceLastReading} min. ago
+                </Reading>
+                <Reading>
+                  Last watered
+                  {daysSinceLastWatered} days ago
+                </Reading>
               </RowWrapper>
             </CardSection>
 

@@ -12,8 +12,8 @@ export const InfoOverlay = styled.div<{ isVisible: boolean }>`
   border-radius: 30px;
   transition: all 300ms ease;
   ${props =>
-  props.isVisible &&
-  `
+    props.isVisible &&
+    `
       opacity: 0.7;
       z-index: 1000;
   `}
@@ -33,8 +33,8 @@ export const TextWrapper = styled.div<{ isVisible: boolean }>`
   padding: 3em;
   opacity: 0;
   ${props =>
-  props.isVisible &&
-  `
+    props.isVisible &&
+    `
       opacity: 1;
       z-index: 2000;
   `}

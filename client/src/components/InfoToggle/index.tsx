@@ -7,12 +7,7 @@ type Props = {
 };
 
 const InfoToggle: React.FC<Props> = ({ isVisible, setVisibility }) => (
-  <ToggleStyled
-    isVisible={isVisible}
-    onClick={() => setVisibility(!isVisible)}
-    tabIndex={0}
-    role="button"
-  >
+  <ToggleStyled isVisible={isVisible} onClick={() => setVisibility(!isVisible)} tabIndex={0} role="button">
     {isVisible ? 'X' : '?'}
   </ToggleStyled>
 );
