@@ -20,7 +20,7 @@ aliases:
     restore_cache:
       name: Restore Yarn Package Cache
       keys:
-      - v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum "e2e/yarn.lock" }}-{{ checksum "frontend/yarn.lock" }}-{{ checksum "server/yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      - v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum "e2e/yarn.lock" }}-{{ checksum "client/yarn.lock" }}-{{ checksum "server/yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
 
   install_node_modules: &install_node_modules
     run:
@@ -37,15 +37,15 @@ aliases:
       name: Install Yarn Packages
       command: yarn --cwd server install --frozen-lockfile
 
-  install_frontend_node_modules: &install_frontend_node_modules
+  install_client_node_modules: &install_client_node_modules
     run:
       name: Install Yarn Packages
-      command: yarn --cwd frontend install --frozen-lockfile
+      command: yarn --cwd client install --frozen-lockfile
 
   save_cache: &save_cache
     save_cache:
       name: Save Yarn Package Cache
-      key: v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum "e2e/yarn.lock" }}-{{ checksum "frontend/yarn.lock" }}-{{ checksum "server/yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      key: v{{ .Environment.versionCache }}-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum "e2e/yarn.lock" }}-{{ checksum "client/yarn.lock" }}-{{ checksum "server/yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
       paths:
       - /home/circleci/.cache
 
@@ -65,7 +65,7 @@ jobs:
     steps:
     - checkout
     - <<: *restore_cache
-    - <<: *install_frontend_node_modules
+    - <<: *install_client_node_modules
     - <<: *install_server_node_modules
     - <<: *save_cache
     - run:
@@ -73,7 +73,7 @@ jobs:
         command: yarn --cwd server lint:ci
     - run:
         name: Run client lint
-        command: yarn --cwd frontend lint:ci
+        command: yarn --cwd client lint:ci
     - <<: *store_results
     - <<: *store_results_artifacts
 
@@ -84,7 +84,7 @@ jobs:
     - <<: *restore_cache
     - <<: *install_node_modules
     - <<: *install_e2e_node_modules
-    - <<: *install_frontend_node_modules
+    - <<: *install_client_node_modules
     - <<: *install_server_node_modules
     - <<: *save_cache
     - run:
