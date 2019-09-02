@@ -143,14 +143,8 @@ const App = () => {
               </RowWrapper>
 
               <RowWrapper>
-                <Reading>
-                  Last reading
-                  {minutesSinceLastReading} min. ago
-                </Reading>
-                <Reading>
-                  Last watered
-                  {daysSinceLastWatered} days ago
-                </Reading>
+                <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
+                <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
               </RowWrapper>
             </CardSection>
 
