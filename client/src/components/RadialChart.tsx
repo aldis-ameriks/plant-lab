@@ -1,9 +1,22 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-class RadialChart extends React.Component {
-  constructor(props) {
+type Props = {
+  value: number;
+  label: string;
+  type?: 'percentage' | 'moisture' | 'voltage' | 'temperature';
+  maxValue?: number;
+  minValue?: number;
+  decimals?: number;
+};
+
+type State = {
+  options: any;
+  series: any;
+};
+
+class RadialChart extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     const { label } = this.props;
@@ -47,7 +60,7 @@ class RadialChart extends React.Component {
                 fontSize: '1.5em',
                 color: 'black',
                 fontFamily: 'inherit',
-                formatter: val => {
+                formatter: (val: number) => {
                   const valueForLabel = this.getValueForLabel(val);
                   // TODO: Chart component should not know about domain specific formatting types. Extract via `unit` prop.
                   switch (props.type) {
@@ -84,14 +97,14 @@ class RadialChart extends React.Component {
   }
 
   getValueForRadialBar() {
-    const { value, maxValue, decimals } = this.props;
+    const { value, maxValue = 100, decimals = 0 } = this.props;
     // TODO: workaround due to apex radial chart not supporting value range.
     //       https://github.com/apexcharts/apexcharts.js/issues/449
     return (value * (100 / maxValue)).toFixed(decimals);
   }
 
-  getValueForLabel(val) {
-    const { maxValue, decimals } = this.props;
+  getValueForLabel(val: number) {
+    const { maxValue = 100, decimals = 0 } = this.props;
     // TODO: workaround due to apex radial chart not supporting value range.
     //       https://github.com/apexcharts/apexcharts.js/issues/449
     return (val / (100 / maxValue)).toFixed(decimals);
@@ -99,22 +112,8 @@ class RadialChart extends React.Component {
 
   render() {
     const { options, series } = this.state;
-    return <ReactApexChart options={options} series={series} type="radialBar" />;
+    return <ReactApexChart options={options} series={series} type="radialBar"/>;
   }
 }
-
-RadialChart.propTypes = {
-  value: PropTypes.number.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['percentage', 'temperature', 'voltage']),
-  maxValue: PropTypes.number,
-  decimals: PropTypes.number,
-};
-
-RadialChart.defaultProps = {
-  type: null,
-  maxValue: 100,
-  decimals: 0,
-};
 
 export default RadialChart;

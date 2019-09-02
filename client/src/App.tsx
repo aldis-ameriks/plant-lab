@@ -5,7 +5,6 @@ import InfoToggle from './components/InfoToggle';
 import LineChart from './components/LineChart';
 import RadialChart from './components/RadialChart';
 import DataProvider from './DataProvider';
-import plantImg from './plant.jpg';
 
 const CardWrapper = styled.div`
   margin: 2em 0;
@@ -121,7 +120,7 @@ const App = () => {
             <CardSection>
               <CardTitle>Rubber tree</CardTitle>
               <ImageWrapper>
-                <Image src={plantImg} alt="" width="100%" />
+                <Image src="./plant.jpg" alt="" width="100%" />
               </ImageWrapper>
 
               <RowWrapper>

@@ -1,9 +1,20 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-class LineChart extends React.Component {
-  constructor(props) {
+type Props = {
+  title: string;
+  data: any;
+  min?: number;
+  max?: number;
+};
+
+type State = {
+  options: any;
+  series: any;
+};
+
+class LineChart extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     const { min, max, title, data } = this.props;
@@ -35,7 +46,7 @@ class LineChart extends React.Component {
           },
         },
         xaxis: {
-          categories: data.map(({ time }) => new Date(time).toLocaleDateString()),
+          categories: data.map(({ time }: any) => new Date(time).toLocaleDateString()),
           labels: {
             show: false,
           },
@@ -72,7 +83,7 @@ class LineChart extends React.Component {
           },
         },
       },
-      series: [{ name: title, data: data.map(({ value }) => value) }],
+      series: [{ name: title, data: data.map(({ value }: any) => value) }],
     };
   }
 
@@ -81,22 +92,5 @@ class LineChart extends React.Component {
     return <ReactApexChart options={options} series={series} type="line" width="100%" />;
   }
 }
-
-LineChart.propTypes = {
-  title: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.number.isRequired,
-      time: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  min: PropTypes.number,
-  max: PropTypes.number,
-};
-
-LineChart.defaultProps = {
-  min: undefined,
-  max: undefined,
-};
 
 export default LineChart;

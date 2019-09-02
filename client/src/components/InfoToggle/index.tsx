@@ -1,21 +1,20 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ToggleStyled from './styles';
 
-const InfoToggle = ({ isVisible, setVisibility }) => (
+type Props = {
+  isVisible: boolean;
+  setVisibility: (isVisible: boolean) => void;
+};
+
+const InfoToggle: React.FC<Props> = ({ isVisible, setVisibility }) => (
   <ToggleStyled
     isVisible={isVisible}
     onClick={() => setVisibility(!isVisible)}
-    tabIndex="0"
+    tabIndex={0}
     role="button"
   >
     {isVisible ? 'X' : '?'}
   </ToggleStyled>
 );
-
-InfoToggle.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  setVisibility: PropTypes.func.isRequired,
-};
 
 export default InfoToggle;

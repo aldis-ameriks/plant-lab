@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ToggleStyled = styled.button`
+const ToggleStyled = styled.button<{ isVisible: boolean }>`
   position: absolute;
   cursor: pointer;
   top: 5px;

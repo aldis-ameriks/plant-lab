@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const InfoOverlay = styled.div`
+export const InfoOverlay = styled.div<{ isVisible: boolean }>`
   position: absolute;
   top: 0;
   right: 0;
@@ -12,14 +12,14 @@ export const InfoOverlay = styled.div`
   border-radius: 30px;
   transition: all 300ms ease;
   ${props =>
-    props.isVisible &&
-    `
+  props.isVisible &&
+  `
       opacity: 0.7;
       z-index: 1000;
   `}
 `;
 
-export const TextWrapper = styled.div`
+export const TextWrapper = styled.div<{ isVisible: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -33,8 +33,8 @@ export const TextWrapper = styled.div`
   padding: 3em;
   opacity: 0;
   ${props =>
-    props.isVisible &&
-    `
+  props.isVisible &&
+  `
       opacity: 1;
       z-index: 2000;
   `}

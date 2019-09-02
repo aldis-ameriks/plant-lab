@@ -25,9 +25,9 @@ const query = gql`
   }
 `;
 
-const DataProvider = ({ date, nodeId, render }) => (
+const DataProvider = ({ date, nodeId, render }: any) => (
   <Query pollInterval={30000} variables={{ date, nodeId }} query={query}>
-    {({ loading, error, data }) => {
+    {({ loading, error, data }: any) => {
       if (loading) {
         return null;
       }
@@ -56,12 +56,12 @@ const DataProvider = ({ date, nodeId, render }) => (
         new Date(currentReading.time)
       );
 
-      const temperatureValues = temperature.map(t => t.value);
-      const emaValues = ema(temperatureValues, temperatureValues.length / 2).map(value =>
+      const temperatureValues = temperature.map((t: any) => t.value);
+      const emaValues = ema(temperatureValues, temperatureValues.length / 2).map((value: any) =>
         Math.round(value)
       );
       const temperatureMovingAverage = emaValues
-        .map((tr, index) => ({ time: temperature[index].time, value: tr }))
+        .map((tr: any, index: number) => ({ time: temperature[index].time, value: tr }))
         .filter(Boolean);
 
       return render({
