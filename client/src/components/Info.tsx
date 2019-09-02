@@ -1,5 +1,5 @@
 import React from 'react';
-import { InfoOverlay, Link, TextWrapper } from './styles';
+import { InfoOverlay, Link, TextWrapper } from './Info.styles';
 
 const Info: React.FC<{ isVisible: boolean }> = ({ isVisible }) => (
   <div>
