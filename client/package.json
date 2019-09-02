@@ -22,6 +22,16 @@
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
     "@types/styled-components": "^4.1.18",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint-config-airbnb-typescript": "^4.0.1",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "prettier": "^1.18.2",
     "react-scripts": "3.1.1",
     "typescript": "3.6.2"
   },
@@ -30,8 +40,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx --ignore-path .gitignore",
-    "lint:fix": "eslint . --ext .js,.jsx --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix --ignore-path .gitignore",
     "lint:ci": "yarn lint --format junit -o ../results/eslint/result.xml",
     "docker:build": "docker build -t registry.kataldi.com/plant-client .",
     "docker:push": "docker push registry.kataldi.com/plant-client",
@@ -39,6 +49,11 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 120
   },
   "browserslist": {
     "production": [
