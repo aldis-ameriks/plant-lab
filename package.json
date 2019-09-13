@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.2",
-    "start-server-and-test": "^1.10.0"
+    "start-server-and-test": "^1.10.2"
   }
 }
