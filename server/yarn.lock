@@ -2077,10 +2077,10 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-influx@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/influx/-/influx-5.4.1.tgz#9aee1ac4862ae59037ef8f334f4571def04117b9"
-  integrity sha512-1gqUPpi/v3PUWwL/ZR7VzWeHrtKfQv/ToFWbIfPF/4aYDtZAB67GEOR7lI1vkxnoPNUdtBq5/esAWKtjCkAAnA==
+influx@^5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/influx/-/influx-5.4.2.tgz#e21a84c236544fab69a393c5a71b845f679999a6"
+  integrity sha512-yjP2zwEvkln7MZM6C8ryruDYX/ih/K4zRd6UstUoR59NpTIR1n4AIwmxGBOv8pBfQpx9obijN6+8wd+vBrmpgA==
 
 inherits@2, inherits@2.0.4, inherits@^2.0.3, inherits@~2.0.1, inherits@~2.0.3:
   version "2.0.4"
