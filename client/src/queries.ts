@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 gql`
-  query GetReadings($nodeId: String!, $date: String!) {
+  query Readings($nodeId: String!, $date: String!) {
     readings(nodeId: $nodeId, date: $date) {
       moisture {
         time

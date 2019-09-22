@@ -6,7 +6,7 @@ import InfoToggle from './components/InfoToggle';
 import LineChart from './components/LineChart';
 import RadialChart from './components/RadialChart';
 import { parseReadings } from './utils';
-import { useGetReadingsQuery } from './graphql';
+import { useReadingsQuery } from './graphql';
 
 const CardWrapper = styled.div`
   margin: 2em 0;
@@ -105,7 +105,7 @@ const defaultDate = subDays(new Date(), 90).toISOString();
 const App = () => {
   const [isInfoVisible, setInfoVisibility] = useState(false);
   const nodeId = getNodeId();
-  const { data, loading, error } = useGetReadingsQuery({ variables: { date: defaultDate, nodeId } });
+  const { data, loading, error } = useReadingsQuery({ variables: { date: defaultDate, nodeId } });
 
   if (loading) {
     return null;

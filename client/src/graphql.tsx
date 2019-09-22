@@ -41,26 +41,26 @@ export type Reading = {
 
 export type Readings = {
   __typename?: 'Readings';
-  moisture: Reading[];
-  temperature: Reading[];
-  batteryVoltage: Reading[];
+  moisture: Array<Reading>;
+  temperature: Array<Reading>;
+  batteryVoltage: Array<Reading>;
   watered?: Maybe<Scalars['DateTime']>;
 };
-export type GetReadingsQueryVariables = {
+export type ReadingsQueryVariables = {
   nodeId: Scalars['String'];
   date: Scalars['String'];
 };
 
-export type GetReadingsQuery = { __typename?: 'Query' } & {
+export type ReadingsQuery = { __typename?: 'Query' } & {
   readings: { __typename?: 'Readings' } & Pick<Readings, 'watered'> & {
-      moisture: ({ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>)[];
-      temperature: ({ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>)[];
-      batteryVoltage: ({ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>)[];
+      moisture: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
+      temperature: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
+      batteryVoltage: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
     };
 };
 
-export const GetReadingsDocument = gql`
-  query GetReadings($nodeId: String!, $date: String!) {
+export const ReadingsDocument = gql`
+  query Readings($nodeId: String!, $date: String!) {
     readings(nodeId: $nodeId, date: $date) {
       moisture {
         time
@@ -79,16 +79,16 @@ export const GetReadingsDocument = gql`
   }
 `;
 
-export function useGetReadingsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetReadingsQuery, GetReadingsQueryVariables>
+export function useReadingsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<ReadingsQuery, ReadingsQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<GetReadingsQuery, GetReadingsQueryVariables>(GetReadingsDocument, baseOptions);
+  return ApolloReactHooks.useQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
 }
-export function useGetReadingsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetReadingsQuery, GetReadingsQueryVariables>
+export function useReadingsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ReadingsQuery, ReadingsQueryVariables>
 ) {
-  return ApolloReactHooks.useLazyQuery<GetReadingsQuery, GetReadingsQueryVariables>(GetReadingsDocument, baseOptions);
+  return ApolloReactHooks.useLazyQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
 }
 
-export type GetReadingsQueryHookResult = ReturnType<typeof useGetReadingsQuery>;
-export type GetReadingsQueryResult = ApolloReactCommon.QueryResult<GetReadingsQuery, GetReadingsQueryVariables>;
+export type ReadingsQueryHookResult = ReturnType<typeof useReadingsQuery>;
+export type ReadingsQueryResult = ApolloReactCommon.QueryResult<ReadingsQuery, ReadingsQueryVariables>;

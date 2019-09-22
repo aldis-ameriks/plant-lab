@@ -1,8 +1,8 @@
 import { differenceInDays, differenceInMinutes } from 'date-fns';
 import { ema } from 'moving-averages';
-import { GetReadingsQuery } from './graphql';
+import { ReadingsQuery } from './graphql';
 
-export const parseReadings = (data?: GetReadingsQuery) => {
+export const parseReadings = (data?: ReadingsQuery) => {
   if (!data) {
     return null;
   }
