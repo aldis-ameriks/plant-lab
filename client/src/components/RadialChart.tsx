@@ -33,7 +33,11 @@ class RadialChart extends React.Component<Props, State> {
         },
         plotOptions: {
           radialBar: {
-            startAngle: -90,
+            // Apexcharts incorrectly calculates height if startAngle === -90 src/modules/Core.js:374
+            // In result, text underneath the radial bar gets cut off.
+            // Alternatively, size can be increased, but that scales the whole radial bar.
+            // size: 105,
+            startAngle: -90.01,
             endAngle: 90,
             track: {
               background: '#e7e7e7',
