@@ -19,7 +19,7 @@
   "labels": ["renovate"],
   "prHourlyLimit": 4,
   "prConcurrentLimit": 16,
-  "rangeStrategy": "bump",
+  "rangeStrategy": "pin",
   "bumpVersion": null,
   "semanticCommits": true,
   "timezone": "Europe/Riga",
