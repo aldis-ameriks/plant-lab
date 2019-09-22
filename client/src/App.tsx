@@ -58,7 +58,7 @@ const RowWrapper = styled.div`
   justify-content: space-evenly;
   max-height: 150px;
   margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 `;
 
 const GaugeWrapper = styled.div`
