@@ -162,7 +162,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-concurrently@^4.1.2:
+concurrently@4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-4.1.2.tgz#1a683b2b5c41e9ed324c9002b9f6e4c6e1f3b6d7"
   integrity sha512-Kim9SFrNr2jd8/0yNYqDTFALzUX1tvimmwFWxmp/D4mRI+kbqIIwE2RkBDrxS2ic25O1UgQMI5AtBqdtX3ynYg==
@@ -909,7 +909,7 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-start-server-and-test@^1.10.2:
+start-server-and-test@1.10.2:
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/start-server-and-test/-/start-server-and-test-1.10.2.tgz#31ecb54c6d6375b119840ece9bb6bfffdb8bc50e"
   integrity sha512-CDJGFi+qlE4KFh7QgDRz51rKn30XGpWRVRuyuuA43tZw5BEh/mkusr7aHqvT0q19xtgChYXW/uhgOq817sb+7w==
