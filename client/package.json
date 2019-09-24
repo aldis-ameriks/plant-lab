@@ -55,6 +55,7 @@
     "generate": "gql-gen && eslint --fix src/graphql.tsx && prettier --write src/graphql.tsx",
     "docker:build": "docker build -t registry.kataldi.com/plant-client .",
     "docker:push": "docker push registry.kataldi.com/plant-client",
+    "docker:build:push": "yarn docker:build && yarn docker:push",
     "docker:run": "docker run -p 80:80 --rm registry.kataldi.com/plant-client"
   },
   "eslintConfig": {

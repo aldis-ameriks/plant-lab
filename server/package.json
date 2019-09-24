@@ -13,6 +13,7 @@
     "lint:ci": "yarn lint --format junit -o ../results/tslint/result.xml",
     "docker:build": "docker build -t registry.kataldi.com/plant-server .",
     "docker:push": "docker push registry.kataldi.com/plant-server",
+    "docker:build:push": "yarn docker:build && yarn docker:push",
     "docker:run": "docker run -p 4000:4000 --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
