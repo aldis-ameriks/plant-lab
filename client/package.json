@@ -8,7 +8,7 @@
     "apexcharts": "3.8.5",
     "apollo-boost": "0.4.4",
     "date-fns": "2.3.0",
-    "graphql": "14.5.7",
+    "graphql": "14.5.8",
     "graphql-tag": "2.10.1",
     "moving-averages": "4.0.5",
     "react": "16.9.0",
