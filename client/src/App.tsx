@@ -169,7 +169,7 @@ const App = () => {
           <LineChartsWrapper>
             <LineChart data={moisture} title="Moisture" />
             <LineChart data={temperature} title="Average Temperature" />
-            <LineChart min={2.8} max={4.3} data={batteryVoltage} title="Battery voltage" />
+            <LineChart min={2.0} max={4.3} data={batteryVoltage} title="Battery voltage" />
           </LineChartsWrapper>
         </CardSection>
       </Card>
