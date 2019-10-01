@@ -100,7 +100,7 @@ const Reading = styled.div`
   }
 `;
 
-const defaultDate = subDays(new Date(), 90).toISOString();
+const defaultDate = subDays(new Date(), 360).toISOString();
 
 const App = () => {
   const [isInfoVisible, setInfoVisibility] = useState(false);
