@@ -16,7 +16,7 @@
     "react-apollo": "3.1.2",
     "react-apollo-hooks": "0.5.0",
     "react-dom": "16.10.2",
-    "react-ga": "2.6.0",
+    "react-ga": "2.7.0",
     "styled-components": "4.4.0"
   },
   "devDependencies": {
