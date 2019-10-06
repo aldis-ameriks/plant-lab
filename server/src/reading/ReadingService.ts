@@ -42,7 +42,13 @@ function parseReadings(readings: InfluxReading[]) {
   const reversedReadings = readings.reverse();
 
   const { moisture, temperature, batteryVoltage } = reversedReadings
-    .filter(reading => !!reading.moisture_percentage && reading.moisture_percentage < 100 && reading.temperature < 60)
+    .filter(
+      reading =>
+        !!reading.moisture_percentage &&
+        reading.moisture_percentage > 0 &&
+        reading.moisture_percentage < 100 &&
+        reading.temperature < 60
+    )
     .reduce(
       (acc, cur) => {
         acc.moisture.push({ x: new Date(cur.time), y: cur.moisture_percentage });
