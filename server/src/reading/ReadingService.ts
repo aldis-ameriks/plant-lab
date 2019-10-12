@@ -17,6 +17,11 @@ class ReadingService {
     const readings: InfluxReading[] = await client.query(
       `select * from plant where "node_id"='${nodeId}' and time > ${nanoEpoch} order by time desc`
     );
+
+    if (readings.length === 0) {
+      throw new Error('No readings');
+    }
+
     return parseReadings(readings);
   }
 
