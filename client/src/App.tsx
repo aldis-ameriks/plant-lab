@@ -10,7 +10,7 @@ const App = () => (
       <Route path="/sensors/:id">
         <SensorDetails />
       </Route>
-      <Route path="/">
+      <Route>
         <SensorList />
       </Route>
     </Switch>
