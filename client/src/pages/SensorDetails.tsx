@@ -113,7 +113,7 @@ const SensorDetails = () => {
   }
 
   if (error) {
-    return <p>Error loading sensor data.</p>;
+    return <p>Error loading sensor data: {error.message}</p>;
   }
 
   const parsedReadings = parseReadings(data);
