@@ -11,7 +11,7 @@ type Mutation {
 }
 
 type Query {
-  readings(date: String!, nodeId: String!): Readings!
+  readings(date: String!, nodeIds: [String!]!): [Readings!]!
 }
 
 type Reading {

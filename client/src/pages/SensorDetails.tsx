@@ -106,7 +106,7 @@ const defaultDate = subDays(new Date(), 360).toISOString();
 const SensorDetails = () => {
   const { id = '4' } = useParams();
   const [isInfoVisible, setInfoVisibility] = useState(false);
-  const { data, loading, error } = useReadingsQuery({ variables: { date: defaultDate, nodeId: id } });
+  const { data, loading, error } = useReadingsQuery({ variables: { date: defaultDate, nodeIds: [id] } });
 
   if (loading) {
     return null;
@@ -116,10 +116,11 @@ const SensorDetails = () => {
     return <p>Error loading sensor data: {error.message}</p>;
   }
 
-  const parsedReadings = parseReadings(data);
-  if (!parsedReadings) {
-    return <p>No readings for a long time. Check your sensors.</p>;
+  if (!data || !data.readings || data.readings.length === 0) {
+    return <p>No readings. Check your sensors.</p>;
   }
+
+  const parsedReadings = parseReadings(data.readings[0]);
 
   const {
     moisture,

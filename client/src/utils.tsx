@@ -1,17 +1,9 @@
 import { differenceInDays, differenceInMinutes } from 'date-fns';
 import { ema } from 'moving-averages';
-import { ReadingsQuery } from './graphql';
+import { Readings } from './graphql';
 
-export const parseReadings = (data?: ReadingsQuery) => {
-  if (!data) {
-    return null;
-  }
-  const {
-    readings: { moisture, temperature, batteryVoltage, watered },
-  } = data;
-  if (!moisture || moisture.length < 1) {
-    return null;
-  }
+export const parseReadings = (readings: Readings) => {
+  const { moisture, temperature, batteryVoltage, watered } = readings;
 
   const currentReading = {
     time: moisture[moisture.length - 1].time,
