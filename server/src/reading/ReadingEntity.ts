@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ID, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class Reading {
@@ -11,6 +11,9 @@ export class Reading {
 
 @ObjectType()
 export class Readings {
+  @Field(type => ID)
+  id: string;
+
   @Field(type => [Reading])
   moisture: Reading[];
 

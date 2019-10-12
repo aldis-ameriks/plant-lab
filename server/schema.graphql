@@ -20,6 +20,7 @@ type Reading {
 }
 
 type Readings {
+  id: ID!
   moisture: [Reading!]!
   temperature: [Reading!]!
   batteryVoltage: [Reading!]!

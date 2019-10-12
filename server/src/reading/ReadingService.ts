@@ -22,7 +22,7 @@ class ReadingService {
       throw new Error('No readings');
     }
 
-    return parseReadings(readings);
+    return parseReadings(nodeId, readings);
   }
 
   public async saveReading(nodeId: string, reading: ReadingInput) {
@@ -43,7 +43,7 @@ class ReadingService {
   }
 }
 
-function parseReadings(readings: InfluxReading[]) {
+function parseReadings(nodeId: string, readings: InfluxReading[]) {
   const reversedReadings = readings.reverse();
 
   const { moisture, temperature, batteryVoltage } = reversedReadings
@@ -81,6 +81,7 @@ function parseReadings(readings: InfluxReading[]) {
 
   const watered = getLastWateredDate(moisture);
   return {
+    id: nodeId,
     watered,
     moisture: reducedMoisture,
     temperature: reducedTemperature,

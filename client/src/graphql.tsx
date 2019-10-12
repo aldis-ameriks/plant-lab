@@ -41,18 +41,20 @@ export type Reading = {
 
 export type Readings = {
   __typename?: 'Readings';
+  id: Scalars['ID'];
   moisture: Array<Reading>;
   temperature: Array<Reading>;
   batteryVoltage: Array<Reading>;
   watered?: Maybe<Scalars['DateTime']>;
 };
+
 export type ReadingsQueryVariables = {
   nodeId: Scalars['String'];
   date: Scalars['String'];
 };
 
 export type ReadingsQuery = { __typename?: 'Query' } & {
-  readings: { __typename?: 'Readings' } & Pick<Readings, 'watered'> & {
+  readings: { __typename?: 'Readings' } & Pick<Readings, 'id' | 'watered'> & {
       moisture: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
       temperature: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
       batteryVoltage: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
@@ -62,6 +64,7 @@ export type ReadingsQuery = { __typename?: 'Query' } & {
 export const ReadingsDocument = gql`
   query Readings($nodeId: String!, $date: String!) {
     readings(nodeId: $nodeId, date: $date) {
+      id
       moisture {
         time
         value
@@ -79,6 +82,23 @@ export const ReadingsDocument = gql`
   }
 `;
 
+/**
+ * __useReadingsQuery__
+ *
+ * To run a query within a React component, call `useReadingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReadingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReadingsQuery({
+ *   variables: {
+ *      nodeId: // value for 'nodeId'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
 export function useReadingsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<ReadingsQuery, ReadingsQueryVariables>
 ) {
@@ -89,6 +109,6 @@ export function useReadingsLazyQuery(
 ) {
   return ApolloReactHooks.useLazyQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
 }
-
 export type ReadingsQueryHookResult = ReturnType<typeof useReadingsQuery>;
+export type ReadingsLazyQueryHookResult = ReturnType<typeof useReadingsLazyQuery>;
 export type ReadingsQueryResult = ApolloReactCommon.QueryResult<ReadingsQuery, ReadingsQueryVariables>;
