@@ -137,7 +137,7 @@ const SensorDetails = () => {
         <CardSection>
           <CardTitle>Rubber tree</CardTitle>
           <ImageWrapper>
-            <Image src="./plant.jpg" alt="" width="100%" />
+            <Image src="/plant.jpg" alt="" width="100%" />
           </ImageWrapper>
 
           <RowWrapper>
