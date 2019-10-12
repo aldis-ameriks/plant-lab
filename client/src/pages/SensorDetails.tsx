@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { subDays } from 'date-fns';
+import { useParams } from 'react-router-dom';
 import Info from '../components/Info';
 import InfoToggle from '../components/InfoToggle';
 import LineChart from '../components/LineChart';
@@ -103,9 +104,9 @@ const Reading = styled.div`
 const defaultDate = subDays(new Date(), 360).toISOString();
 
 const SensorDetails = () => {
+  const { id = '4' } = useParams();
   const [isInfoVisible, setInfoVisibility] = useState(false);
-  const nodeId = getNodeId();
-  const { data, loading, error } = useReadingsQuery({ variables: { date: defaultDate, nodeId } });
+  const { data, loading, error } = useReadingsQuery({ variables: { date: defaultDate, nodeId: id } });
 
   if (loading) {
     return null;
@@ -176,10 +177,5 @@ const SensorDetails = () => {
     </CardWrapper>
   );
 };
-
-function getNodeId() {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('nodeId') || '4';
-}
 
 export default SensorDetails;
