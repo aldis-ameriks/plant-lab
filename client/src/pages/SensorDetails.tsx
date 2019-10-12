@@ -116,7 +116,7 @@ const SensorDetails = () => {
     return <p>Error loading sensor data: {error.message}</p>;
   }
 
-  if (!data || !data.readings || data.readings.length === 0) {
+  if (!data || !data.readings ||  !data.readings[0]) {
     return <p>No readings. Check your sensors.</p>;
   }
 

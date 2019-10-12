@@ -19,7 +19,7 @@ class ReadingService {
     );
 
     if (readings.length === 0) {
-      throw new Error('No readings');
+      return null;
     }
 
     return parseReadings(nodeId, readings);

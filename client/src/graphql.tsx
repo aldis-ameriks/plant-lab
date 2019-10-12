@@ -25,7 +25,7 @@ export type MutationSaveReadingArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  readings: Array<Readings>;
+  readings: Array<Maybe<Readings>>;
 };
 
 export type QueryReadingsArgs = {
@@ -55,11 +55,13 @@ export type ReadingsQueryVariables = {
 
 export type ReadingsQuery = { __typename?: 'Query' } & {
   readings: Array<
-    { __typename?: 'Readings' } & Pick<Readings, 'id' | 'watered'> & {
-        moisture: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
-        temperature: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
-        batteryVoltage: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
-      }
+    Maybe<
+      { __typename?: 'Readings' } & Pick<Readings, 'id' | 'watered'> & {
+          moisture: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
+          temperature: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
+          batteryVoltage: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
+        }
+    >
   >;
 };
 
