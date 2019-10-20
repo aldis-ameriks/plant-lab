@@ -1,42 +1,59 @@
+#include <RFM69.h>
+#include <RFM69_ATC.h>
 #include <I2CSoilMoistureSensor.h>
 #include <LowPower.h>
-#include <RFM12B.h>
 #include <Wire.h>
 #include <avr/sleep.h>
 #include "secrets.h"
 
-// You will need to initialize the radio by telling it what ID it has and what
-// network it's on The NodeID takes values from 1-127, 0 is reserved for sending
-// broadcast messages (send to all nodes) The Network ID takes values from 0-255
-// By default the SPI-SS line used is D10 on Atmega328. You can change it by
-// calling .SetCS(pin) where pin can be {8,9,10}
-#define NODEID 4     // network ID used for this unit
-#define NETWORKID 99 // the network ID we are on
-#define GATEWAYID 1  // the node ID we're sending to
 #define SERIAL_BAUD 115200
+
+#define NODEID      2
+#define NETWORKID   100
+#define GATEWAYID   1
+#define FREQUENCY     RF69_433MHZ
+#define ENCRYPTKEY    RADIO_ENCRYPTION_KEY
+//#define IS_RFM69HW_HCW  //uncomment only for RFM69HW/HCW! Leave out if you have RFM69W/CW!
 #define REQUEST_ACK true
 #define ACK_TIME 50
 #define DELAY_BEFORE_SLEEP (long)1000
+//*********************************************************************************************
+//Auto Transmission Control - dials down transmit power to save battery
+//Usually you do not need to always transmit at max output power
+//By reducing TX power even a little you save a significant amount of battery power
+//This setting enables this gateway to work with remote nodes that have ATC enabled to
+//dial their power down to only the required level
+#define ENABLE_ATC    //comment out this line to disable AUTO TRANSMISSION CONTROL
+//*********************************************************************************************
 
-uint8_t KEY[] = RADIO_ENCRYPTION_KEY;
-RFM12B radio;
+#ifdef ENABLE_ATC
+  RFM69_ATC radio;
+#else
+  RFM69 radio;
+#endif
 
-int MOISTURE_DRY = 355;
-int MOISTURE_WET = 650;
+int MOISTURE_DRY = 350;
+int MOISTURE_WET = 700;
 I2CSoilMoistureSensor sensor;
 
-float BATTERY_MEASUREMENT_RESISTOR_RATIO = 8.81;
+// For measuring battery voltage
+float R1 = 1000000.0; // R1 (1M)
+float R2 = 265000.0;  // R2 (270K)
 float INTERNAL_AREF = 1.1;
 
 void setup() {
   Serial.begin(SERIAL_BAUD);
-  delay(1000);    // give some time for serial to init
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+  radio.initialize(FREQUENCY, NODEID, NETWORKID);
 
-  // Init RFM12B in transmit mode
-  Serial.println("Initializing Radio module");
-  radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
-  radio.Encrypt(KEY);
-  radio.Sleep();
+  #ifdef IS_RFM69HW_HCW
+    radio.setHighPower(); //must include this only for RFM69HW/HCW!
+  #endif
+
+  radio.encrypt(ENCRYPTKEY);
+  radio.sleep();
   Serial.println("Radio module initialized");
 
   // Init sensor
@@ -53,20 +70,19 @@ void setup() {
 
   // Init analog ref to internal voltage (1.1v)
   analogReference(INTERNAL);
-
 }
 
 void loop() {
   while (sensor.isBusy()) {
     Serial.println("Sensor is busy");
-    delay(500);
+    delay(50);
   }
 
   Serial.println("Reading sensor values");
   int moisture = sensor.getCapacitance();
   float moisturePercentage = (1 - (MOISTURE_WET - moisture) / (MOISTURE_WET - (float)MOISTURE_DRY)) *100;
   int temperature = sensor.getTemperature() / (float)10;
-  // unsigned int light = sensor.getLight(true);
+//   unsigned int light = sensor.getLight(true);
   unsigned int light = 0; // light sensor is covered on the rugged version of sensor
   Serial.println("Putting sensor to sleep");
   sensor.sleep();
@@ -101,8 +117,7 @@ void sendData(String payload) {
   char payload_array[payload_len];
   payload.toCharArray(payload_array, payload_len);
 
-  radio.Wakeup();
-  radio.Send(GATEWAYID, payload_array, payload_len, REQUEST_ACK);
+  radio.send(GATEWAYID, payload_array, payload_len, REQUEST_ACK);
   if (REQUEST_ACK) {
     if (waitForAck()) {
       Serial.print("ACK RECEIVED");
@@ -110,7 +125,7 @@ void sendData(String payload) {
       Serial.print("ACK NOT RECEIVED");
     }
   }
-  radio.Sleep();
+  radio.sleep();
   Serial.print(" Done\n");
 }
 
@@ -137,6 +152,6 @@ float readBatteryVoltage() {
   analogRead(0);
   delay(50);
   int rawReading = analogRead(0);
-  float batteryVoltage = (rawReading/(float)1023) * INTERNAL_AREF * BATTERY_MEASUREMENT_RESISTOR_RATIO;
+  float batteryVoltage = (rawReading/(float)1023) * INTERNAL_AREF * ((R1+R2)/R2);
   return batteryVoltage;
 }

@@ -1,6 +1,6 @@
-[submodule "sensor/lib/RFM12B"]
-	path = sensor/lib/RFM12B
-	url = https://github.com/aldis-ameriks/RFM12B.git
+[submodule "sensor/lib/RFM69"]
+    path = sensor/lib/RFM69
+    url = https://github.com/LowPowerLab/RFM69.git
 [submodule "sensor/lib/I2CSoilMoistureSensor"]
 	path = sensor/lib/I2CSoilMoistureSensor
 	url = https://github.com/Apollon77/I2CSoilMoistureSensor.git

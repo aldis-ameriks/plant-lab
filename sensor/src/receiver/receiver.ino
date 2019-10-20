@@ -1,30 +1,33 @@
-// Simple serial pass through program
-// It initializes the RFM12B radio with optional encryption and passes through
-// any valid messages to the serial port felix@lowpowerlab.com
-
-#include <RFM12B.h>
+#include <RFM69.h>
+#include <RFM69_ATC.h>
 #include <SPI.h>
 #include <Ethernet.h>
 #include "secrets.h"
 
-// You will need to initialize the radio by telling it what ID it has and what
-// network it's on The NodeID takes values from 1-127, 0 is reserved for sending
-// broadcast messages (send to all nodes) The Network ID takes values from 0-255
-// By default the SPI-SS line used is D10 on Atmega328. You can change it by
-// calling .SetCS(pin) where pin can be {8,9,10}
-#define NODEID 1     // network ID used for this unit
-#define NETWORKID 99 // the network ID we are on
 #define SERIAL_BAUD 115200
 
-// encryption is OPTIONAL
-// to enable encryption you will need to:
-// - provide a 16-byte encryption KEY (same on all nodes that talk encrypted)
-// - to call .Encrypt(KEY) to start encrypting
-// - to stop encrypting call .Encrypt(NULL)
-uint8_t KEY[] = RADIO_ENCRYPTION_KEY;
+#define NODEID      1
+#define NETWORKID   100
+#define FREQUENCY     RF69_433MHZ
+#define ENCRYPTKEY    RADIO_ENCRYPTION_KEY
+#define IS_RFM69HW_HCW  //uncomment only for RFM69HW/HCW! Leave out if you have RFM69W/CW!
+#define SS_PIN 9
+//*********************************************************************************************
+//Auto Transmission Control - dials down transmit power to save battery
+//Usually you do not need to always transmit at max output power
+//By reducing TX power even a little you save a significant amount of battery power
+//This setting enables this gateway to work with remote nodes that have ATC enabled to
+//dial their power down to only the required level
+#define ENABLE_ATC    //comment out this line to disable AUTO TRANSMISSION CONTROL
+//*********************************************************************************************
 
-// Need an instance of the Radio Module
-RFM12B radio;
+#ifdef ENABLE_ATC
+  RFM69_ATC radio;
+#else
+  RFM69 radio;
+#endif
+
+bool promiscuousMode = false; // set to 'true' to sniff all packets on the same network
 
 // assign a MAC address for the ethernet controller.
 byte mac[] = {
@@ -42,11 +45,18 @@ char apiAccessKey[] = API_ACCESS_KEY;
 void setup() {
   Serial.begin(SERIAL_BAUD);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
+    ; // wait for serial port to connect.
   }
-  radio.Initialize(NODEID, RF12_433MHZ, NETWORKID);
-  radio.Encrypt(KEY); // comment this out to disable encryption
+  radio.initialize(FREQUENCY, NODEID, NETWORKID);
+//  radio.setCS(SS_PIN); // TODO: Use different SS pin for rfm69 to avoid conflict with ethernet shield
 
+  #ifdef IS_RFM69HW_HCW
+    radio.setHighPower(); //must include this only for RFM69HW/HCW!
+  #endif
+
+  radio.encrypt(ENCRYPTKEY);
+  radio.promiscuous(promiscuousMode);
+  
   // give the ethernet module time to boot up:
   delay(1000);
 
@@ -54,30 +64,37 @@ void setup() {
   // print the Ethernet board/shield's IP address:
   Serial.print("My IP address: ");
   Serial.println(Ethernet.localIP());
+  Serial.println("Listening");
 }
 
 void loop() {
-  if (radio.ReceiveComplete()) {
-    if (radio.CRCPass()) {
-      for (byte i = 0; i < *radio.DataLen; i++) {
-        Serial.print((char)radio.Data[i]);
-      }
-      Serial.println();
-
-      sendHttpRequestWithData(radio.Data);
-
-      if (radio.ACKRequested()) {
-        radio.SendACK();
-      }
-    } else {
-      Serial.print("BAD-CRC");
+  if (radio.receiveDone()) {
+    Serial.print('[');Serial.print(radio.SENDERID, DEC);Serial.print("] ");
+    Serial.print(" [RX_RSSI:");Serial.print(radio.readRSSI());Serial.print("]");
+    if (promiscuousMode) {
+      Serial.print("to [");Serial.print(radio.TARGETID, DEC);Serial.print("] ");
     }
+
+    for (byte i = 0; i < radio.DATALEN; i++) {
+      Serial.print((char)radio.DATA[i]);
+    }
+
+    sendHttpRequestWithData((char*)radio.DATA);
+
+    if (radio.ACKRequested()) {
+      radio.sendACK();
+    }
+
+    if (radio.ACKRequested()) {
+      radio.sendACK();
+      Serial.print(" - ACK sent");
+    }
+    Serial.println();
   }
 }
 
 void sendHttpRequestWithData(String data) {
   // close any connection before send a new request.
-  // This will free the socket on the WiFi shield
   client.stop();
 
   String postData = "{\"query\":\"mutation($input: String!) {saveReading(input: $input)}\",\"variables\":{\"input\":\"" + data + "\"}}";
@@ -90,7 +107,7 @@ void sendHttpRequestWithData(String data) {
     client.println("User-Agent: arduino-ethernet");
     client.print("access-key: ");
     client.println(apiAccessKey);
-    client.println("content-type: application/json");
+    client.println("Content-Type: application/json");
     client.println("Connection: close");
     client.print("Content-Length: ");
     client.println(postData.length());
@@ -98,6 +115,6 @@ void sendHttpRequestWithData(String data) {
     client.println(postData);
 
   } else {
-    Serial.println("connection failed");
+    Serial.println("Connection failed");
   }
 }
