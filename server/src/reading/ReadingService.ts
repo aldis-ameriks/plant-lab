@@ -52,8 +52,9 @@ class ReadingService {
           timestamp AS time,
           moisture - LEAD(moisture) OVER (ORDER BY timestamp DESC) AS moisture_increase
         FROM readings
+        WHERE node_id = :nodeId
       ) AS readings
-      WHERE node_id = :nodeId AND moisture_increase > 10;
+      WHERE moisture_increase > 10;
     `,
       { nodeId }
     );
