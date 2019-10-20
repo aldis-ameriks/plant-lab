@@ -65,14 +65,13 @@ class ReadingService {
   }
 }
 
-function getTimestamp(date: string) {
+function getTimestamp(date?: string) {
   if (date) {
     return new Date(date);
   }
 
-  // default to fetching readings since 30 days ago
   const now = new Date();
-  now.setDate(now.getDate() - 30);
+  now.setDate(now.getDate() - 90);
   return now;
 }
 
