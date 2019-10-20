@@ -1,9 +1,10 @@
-import * as config from 'config';
+import config from 'config';
 
-export const INFLUX: {
+export const ACCESS_KEY: string = config.get('ACCESS_KEY');
+
+export const KNEX: {
   HOST: string;
   PORT: string;
   USERNAME: string;
   PASSWORD: string;
-} = config.get('INFLUX');
-export const ACCESS_KEY: string = config.get('ACCESS_KEY');
+} = config.get('KNEX');

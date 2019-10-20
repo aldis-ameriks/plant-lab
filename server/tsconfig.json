@@ -6,9 +6,8 @@
     "noImplicitAny": false,
     "outDir": "build",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "esModuleInterop": true
   },
-  "typeRoots": [
-    "../node_modules/@types"
-  ]
+  "typeRoots": ["../node_modules/@types"]
 }

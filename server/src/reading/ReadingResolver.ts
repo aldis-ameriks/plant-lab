@@ -1,8 +1,8 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
-import { Readings } from './ReadingEntity';
+import { Reading } from './ReadingEntity';
 import ReadingService from './ReadingService';
 
-@Resolver(Readings)
+@Resolver(Reading)
 class ReadingResolver {
   private readonly readingService: ReadingService;
 
@@ -10,8 +10,8 @@ class ReadingResolver {
     this.readingService = new ReadingService();
   }
 
-  @Query(returns => [Readings], { nullable: 'items' })
-  readings(@Arg('nodeIds', type => [String]) nodeIds: string[], @Arg('date') date: string): Promise<Readings[]> {
+  @Query(returns => [[Reading]])
+  readings(@Arg('nodeIds', type => [String]) nodeIds: string[], @Arg('date') date: string): Promise<Reading[]> {
     return Promise.all(nodeIds.map(nodeId => this.readingService.getReadings(nodeId, date)));
   }
 
@@ -20,19 +20,27 @@ class ReadingResolver {
   async saveReading(@Arg('input') readingInput: string) {
     console.log('Received input:', readingInput);
     const parsedInput = readingInput.split(';');
-    const nodeId = parsedInput[0];
+    const node_id = parsedInput[0];
+    const moisture_raw = Number(parsedInput[1]);
     const moisture = Number(parsedInput[2]);
+    const moisture_min = Number(parsedInput[3]);
+    const moisture_max = Number(parsedInput[4]);
     const temperature = Number(parsedInput[5]);
-    const batteryVoltage = Number(parsedInput[7]);
-    const time = new Date();
+    const light = Number(parsedInput[6]);
+    const battery_voltage = Number(parsedInput[7]);
+    const timestamp = new Date();
     const reading = {
+      node_id,
       moisture,
+      moisture_raw,
+      moisture_min,
+      moisture_max,
       temperature,
-      batteryVoltage,
-      time,
+      battery_voltage,
+      timestamp,
     };
 
-    await this.readingService.saveReading(nodeId, reading);
+    await this.readingService.saveReading(node_id, reading);
     return 'success';
   }
 }

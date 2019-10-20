@@ -2,27 +2,21 @@ import { Field, ID, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class Reading {
+  @Field(type => ID)
+  node_id: number;
+
   @Field()
   time: Date;
 
   @Field()
-  value: number;
-}
+  moisture: number;
 
-@ObjectType()
-export class Readings {
-  @Field(type => ID)
-  id: string;
+  @Field()
+  temperature: number;
 
-  @Field(type => [Reading])
-  moisture: Reading[];
-
-  @Field(type => [Reading])
-  temperature: Reading[];
-
-  @Field(type => [Reading])
-  batteryVoltage: Reading[];
+  @Field()
+  battery_voltage: number;
 
   @Field({ nullable: true })
-  watered?: Date;
+  light?: number;
 }

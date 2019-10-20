@@ -11,18 +11,14 @@ type Mutation {
 }
 
 type Query {
-  readings(date: String!, nodeIds: [String!]!): [Readings]!
+  readings(date: String!, nodeIds: [String!]!): [[Reading!]!]!
 }
 
 type Reading {
+  node_id: ID!
   time: DateTime!
-  value: Float!
-}
-
-type Readings {
-  id: ID!
-  moisture: [Reading!]!
-  temperature: [Reading!]!
-  batteryVoltage: [Reading!]!
-  watered: DateTime
+  moisture: Float!
+  temperature: Float!
+  battery_voltage: Float!
+  light: Float
 }
