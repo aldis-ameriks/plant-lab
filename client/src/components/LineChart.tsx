@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { Reading } from '../graphql';
 
 type Props = {
   title: string;
-  data: any;
+  field: 'moisture' | 'battery_voltage' | 'temperature';
+  data: Reading[];
   min?: number;
   max?: number;
 };
@@ -17,7 +19,7 @@ class LineChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { min, max, title, data } = this.props;
+    const { min, max, title, data, field } = this.props;
     this.state = {
       options: {
         colors: ['#8a8a8a', '#bbbbbb'],
@@ -46,7 +48,7 @@ class LineChart extends React.Component<Props, State> {
           },
         },
         xaxis: {
-          categories: data.map(({ time }: any) => new Date(time).toLocaleDateString()),
+          categories: data.map(({ time }) => new Date(time).toLocaleDateString()),
           labels: {
             show: false,
           },
@@ -83,7 +85,7 @@ class LineChart extends React.Component<Props, State> {
           },
         },
       },
-      series: [{ name: title, data: data.map(({ value }: any) => value) }],
+      series: [{ name: title, data: data.map(row => row[field]) }],
     };
   }
 

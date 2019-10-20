@@ -25,63 +25,76 @@ export type MutationSaveReadingArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  readings: Array<Maybe<Readings>>;
+  readings: Array<Array<Reading>>;
+  lastReading: Reading;
+  lastWateredTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type QueryReadingsArgs = {
-  date: Scalars['String'];
+  date?: Maybe<Scalars['String']>;
   nodeIds: Array<Scalars['String']>;
+};
+
+export type QueryLastReadingArgs = {
+  nodeId: Scalars['String'];
+};
+
+export type QueryLastWateredTimeArgs = {
+  nodeId: Scalars['String'];
 };
 
 export type Reading = {
   __typename?: 'Reading';
+  node_id: Scalars['ID'];
   time: Scalars['DateTime'];
-  value: Scalars['Float'];
-};
-
-export type Readings = {
-  __typename?: 'Readings';
-  id: Scalars['ID'];
-  moisture: Array<Reading>;
-  temperature: Array<Reading>;
-  batteryVoltage: Array<Reading>;
-  watered?: Maybe<Scalars['DateTime']>;
+  moisture: Scalars['Float'];
+  temperature: Scalars['Float'];
+  battery_voltage: Scalars['Float'];
+  light?: Maybe<Scalars['Float']>;
 };
 
 export type ReadingsQueryVariables = {
   nodeIds: Array<Scalars['String']>;
-  date: Scalars['String'];
+  date?: Maybe<Scalars['String']>;
 };
 
 export type ReadingsQuery = { __typename?: 'Query' } & {
   readings: Array<
-    Maybe<
-      { __typename?: 'Readings' } & Pick<Readings, 'id' | 'watered'> & {
-          moisture: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
-          temperature: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
-          batteryVoltage: Array<{ __typename?: 'Reading' } & Pick<Reading, 'time' | 'value'>>;
-        }
+    Array<
+      { __typename?: 'Reading' } & Pick<
+        Reading,
+        'node_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
+      >
     >
   >;
 };
 
+export type LastReadingQueryVariables = {
+  nodeId: Scalars['String'];
+};
+
+export type LastReadingQuery = { __typename?: 'Query' } & {
+  lastReading: { __typename?: 'Reading' } & Pick<
+    Reading,
+    'node_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
+  >;
+};
+
+export type LastWateredTimeQueryVariables = {
+  nodeId: Scalars['String'];
+};
+
+export type LastWateredTimeQuery = { __typename?: 'Query' } & Pick<Query, 'lastWateredTime'>;
+
 export const ReadingsDocument = gql`
-  query Readings($nodeIds: [String!]!, $date: String!) {
+  query Readings($nodeIds: [String!]!, $date: String) {
     readings(nodeIds: $nodeIds, date: $date) {
-      id
-      moisture {
-        time
-        value
-      }
-      temperature {
-        time
-        value
-      }
-      batteryVoltage {
-        time
-        value
-      }
-      watered
+      node_id
+      time
+      moisture
+      temperature
+      light
+      battery_voltage
     }
   }
 `;
@@ -116,3 +129,89 @@ export function useReadingsLazyQuery(
 export type ReadingsQueryHookResult = ReturnType<typeof useReadingsQuery>;
 export type ReadingsLazyQueryHookResult = ReturnType<typeof useReadingsLazyQuery>;
 export type ReadingsQueryResult = ApolloReactCommon.QueryResult<ReadingsQuery, ReadingsQueryVariables>;
+export const LastReadingDocument = gql`
+  query LastReading($nodeId: String!) {
+    lastReading(nodeId: $nodeId) {
+      node_id
+      time
+      moisture
+      temperature
+      light
+      battery_voltage
+    }
+  }
+`;
+
+/**
+ * __useLastReadingQuery__
+ *
+ * To run a query within a React component, call `useLastReadingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLastReadingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLastReadingQuery({
+ *   variables: {
+ *      nodeId: // value for 'nodeId'
+ *   },
+ * });
+ */
+export function useLastReadingQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<LastReadingQuery, LastReadingQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<LastReadingQuery, LastReadingQueryVariables>(LastReadingDocument, baseOptions);
+}
+export function useLastReadingLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LastReadingQuery, LastReadingQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<LastReadingQuery, LastReadingQueryVariables>(LastReadingDocument, baseOptions);
+}
+export type LastReadingQueryHookResult = ReturnType<typeof useLastReadingQuery>;
+export type LastReadingLazyQueryHookResult = ReturnType<typeof useLastReadingLazyQuery>;
+export type LastReadingQueryResult = ApolloReactCommon.QueryResult<LastReadingQuery, LastReadingQueryVariables>;
+export const LastWateredTimeDocument = gql`
+  query LastWateredTime($nodeId: String!) {
+    lastWateredTime(nodeId: $nodeId)
+  }
+`;
+
+/**
+ * __useLastWateredTimeQuery__
+ *
+ * To run a query within a React component, call `useLastWateredTimeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLastWateredTimeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLastWateredTimeQuery({
+ *   variables: {
+ *      nodeId: // value for 'nodeId'
+ *   },
+ * });
+ */
+export function useLastWateredTimeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<LastWateredTimeQuery, LastWateredTimeQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<LastWateredTimeQuery, LastWateredTimeQueryVariables>(
+    LastWateredTimeDocument,
+    baseOptions
+  );
+}
+export function useLastWateredTimeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LastWateredTimeQuery, LastWateredTimeQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<LastWateredTimeQuery, LastWateredTimeQueryVariables>(
+    LastWateredTimeDocument,
+    baseOptions
+  );
+}
+export type LastWateredTimeQueryHookResult = ReturnType<typeof useLastWateredTimeQuery>;
+export type LastWateredTimeLazyQueryHookResult = ReturnType<typeof useLastWateredTimeLazyQuery>;
+export type LastWateredTimeQueryResult = ApolloReactCommon.QueryResult<
+  LastWateredTimeQuery,
+  LastWateredTimeQueryVariables
+>;

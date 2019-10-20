@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { subDays } from 'date-fns';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Info from '../components/Info';
 import InfoToggle from '../components/InfoToggle';
 import LineChart from '../components/LineChart';
-import RadialChart from '../components/RadialChart';
-import { parseReadings } from '../utils';
 import { useReadingsQuery } from '../graphql';
+import SensorReadings from '../components/SensorReadings';
+import { LeftArrow } from '../components/LeftArrow';
 
-const CardWrapper = styled.div`
+export const CardWrapper = styled.div`
   margin: 2em 0;
   display: flex;
   justify-content: center;
 `;
 
-const Card = styled.div`
+export const Card = styled.div`
   position: relative;
   box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.25);
   background-color: #ededed;
@@ -25,10 +24,10 @@ const Card = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   transition: all 500ms ease;
-  padding: 1em 0;
+  padding: 1em 0 2em 0;
 
   @media (min-width: 500px) {
-    padding: 1em;
+    padding: 1em 1em 2em 1em;
   }
 
   @media (min-width: 1300px) {
@@ -37,7 +36,7 @@ const Card = styled.div`
   }
 `;
 
-const CardSection = styled.div`
+export const CardSection = styled.div`
   transition: all 500ms ease;
   width: 300px;
 
@@ -50,23 +49,8 @@ const CardSection = styled.div`
   }
 `;
 
-const CardTitle = styled.h3`
+export const CardTitle = styled.h3`
   text-align: center;
-`;
-
-const RowWrapper = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  max-height: 150px;
-  margin-top: 1rem;
-  margin-bottom: 3rem;
-`;
-
-const GaugeWrapper = styled.div`
-  width: 100%;
-  min-width: 200px;
-  max-width: 250px;
-  margin: 0 -3em; // workaround to bring the apex chart gauges closer horizontally
 `;
 
 const LineChartsWrapper = styled.div`
@@ -86,27 +70,22 @@ const Image = styled.img`
   }
 `;
 
-const Reading = styled.div`
-  padding: 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  text-align: center;
-  width: 210px;
-  z-index: 10;
-  //box-shadow: 2px 3px 10px 0px rgba(0, 0, 0, 0.2);
-  //box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
-
-  &:not(:last-child) {
-    margin-right: 1rem;
-  }
+const BackLinkWrapper = styled(Link)`
+  position: absolute;
+  cursor: pointer;
+  top: 5px;
+  left: 10px;
+  z-index: 3000;
+  background-color: transparent;
+  padding: 0.5em;
+  font-size: 1.5em;
+  border: 3px solid transparent;
 `;
-
-const defaultDate = subDays(new Date(), 360).toISOString();
 
 const SensorDetails = () => {
   const { id = '4' } = useParams();
   const [isInfoVisible, setInfoVisibility] = useState(false);
-  const { data, loading, error } = useReadingsQuery({ variables: { date: defaultDate, nodeIds: [id] } });
+  const { data, loading, error } = useReadingsQuery({ variables: { nodeIds: [id] } });
 
   if (loading) {
     return null;
@@ -116,24 +95,18 @@ const SensorDetails = () => {
     return <p>Error loading sensor data: {error.message}</p>;
   }
 
-  if (!data || !data.readings ||  !data.readings[0]) {
+  if (!data || !data.readings || !data.readings[0]) {
     return <p>No readings. Check your sensors.</p>;
   }
 
-  const parsedReadings = parseReadings(data.readings[0]);
-
-  const {
-    moisture,
-    temperature,
-    batteryVoltage,
-    currentReading,
-    minutesSinceLastReading,
-    daysSinceLastWatered,
-  } = parsedReadings;
+  const readings = data.readings[0];
 
   return (
     <CardWrapper>
       <Card>
+        <BackLinkWrapper to="/">
+          <LeftArrow color="#8c8c8d" />
+        </BackLinkWrapper>
         <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
         <Info isVisible={isInfoVisible} />
         <CardSection>
@@ -141,37 +114,14 @@ const SensorDetails = () => {
           <ImageWrapper>
             <Image src="/plant.jpg" alt="" width="100%" />
           </ImageWrapper>
-
-          <RowWrapper>
-            <GaugeWrapper>
-              <RadialChart label="moisture" value={currentReading.moisture} type="percentage" />
-            </GaugeWrapper>
-            <GaugeWrapper>
-              <RadialChart label="temp." value={currentReading.temperature} type="temperature" maxValue={40} />
-            </GaugeWrapper>
-            <GaugeWrapper>
-              <RadialChart
-                label="battery"
-                value={currentReading.batteryVoltage}
-                type="voltage"
-                maxValue={4.3}
-                minValue={2.8}
-                decimals={2}
-              />
-            </GaugeWrapper>
-          </RowWrapper>
-
-          <RowWrapper>
-            <Reading>Last reading {minutesSinceLastReading} min. ago</Reading>
-            <Reading>Last watered {daysSinceLastWatered} days ago</Reading>
-          </RowWrapper>
+          <SensorReadings nodeId={id} />
         </CardSection>
 
         <CardSection>
           <LineChartsWrapper>
-            <LineChart data={moisture} title="Moisture" />
-            <LineChart data={temperature} title="Average Temperature" />
-            <LineChart min={2.0} max={4.3} data={batteryVoltage} title="Battery voltage" />
+            <LineChart data={readings} title="Moisture" field="moisture" />
+            <LineChart data={readings} title="Average Temperature" field="temperature" />
+            <LineChart min={2.0} max={4.3} data={readings} title="Battery voltage" field="battery_voltage" />
           </LineChartsWrapper>
         </CardSection>
       </Card>
