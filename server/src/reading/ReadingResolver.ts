@@ -36,7 +36,7 @@ class ReadingResolver {
     const moisture_min = Number(parsedInput[3]);
     const moisture_max = Number(parsedInput[4]);
     const temperature = Number(parsedInput[5]);
-    const light = Number(parsedInput[6]);
+    const light = Number(parsedInput[6]) || null; // Some of the sensors have their light sensor covered and send 0
     const battery_voltage = Number(parsedInput[7]);
     const timestamp = new Date();
     const reading = {
@@ -47,6 +47,7 @@ class ReadingResolver {
       moisture_max,
       temperature,
       battery_voltage,
+      light,
       timestamp,
     };
 

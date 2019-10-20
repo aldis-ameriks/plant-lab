@@ -8,7 +8,7 @@ type ReadingInput = {
   moisture_min: number;
   moisture_max: number;
   temperature: number;
-  light?: number;
+  light: number | null;
   battery_voltage: number;
 };
 
