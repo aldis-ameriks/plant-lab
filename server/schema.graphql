@@ -12,6 +12,8 @@ type Mutation {
 
 type Query {
   readings(date: String!, nodeIds: [String!]!): [[Reading!]!]!
+  lastReading(nodeId: String!): Reading!
+  lastWateredTime(nodeId: String!): DateTime
 }
 
 type Reading {

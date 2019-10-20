@@ -15,6 +15,16 @@ class ReadingResolver {
     return Promise.all(nodeIds.map(nodeId => this.readingService.getReadings(nodeId, date)));
   }
 
+  @Query(returns => Reading)
+  lastReading(@Arg('nodeId', type => String) nodeId: string): Promise<Reading> {
+    return this.readingService.getLastReading(nodeId);
+  }
+
+  @Query(returns => Date, { nullable: true })
+  lastWateredTime(@Arg('nodeId', type => String) nodeId: string): Promise<Date> {
+    return this.readingService.getLastWateredTime(nodeId);
+  }
+
   @Mutation(returns => String)
   @Authorized()
   async saveReading(@Arg('input') readingInput: string) {

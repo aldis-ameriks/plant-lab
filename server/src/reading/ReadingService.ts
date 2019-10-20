@@ -34,23 +34,35 @@ class ReadingService {
     return result.rows;
   }
 
+  public async getLastReading(nodeId) {
+    return knex('readings')
+      .select('node_id', knex.ref('timestamp').as('time'), 'moisture', 'temperature', 'light', 'battery_voltage')
+      .where('node_id', nodeId)
+      .orderBy('time', 'desc')
+      .limit(1)
+      .first();
+  }
+
+  public async getLastWateredTime(nodeId) {
+    const result = await knex.raw(
+      `
+      SELECT * FROM (
+        SELECT 
+          node_id,
+          timestamp AS time,
+          moisture - LEAD(moisture) OVER (ORDER BY timestamp DESC) AS moisture_increase
+        FROM readings
+      ) AS readings
+      WHERE node_id = :nodeId AND moisture_increase > 10;
+    `,
+      { nodeId }
+    );
+    return result && result.rows[0] ? result.rows[0].time : null;
+  }
+
   public async saveReading(nodeId: string, reading: ReadingInput) {
     await knex('readings').insert(reading);
   }
-}
-
-function getLastWateredDate(readings: { y: number; x: number }[]) {
-  const threshold = 10;
-  let watered;
-  readings.reduce((previousValue, currentValue) => {
-    if (currentValue.y - previousValue.y > threshold) {
-      watered = currentValue.x;
-      return currentValue;
-    }
-    return currentValue;
-  }, readings[0]);
-
-  return watered;
 }
 
 function getTimestamp(date: string) {
