@@ -1825,10 +1825,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/react@16.9.7":
-  version "16.9.7"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.7.tgz#3b50cb38285a79fd325cf185e0d623e3e0dd2893"
-  integrity sha512-cF/zwVSOa/NQ5ZSLwUmAdeARgJkmu94shnqDO0dUOsp5roeS8SXtYv06uKeQMYgMjnP6dXH5CecxL+GibvqEFg==
+"@types/react@16.9.9":
+  version "16.9.9"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.9.tgz#a62c6f40f04bc7681be5e20975503a64fe783c3a"
+  integrity sha512-L+AudFJkDukk+ukInYvpoAPyJK5q1GanFOINOJnM0w6tUgITuWvJ4jyoBPFL7z4/L8hGLd+K/6xR5uUjXu0vVg==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -4095,10 +4095,10 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.5.0.tgz#b939f17c2902ce81cffe449702ba22c0781b38ec"
-  integrity sha512-I6Tkis01//nRcmvMQw/MRE1HAtcuA5Ie6jGPb8bJZJub7494LGOObqkV3ParnsSVviAjk5C8mNKDqYVBzCopWg==
+date-fns@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.5.1.tgz#6bd76f01d3a438e9c481d4c18512ddac37585b4c"
+  integrity sha512-ZBrQmuaqH9YqIejbgu8f09ki7wdD2JxWsRTZ/+HnnLNmkI56ty0evnWzKY+ihLT0xX5VdUX0vDNZCxJJGKX2+Q==
 
 date-fns@^1.27.2:
   version "1.30.1"
