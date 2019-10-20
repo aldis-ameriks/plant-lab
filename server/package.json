@@ -20,9 +20,9 @@
     "config": "3.2.3",
     "graphql-iso-date": "3.6.1",
     "graphql-yoga": "1.18.3",
-    "knex": "^0.19.5",
+    "knex": "0.19.5",
     "morgan": "1.9.1",
-    "pg": "^7.12.1",
+    "pg": "7.12.1",
     "reflect-metadata": "0.1.13",
     "type-graphql": "0.17.5"
   },
