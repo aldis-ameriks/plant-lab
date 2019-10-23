@@ -17,17 +17,20 @@ class ReadingService {
     const time = getTimestamp(date);
     const result = await knex.raw(
       `
-      SELECT
+      SELECT * FROM (
+        SELECT
           node_id,
           TIME_BUCKET_GAPFILL('1 day'::INTERVAL, timestamp, :time, NOW()) AS time,
           LOCF(AVG(moisture)) AS moisture,
           LOCF(AVG(temperature)) AS temperature,
           LOCF(AVG(light)) AS light,
           LOCF(AVG(battery_voltage)) AS battery_voltage
-      FROM readings
-      WHERE node_id = :nodeId and timestamp > :time
-      GROUP BY time, node_id
-      ORDER BY time ASC;
+        FROM readings
+        WHERE node_id = :nodeId and timestamp > :time
+        GROUP BY time, node_id
+        ORDER BY time ASC
+        ) AS readings
+      WHERE moisture IS NOT NULL;
     `,
       { time, nodeId }
     );
