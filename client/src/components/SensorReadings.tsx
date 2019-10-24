@@ -18,7 +18,7 @@ const GaugeWrapper = styled.div`
   min-width: 150px;
   max-width: 250px;
   margin: 0 -3em; // workaround to bring the apex chart gauges closer horizontally
-  @media (min-width: 400px) {
+  @media (min-width: 450px) {
     min-width: 200px;
   }
 `;

@@ -18,7 +18,7 @@ const List = styled.div`
 const MiniCard = styled(Card)`
   font-size: 0.7rem;
   align-items: center;
-  padding: 1em 2em 2em 1em;
+  padding: 1em 2em 2em 2em;
   width: auto;
   cursor: pointer;
 
