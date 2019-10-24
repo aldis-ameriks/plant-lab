@@ -9,25 +9,35 @@ import SensorReadings from '../components/SensorReadings';
 import { LeftArrow } from '../components/LeftArrow';
 
 export const CardWrapper = styled.div`
-  margin: 2em 0;
   display: flex;
   justify-content: center;
+  margin: 2rem;
 `;
 
 export const Card = styled.div`
   position: relative;
   box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.25);
   background-color: #ededed;
-  width: 600px;
   border-radius: 30px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   transition: all 500ms ease;
-  padding: 1em 0 2em 0;
+  padding: 1em 2em 2em 2em;
+  font-size: 0.7rem;
+  align-items: center;
+  width: auto;
+
+  @media (min-width: 350px) {
+    font-size: 0.8rem;
+  }
 
   @media (min-width: 500px) {
-    padding: 1em 1em 2em 1em;
+    padding: 1em 2em 2em 2em;
+  }
+
+  @media (min-width: 700px) {
+    width: 600px;
   }
 
   @media (min-width: 1300px) {
@@ -38,10 +48,14 @@ export const Card = styled.div`
 
 export const CardSection = styled.div`
   transition: all 500ms ease;
-  width: 300px;
+  width: 240px;
+
+  @media (min-width: 350px) {
+    width: 290px;
+  }
 
   @media (min-width: 500px) {
-    width: 400px;
+    width: 350px;
   }
 
   @media (min-width: 700px) {
