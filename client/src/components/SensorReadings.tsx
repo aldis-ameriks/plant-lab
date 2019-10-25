@@ -27,6 +27,10 @@ const GaugeWrapper = styled.div`
     min-width: 150px;
     max-width: 200px;
   }
+  
+  @media (min-width: 600px) {
+    max-width: 220px;
+  }
 `;
 
 const ReadingWrapper = styled.div`

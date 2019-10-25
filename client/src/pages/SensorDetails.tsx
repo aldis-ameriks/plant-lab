@@ -25,19 +25,15 @@ export const Card = styled.div`
   transition: all 500ms ease;
   padding: 1em 2em 2em 2em;
   font-size: 0.7rem;
-  align-items: center;
   width: auto;
 
   @media (min-width: 350px) {
     font-size: 0.8rem;
   }
 
-  @media (min-width: 500px) {
-    padding: 1em 2em 2em 2em;
-  }
-
   @media (min-width: 700px) {
     width: 600px;
+    font-size: 1rem;
   }
 
   @media (min-width: 1300px) {
