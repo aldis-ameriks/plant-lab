@@ -2333,10 +2333,10 @@ anymatch@~3.1.1:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apexcharts@3.8.5:
-  version "3.8.5"
-  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.8.5.tgz#51b403b4e5f9e3bdaf6e2387f3bfbca55d752429"
-  integrity sha512-sEAcxA5aT1T/Tj6+CE4DXBYQNB5AcqUMB6S6dFsoqxQKppxyKQnNWX6HvqiCPA2ExYBBfrcNzEpKj+XaIeXONg==
+apexcharts@3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.10.0.tgz#a72c7d8728ea79cd9f7d2603e82235d441d46388"
+  integrity sha512-DtqM5hsMerjrq+InZQ6JHQQin86YSrYMMRqL0e4zPPKvLj1+P4F2ZKnTdQGLJBP8/qOJhpj6cOeHIdA+m52ECQ==
   dependencies:
     promise-polyfill "8.1.0"
     svg.draggable.js "^2.2.2"
