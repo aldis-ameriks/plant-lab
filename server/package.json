@@ -29,8 +29,8 @@
   "devDependencies": {
     "@types/graphql": "14.5.0",
     "@types/node": "12.11.1",
-    "@typescript-eslint/eslint-plugin": "2.4.0",
-    "@typescript-eslint/parser": "2.4.0",
+    "@typescript-eslint/eslint-plugin": "2.5.0",
+    "@typescript-eslint/parser": "2.5.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-config-prettier": "6.4.0",
