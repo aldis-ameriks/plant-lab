@@ -7,6 +7,7 @@ export const knex = Knex({
     host: KNEX.HOST,
     user: KNEX.USERNAME,
     password: KNEX.PASSWORD,
+    port: KNEX.PORT,
     database: 'monitoring',
   },
 });
