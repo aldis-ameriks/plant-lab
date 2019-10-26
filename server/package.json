@@ -17,7 +17,7 @@
     "docker:run": "docker run -p 4000:4000 --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
-    "config": "3.2.3",
+    "config": "3.2.4",
     "graphql-iso-date": "3.6.1",
     "graphql-yoga": "1.18.3",
     "knex": "0.19.5",
