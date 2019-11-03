@@ -18,7 +18,7 @@
     "react-dom": "16.11.0",
     "react-ga": "2.7.0",
     "react-router-dom": "5.1.2",
-    "styled-components": "4.4.0"
+    "styled-components": "4.4.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.8.3",
