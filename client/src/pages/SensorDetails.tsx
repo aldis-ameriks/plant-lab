@@ -36,7 +36,7 @@ export const Card = styled.div`
     font-size: 1rem;
   }
 
-  @media (min-width: 1300px) {
+  @media (min-width: 1350px) {
     width: 1200px;
     height: 1250px;
   }

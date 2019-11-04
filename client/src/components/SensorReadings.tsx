@@ -7,10 +7,14 @@ import { useLastReadingQuery, useLastWateredTimeQuery } from '../graphql';
 const RowWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
-  max-height: 150px;
-  :not(:last-of-type) {
-    margin-bottom: 2rem;
+  max-height: 100px;
+  
+  @media (min-width: 400px) {
+    max-height: 130px;
   }
+  
+  @media (min-width: 700px) {
+    max-height: 150px;
 `;
 
 const GaugeWrapper = styled.div`
@@ -27,7 +31,7 @@ const GaugeWrapper = styled.div`
     min-width: 150px;
     max-width: 200px;
   }
-  
+
   @media (min-width: 600px) {
     max-width: 220px;
   }
