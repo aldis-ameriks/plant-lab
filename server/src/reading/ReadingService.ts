@@ -30,7 +30,7 @@ class ReadingService {
         GROUP BY time, node_id
         ORDER BY time ASC
         ) AS readings
-      WHERE moisture IS NOT NULL;
+      WHERE moisture IS NOT NULL; -- Exclude entries with non-null readings that can occur when period is before first readings. 
     `,
       { time, nodeId }
     );
