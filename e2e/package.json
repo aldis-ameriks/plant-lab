@@ -7,6 +7,6 @@
     "cypress:run": "cypress run"
   },
   "devDependencies": {
-    "cypress": "3.5.0"
+    "cypress": "3.6.1"
   }
 }
