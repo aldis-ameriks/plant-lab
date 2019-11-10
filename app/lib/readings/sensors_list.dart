@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:planty/readings/last_reading_query.dart';
 
 class SensorsList extends StatefulWidget {
-  static const BottomNavigationBarItem navItem = BottomNavigationBarItem(
-    icon: Icon(Icons.movie_filter),
-    title: Text('Episodes'),
-  );
-
   @override
   _SensorsListState createState() => _SensorsListState();
 }
