@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planty/readings/last_reading_query.dart';
 
-
 class SensorsList extends StatefulWidget {
   static const BottomNavigationBarItem navItem = BottomNavigationBarItem(
     icon: Icon(Icons.movie_filter),
@@ -17,12 +16,14 @@ class _SensorsListState extends State<SensorsList> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const Text(
-            'Last reading for sensor',
-          ),
-          LastReading(nodeId: '4')
+          Row(
+            children: <Widget>[
+              LastReading(nodeId: '4'),
+              LastReading(nodeId: '999'),
+            ],
+          )
         ],
       ),
     );
