@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planty/readings/sensors_list.dart';
 
-
 class App extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _AppState();
@@ -14,7 +13,7 @@ class _AppState extends State {
   Widget build(BuildContext context) {
     Widget child;
 
-    switch(_selectedIndex) {
+    switch (_selectedIndex) {
       case 0:
         child = SensorsList();
         break;
@@ -25,7 +24,7 @@ class _AppState extends State {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Planty'),
+        title: Text('Plant Monitoring'),
       ),
       body: Center(
         child: child,
