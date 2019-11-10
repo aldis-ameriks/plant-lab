@@ -46,10 +46,6 @@ class LastReading extends StatelessWidget {
             children: <Widget>[
               Text(JsonEncoder.withIndent('  ')
                   .convert(result.data['lastReading'])),
-              RaisedButton(
-                onPressed: refetch,
-                child: const Text('REFETCH'),
-              ),
             ],
           );
         },
