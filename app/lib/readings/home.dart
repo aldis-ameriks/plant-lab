@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:planty/readings/last_reading_query.dart';
+import 'package:planty/readings/sensor_card.dart';
 
-class SensorsList extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _SensorsListState createState() => _SensorsListState();
+  _HomeState createState() => _HomeState();
 }
 
-class _SensorsListState extends State<SensorsList> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -15,8 +15,8 @@ class _SensorsListState extends State<SensorsList> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              LastReading(nodeId: '4'),
-              LastReading(nodeId: '999'),
+              SensorCard(nodeId: '4'),
+              SensorCard(nodeId: '999'),
             ],
           )
         ],

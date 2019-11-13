@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planty/readings/sensors_list.dart';
+import 'package:planty/readings/home.dart';
 
 class App extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _AppState extends State {
 
     switch (_selectedIndex) {
       case 0:
-        child = SensorsList();
+        child = Home();
         break;
       case 1:
         child = Text('Plant database placeholder');
@@ -32,8 +32,7 @@ class _AppState extends State {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(title: Text('Home'), icon: Icon(Icons.home)),
-          BottomNavigationBarItem(
-              title: Text('Plants'), icon: Icon(Icons.data_usage))
+          BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.data_usage))
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],

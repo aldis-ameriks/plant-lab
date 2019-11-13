@@ -10,8 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
+  cupertino_icons: 0.1.2
   graphql_flutter: 2.1.0
+  time_formatter: 1.0.0+5
+  charts_flutter: 0.8.1
 
 dev_dependencies:
   flutter_test:
