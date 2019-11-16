@@ -2,6 +2,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planty/queries.dart';
+import 'package:planty/sensors/SensorSettings.dart';
 import 'package:time_formatter/time_formatter.dart';
 
 class SensorDetails extends StatelessWidget {
@@ -13,7 +14,17 @@ class SensorDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(237, 237, 237, 1),
-      appBar: AppBar(title: Text('Sensor $sensorId')),
+      appBar: AppBar(
+        title: Text('Sensor $sensorId'),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.settings), onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SensorSettings(sensorId: sensorId)),
+            );
+          }),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Center(
