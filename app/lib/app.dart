@@ -31,8 +31,8 @@ class _AppState extends State {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(title: Text('Home'), icon: Icon(Icons.home)),
-          BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.data_usage))
+          BottomNavigationBarItem(title: Text('Home'), icon: Icon(Icons.dashboard)),
+          BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.dns)),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
