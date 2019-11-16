@@ -27,9 +27,6 @@ class _AppState extends State {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Plant Monitoring'),
-      ),
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: [
