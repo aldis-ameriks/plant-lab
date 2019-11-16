@@ -21,6 +21,7 @@ type Query {
   lastReading(sensorId: String!): Reading!
   lastWateredTime(sensorId: String!): DateTime
   plants: [Plant!]!
+  sensors: [Sensor!]!
 }
 
 type Reading {
@@ -30,4 +31,11 @@ type Reading {
   temperature: Float!
   battery_voltage: Float!
   light: Float
+}
+
+type Sensor {
+  id: ID!
+  room: String
+  plant: Plant!
+  lastReading: Reading!
 }
