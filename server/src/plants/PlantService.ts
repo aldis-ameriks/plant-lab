@@ -5,7 +5,7 @@ export class PlantService {
     return knex('plants').select('*');
   }
 
-  public getPlantBySensorId(sensorId: number) {
+  public getPlantBySensorId(sensorId: string) {
     return knex('plants')
       .select('plants.*')
       .leftJoin('sensors_plants', 'sensors_plants.plant_id', 'plants.id')
@@ -13,7 +13,7 @@ export class PlantService {
       .first();
   }
 
-  public getPlant(plantId: number) {
+  public getPlant(plantId: string) {
     return knex('plants')
       .select('*')
       .where('id', plantId)
