@@ -30,9 +30,7 @@ class _AppState extends State {
       appBar: AppBar(
         title: Text('Plant Monitoring'),
       ),
-      body: Center(
-        child: child,
-      ),
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(title: Text('Home'), icon: Icon(Icons.dashboard)),

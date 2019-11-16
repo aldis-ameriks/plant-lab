@@ -56,9 +56,7 @@ class ReadingsQuery extends StatelessWidget {
                 battery_voltage
               }
             }
-      ''', variables: {
-          'sensorId': sensorId
-        }, fetchPolicy: FetchPolicy.cacheAndNetwork),
+      ''', variables: {'sensorId': sensorId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             return Text(result.errors.toString());
@@ -117,6 +115,50 @@ class PlantsQuery extends StatelessWidget {
               id
               name
               description
+            }
+          }
+      ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            return Text(result.errors.toString());
+          }
+
+          if (result.loading) {
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
+
+          return builder(result.data);
+        },
+      );
+}
+
+class UserSensorsQuery extends StatelessWidget {
+  const UserSensorsQuery({@required this.builder});
+
+  final dynamic builder;
+
+  @override
+  Widget build(BuildContext context) => Query(
+        options: QueryOptions(document: r'''
+          query Sensors {
+            sensors {
+              id
+              room
+              plant {
+                id
+                name
+                description
+              }
+              lastReading {
+                sensor_id
+                time
+                moisture
+                temperature
+                light
+                battery_voltage
+              }
             }
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
