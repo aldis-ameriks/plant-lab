@@ -95,7 +95,7 @@ const BackLinkWrapper = styled(Link)`
 const SensorDetails = () => {
   const { id = '4' } = useParams();
   const [isInfoVisible, setInfoVisibility] = useState(false);
-  const { data, loading, error } = useReadingsQuery({ variables: { nodeIds: [id] } });
+  const { data, loading, error } = useReadingsQuery({ variables: { nodeId: id } });
 
   if (loading) {
     return null;
@@ -105,11 +105,11 @@ const SensorDetails = () => {
     return <p>Error loading sensor data: {error.message}</p>;
   }
 
-  if (!data || !data.readings || !data.readings[0]) {
+  if (!data || !data.readings) {
     return <p>No readings. Check your sensors.</p>;
   }
 
-  const readings = data.readings[0];
+  const { readings } = data;
 
   return (
     <CardWrapper>

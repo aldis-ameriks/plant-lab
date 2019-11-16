@@ -25,14 +25,14 @@ export type MutationSaveReadingArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  readings: Array<Array<Reading>>;
+  readings: Array<Reading>;
   lastReading: Reading;
   lastWateredTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type QueryReadingsArgs = {
   date?: Maybe<Scalars['String']>;
-  nodeIds: Array<Scalars['String']>;
+  nodeId: Scalars['String'];
 };
 
 export type QueryLastReadingArgs = {
@@ -54,17 +54,15 @@ export type Reading = {
 };
 
 export type ReadingsQueryVariables = {
-  nodeIds: Array<Scalars['String']>;
+  nodeId: Scalars['String'];
   date?: Maybe<Scalars['String']>;
 };
 
 export type ReadingsQuery = { __typename?: 'Query' } & {
   readings: Array<
-    Array<
-      { __typename?: 'Reading' } & Pick<
-        Reading,
-        'node_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
-      >
+    { __typename?: 'Reading' } & Pick<
+      Reading,
+      'node_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
     >
   >;
 };
@@ -87,8 +85,8 @@ export type LastWateredTimeQueryVariables = {
 export type LastWateredTimeQuery = { __typename?: 'Query' } & Pick<Query, 'lastWateredTime'>;
 
 export const ReadingsDocument = gql`
-  query Readings($nodeIds: [String!]!, $date: String) {
-    readings(nodeIds: $nodeIds, date: $date) {
+  query Readings($nodeId: String!, $date: String) {
+    readings(nodeId: $nodeId, date: $date) {
       node_id
       time
       moisture
@@ -111,7 +109,7 @@ export const ReadingsDocument = gql`
  * @example
  * const { data, loading, error } = useReadingsQuery({
  *   variables: {
- *      nodeIds: // value for 'nodeIds'
+ *      nodeId: // value for 'nodeId'
  *      date: // value for 'date'
  *   },
  * });

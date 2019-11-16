@@ -17,7 +17,7 @@ type Plant {
 }
 
 type Query {
-  readings(date: String, nodeIds: [String!]!): [[Reading!]!]!
+  readings(date: String, nodeId: String!): [Reading!]!
   lastReading(nodeId: String!): Reading!
   lastWateredTime(nodeId: String!): DateTime
   plants: [Plant!]!

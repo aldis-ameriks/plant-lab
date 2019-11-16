@@ -10,12 +10,12 @@ class ReadingResolver {
     this.readingService = new ReadingService();
   }
 
-  @Query(returns => [[Reading]])
+  @Query(returns => [Reading])
   readings(
-    @Arg('nodeIds', type => [String]) nodeIds: string[],
+    @Arg('nodeId', type => String) nodeId: string,
     @Arg('date', { nullable: true }) date?: string
-  ): Promise<Reading[]> {
-    return Promise.all(nodeIds.map(nodeId => this.readingService.getReadings(nodeId, date)));
+  ): Promise<Reading> {
+    return this.readingService.getReadings(nodeId, date);
   }
 
   @Query(returns => Reading)
