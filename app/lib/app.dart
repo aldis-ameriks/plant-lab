@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planty/plants/plants.dart';
 import 'package:planty/readings/home.dart';
-import 'package:planty/settings/Settings.dart';
+import 'package:planty/settings/settings.dart';
 
 class App extends StatefulWidget {
   @override

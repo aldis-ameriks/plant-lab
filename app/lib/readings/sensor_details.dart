@@ -2,7 +2,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:planty/queries.dart';
-import 'package:planty/sensors/SensorSettings.dart';
+import 'package:planty/sensors/sensor_settings.dart';
 import 'package:time_formatter/time_formatter.dart';
 
 class SensorDetails extends StatelessWidget {
