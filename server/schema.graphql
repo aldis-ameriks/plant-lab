@@ -10,10 +10,17 @@ type Mutation {
   saveReading(input: String!): String!
 }
 
+type Plant {
+  id: ID!
+  name: String!
+  description: String!
+}
+
 type Query {
   readings(date: String, nodeIds: [String!]!): [[Reading!]!]!
   lastReading(nodeId: String!): Reading!
   lastWateredTime(nodeId: String!): DateTime
+  plants: [Plant!]!
 }
 
 type Reading {

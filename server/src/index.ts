@@ -6,6 +6,7 @@ import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
 
 import ReadingResolver from './reading/ReadingResolver';
+import PlantResolver from './plants/PlantResolver';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const morgan = require('morgan');
@@ -13,7 +14,7 @@ const morgan = require('morgan');
 (async () => {
   const schema = await buildSchema({
     authChecker,
-    resolvers: [ReadingResolver],
+    resolvers: [ReadingResolver, PlantResolver],
     emitSchemaFile: {
       path: `${__dirname}/../schema.graphql`,
       commentDescriptions: true,
