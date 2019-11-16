@@ -5,22 +5,22 @@ import 'package:planty/queries.dart';
 import 'package:time_formatter/time_formatter.dart';
 
 class SensorDetails extends StatelessWidget {
-  const SensorDetails({@required this.nodeId});
+  const SensorDetails({@required this.sensorId});
 
-  final String nodeId;
+  final String sensorId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(237, 237, 237, 1),
-      appBar: AppBar(title: Text('Sensor $nodeId')),
+      appBar: AppBar(title: Text('Sensor $sensorId')),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Center(
           child: ListView(
             children: <Widget>[
               LastReadingQuery(
-                nodeId: nodeId,
+                sensorId: sensorId,
                 builder: (result) {
                   dynamic lastReading = result['lastReading'];
                   String formattedLastReading = formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
@@ -37,13 +37,13 @@ class SensorDetails extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Sensor ID: $nodeId'),
+                              Text('Sensor ID: $sensorId'),
                               Text('Moisture: ${lastReading['moisture'].round()} %'),
                               Text('Temperature: ${lastReading['temperature']} °C'),
                               Text('Battery: ${lastReading['battery_voltage']} V'),
                               Text('Last Reading: $formattedLastReading'),
                               LastWateredQuery(
-                                nodeId: nodeId,
+                                sensorId: sensorId,
                                 builder: (result) {
                                   dynamic lastWateredTime = result['lastWateredTime'];
                                   String formatted = formatTime(DateTime.parse(lastWateredTime).millisecondsSinceEpoch);
@@ -59,9 +59,9 @@ class SensorDetails extends StatelessWidget {
                 },
               ),
               ReadingsQuery(
-                nodeId: nodeId,
+                sensorId: sensorId,
                 builder: (result) {
-                  dynamic readings = result;
+                  dynamic readings = result['readings'];
 
                   return Column(
                     children: <Widget>[

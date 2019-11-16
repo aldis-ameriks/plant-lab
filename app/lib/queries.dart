@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class LastReadingQuery extends StatelessWidget {
-  const LastReadingQuery({@required this.nodeId, @required this.builder});
+  const LastReadingQuery({@required this.sensorId, @required this.builder});
 
-  final String nodeId;
+  final String sensorId;
   final dynamic builder;
 
   @override
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
-            query LastReading($nodeId: String!) {
-              lastReading(nodeId: $nodeId) {
-                node_id
+            query LastReading($sensorId: String!) {
+              lastReading(sensorId: $sensorId) {
+                sensor_id
                 time
                 moisture
                 temperature
@@ -20,7 +20,7 @@ class LastReadingQuery extends StatelessWidget {
                 battery_voltage
               }
             }
-      ''', variables: {'nodeId': nodeId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
+      ''', variables: {'sensorId': sensorId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             return Text(result.errors.toString());
@@ -38,17 +38,17 @@ class LastReadingQuery extends StatelessWidget {
 }
 
 class ReadingsQuery extends StatelessWidget {
-  const ReadingsQuery({@required this.nodeId, @required this.builder});
+  const ReadingsQuery({@required this.sensorId, @required this.builder});
 
-  final String nodeId;
+  final String sensorId;
   final dynamic builder;
 
   @override
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
-            query Readings($nodeIds: [String!]!, $date: String) {
-              readings(nodeIds: $nodeIds, date: $date) {
-                node_id
+            query Readings($sensorId: String!, $date: String) {
+              readings(sensorId: $sensorId, date: $date) {
+                sensor_id
                 time
                 moisture
                 temperature
@@ -57,7 +57,7 @@ class ReadingsQuery extends StatelessWidget {
               }
             }
       ''', variables: {
-          'nodeIds': [nodeId]
+          'sensorId': sensorId
         }, fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
@@ -70,26 +70,56 @@ class ReadingsQuery extends StatelessWidget {
             );
           }
 
-          // TODO: Fetching readings for multiple sensors is unnecessary
-          // TODO: Refactor schema to receive single "nodeId" instead
-          return builder(result.data['readings'][0]);
+          return builder(result.data);
         },
       );
 }
 
 class LastWateredQuery extends StatelessWidget {
-  const LastWateredQuery({@required this.nodeId, @required this.builder});
+  const LastWateredQuery({@required this.sensorId, @required this.builder});
 
-  final String nodeId;
+  final String sensorId;
   final dynamic builder;
 
   @override
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
-            query LastWateredTime($nodeId: String!) {
-              lastWateredTime(nodeId: $nodeId)
+            query LastWateredTime($sensorId: String!) {
+              lastWateredTime(sensorId: $sensorId)
             }
-      ''', variables: {'nodeId': nodeId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
+      ''', variables: {'sensorId': sensorId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            return Text(result.errors.toString());
+          }
+
+          if (result.loading) {
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
+
+          return builder(result.data);
+        },
+      );
+}
+
+class PlantsQuery extends StatelessWidget {
+  const PlantsQuery({@required this.builder});
+
+  final dynamic builder;
+
+  @override
+  Widget build(BuildContext context) => Query(
+        options: QueryOptions(document: r'''
+          query Plants {
+            plants {
+              id
+              name
+              description
+            }
+          }
+      ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             return Text(result.errors.toString());

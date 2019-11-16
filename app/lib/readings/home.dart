@@ -10,8 +10,8 @@ class Home extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              SensorCard(nodeId: '4'),
-              SensorCard(nodeId: '999'),
+              SensorCard(sensorId: '4'),
+              SensorCard(sensorId: '999'),
             ],
           )
         ],

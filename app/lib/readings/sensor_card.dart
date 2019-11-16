@@ -3,13 +3,13 @@ import 'package:planty/queries.dart';
 import 'package:planty/readings/sensor_details.dart';
 
 class SensorCard extends StatelessWidget {
-  const SensorCard({@required this.nodeId});
+  const SensorCard({@required this.sensorId});
 
-  final String nodeId;
+  final String sensorId;
 
   @override
   Widget build(BuildContext context) => LastReadingQuery(
-      nodeId: nodeId,
+      sensorId: sensorId,
       builder: (result) {
         dynamic lastReading = result['lastReading'];
 
@@ -22,7 +22,7 @@ class SensorCard extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SensorDetails(nodeId: nodeId)),
+                  MaterialPageRoute(builder: (context) => SensorDetails(sensorId: sensorId)),
                 ),
                 child: Container(
                     width: (MediaQuery.of(context).size.width / 2) - 20,
@@ -37,7 +37,7 @@ class SensorCard extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('ID: ${lastReading['node_id']}'),
+                            Text('ID: ${lastReading['sensor_id']}'),
                             Text('M: ${lastReading['moisture'].round()} %'),
                             Text('T: ${lastReading['temperature']} °C'),
                             Text('B: ${lastReading['battery_voltage']} V'),

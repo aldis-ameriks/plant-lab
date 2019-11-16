@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planty/plants/plants.dart';
 import 'package:planty/readings/home.dart';
 
 class App extends StatefulWidget {
@@ -18,7 +19,7 @@ class _AppState extends State {
         child = Home();
         break;
       case 1:
-        child = Text('Plant database placeholder');
+        child = Plants();
         break;
       case 2:
         child = Text('Settings placeholder');
