@@ -20,6 +20,9 @@ class _AppState extends State {
       case 1:
         child = Text('Plant database placeholder');
         break;
+      case 2:
+        child = Text('Settings placeholder');
+        break;
     }
 
     return Scaffold(
@@ -33,9 +36,10 @@ class _AppState extends State {
         items: [
           BottomNavigationBarItem(title: Text('Home'), icon: Icon(Icons.dashboard)),
           BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.dns)),
+          BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.green[800],
         onTap: _onItemTapped,
       ),
     );
