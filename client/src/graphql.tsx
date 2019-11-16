@@ -23,11 +23,21 @@ export type MutationSaveReadingArgs = {
   input: Scalars['String'];
 };
 
+export type Plant = {
+  __typename?: 'Plant';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   readings: Array<Reading>;
   lastReading: Reading;
   lastWateredTime?: Maybe<Scalars['DateTime']>;
+  plants: Array<Plant>;
+  plant: Plant;
+  sensors: Array<Sensor>;
 };
 
 export type QueryReadingsArgs = {
@@ -43,6 +53,10 @@ export type QueryLastWateredTimeArgs = {
   sensorId: Scalars['String'];
 };
 
+export type QueryPlantArgs = {
+  plantId: Scalars['String'];
+};
+
 export type Reading = {
   __typename?: 'Reading';
   sensor_id: Scalars['ID'];
@@ -51,6 +65,14 @@ export type Reading = {
   temperature: Scalars['Float'];
   battery_voltage: Scalars['Float'];
   light?: Maybe<Scalars['Float']>;
+};
+
+export type Sensor = {
+  __typename?: 'Sensor';
+  id: Scalars['ID'];
+  room?: Maybe<Scalars['String']>;
+  plant: Plant;
+  lastReading: Reading;
 };
 
 export type ReadingsQueryVariables = {
