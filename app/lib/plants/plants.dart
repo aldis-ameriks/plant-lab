@@ -12,27 +12,28 @@ class Plants extends StatelessWidget {
           itemCount: plants.length,
           separatorBuilder: (BuildContext context, int index) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-                height: 50,
-                child: Row(
-                  children: <Widget>[
-                    Image(
-                      image: AssetImage('assets/plant.jpg'),
-                      width: 70,
-                      height: 70,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: GestureDetector(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => PlantDetails(plantId: plants[index]['id'])),
-                          ),
-                          child: Text(plants[index]['name'])
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlantDetails(plantId: plants[index]['id'])),
+              ),
+              child: Container(
+                  height: 50,
+                  child: Row(
+                    children: <Widget>[
+                      Image(
+                        image: AssetImage('assets/plant.jpg'),
+                        width: 70,
+                        height: 70,
                       ),
-                    )
-                  ],
-                ));
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(plants[index]['name']),
+                      )
+                    ],
+                  )),
+            );
           });
     });
   }
