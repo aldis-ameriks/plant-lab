@@ -13,15 +13,15 @@ class SensorCard extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          color: Color.fromRGBO(237, 237, 237, 1),
-          margin: EdgeInsets.all(10),
-          child: GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SensorDetails(sensorId: sensorId)),
-            ),
+        GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SensorDetails(sensorId: sensorId)),
+          ),
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            color: Color.fromRGBO(237, 237, 237, 1),
+            margin: EdgeInsets.all(10),
             child: Container(
                 width: (MediaQuery.of(context).size.width / 2) - 20,
                 padding: EdgeInsets.only(bottom: 20, top: 20, left: 10, right: 10),
