@@ -17,14 +17,14 @@ type Plant {
 }
 
 type Query {
-  readings(date: String, nodeId: String!): [Reading!]!
-  lastReading(nodeId: String!): Reading!
-  lastWateredTime(nodeId: String!): DateTime
+  readings(date: String, sensorId: String!): [Reading!]!
+  lastReading(sensorId: String!): Reading!
+  lastWateredTime(sensorId: String!): DateTime
   plants: [Plant!]!
 }
 
 type Reading {
-  node_id: ID!
+  sensor_id: ID!
   time: DateTime!
   moisture: Float!
   temperature: Float!

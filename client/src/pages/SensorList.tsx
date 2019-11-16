@@ -64,7 +64,7 @@ const SensorList = () => {
               <div>Node ID: {id}</div>
             </ImageWrapper>
             <MiniCardSection>
-              <SensorReadings nodeId={id} />
+              <SensorReadings sensorId={id} />
             </MiniCardSection>
           </MiniCard>
         </CardWrapper>

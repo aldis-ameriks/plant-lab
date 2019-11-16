@@ -12,20 +12,20 @@ class ReadingResolver {
 
   @Query(returns => [Reading])
   readings(
-    @Arg('nodeId', type => String) nodeId: string,
+    @Arg('sensorId', type => String) sensorId: string,
     @Arg('date', { nullable: true }) date?: string
   ): Promise<Reading> {
-    return this.readingService.getReadings(nodeId, date);
+    return this.readingService.getReadings(sensorId, date);
   }
 
   @Query(returns => Reading)
-  lastReading(@Arg('nodeId', type => String) nodeId: string): Promise<Reading> {
-    return this.readingService.getLastReading(nodeId);
+  lastReading(@Arg('sensorId', type => String) sensorId: string): Promise<Reading> {
+    return this.readingService.getLastReading(sensorId);
   }
 
   @Query(returns => Date, { nullable: true })
-  lastWateredTime(@Arg('nodeId', type => String) nodeId: string): Promise<Date> {
-    return this.readingService.getLastWateredTime(nodeId);
+  lastWateredTime(@Arg('sensorId', type => String) sensorId: string): Promise<Date> {
+    return this.readingService.getLastWateredTime(sensorId);
   }
 
   @Mutation(returns => String)
@@ -33,7 +33,7 @@ class ReadingResolver {
   async saveReading(@Arg('input') readingInput: string) {
     console.log('Received input:', readingInput);
     const parsedInput = readingInput.split(';');
-    const node_id = parsedInput[0];
+    const sensor_id = parsedInput[0];
     const moisture_raw = Number(parsedInput[1]);
     const moisture = Number(parsedInput[2]);
     const moisture_min = Number(parsedInput[3]);
@@ -43,7 +43,7 @@ class ReadingResolver {
     const battery_voltage = Number(parsedInput[7]);
     const timestamp = new Date();
     const reading = {
-      node_id,
+      sensor_id,
       moisture,
       moisture_raw,
       moisture_min,
@@ -54,7 +54,7 @@ class ReadingResolver {
       timestamp,
     };
 
-    await this.readingService.saveReading(node_id, reading);
+    await this.readingService.saveReading(sensor_id, reading);
     return 'success';
   }
 }

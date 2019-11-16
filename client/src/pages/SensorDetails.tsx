@@ -95,7 +95,7 @@ const BackLinkWrapper = styled(Link)`
 const SensorDetails = () => {
   const { id = '4' } = useParams();
   const [isInfoVisible, setInfoVisibility] = useState(false);
-  const { data, loading, error } = useReadingsQuery({ variables: { nodeId: id } });
+  const { data, loading, error } = useReadingsQuery({ variables: { sensorId: id } });
 
   if (loading) {
     return null;
@@ -124,7 +124,7 @@ const SensorDetails = () => {
           <ImageWrapper>
             <Image src="/plant.jpg" alt="" width="100%" />
           </ImageWrapper>
-          <SensorReadings nodeId={id} />
+          <SensorReadings sensorId={id} />
         </CardSection>
 
         <CardSection>
