@@ -16,6 +16,7 @@ export class PlantService {
   public getPlant(plantId: number) {
     return knex('plants')
       .select('*')
-      .where('id', plantId);
+      .where('id', plantId)
+      .first();
   }
 }
