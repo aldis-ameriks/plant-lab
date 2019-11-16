@@ -21,7 +21,7 @@ type Query {
   lastReading(sensorId: String!): Reading!
   lastWateredTime(sensorId: String!): DateTime
   plants: [Plant!]!
-  plant(plantId: Float!): Plant!
+  plant(plantId: Int!): Plant!
   sensors: [Sensor!]!
 }
 

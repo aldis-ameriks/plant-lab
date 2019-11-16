@@ -1,4 +1,4 @@
-import { Arg, Query, Resolver } from 'type-graphql';
+import { Arg, Int, Query, Resolver } from 'type-graphql';
 import { Plant } from './PlantEntity';
 import { PlantService } from './PlantService';
 
@@ -21,7 +21,7 @@ class PlantResolver {
   }
 
   @Query(returns => Plant)
-  plant(@Arg('plantId', type => Number) plantId: number) {
+  plant(@Arg('plantId', type => Int) plantId: number) {
     return this.plantService.getPlant(plantId);
   }
 }
