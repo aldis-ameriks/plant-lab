@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planty/plants/plant_details.dart';
 import 'package:planty/queries.dart';
 
 class Plants extends StatelessWidget {
@@ -22,7 +23,13 @@ class Plants extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: Text(plants[index]['name']),
+                      child: GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PlantDetails(plantId: plants[index]['id'])),
+                          ),
+                          child: Text(plants[index]['name'])
+                      ),
                     )
                   ],
                 ));
