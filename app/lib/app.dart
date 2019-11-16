@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planty/plants/plants.dart';
 import 'package:planty/readings/home.dart';
+import 'package:planty/settings/Settings.dart';
 
 class App extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _AppState extends State {
         child = Plants();
         break;
       case 2:
-        child = Text('Settings placeholder');
+        child = Settings();
         break;
     }
 
