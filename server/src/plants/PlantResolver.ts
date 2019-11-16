@@ -1,4 +1,4 @@
-import { Query, Resolver } from 'type-graphql';
+import { Arg, Query, Resolver } from 'type-graphql';
 import { Plant } from './PlantEntity';
 import { PlantService } from './PlantService';
 
@@ -11,8 +11,18 @@ class PlantResolver {
   }
 
   @Query(returns => [Plant])
-  plants() {
-    return this.plantService.getPlants();
+  async plants() {
+    const plant = await this.plantService.getPlants();
+    const temp = [];
+    for (let i = 0; i < 20; i += 1) {
+      temp.push(plant[0]);
+    }
+    return temp;
+  }
+
+  @Query(returns => Plant)
+  plant(@Arg('plantId', type => Number) plantId: number) {
+    return this.plantService.getPlant(plantId);
   }
 }
 

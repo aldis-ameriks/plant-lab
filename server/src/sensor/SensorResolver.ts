@@ -25,7 +25,7 @@ class SensorResolver {
 
   @FieldResolver(returns => Plant)
   plant(@Root() sensor: Sensor) {
-    return this.plantService.getPlant(sensor.id);
+    return this.plantService.getPlantBySensorId(sensor.id);
   }
 
   @FieldResolver(returns => Reading)
