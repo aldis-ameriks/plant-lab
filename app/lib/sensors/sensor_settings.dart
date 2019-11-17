@@ -23,20 +23,36 @@ class SensorSettings extends StatelessWidget {
       ),
       body: Container(
         color: Colors.grey[300],
-        child: Container(
-          margin: EdgeInsets.only(top: 10),
-          color: Colors.white,
-          child: ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: entries.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
-                child: entries[index],
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
-          ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              color: Colors.white,
+              child: ListView.separated(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(8),
+                itemCount: entries.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
+                    child: entries[index],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                width: 500,
+                child: RaisedButton(
+                  onPressed: () {},
+                  color: Colors.red[700],
+                  child: Text("Remove", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
