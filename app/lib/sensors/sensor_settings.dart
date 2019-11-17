@@ -30,7 +30,7 @@ class SensorSettings extends StatelessWidget {
               color: Colors.white,
               child: ListView.separated(
                 shrinkWrap: true,
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 itemCount: entries.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(

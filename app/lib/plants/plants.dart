@@ -10,7 +10,7 @@ class Plants extends StatelessWidget {
         body: PlantsQuery(builder: (result) {
           dynamic plants = result['plants'];
           return ListView.separated(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               itemCount: plants.length,
               separatorBuilder: (BuildContext context, int index) => const Divider(),
               itemBuilder: (BuildContext context, int index) {
@@ -20,9 +20,11 @@ class Plants extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => PlantDetails(plantId: plants[index]['id'])),
                   ),
-                  child: Container(
-                      height: 50,
-                      child: Row(
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
                         children: <Widget>[
                           Image(
                             image: AssetImage('assets/plant.jpg'),
@@ -30,11 +32,17 @@ class Plants extends StatelessWidget {
                             height: 70,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 20),
                             child: Text(plants[index]['name']),
                           )
                         ],
-                      )),
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: Colors.grey[600],
+                      ),
+                    ],
+                  ),
                 );
               });
         }));
