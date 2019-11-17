@@ -46,6 +46,7 @@ class SensorSettings extends StatelessWidget {
               child: Container(
                 width: 500,
                 child: RaisedButton(
+                  padding: EdgeInsets.all(12),
                   onPressed: () {},
                   color: Colors.red[700],
                   child: Text("Remove", style: TextStyle(color: Colors.white)),
