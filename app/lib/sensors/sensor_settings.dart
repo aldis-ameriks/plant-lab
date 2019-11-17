@@ -9,6 +9,7 @@ class SensorSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> entries = [
+      _buildEntry('Sensor ID', '4'),
       _buildEntry('Name', 'Plant Monitoring Sensor'),
       _buildEntry('Plant', 'Rubber Tree'),
       _buildEntry('Location', 'Current location for sensor'),
@@ -67,10 +68,12 @@ class SensorSettings extends StatelessWidget {
         Text(text),
         Row(
           children: <Widget>[
-            Container(
-              width: 180,
-              child: Text(value, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
-            ),
+            Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Container(
+                  width: 180,
+                  child: Text(value, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
+                )),
             Icon(Icons.chevron_right, color: Colors.grey[600])
           ],
         ),
