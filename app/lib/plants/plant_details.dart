@@ -17,7 +17,7 @@ class PlantDetails extends StatelessWidget {
             appBar: AppBar(title: Text(plant['name'])),
             body: Container(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: <Widget>[
                     Row(
