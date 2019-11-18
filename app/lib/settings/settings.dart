@@ -58,9 +58,12 @@ class Settings extends StatelessWidget {
         Text(text),
         Row(
           children: <Widget>[
-            Container(
-              width: 180,
-              child: Text(value, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Container(
+                width: 180,
+                child: Text(value, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
+              ),
             ),
             Icon(Icons.chevron_right, color: Colors.grey[600])
           ],
