@@ -22,6 +22,7 @@ type Query {
   lastWateredTime(sensorId: String!): DateTime
   plants: [Plant!]!
   plant(plantId: String!): Plant!
+  sensor(sensorId: String!): Sensor!
   sensors: [Sensor!]!
 }
 
@@ -37,6 +38,9 @@ type Reading {
 type Sensor {
   id: ID!
   room: String
+  name: String
+  firmware: String
+  location: String
   plant: Plant!
   lastReading: Reading!
 }

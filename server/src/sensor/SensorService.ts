@@ -8,6 +8,14 @@ class SensorService {
       .leftJoin('users_sensors', 'users_sensors.sensor_id', 'sensors.id')
       .where('users_sensors.user_id', 1);
   }
+
+  public getUserSensor(sensorId: string) {
+    return knex('sensors')
+      .select('*')
+      .from('sensors')
+      .where('id', sensorId)
+      .first();
+  }
 }
 
 export default SensorService;

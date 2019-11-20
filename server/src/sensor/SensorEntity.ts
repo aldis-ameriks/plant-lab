@@ -7,4 +7,13 @@ export class Sensor {
 
   @Field({ nullable: true })
   room: string;
+
+  @Field({ nullable: true })
+  name: string;
+
+  @Field({ nullable: true })
+  firmware: string;
+
+  @Field({ nullable: true })
+  location: string;
 }

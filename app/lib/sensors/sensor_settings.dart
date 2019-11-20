@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:planty/queries.dart';
 
 class SensorSettings extends StatelessWidget {
   const SensorSettings({@required this.sensorId});
@@ -8,59 +9,65 @@ class SensorSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> entries = [
-      _buildEntry('Sensor ID', '4'),
-      _buildEntry('Name', 'Plant Monitoring Sensor'),
-      _buildEntry('Plant', 'Rubber Tree'),
-      _buildEntry('Location', 'Current location for sensor'),
-      _buildEntry('Firmware', 'v1.0'),
-      _buildEntry('About', ''),
-      _buildEntry('Troubleshoot', ''),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Sensor settings'),
       ),
       body: Container(
         color: Colors.grey[300],
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              color: Colors.white,
-              child: ListView.separated(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(10),
-                itemCount: entries.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
-                    child: entries[index],
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => const Divider(),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                width: 500,
-                child: RaisedButton(
-                  padding: EdgeInsets.all(12),
-                  onPressed: () {},
-                  color: Colors.red[700],
-                  child: Text("Remove", style: TextStyle(color: Colors.white)),
+        child: UserSensorSettingsQuery(
+          sensorId: sensorId,
+          builder: (result) {
+            dynamic sensor = result['sensor'];
+
+            List<Widget> entries = [
+              _buildEntry('Sensor ID', sensor['id']),
+              _buildEntry('Name', sensor['name']),
+              _buildEntry('Plant', sensor['plant']['name']),
+              _buildEntry('Location', sensor['location']),
+              _buildEntry('Firmware', sensor['firmware']),
+            ];
+
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  color: Colors.white,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(10),
+                    itemCount: entries.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
+                        child: entries[index],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                  ),
                 ),
-              ),
-            )
-          ],
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    width: 500,
+                    child: RaisedButton(
+                      padding: EdgeInsets.all(12),
+                      onPressed: () {},
+                      color: Colors.red[700],
+                      child: Text("Remove", style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
   _buildEntry(text, value) {
+    value ??= '';
     return Flex(
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
