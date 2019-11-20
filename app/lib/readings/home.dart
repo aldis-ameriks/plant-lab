@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:planty/queries.dart';
 import 'package:planty/readings/sensor_card.dart';
 import 'package:planty/sensors/new_sensor.dart';
+import 'package:planty/sensors/queries.dart';
 
 class Home extends StatelessWidget {
   @override

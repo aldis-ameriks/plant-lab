@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planty/plants/plant_details.dart';
+import 'package:planty/plants/queries.dart';
 import 'package:planty/plants/search_input.dart';
-import 'package:planty/queries.dart';
 
 class Plants extends StatefulWidget {
   @override

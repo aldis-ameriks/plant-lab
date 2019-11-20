@@ -1,7 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:planty/queries.dart';
+import 'package:planty/readings/queries.dart';
 import 'package:planty/sensors/sensor_settings.dart';
 import 'package:time_formatter/time_formatter.dart';
 
@@ -17,12 +17,14 @@ class SensorDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text('Sensor $sensorId'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.settings), onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SensorSettings(sensorId: sensorId)),
-            );
-          }),
+          IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SensorSettings(sensorId: sensorId)),
+                );
+              }),
         ],
       ),
       body: Padding(

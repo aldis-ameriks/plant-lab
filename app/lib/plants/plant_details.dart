@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:planty/queries.dart';
+import 'package:planty/plants/queries.dart';
 
 class PlantDetails extends StatelessWidget {
   const PlantDetails({@required this.plantId});
