@@ -41,6 +41,7 @@ class ReadingResolver {
     const temperature = Number(parsedInput[5]);
     const light = Number(parsedInput[6]) || null; // Some of the sensors have their light sensor covered and send 0
     const battery_voltage = Number(parsedInput[7]);
+    const signal = Number(parsedInput[8]);
     const timestamp = new Date();
     const reading = {
       sensor_id,
@@ -52,6 +53,7 @@ class ReadingResolver {
       battery_voltage,
       light,
       timestamp,
+      signal,
     };
 
     await this.readingService.saveReading(sensor_id, reading);

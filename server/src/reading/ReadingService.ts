@@ -10,6 +10,7 @@ type ReadingInput = {
   temperature: number;
   light: number | null;
   battery_voltage: number;
+  signal: number;
 };
 
 class ReadingService {
