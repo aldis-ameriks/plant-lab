@@ -163,7 +163,7 @@ int readMoisture() {
   digitalWrite(7, HIGH);
   delay(100);
   analogRead(A1); // Discard first reading after ADC init
-  delay(50);
+  delay(20);
   int sampleCount = 10;
   int sampleSum = 0.0;
 
@@ -181,25 +181,26 @@ float readTemperature(float operatingVoltage) {
   digitalWrite(8, HIGH);
   delay(100);
   analogRead(A2); // Discard first reading after ADC init
-  delay(50);
-  float voltageOffset = 0.5; // Voltage offset at 0 degrees
-  float temperatureCoefficient = 0.01; // Temperature coefficient
-  int sampleCount = 1;
+  delay(20);
+
+  float temperatureCoefficient = 100; // Temperature coefficient
+  int sampleCount = 10;
   float sampleSum = 0.0;
   float temperature;
 
   for (int sample = 0; sample < sampleCount; sample++) {
-    temperature = ((float)analogRead(A2) * operatingVoltage / 1023.0);
-    temperature = (temperature - voltageOffset) / temperatureCoefficient;
+    float temperatureRaw = (float)analogRead(A2);
+    float temperatureVoltage = ((temperatureRaw + 0.5) * operatingVoltage / 1024.0);
+    temperature = (temperatureVoltage - TEMPERATURE_OFFSET) * temperatureCoefficient;
     delay(20);
     sampleSum += temperature;
   }
+
   digitalWrite(8, LOW);
   return sampleSum / (float)sampleCount;
 }
 
 int readLight() {
-
   int sampleCount = 5;
   float sampleSum = 0.0;
 
