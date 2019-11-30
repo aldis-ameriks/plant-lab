@@ -47,7 +47,7 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect.
   }
-  radio.setCS(SS_PIN);  
+  radio.setCS(SS_PIN);
   radio.initialize(FREQUENCY, NODEID, NETWORKID);
 
   #ifdef IS_RFM69HW_HCW
@@ -56,7 +56,7 @@ void setup() {
 
   radio.encrypt(ENCRYPTKEY);
   radio.promiscuous(promiscuousMode);
-  
+
   // give the ethernet module time to boot up:
   delay(1000);
 
@@ -69,8 +69,10 @@ void setup() {
 
 void loop() {
   if (radio.receiveDone()) {
+    int16_t RSSI = radio.readRSSI();
+
     Serial.print('[');Serial.print(radio.SENDERID, DEC);Serial.print("] ");
-    Serial.print(" [RX_RSSI:");Serial.print(radio.readRSSI());Serial.print("]");
+    Serial.print(" [RX_RSSI:");Serial.print(RSSI);Serial.print("]");
     if (promiscuousMode) {
       Serial.print("to [");Serial.print(radio.TARGETID, DEC);Serial.print("] ");
     }
@@ -78,26 +80,25 @@ void loop() {
     for (byte i = 0; i < radio.DATALEN; i++) {
       Serial.print((char)radio.DATA[i]);
     }
-
-    sendHttpRequestWithData((char*)radio.DATA);
-
-    if (radio.ACKRequested()) {
-      radio.sendACK();
-    }
-
-    if (radio.ACKRequested()) {
-      radio.sendACK();
-      Serial.print(" - ACK sent");
-    }
     Serial.println();
+
+    if (radio.ACKRequested()) {
+      radio.sendACK();
+      Serial.println(" - ACK sent");
+    }
+
+    sendHttpRequestWithData((char*)radio.DATA, RSSI);
+    Serial.println("Done");
   }
 }
 
-void sendHttpRequestWithData(String data) {
+void sendHttpRequestWithData(String data, int16_t RSSI) {
   // close any connection before send a new request.
   client.stop();
 
-  String postData = "{\"query\":\"mutation($input: String!) {saveReading(input: $input)}\",\"variables\":{\"input\":\"" + data + "\"}}";
+  String dataWithRss = data + ";" + (String)RSSI;
+
+  String postData = "{\"query\":\"mutation($input: String!) {saveReading(input: $input)}\",\"variables\":{\"input\":\"" + dataWithRss + "\"}}";
 
   if (client.connect(server, 80)) {
     Serial.println("Sending request");
