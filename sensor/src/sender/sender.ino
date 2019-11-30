@@ -32,13 +32,13 @@
   RFM69 radio;
 #endif
 
-int MOISTURE_DRY = 350;
-int MOISTURE_WET = 700;
+int MOISTURE_DRY = 244;
+int MOISTURE_WET = 510;
 I2CSoilMoistureSensor sensor;
 
 // For measuring battery voltage
 float R1 = 1000000.0; // R1 (1M)
-float R2 = 265000.0;  // R2 (270K)
+float R2 = 270000.0;  // R2 (270K)
 float INTERNAL_AREF = 1.1;
 
 void setup() {
@@ -70,13 +70,18 @@ void setup() {
 
   // Init analog ref to internal voltage (1.1v)
   analogReference(INTERNAL);
+
+  pinMode(6, OUTPUT);
 }
 
 void loop() {
   while (sensor.isBusy()) {
     Serial.println("Sensor is busy");
+    digitalWrite(6, HIGH);
     delay(50);
   }
+
+  digitalWrite(6, LOW);
 
   Serial.println("Reading sensor values");
   int moisture = sensor.getCapacitance();
@@ -121,7 +126,21 @@ void sendData(String payload) {
   if (REQUEST_ACK) {
     if (waitForAck()) {
       Serial.print("ACK RECEIVED");
+      digitalWrite(6, HIGH);
+      delay(1000);
+      digitalWrite(6, LOW);
     } else {
+      digitalWrite(6, HIGH);
+      delay(200);
+      digitalWrite(6, LOW);
+      delay(200);
+      digitalWrite(6, HIGH);
+      delay(200);
+      digitalWrite(6, LOW);
+      delay(200);
+      digitalWrite(6, HIGH);
+      delay(200);
+      digitalWrite(6, LOW);
       Serial.print("ACK NOT RECEIVED");
     }
   }
