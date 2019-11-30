@@ -36,7 +36,7 @@
   #define WITH_REGULATOR
   #define MOISTURE_MIN 807
   #define MOISTURE_MAX 407
-  #define TEMPERATURE_OFFSET 0.49
+  #define TEMPERATURE_OFFSET 0.4809
   #define INTERNAL_AREF 1.1
 #endif
 
@@ -44,14 +44,14 @@
   #define WITH_REGULATOR
   #define MOISTURE_MIN 848
   #define MOISTURE_MAX 431
-  #define TEMPERATURE_OFFSET 0.49
+  #define TEMPERATURE_OFFSET 0.4773
   #define INTERNAL_AREF 1.1
 #endif
 
 #if SENSOR_ID == 7
   #define MOISTURE_MIN 806
   #define MOISTURE_MAX 407
-  #define TEMPERATURE_OFFSET 0.507
+  #define TEMPERATURE_OFFSET 0.4856
   #define INTERNAL_AREF 1.1
   #undef R2
   #define R2 1011594.0
