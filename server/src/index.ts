@@ -42,7 +42,8 @@ const morgan = require('morgan');
 
   server.express.use(morgan('combined'));
 
-  await server.start(options, ({ port }: Options) =>
-    console.log(`Server started, listening on port ${port} for incoming requests.`)
-  );
+  await server.start(options, ({ port }: Options) => {
+    console.log(`Server started, listening on port ${port} for incoming requests.`);
+    console.log('Using environment:', process.env.NODE_ENV);
+  });
 })();
