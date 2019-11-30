@@ -4,3 +4,4 @@ build
 .idea
 .git
 .env
+config/local.json
