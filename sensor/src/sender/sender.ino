@@ -5,49 +5,15 @@
 #include <avr/sleep.h>
 #include "secrets.h"
 
-#define SERIAL_BAUD 115200
-
-#define NODEID      1
-#define NETWORKID   100
-#define GATEWAYID   1
-#define FREQUENCY     RF69_433MHZ
-#define ENCRYPTKEY    RADIO_ENCRYPTION_KEY
-//#define IS_RFM69HW_HCW  //uncomment only for RFM69HW/HCW! Leave out if you have RFM69W/CW!
-#define REQUEST_ACK true
-#define ACK_TIME 50
-#define DELAY_BEFORE_SLEEP (long)1000
-//*********************************************************************************************
-//Auto Transmission Control - dials down transmit power to save battery
-//Usually you do not need to always transmit at max output power
-//By reducing TX power even a little you save a significant amount of battery power
-//This setting enables this gateway to work with remote nodes that have ATC enabled to
-//dial their power down to only the required level
-#define ENABLE_ATC    //comment out this line to disable AUTO TRANSMISSION CONTROL
-//*********************************************************************************************
-
-#ifdef ENABLE_ATC
-  RFM69_ATC radio;
-#else
-  RFM69 radio;
-#endif
-
-#define WITH_REGULATOR
-
-// Calibrated values
-int MOISTURE_MIN = 240;
-int MOISTURE_MAX = 515;
-
-// For measuring battery voltage
-float R1 = 10000000.0; // R1 (10M)
-float R2 = 1000000.0;  // R2 (1M)
-float INTERNAL_AREF = 1.1;
+#define SENSOR_ID 7
+#include "config.h"
 
 void setup() {
   Serial.begin(SERIAL_BAUD);
   while (!Serial) {
     ; // Wait for serial port to connect
   }
-  radio.initialize(FREQUENCY, NODEID, NETWORKID);
+  radio.initialize(FREQUENCY, SENSOR_ID, NETWORKID);
 
   #ifdef IS_RFM69HW_HCW
     radio.setHighPower(); // Must include this only for RFM69HW/HCW!
@@ -72,8 +38,9 @@ void setup() {
 void loop() {
   float batteryVoltage = readBatteryVoltage();
   float operatingVoltage = batteryVoltage;
+
   #ifdef WITH_REGULATOR
-    operatingVoltage = batteryVoltage > 3.31 ? 3.31 : batteryVoltage;
+    operatingVoltage = batteryVoltage > REGULATOR_V ? REGULATOR_V : batteryVoltage;
   #endif
 
   int moisture = readMoisture();
@@ -83,7 +50,7 @@ void loop() {
   int light = readLight();
 
   String payload = "";
-  payload += NODEID;
+  payload += SENSOR_ID;
   payload += ";";
   payload += moisture;
   payload += ";";
@@ -100,8 +67,13 @@ void loop() {
   payload += (String)batteryVoltage;
   Serial.println(payload);
 
-  sendData(payload);
-  enterSleep();
+  #if SEND_DATA == true
+    sendData(payload);
+  #endif
+
+  #if SLEEP == true
+    enterSleep();
+  #endif
 }
 
 void sendData(String payload) {
@@ -142,7 +114,7 @@ void enterSleep() {
   // 30 minutes = 60x30 = 1800s
   // 1800 s / 8 s = 225
   unsigned int sleepCounter;
-  for (sleepCounter = 1; sleepCounter > 0; sleepCounter--) {
+  for (sleepCounter = 225; sleepCounter > 0; sleepCounter--) {
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
   }
 }
