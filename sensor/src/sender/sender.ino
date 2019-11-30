@@ -153,7 +153,7 @@ float readBatteryVoltage() {
   analogRead(0); // Discard first reading after ADC init
   delay(50);
   int rawReading = analogRead(0);
-  float batteryVoltage = (rawReading / (float)1023) * INTERNAL_AREF * ((R1 + R2) / R2);
+  float batteryVoltage = ((rawReading + 0.5) / (float)1024) * INTERNAL_AREF * ((R1 + R2) / R2);
   analogReference(DEFAULT);
   delay(100);
   return batteryVoltage;
