@@ -35,7 +35,7 @@ byte mac[] = {
 };
 
 // Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 0, 177);
+IPAddress ip(192, 168, 0, 178);
 IPAddress myDns(192, 168, 0, 1);
 EthernetClient client;
 
@@ -47,8 +47,8 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect.
   }
+  radio.setCS(SS_PIN);  
   radio.initialize(FREQUENCY, NODEID, NETWORKID);
-//  radio.setCS(SS_PIN); // TODO: Use different SS pin for rfm69 to avoid conflict with ethernet shield
 
   #ifdef IS_RFM69HW_HCW
     radio.setHighPower(); //must include this only for RFM69HW/HCW!
