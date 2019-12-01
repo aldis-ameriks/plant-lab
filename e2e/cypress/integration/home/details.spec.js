@@ -5,7 +5,7 @@ describe('sensor details page', () => {
 
   it('renders last readings', () => {
     cy.contains('44%')
-    cy.contains('23°c')
+    cy.contains('23.0°c')
     cy.contains('3.53 V')
   })
 
