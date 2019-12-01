@@ -82,7 +82,7 @@ const SensorReadings: React.FC<SensorReadingsProps> = ({ sensorId }) => {
           <RadialChart label="moisture" value={moisture} type="percentage" />
         </GaugeWrapper>
         <GaugeWrapper>
-          <RadialChart label="temp." value={temperature} type="temperature" maxValue={40} decimals={1}/>
+          <RadialChart label="temp." value={temperature} type="temperature" maxValue={40} decimals={1} />
         </GaugeWrapper>
         <GaugeWrapper>
           <RadialChart
