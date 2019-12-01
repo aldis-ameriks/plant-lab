@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SensorReadings from '../components/SensorReadings';
 import { Card, CardSection, CardWrapper } from './SensorDetails';
 
-const sensorIds = ['4', '999'];
+const sensorIds = ['4', '1', '2', '5', '6','7', '999'];
 
 const List = styled.div`
   display: flex;
