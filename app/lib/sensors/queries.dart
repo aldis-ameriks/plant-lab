@@ -31,7 +31,7 @@ class UserSensorsQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 
@@ -71,7 +71,7 @@ class UserSensorSettingsQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 

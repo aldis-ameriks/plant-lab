@@ -23,7 +23,7 @@ class PlantsQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 
@@ -56,7 +56,7 @@ class PlantQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 

@@ -28,7 +28,7 @@ class LastReadingQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 
@@ -64,7 +64,7 @@ class ReadingsQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 
@@ -93,7 +93,7 @@ class LastWateredQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: const CircularProgressIndicator(),
+              child: const RefreshProgressIndicator(),
             );
           }
 
