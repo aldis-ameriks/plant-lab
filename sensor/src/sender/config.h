@@ -34,9 +34,9 @@
 // TODO: Come up with more sustainable configuration management
 #if SENSOR_ID == 5
   #define WITH_REGULATOR
-  #define MOISTURE_MIN 807
+  #define MOISTURE_MIN 800
   #define MOISTURE_MAX 407
-  #define TEMPERATURE_OFFSET 0.4809
+  #define TEMPERATURE_OFFSET 0.4869
   #define INTERNAL_AREF 1.1
 #endif
 
@@ -44,14 +44,14 @@
   #define WITH_REGULATOR
   #define MOISTURE_MIN 848
   #define MOISTURE_MAX 431
-  #define TEMPERATURE_OFFSET 0.4773
+  #define TEMPERATURE_OFFSET 0.48729
   #define INTERNAL_AREF 1.1
 #endif
 
 #if SENSOR_ID == 7
-  #define MOISTURE_MIN 806
+  #define MOISTURE_MIN 785
   #define MOISTURE_MAX 407
-  #define TEMPERATURE_OFFSET 0.4856
+  #define TEMPERATURE_OFFSET 0.4896
   #define INTERNAL_AREF 1.1
   #undef R2
   #define R2 1011594.0
