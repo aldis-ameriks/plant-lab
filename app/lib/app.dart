@@ -31,7 +31,7 @@ class _AppState extends State {
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(title: Text('Home'), icon: Icon(Icons.dashboard)),
+          BottomNavigationBarItem(title: Text('Devices'), icon: Icon(Icons.dashboard)),
           BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.dns)),
           BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
         ],
