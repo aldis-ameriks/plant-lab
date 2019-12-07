@@ -1,2 +1,2 @@
-final String GRAPHQL_ENDPOINT = 'https://api.plant.kataldi.com/graphql';
-final String SUBSCRIPTION_ENDPOINT = 'ws://api.plant.kataldi.com/subscriptions';
+final String GRAPHQL_ENDPOINT = 'http://localhost:4000/graphql';
+final String SUBSCRIPTION_ENDPOINT = 'http://localhost:4000/graphql';
