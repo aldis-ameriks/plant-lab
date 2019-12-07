@@ -35,7 +35,7 @@ class UserSensorsQuery extends StatelessWidget {
             );
           }
 
-          return builder(result.data);
+          return builder(result.data, refetch);
         },
       );
 }
