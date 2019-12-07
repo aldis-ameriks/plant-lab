@@ -8,8 +8,9 @@ class SensorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic lastReading = sensor['lastReading'];
     String sensorId = sensor['id'];
+    String name = sensor['name'];
+    String room = sensor['room'];
 
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -19,24 +20,26 @@ class SensorCard extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Container(
-            padding: EdgeInsets.only(bottom: 20, top: 20, left: 10, right: 10),
+            padding: EdgeInsets.all(10),
             child: Row(
               children: <Widget>[
-                Image(
-                  image: AssetImage('assets/plant.jpg'),
-                  width: 70,
-                  height: 70,
+                Container(
+                  margin: EdgeInsets.only(right: 20),
+                  child: Image(
+                    image: AssetImage('assets/plant.jpg'),
+                    width: 50,
+                    height: 50,
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: lastReading != null
-                      ? [
-                          Text('ID: $sensorId'),
-                          Text('M: ${lastReading['moisture'].round()} %'),
-                          Text('T: ${lastReading['temperature']} °C'),
-                          Text('B: ${lastReading['battery_voltage']} V'),
-                        ]
-                      : [Text('ID: $sensorId')],
+                Flexible(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(name ?? '', style: Theme.of(context).textTheme.body2),
+                        Text('ID: $sensorId', style: Theme.of(context).textTheme.body2),
+                        Text(room ?? '', style: Theme.of(context).textTheme.body2),
+                      ]),
                 )
               ],
             )),

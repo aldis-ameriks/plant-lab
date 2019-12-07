@@ -12,19 +12,12 @@ class UserSensorsQuery extends StatelessWidget {
           query Sensors {
             sensors {
               id
+              name
               room
               plant {
                 id
                 name
                 description
-              }
-              lastReading {
-                sensor_id
-                time
-                moisture
-                temperature
-                light
-                battery_voltage
               }
             }
           }

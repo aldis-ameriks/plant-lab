@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
                 headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
                 title: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 body1: TextStyle(fontSize: 14.0),
+                body2: TextStyle(fontSize: 12.0),
               ),
             ),
             debugShowCheckedModeBanner: false,
