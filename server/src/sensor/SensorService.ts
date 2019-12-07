@@ -7,6 +7,7 @@ class SensorService {
       .from('sensors')
       .leftJoin('users_sensors', 'users_sensors.sensor_id', 'sensors.id')
       .where('users_sensors.user_id', 1)
+      .andWhereNot('test', true)
       .orderBy('id');
   }
 
