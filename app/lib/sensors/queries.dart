@@ -8,7 +8,7 @@ class UserSensorsQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-    options: QueryOptions(document: r'''
+        options: QueryOptions(document: r'''
           query Sensors {
             sensors {
               id
@@ -22,20 +22,22 @@ class UserSensorsQuery extends StatelessWidget {
             }
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
-    builder: (result, {refetch, fetchMore}) {
-      if (result.errors != null) {
-        return Text(result.errors.toString());
-      }
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            return Center(
+              child: Text(result.errors.toString()),
+            );
+          }
 
-      if (result.loading) {
-        return Center(
-          child: const CircularProgressIndicator(),
-        );
-      }
+          if (result.loading) {
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
 
-      return builder(result.data);
-    },
-  );
+          return builder(result.data);
+        },
+      );
 }
 
 class UserSensorSettingsQuery extends StatelessWidget {
@@ -46,7 +48,7 @@ class UserSensorSettingsQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-    options: QueryOptions(document: r'''
+        options: QueryOptions(document: r'''
           query SensorSettings($sensorId: String!) {
             sensor(sensorId: $sensorId) {
               id
@@ -62,18 +64,18 @@ class UserSensorSettingsQuery extends StatelessWidget {
             }
           }
       ''', variables: {'sensorId': sensorId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
-    builder: (result, {refetch, fetchMore}) {
-      if (result.errors != null) {
-        return Text(result.errors.toString());
-      }
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            return Center(child: Text(result.errors.toString()));
+          }
 
-      if (result.loading) {
-        return Center(
-          child: const CircularProgressIndicator(),
-        );
-      }
+          if (result.loading) {
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
 
-      return builder(result.data);
-    },
-  );
+          return builder(result.data);
+        },
+      );
 }

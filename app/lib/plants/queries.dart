@@ -8,7 +8,7 @@ class PlantsQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-    options: QueryOptions(document: r'''
+        options: QueryOptions(document: r'''
           query Plants {
             plants {
               id
@@ -16,20 +16,20 @@ class PlantsQuery extends StatelessWidget {
             }
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
-    builder: (result, {refetch, fetchMore}) {
-      if (result.errors != null) {
-        return Text(result.errors.toString());
-      }
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            return Center(child: Text(result.errors.toString()));
+          }
 
-      if (result.loading) {
-        return Center(
-          child: const CircularProgressIndicator(),
-        );
-      }
+          if (result.loading) {
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
 
-      return builder(result.data);
-    },
-  );
+          return builder(result.data);
+        },
+      );
 }
 
 class PlantQuery extends StatelessWidget {
@@ -40,7 +40,7 @@ class PlantQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-    options: QueryOptions(document: r'''
+        options: QueryOptions(document: r'''
           query Plant($plantId: String!) {
             plant(plantId: $plantId) {
               id
@@ -49,19 +49,18 @@ class PlantQuery extends StatelessWidget {
             }
           }
       ''', variables: {'plantId': plantId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
-    builder: (result, {refetch, fetchMore}) {
-      if (result.errors != null) {
-        return Text(result.errors.toString());
-      }
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            return Center(child: Text(result.errors.toString()));
+          }
 
-      if (result.loading) {
-        return Center(
-          child: const CircularProgressIndicator(),
-        );
-      }
+          if (result.loading) {
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
 
-      return builder(result.data);
-    },
-  );
+          return builder(result.data);
+        },
+      );
 }
-
