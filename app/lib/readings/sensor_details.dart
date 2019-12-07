@@ -36,7 +36,6 @@ class SensorDetails extends StatelessWidget {
                 sensorId: sensorId,
                 builder: (result) {
                   dynamic lastReading = result['lastReading'];
-                  String formattedLastReading = formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
 
                   return Column(
                     children: <Widget>[
@@ -49,21 +48,31 @@ class SensorDetails extends StatelessWidget {
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Sensor ID: $sensorId'),
-                              Text('Moisture: ${lastReading['moisture'].round()} %'),
-                              Text('Temperature: ${lastReading['temperature']} °C'),
-                              Text('Battery: ${lastReading['battery_voltage']} V'),
-                              Text('Last Reading: $formattedLastReading'),
-                              LastWateredQuery(
-                                sensorId: sensorId,
-                                builder: (result) {
-                                  dynamic lastWateredTime = result['lastWateredTime'];
-                                  String formatted = formatTime(DateTime.parse(lastWateredTime).millisecondsSinceEpoch);
-                                  return Text('Last Watered: $formatted');
-                                },
-                              )
-                            ],
+                            children: lastReading != null
+                                ? <Widget>[
+                                    Text('Sensor ID: $sensorId'),
+                                    Text('Moisture: ${lastReading['moisture'].round()} %'),
+                                    Text('Temperature: ${lastReading['temperature']} °C'),
+                                    Text('Battery: ${lastReading['battery_voltage']} V'),
+                                    Text(
+                                        'Last Reading: ${formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch)}'),
+                                    LastWateredQuery(
+                                      sensorId: sensorId,
+                                      builder: (result) {
+                                        dynamic lastWateredTime = result['lastWateredTime'];
+                                        if (lastWateredTime == null) {
+                                          return Text('');
+                                        }
+
+                                        String formatted =
+                                            formatTime(DateTime.parse(lastWateredTime).millisecondsSinceEpoch);
+                                        return Text('Last Watered: $formatted');
+                                      },
+                                    )
+                                  ]
+                                : [
+                                    Text('Sensor ID: $sensorId'),
+                                  ],
                           )
                         ],
                       )
