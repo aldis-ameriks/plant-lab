@@ -18,7 +18,7 @@ type Plant {
 
 type Query {
   readings(date: String, sensorId: String!): [Reading!]!
-  lastReading(sensorId: String!): Reading!
+  lastReading(sensorId: String!): Reading
   lastWateredTime(sensorId: String!): DateTime
   plants: [Plant!]!
   plant(plantId: String!): Plant!
@@ -42,5 +42,5 @@ type Sensor {
   firmware: String
   location: String
   plant: Plant!
-  lastReading: Reading!
+  lastReading: Reading
 }

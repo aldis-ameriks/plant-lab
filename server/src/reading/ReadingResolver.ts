@@ -18,7 +18,7 @@ class ReadingResolver {
     return this.readingService.getReadings(sensorId, date);
   }
 
-  @Query(returns => Reading)
+  @Query(returns => Reading, { nullable: true })
   lastReading(@Arg('sensorId', type => String) sensorId: string): Promise<Reading> {
     return this.readingService.getLastReading(sensorId);
   }

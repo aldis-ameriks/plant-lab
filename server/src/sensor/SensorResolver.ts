@@ -33,7 +33,7 @@ class SensorResolver {
     return this.plantService.getPlantBySensorId(sensor.id);
   }
 
-  @FieldResolver(returns => Reading)
+  @FieldResolver(returns => Reading, { nullable: true })
   lastReading(@Root() sensor: Sensor) {
     return this.readingService.getLastReading(sensor.id);
   }
