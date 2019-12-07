@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:planty/readings/sensor_card.dart';
+import 'package:planty/sensors/new_sensor.dart';
 import 'package:planty/sensors/queries.dart';
 
 class Home extends StatelessWidget {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: UserSensorsQuery(
@@ -22,11 +21,13 @@ class Home extends StatelessWidget {
                         title: Text('Devices', style: Theme.of(context).textTheme.title),
                       ),
                       actions: <Widget>[
-                        new IconButton(
-                            icon: const Icon(Icons.refresh),
-                            tooltip: 'Refresh',
+                        IconButton(
+                            icon: Icon(Icons.add_circle),
                             onPressed: () {
-                              _refreshIndicatorKey.currentState.show();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => NewSensor()),
+                              );
                             }),
                       ]),
                 ],
