@@ -36,7 +36,7 @@ class _AppState extends State {
           BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[800],
+        selectedItemColor: Theme.of(context).accentColor,
         onTap: _onItemTapped,
       ),
     );

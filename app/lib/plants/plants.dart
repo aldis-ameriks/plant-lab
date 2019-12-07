@@ -48,7 +48,7 @@ class _PlantsState extends State<Plants> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Plants')),
+        appBar: AppBar(title: Text('Plants', style: Theme.of(context).textTheme.title)),
         body: PlantsQuery(builder: (result) {
           dynamic plants = result['plants']
               .where((plant) => _filter == '' || plant['name'].toLowerCase().contains(_filter.toLowerCase()))

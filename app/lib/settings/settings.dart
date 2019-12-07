@@ -10,7 +10,7 @@ class Settings extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User settings'),
+        title: Text('User settings', style: Theme.of(context).textTheme.title),
       ),
       body: Container(
         color: Colors.grey[300],
