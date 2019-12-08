@@ -31,23 +31,21 @@ class Home extends StatelessWidget {
                             }),
                       ]),
                 ],
-            body: Container(
-              child: RefreshIndicator(
-                onRefresh: () {
-                  final Completer<Null> completer = new Completer<Null>();
-                  new Timer(const Duration(seconds: 1), () {
-                    completer.complete(null);
-                  });
-                  return completer.future;
-                },
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.6,
-                  padding: const EdgeInsets.all(10),
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  children: userSensors.map<Widget>((sensor) => SensorCard(sensor: sensor)).toList(),
-                ),
+            body: RefreshIndicator(
+              onRefresh: () {
+                final Completer<Null> completer = new Completer<Null>();
+                new Timer(const Duration(seconds: 1), () {
+                  completer.complete(null);
+                });
+                return completer.future;
+              },
+              child: GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 1.6,
+                padding: const EdgeInsets.all(10),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: userSensors.map<Widget>((sensor) => SensorCard(sensor: sensor)).toList(),
               ),
             ));
       },
