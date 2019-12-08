@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,31 +15,46 @@ class SensorDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(237, 237, 237, 1),
-      appBar: AppBar(
-        title: Text('Device $sensorId', style: Theme.of(context).textTheme.title),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SensorSettings(sensorId: sensorId)),
-                );
-              }),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Center(
-          child: ListView(
-            children: <Widget>[
-              LastReadingQuery(
-                sensorId: sensorId,
-                builder: (result) {
-                  dynamic lastReading = result['lastReading'];
+        body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxScrolled) => [
+                  SliverAppBar(
+                      pinned: true,
+                      flexibleSpace: FlexibleSpaceBar(
+                        title: Text('Devices', style: Theme.of(context).textTheme.title),
+                      ),
+                      actions: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.settings),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SensorSettings(sensorId: sensorId)),
+                              );
+                            }),
+                      ]),
+                ],
+            body: ReadingsQuery(
+              sensorId: sensorId,
+              builder: (result, refetch) {
+                dynamic lastReading = result['lastReading'];
+                dynamic readings = result['readings'];
+                dynamic lastWateredTime = result['lastWateredTime'];
+                String formattedLastWatered = lastWateredTime == null
+                    ? 'Never'
+                    : formatTime(DateTime.parse(lastWateredTime ?? '').millisecondsSinceEpoch);
+                String formattedLastReading = formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
 
-                  return Column(
+                return (RefreshIndicator(
+                  onRefresh: () {
+                    refetch();
+                    final Completer<Null> completer = new Completer<Null>();
+                    new Timer(const Duration(seconds: 1), () {
+                      completer.complete(null);
+                    });
+                    return completer.future;
+                  },
+                  child: ListView(
+                    padding: EdgeInsets.all(10),
                     children: <Widget>[
                       Row(
                         children: <Widget>[
@@ -50,109 +67,85 @@ class SensorDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: lastReading != null
                                 ? <Widget>[
-                                    Text('Sensor ID: $sensorId'),
+                                    Text('Device ID: $sensorId'),
                                     Text('Moisture: ${lastReading['moisture'].round()} %'),
                                     Text('Temperature: ${lastReading['temperature']} °C'),
                                     Text('Battery: ${lastReading['battery_voltage']} V'),
-                                    Text(
-                                        'Last Reading: ${formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch)}'),
-                                    LastWateredQuery(
-                                      sensorId: sensorId,
-                                      builder: (result) {
-                                        dynamic lastWateredTime = result['lastWateredTime'];
-                                        if (lastWateredTime == null) {
-                                          return Text('');
-                                        }
-
-                                        String formatted =
-                                            formatTime(DateTime.parse(lastWateredTime).millisecondsSinceEpoch);
-                                        return Text('Last Watered: $formatted');
-                                      },
-                                    )
+                                    Text('Last Reading: $formattedLastReading'),
+                                    Text('Last Watered: $formattedLastWatered')
                                   ]
                                 : [
                                     Text('Sensor ID: $sensorId'),
                                   ],
                           )
                         ],
+                      ),
+                      Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            child: SizedBox(
+                              height: 220,
+                              child: new charts.TimeSeriesChart(
+                                _createData(readings, 'moisture'),
+                                primaryMeasureAxis: new charts.NumericAxisSpec(
+                                    tickProviderSpec: new charts.BasicNumericTickProviderSpec(desiredMinTickCount: 4)),
+                                behaviors: [
+                                  new charts.ChartTitle('Moisture',
+                                      innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
+                                  new charts.LinePointHighlighter(
+                                      drawFollowLinesAcrossChart: true,
+                                      showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
+                                      showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            child: SizedBox(
+                              height: 220,
+                              child: new charts.TimeSeriesChart(
+                                  _createData(
+                                    readings,
+                                    'temperature',
+                                  ),
+                                  behaviors: [
+                                    new charts.ChartTitle('Temperature',
+                                        innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
+                                    new charts.LinePointHighlighter(
+                                        drawFollowLinesAcrossChart: true,
+                                        showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
+                                        showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
+                                  ],
+                                  primaryMeasureAxis: new charts.NumericAxisSpec(
+                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(zeroBound: false))),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            child: SizedBox(
+                              height: 220,
+                              child: new charts.TimeSeriesChart(_createData(readings, 'battery_voltage'),
+                                  behaviors: [
+                                    new charts.ChartTitle('Battery Voltage',
+                                        innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
+                                    new charts.LinePointHighlighter(
+                                        drawFollowLinesAcrossChart: true,
+                                        showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
+                                        showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
+                                  ],
+                                  primaryMeasureAxis: new charts.NumericAxisSpec(
+                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(zeroBound: false))),
+                            ),
+                          ),
+                        ],
                       )
                     ],
-                  );
-                },
-              ),
-              ReadingsQuery(
-                sensorId: sensorId,
-                builder: (result) {
-                  dynamic readings = result['readings'];
-
-                  return Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, bottom: 16),
-                        child: SizedBox(
-                          height: 220,
-                          child: new charts.TimeSeriesChart(
-                            _createData(readings, 'moisture'),
-                            primaryMeasureAxis: new charts.NumericAxisSpec(
-                                tickProviderSpec: new charts.BasicNumericTickProviderSpec(desiredMinTickCount: 4)),
-                            behaviors: [
-                              new charts.ChartTitle('Moisture',
-                                  innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
-                              new charts.LinePointHighlighter(
-                                  drawFollowLinesAcrossChart: true,
-                                  showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
-                                  showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, bottom: 16),
-                        child: SizedBox(
-                          height: 220,
-                          child: new charts.TimeSeriesChart(
-                              _createData(
-                                readings,
-                                'temperature',
-                              ),
-                              behaviors: [
-                                new charts.ChartTitle('Temperature',
-                                    innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
-                                new charts.LinePointHighlighter(
-                                    drawFollowLinesAcrossChart: true,
-                                    showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
-                                    showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
-                              ],
-                              primaryMeasureAxis: new charts.NumericAxisSpec(
-                                  tickProviderSpec: new charts.BasicNumericTickProviderSpec(zeroBound: false))),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, bottom: 16),
-                        child: SizedBox(
-                          height: 220,
-                          child: new charts.TimeSeriesChart(_createData(readings, 'battery_voltage'),
-                              behaviors: [
-                                new charts.ChartTitle('Battery Voltage',
-                                    innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
-                                new charts.LinePointHighlighter(
-                                    drawFollowLinesAcrossChart: true,
-                                    showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
-                                    showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
-                              ],
-                              primaryMeasureAxis: new charts.NumericAxisSpec(
-                                  tickProviderSpec: new charts.BasicNumericTickProviderSpec(zeroBound: false))),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                  ),
+                ));
+              },
+            )));
   }
 
   static List<charts.Series<TimeSeriesReading, DateTime>> _createData(List<dynamic> data, String key) {
