@@ -15,7 +15,7 @@ class SensorDetails extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromRGBO(237, 237, 237, 1),
       appBar: AppBar(
-        title: Text('Sensor $sensorId'),
+        title: Text('Device $sensorId', style: Theme.of(context).textTheme.title),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.settings),
