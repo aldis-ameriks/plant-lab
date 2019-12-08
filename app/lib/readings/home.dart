@@ -33,6 +33,7 @@ class Home extends StatelessWidget {
                 ],
             body: RefreshIndicator(
               onRefresh: () {
+                refetch();
                 final Completer<Null> completer = new Completer<Null>();
                 new Timer(const Duration(seconds: 1), () {
                   completer.complete(null);
