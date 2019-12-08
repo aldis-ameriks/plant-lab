@@ -60,6 +60,7 @@ class SensorDetails extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     children: <Widget>[
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Image(
                             image: AssetImage('assets/sensor_v1.0.png'),
