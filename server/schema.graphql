@@ -42,5 +42,4 @@ type Sensor {
   firmware: String
   location: String
   plant: Plant!
-  lastReading: Reading
 }
