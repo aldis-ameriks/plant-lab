@@ -11,6 +11,11 @@ class ReadingsQuery extends StatelessWidget {
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
           query Readings($sensorId: String!, $date: String) {
+            sensor(sensorId: $sensorId) {
+              id
+              room
+              name
+            }
             lastReading(sensorId: $sensorId) {
               sensor_id
               time

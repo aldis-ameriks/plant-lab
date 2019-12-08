@@ -43,7 +43,8 @@ class SensorDetails extends StatelessWidget {
                     ? 'Never'
                     : formatTime(DateTime.parse(lastWateredTime ?? '').millisecondsSinceEpoch);
                 String formattedLastReading = formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
-
+                String name = result['sensor']['name'] ?? '';
+                String room = result['sensor']['room'] ?? '';
                 return (RefreshIndicator(
                   onRefresh: () {
                     refetch();
@@ -67,7 +68,8 @@ class SensorDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: lastReading != null
                                 ? <Widget>[
-                                    Text('Device ID: $sensorId'),
+                                    Text(name),
+                                    Text(room),
                                     Text('Moisture: ${lastReading['moisture'].round()} %'),
                                     Text('Temperature: ${lastReading['temperature']} °C'),
                                     Text('Battery: ${lastReading['battery_voltage']} V'),
