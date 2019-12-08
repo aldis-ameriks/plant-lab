@@ -26,9 +26,9 @@ class SensorCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(right: 20),
                   child: Image(
-                    image: AssetImage('assets/plant.jpg'),
+                    image: AssetImage('assets/sensor_v1.0.png'),
                     width: 50,
-                    height: 50,
+                    height: 60,
                   ),
                 ),
                 Flexible(
