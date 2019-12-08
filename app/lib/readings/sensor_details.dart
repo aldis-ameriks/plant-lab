@@ -79,9 +79,7 @@ class SensorDetails extends StatelessWidget {
                                     Text('Last Reading: $formattedLastReading'),
                                     Text('Last Watered: $formattedLastWatered')
                                   ]
-                                : [
-                                    Text('Sensor ID: $sensorId'),
-                                  ],
+                                : [Text(name), Text(room), Text('No readings found')],
                           )
                         ],
                       ),
