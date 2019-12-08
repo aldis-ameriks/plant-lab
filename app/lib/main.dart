@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               brightness: Brightness.light,
               primaryColor: Colors.grey[50],
-              primarySwatch: Colors.blue,
-              accentColor: Colors.teal[500],
+              primarySwatch: Colors.grey,
+              accentColor: Colors.black,
               fontFamily: 'Avenir',
               textTheme: TextTheme(
                 headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
