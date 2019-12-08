@@ -155,7 +155,7 @@ class SensorDetails extends StatelessWidget {
     return [
       new charts.Series<TimeSeriesReading, DateTime>(
         id: 'Readings',
-        colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.gray.shade800,
         domainFn: (TimeSeriesReading reading, _) => reading.time,
         measureFn: (TimeSeriesReading reading, _) => reading.value,
         data: parsedData,
