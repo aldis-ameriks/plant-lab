@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:planty/plants/plants.dart';
 import 'package:planty/readings/home.dart';
 import 'package:planty/settings/settings.dart';
 
@@ -20,11 +19,12 @@ class _AppState extends State {
         child = Home();
         break;
       case 1:
-        child = Plants();
-        break;
-      case 2:
+//        child = Plants();
         child = Settings();
         break;
+//      case 2:
+//        child = Settings();
+//        break;
     }
 
     return Scaffold(
@@ -32,7 +32,7 @@ class _AppState extends State {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(title: Text('Devices'), icon: Icon(Icons.dashboard)),
-          BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.dns)),
+//          BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.dns)),
           BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
         ],
         currentIndex: _selectedIndex,
