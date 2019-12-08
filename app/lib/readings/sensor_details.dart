@@ -42,9 +42,9 @@ class SensorDetails extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Image(
-                            image: AssetImage('assets/plant.jpg'),
-                            width: 140,
-                            height: 140,
+                            image: AssetImage('assets/sensor_v1.0.png'),
+                            width: 100,
+                            height: 150,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
