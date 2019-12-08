@@ -42,7 +42,9 @@ class SensorDetails extends StatelessWidget {
                 String formattedLastWatered = lastWateredTime == null
                     ? 'Never'
                     : formatTime(DateTime.parse(lastWateredTime ?? '').millisecondsSinceEpoch);
-                String formattedLastReading = formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
+                String formattedLastReading = lastReading == null
+                    ? 'Never'
+                    : formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
                 String name = result['sensor']['name'] ?? '';
                 String room = result['sensor']['room'] ?? '';
                 return (RefreshIndicator(
