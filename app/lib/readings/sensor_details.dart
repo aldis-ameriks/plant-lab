@@ -20,7 +20,7 @@ class SensorDetails extends StatelessWidget {
                   SliverAppBar(
                       pinned: true,
                       flexibleSpace: FlexibleSpaceBar(
-                        title: Text('Devices', style: Theme.of(context).textTheme.title),
+                        title: Text('Device $sensorId', style: Theme.of(context).textTheme.title),
                       ),
                       actions: <Widget>[
                         IconButton(
