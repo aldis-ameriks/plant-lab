@@ -13,11 +13,12 @@ void setup() {
   while (!Serial) {
     ; // Wait for serial port to connect
   }
+  Wire.begin();
   radio.initialize(FREQUENCY, SENSOR_ID, NETWORKID);
 
-  #ifdef IS_RFM69HW_HCW
-    radio.setHighPower(); // Must include this only for RFM69HW/HCW!
-  #endif
+#ifdef IS_RFM69HW_HCW
+  radio.setHighPower(); // Must include this only for RFM69HW/HCW!
+#endif
 
   radio.encrypt(ENCRYPTKEY);
   radio.sleep();
@@ -39,9 +40,9 @@ void loop() {
   float batteryVoltage = readBatteryVoltage();
   float operatingVoltage = batteryVoltage;
 
-  #ifdef WITH_REGULATOR
-    operatingVoltage = batteryVoltage > REGULATOR_V ? REGULATOR_V : batteryVoltage;
-  #endif
+#ifdef WITH_REGULATOR
+  operatingVoltage = batteryVoltage > REGULATOR_V ? REGULATOR_V : batteryVoltage;
+#endif
 
   int moisture = readMoisture();
   float MOISTURE_MAX = (50 * operatingVoltage) + 242;
@@ -69,13 +70,13 @@ void loop() {
   payload += (String)batteryVoltage;
   Serial.println(payload);
 
-  #if SEND_DATA == true
-    sendData(payload);
-  #endif
+#if SEND_DATA == true
+  sendData(payload);
+#endif
 
-  #if SLEEP == true
-    enterSleep();
-  #endif
+#if SLEEP == true
+  enterSleep();
+#endif
 }
 
 void sendData(String payload) {
@@ -175,63 +176,35 @@ float readTemperature(float operatingVoltage) {
 }
 
 int readLight() {
-  int sampleCount = 5;
-  float sampleSum = 0.0;
+  initializeLightSensor();
+  delay(1000);
+  Wire.beginTransmission(0x44);
+  Wire.write(0x00);
+  Wire.endTransmission();
 
-  for (int sample = 0; sample < sampleCount; sample++) {
-    float fLux;
-    Wire.beginTransmission(0x44);
-    Wire.write(0x00);
-    Wire.endTransmission();
-    delay(50);
+  uint8_t buf[2];
+  Wire.requestFrom(0x44, 2);
 
-    Wire.requestFrom(0x44, 2);
-    uint16_t iData;
-    uint8_t  iBuff[2];
-    while (Wire.available()) {
-      Wire.readBytes(iBuff, 2);
-      iData = (iBuff[0] << 8) | iBuff[1];
-      uint16_t fraction = iData & 0x0FFF;
-      uint16_t exponent = (iData & 0xF000) >> 12;
-      fLux = fraction * (0.01 * pow(2, exponent));
+  int counter = 0;
+  while (Wire.available() < 2) {
+    counter++;
+    delay(10);
+    if (counter > 100) {
+      return -1;
     }
-    sampleSum += fLux;
   }
 
-  return sampleSum / (float)sampleCount;
+  Wire.readBytes(buf, 2);
+  uint16_t data = (buf[0] << 8) | buf[1];
+  uint16_t fraction = data & 0x0FFF;
+  uint16_t exponent = (data & 0xF000) >> 12;
+  return fraction * (0.01 * pow(2, exponent));
 }
 
-/* 	CONFIG REGISTER BITS: RN3 RN2 RN1 RN0 CT M1 M0 OVF CRF FH FL L Pol ME FC1 FC0
-	RN3 to RN0 = Range select:
-                    1100 by default, enables auto-range
-	CT = Conversion time bit
-                    0 = 100ms conversion time
-                    1 = 800ms conversion time (default)
-	M1 to M0 = Mode bits
-                    00 = Shutdown mode
-                    01 = Single shot mode
-                    10 = Continuous conversion (default)
-                    11 = Continuous conversion
-	OVF (Bit 8)     Overflow flag. When set the conversion result is overflown.
-	CRF (Bit 7)     Conversion ready flag. Sets at end of conversion. Clears by read or write of the Configuration register.
-	FH (Bit 6)      Flag high bit. Read only. Sets when result is higher that TH register. Clears when Config register is
-					read or when Latch bit is 0 and the result goes bellow TH register.
-	FL (Bit 5)      Flag low bit. Read only. Sets when result is lower that TL register. Clears when Config register is read
-                    or when Latch bit is 0 and the result goes above TL register.
-	L (Bit 4)       Latch bit. Read/write bit. Default 1, Controls Latch/transparent functionality of FH and FL bits. When
-                    L = 1 the Alert pin works in window comparator mode with Latched functionality When L = 0 the Alert pin
-                    works in transparent mode and the two limit registers provide the hysteresis.
-	Pol (Bit 3)     Polarity. Read/write bit. Default 0, Controls the active state of the Alert pin. Pol = 0 means Alert
-                    active low.
-	ME (Bit 2)      Exponent mask. In fixed range modes masks the exponent bits in the result register to 0000.
-	FC1 to FC0  -   Fault count bits. Read/write bits. Default 00 - the first fault will trigger the alert pin.
-*/
-
 void initializeLightSensor() {
-  Wire.begin();
   Wire.beginTransmission(0x44);
-  // Turn on the sensor
   Wire.write(0x01);
-  Wire.write(0b1100001000010000); // 100ms, one shot
+  Wire.write(0xCA); // 800ms, single shot
+  Wire.write(0x10);
   Wire.endTransmission();
 }
