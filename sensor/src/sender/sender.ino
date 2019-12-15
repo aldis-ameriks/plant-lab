@@ -44,6 +44,8 @@ void loop() {
   #endif
 
   int moisture = readMoisture();
+  float MOISTURE_MAX = (50 * operatingVoltage) + 242;
+  float MOISTURE_MIN = (50 * operatingVoltage) + 634;
   float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
 
   float temperature = readTemperature(operatingVoltage);

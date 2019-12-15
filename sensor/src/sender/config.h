@@ -30,30 +30,19 @@
 // For measuring battery voltage
 #define R1 10000000.0 // R1 (10M)
 #define R2 1000000.0  // R2 (1M)
+#define INTERNAL_AREF 1.1
 
 // TODO: Come up with more sustainable configuration management
 #if SENSOR_ID == 5
   #define WITH_REGULATOR
-  #define MOISTURE_MIN 800
-  #define MOISTURE_MAX 407
-  #define TEMPERATURE_OFFSET 0.4869
-  #define INTERNAL_AREF 1.1
+  #define TEMPERATURE_OFFSET 0.484
 #endif
 
 #if SENSOR_ID == 6
   #define WITH_REGULATOR
-  #define MOISTURE_MIN 848
-  #define MOISTURE_MAX 431
-  #define TEMPERATURE_OFFSET 0.48729
-  #define INTERNAL_AREF 1.1
+  #define TEMPERATURE_OFFSET 0.480
 #endif
 
 #if SENSOR_ID == 7
-  #define MOISTURE_MIN 785
-  #define MOISTURE_MAX 407
-  #define TEMPERATURE_OFFSET 0.4896
-  #define INTERNAL_AREF 1.1
-  #undef R2
-  #define R2 1011594.0
+  #define TEMPERATURE_OFFSET 0.492
 #endif
-
