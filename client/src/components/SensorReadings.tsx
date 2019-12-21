@@ -53,12 +53,12 @@ const ReadingWrapper = styled.div`
 `;
 
 type SensorReadingsProps = {
-  sensorId: string;
+  deviceId: string;
 };
 
-const SensorReadings: React.FC<SensorReadingsProps> = ({ sensorId }) => {
-  const lastReadingQuery = useLastReadingQuery({ variables: { sensorId } });
-  const lastWateredTimeQuery = useLastWateredTimeQuery({ variables: { sensorId } });
+const SensorReadings: React.FC<SensorReadingsProps> = ({ deviceId }) => {
+  const lastReadingQuery = useLastReadingQuery({ variables: { deviceId } });
+  const lastWateredTimeQuery = useLastWateredTimeQuery({ variables: { deviceId } });
 
   if (lastReadingQuery.loading || lastWateredTimeQuery.loading) {
     return null;

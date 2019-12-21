@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SensorReadings from '../components/SensorReadings';
 import { Card, CardSection, CardWrapper } from './SensorDetails';
 
-const sensorIds = ['4', '1', '2', '5', '6','7', '999'];
+const deviceIds = ['5', '6','7'];
 
 const List = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ const SensorList = () => {
   const history = useHistory();
   return (
     <List>
-      {sensorIds.map(id => (
+      {deviceIds.map(id => (
         <CardWrapper key={id}>
           <MiniCard onClick={() => history.push(`/sensors/${id}`)}>
             <ImageWrapper>
@@ -64,7 +64,7 @@ const SensorList = () => {
               <div>Node ID: {id}</div>
             </ImageWrapper>
             <MiniCardSection>
-              <SensorReadings sensorId={id} />
+              <SensorReadings deviceId={id} />
             </MiniCardSection>
           </MiniCard>
         </CardWrapper>

@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 gql`
-  query Readings($sensorId: String!, $date: String) {
-    readings(sensorId: $sensorId, date: $date) {
-      sensor_id
+  query Readings($deviceId: String!, $date: String) {
+    readings(deviceId: $deviceId, date: $date) {
+      device_id
       time
       moisture
       temperature
@@ -14,9 +14,9 @@ gql`
 `;
 
 gql`
-  query LastReading($sensorId: String!) {
-    lastReading(sensorId: $sensorId) {
-      sensor_id
+  query LastReading($deviceId: String!) {
+    lastReading(deviceId: $deviceId) {
+      device_id
       time
       moisture
       temperature
@@ -27,7 +27,7 @@ gql`
 `;
 
 gql`
-  query LastWateredTime($sensorId: String!) {
-    lastWateredTime(sensorId: $sensorId)
+  query LastWateredTime($deviceId: String!) {
+    lastWateredTime(deviceId: $deviceId)
   }
 `;

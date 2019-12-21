@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from 'type-graphql';
 @ObjectType()
 export class Reading {
   @Field(type => ID)
-  sensor_id: string;
+  device_id: string;
 
   @Field()
   time: Date;

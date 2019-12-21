@@ -11,12 +11,12 @@ export class DeviceResolver {
   }
 
   @Query(returns => Device)
-  sensor(@Arg('sensorId') sensorId: string) {
-    return this.deviceService.getUserSensor(sensorId);
+  device(@Arg('deviceId') deviceId: string) {
+    return this.deviceService.getUserDevice(deviceId);
   }
 
   @Query(returns => [Device])
-  async sensors() {
-    return this.deviceService.getUserSensors();
+  async devices() {
+    return this.deviceService.getUserDevices();
   }
 }

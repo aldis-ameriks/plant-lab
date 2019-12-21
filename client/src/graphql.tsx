@@ -14,6 +14,14 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Device = {
+  __typename?: 'Device';
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  room?: Maybe<Scalars['String']>;
+  firmware?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   saveReading: Scalars['String'];
@@ -23,43 +31,35 @@ export type MutationSaveReadingArgs = {
   input: Scalars['String'];
 };
 
-export type Plant = {
-  __typename?: 'Plant';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  description: Scalars['String'];
-};
-
 export type Query = {
   __typename?: 'Query';
+  device: Device;
+  devices: Array<Device>;
   readings: Array<Reading>;
-  lastReading: Reading;
+  lastReading?: Maybe<Reading>;
   lastWateredTime?: Maybe<Scalars['DateTime']>;
-  plants: Array<Plant>;
-  plant: Plant;
-  sensors: Array<Sensor>;
+};
+
+export type QueryDeviceArgs = {
+  deviceId: Scalars['String'];
 };
 
 export type QueryReadingsArgs = {
   date?: Maybe<Scalars['String']>;
-  sensorId: Scalars['String'];
+  deviceId: Scalars['String'];
 };
 
 export type QueryLastReadingArgs = {
-  sensorId: Scalars['String'];
+  deviceId: Scalars['String'];
 };
 
 export type QueryLastWateredTimeArgs = {
-  sensorId: Scalars['String'];
-};
-
-export type QueryPlantArgs = {
-  plantId: Scalars['String'];
+  deviceId: Scalars['String'];
 };
 
 export type Reading = {
   __typename?: 'Reading';
-  sensor_id: Scalars['ID'];
+  device_id: Scalars['ID'];
   time: Scalars['DateTime'];
   moisture: Scalars['Float'];
   temperature: Scalars['Float'];
@@ -67,16 +67,8 @@ export type Reading = {
   light?: Maybe<Scalars['Float']>;
 };
 
-export type Sensor = {
-  __typename?: 'Sensor';
-  id: Scalars['ID'];
-  room?: Maybe<Scalars['String']>;
-  plant: Plant;
-  lastReading: Reading;
-};
-
 export type ReadingsQueryVariables = {
-  sensorId: Scalars['String'];
+  deviceId: Scalars['String'];
   date?: Maybe<Scalars['String']>;
 };
 
@@ -84,32 +76,34 @@ export type ReadingsQuery = { __typename?: 'Query' } & {
   readings: Array<
     { __typename?: 'Reading' } & Pick<
       Reading,
-      'sensor_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
+      'device_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
     >
   >;
 };
 
 export type LastReadingQueryVariables = {
-  sensorId: Scalars['String'];
+  deviceId: Scalars['String'];
 };
 
 export type LastReadingQuery = { __typename?: 'Query' } & {
-  lastReading: { __typename?: 'Reading' } & Pick<
-    Reading,
-    'sensor_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
+  lastReading: Maybe<
+    { __typename?: 'Reading' } & Pick<
+      Reading,
+      'device_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'
+    >
   >;
 };
 
 export type LastWateredTimeQueryVariables = {
-  sensorId: Scalars['String'];
+  deviceId: Scalars['String'];
 };
 
 export type LastWateredTimeQuery = { __typename?: 'Query' } & Pick<Query, 'lastWateredTime'>;
 
 export const ReadingsDocument = gql`
-  query Readings($sensorId: String!, $date: String) {
-    readings(sensorId: $sensorId, date: $date) {
-      sensor_id
+  query Readings($deviceId: String!, $date: String) {
+    readings(deviceId: $deviceId, date: $date) {
+      device_id
       time
       moisture
       temperature
@@ -131,7 +125,7 @@ export const ReadingsDocument = gql`
  * @example
  * const { data, loading, error } = useReadingsQuery({
  *   variables: {
- *      sensorId: // value for 'sensorId'
+ *      deviceId: // value for 'deviceId'
  *      date: // value for 'date'
  *   },
  * });
@@ -150,9 +144,9 @@ export type ReadingsQueryHookResult = ReturnType<typeof useReadingsQuery>;
 export type ReadingsLazyQueryHookResult = ReturnType<typeof useReadingsLazyQuery>;
 export type ReadingsQueryResult = ApolloReactCommon.QueryResult<ReadingsQuery, ReadingsQueryVariables>;
 export const LastReadingDocument = gql`
-  query LastReading($sensorId: String!) {
-    lastReading(sensorId: $sensorId) {
-      sensor_id
+  query LastReading($deviceId: String!) {
+    lastReading(deviceId: $deviceId) {
+      device_id
       time
       moisture
       temperature
@@ -174,7 +168,7 @@ export const LastReadingDocument = gql`
  * @example
  * const { data, loading, error } = useLastReadingQuery({
  *   variables: {
- *      sensorId: // value for 'sensorId'
+ *      deviceId: // value for 'deviceId'
  *   },
  * });
  */
@@ -192,8 +186,8 @@ export type LastReadingQueryHookResult = ReturnType<typeof useLastReadingQuery>;
 export type LastReadingLazyQueryHookResult = ReturnType<typeof useLastReadingLazyQuery>;
 export type LastReadingQueryResult = ApolloReactCommon.QueryResult<LastReadingQuery, LastReadingQueryVariables>;
 export const LastWateredTimeDocument = gql`
-  query LastWateredTime($sensorId: String!) {
-    lastWateredTime(sensorId: $sensorId)
+  query LastWateredTime($deviceId: String!) {
+    lastWateredTime(deviceId: $deviceId)
   }
 `;
 
@@ -209,7 +203,7 @@ export const LastWateredTimeDocument = gql`
  * @example
  * const { data, loading, error } = useLastWateredTimeQuery({
  *   variables: {
- *      sensorId: // value for 'sensorId'
+ *      deviceId: // value for 'deviceId'
  *   },
  * });
  */

@@ -1,21 +1,21 @@
 import { knex } from '../common/db';
 
 export class DeviceService {
-  public getUserSensors() {
-    return knex('sensors')
-      .select('sensors.*')
-      .from('sensors')
-      .leftJoin('users_sensors', 'users_sensors.sensor_id', 'sensors.id')
-      .where('users_sensors.user_id', 1)
+  public getUserDevices() {
+    return knex('devices')
+      .select('devices.*')
+      .from('devices')
+      .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
+      .where('users_devices.user_id', 1)
       .andWhereNot('test', true)
       .orderBy('id');
   }
 
-  public getUserSensor(sensorId: string) {
-    return knex('sensors')
+  public getUserDevice(deviceId: string) {
+    return knex('devices')
       .select('*')
-      .from('sensors')
-      .where('id', sensorId)
+      .from('devices')
+      .where('id', deviceId)
       .first();
   }
 }

@@ -12,20 +12,20 @@ export class ReadingResolver {
 
   @Query(returns => [Reading])
   readings(
-    @Arg('sensorId', type => String) sensorId: string,
+    @Arg('deviceId', type => String) deviceId: string,
     @Arg('date', { nullable: true }) date?: string
   ): Promise<Reading> {
-    return this.readingService.getReadings(sensorId, date);
+    return this.readingService.getReadings(deviceId, date);
   }
 
   @Query(returns => Reading, { nullable: true })
-  lastReading(@Arg('sensorId', type => String) sensorId: string): Promise<Reading> {
-    return this.readingService.getLastReading(sensorId);
+  lastReading(@Arg('deviceId', type => String) deviceId: string): Promise<Reading> {
+    return this.readingService.getLastReading(deviceId);
   }
 
   @Query(returns => Date, { nullable: true })
-  lastWateredTime(@Arg('sensorId', type => String) sensorId: string): Promise<Date> {
-    return this.readingService.getLastWateredTime(sensorId);
+  lastWateredTime(@Arg('deviceId', type => String) deviceId: string): Promise<Date> {
+    return this.readingService.getLastWateredTime(deviceId);
   }
 
   @Mutation(returns => String)
@@ -33,18 +33,18 @@ export class ReadingResolver {
   async saveReading(@Arg('input') readingInput: string) {
     console.log('Received input:', readingInput);
     const parsedInput = readingInput.split(';');
-    const sensor_id = parsedInput[0];
+    const device_id = parsedInput[0];
     const moisture_raw = Number(parsedInput[1]);
     const moisture = Number(parsedInput[2]);
     const moisture_min = Number(parsedInput[3]);
     const moisture_max = Number(parsedInput[4]);
     const temperature = Number(parsedInput[5]);
-    const light = Number(parsedInput[6]) || null; // Some of the sensors have their light sensor covered and send 0
+    const light = Number(parsedInput[6]) || null; // Some of the devices have their light sensor covered and send 0
     const battery_voltage = Number(parsedInput[7]);
     const signal = Number(parsedInput[8]);
     const timestamp = new Date();
     const reading = {
-      sensor_id,
+      device_id,
       moisture,
       moisture_raw,
       moisture_min,
@@ -56,7 +56,7 @@ export class ReadingResolver {
       signal,
     };
 
-    await this.readingService.saveReading(sensor_id, reading);
+    await this.readingService.saveReading(device_id, reading);
     return 'success';
   }
 }
