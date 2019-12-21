@@ -5,7 +5,7 @@ import { buildSchema } from 'type-graphql';
 import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
 import { DeviceResolver } from './devices/DeviceResolver';
-import { ReadingResolver } from './reading/ReadingResolver';
+import { ReadingResolver } from './readings/ReadingResolver';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const morgan = require('morgan');
