@@ -4,9 +4,8 @@ import { defaultErrorFormatter } from 'graphql-yoga/dist/defaultErrorFormatter';
 import { buildSchema } from 'type-graphql';
 import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
-
-import ReadingResolver from './reading/ReadingResolver';
-import DeviceResolver from './devices/DeviceResolver';
+import { ReadingResolver } from './reading/ReadingResolver';
+import { DeviceResolver } from './devices/DeviceResolver';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const morgan = require('morgan');

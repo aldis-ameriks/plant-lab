@@ -1,9 +1,9 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import { Reading } from './ReadingEntity';
-import ReadingService from './ReadingService';
+import { ReadingService } from './ReadingService';
 
 @Resolver(Reading)
-class ReadingResolver {
+export class ReadingResolver {
   private readonly readingService: ReadingService;
 
   constructor() {
@@ -60,5 +60,3 @@ class ReadingResolver {
     return 'success';
   }
 }
-
-export default ReadingResolver;

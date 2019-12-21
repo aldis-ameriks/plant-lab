@@ -13,7 +13,7 @@ type ReadingInput = {
   signal: number;
 };
 
-class ReadingService {
+export class ReadingService {
   public async getReadings(sensorId = '99', date) {
     const time = getTimestamp(date);
     const result = await knex.raw(
@@ -79,5 +79,3 @@ function getTimestamp(date?: string) {
   now.setDate(now.getDate() - 90);
   return now;
 }
-
-export default ReadingService;

@@ -1,9 +1,9 @@
 import { Arg, Query, Resolver } from 'type-graphql';
-import DeviceService from './DeviceService';
+import { DeviceService } from './DeviceService';
 import { Device } from './DeviceEntity';
 
 @Resolver(Device)
-class DeviceResolver {
+export class DeviceResolver {
   private readonly deviceService: DeviceService;
 
   constructor() {
@@ -20,5 +20,3 @@ class DeviceResolver {
     return this.deviceService.getUserSensors();
   }
 }
-
-export default DeviceResolver;
