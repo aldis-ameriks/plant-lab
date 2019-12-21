@@ -18,11 +18,11 @@ type Mutation {
 }
 
 type Query {
+  sensor(sensorId: String!): Device!
+  sensors: [Device!]!
   readings(date: String, sensorId: String!): [Reading!]!
   lastReading(sensorId: String!): Reading
   lastWateredTime(sensorId: String!): DateTime
-  sensor(sensorId: String!): Device!
-  sensors: [Device!]!
 }
 
 type Reading {

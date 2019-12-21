@@ -1,6 +1,6 @@
 import { Arg, Query, Resolver } from 'type-graphql';
-import { DeviceService } from './DeviceService';
 import { Device } from './DeviceEntity';
+import { DeviceService } from './DeviceService';
 
 @Resolver(Device)
 export class DeviceResolver {
