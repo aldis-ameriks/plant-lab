@@ -6,24 +6,23 @@
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
-type Mutation {
-  saveReading(input: String!): String!
+type Device {
+  id: ID!
+  name: String
+  room: String
+  firmware: String
 }
 
-type Plant {
-  id: ID!
-  name: String!
-  description: String!
+type Mutation {
+  saveReading(input: String!): String!
 }
 
 type Query {
   readings(date: String, sensorId: String!): [Reading!]!
   lastReading(sensorId: String!): Reading
   lastWateredTime(sensorId: String!): DateTime
-  plants: [Plant!]!
-  plant(plantId: String!): Plant!
-  sensor(sensorId: String!): Sensor!
-  sensors: [Sensor!]!
+  sensor(sensorId: String!): Device!
+  sensors: [Device!]!
 }
 
 type Reading {
@@ -33,13 +32,4 @@ type Reading {
   temperature: Float!
   battery_voltage: Float!
   light: Float
-}
-
-type Sensor {
-  id: ID!
-  room: String
-  name: String
-  firmware: String
-  location: String
-  plant: Plant!
 }

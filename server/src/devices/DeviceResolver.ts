@@ -1,17 +1,13 @@
-import { Arg, FieldResolver, Query, Resolver, Root } from 'type-graphql';
+import { Arg, Query, Resolver } from 'type-graphql';
 import DeviceService from './DeviceService';
 import { Device } from './DeviceEntity';
-import { Plant } from '../plants/PlantEntity';
-import { PlantService } from '../plants/PlantService';
 
 @Resolver(Device)
 class DeviceResolver {
   private readonly deviceService: DeviceService;
-  private readonly plantService: PlantService;
 
   constructor() {
     this.deviceService = new DeviceService();
-    this.plantService = new PlantService();
   }
 
   @Query(returns => Device)
@@ -22,11 +18,6 @@ class DeviceResolver {
   @Query(returns => [Device])
   async sensors() {
     return this.deviceService.getUserSensors();
-  }
-
-  @FieldResolver(returns => Plant)
-  plant(@Root() sensor: Device) {
-    return this.plantService.getPlantBySensorId(sensor.id);
   }
 }
 
