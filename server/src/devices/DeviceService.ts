@@ -1,6 +1,6 @@
 import { knex } from '../common/db';
 
-class SensorService {
+class DeviceService {
   public getUserSensors() {
     return knex('sensors')
       .select('sensors.*')
@@ -20,4 +20,4 @@ class SensorService {
   }
 }
 
-export default SensorService;
+export default DeviceService;
