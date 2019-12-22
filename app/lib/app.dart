@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:aa.iot/devices/devices.dart';
-import 'package:aa.iot/settings/settings.dart';
+
+import 'devices/devices.dart';
+import 'settings/settings.dart';
 
 class App extends StatefulWidget {
   @override
@@ -19,12 +20,8 @@ class _AppState extends State {
         child = Home();
         break;
       case 1:
-//        child = Plants();
         child = Settings();
         break;
-//      case 2:
-//        child = Settings();
-//        break;
     }
 
     return Scaffold(
@@ -32,7 +29,6 @@ class _AppState extends State {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(title: Text('Devices'), icon: Icon(Icons.dashboard)),
-//          BottomNavigationBarItem(title: Text('Plants'), icon: Icon(Icons.dns)),
           BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
         ],
         currentIndex: _selectedIndex,

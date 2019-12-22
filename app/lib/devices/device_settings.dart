@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:aa.iot/devices/queries.dart';
+
+import 'queries.dart';
 
 class SensorSettings extends StatelessWidget {
   const SensorSettings({@required this.deviceId});

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:aa.iot/devices/queries.dart';
 import 'package:time_formatter/time_formatter.dart';
 
 import 'device_settings.dart';
+import 'queries.dart';
 
 class DeviceDetails extends StatelessWidget {
   const DeviceDetails({@required this.deviceId});

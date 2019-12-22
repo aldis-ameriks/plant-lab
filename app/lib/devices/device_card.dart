@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:aa.iot/devices/device_details.dart';
+
+import 'device_details.dart';
 
 class DeviceCard extends StatelessWidget {
   const DeviceCard({@required this.device});
