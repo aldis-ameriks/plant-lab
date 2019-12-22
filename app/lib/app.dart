@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planty/devices/devices.dart';
-import 'package:planty/settings/settings.dart';
+import 'package:aa.iot/devices/devices.dart';
+import 'package:aa.iot/settings/settings.dart';
 
 class App extends StatefulWidget {
   @override

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:planty/devices/device_card.dart';
-import 'package:planty/devices/new_device.dart';
-import 'package:planty/devices/queries.dart';
+import 'package:aa.iot/devices/device_card.dart';
+import 'package:aa.iot/devices/new_device.dart';
+import 'package:aa.iot/devices/queries.dart';
 
 class Home extends StatelessWidget {
   @override

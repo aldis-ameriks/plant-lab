@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:planty/app.dart';
-import 'package:planty/client_provider.dart';
-import 'package:planty/config.dart';
+import 'package:aa.iot/app.dart';
+import 'package:aa.iot/client_provider.dart';
+import 'package:aa.iot/config.dart';
 
 void main() => runApp(MyApp());
 
