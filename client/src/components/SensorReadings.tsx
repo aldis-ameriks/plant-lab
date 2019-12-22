@@ -19,21 +19,11 @@ const RowWrapper = styled.div`
 
 const GaugeWrapper = styled.div`
   width: 100%;
-  min-width: 100px;
-  max-width: 145px;
-  margin: 0 -3em; // workaround to bring the apex chart gauges closer horizontally
-
-  @media (min-width: 320px) {
-    max-width: 160px;
-  }
-
-  @media (min-width: 400px) {
-    min-width: 150px;
-    max-width: 200px;
-  }
+  max-width: 200px;
+  margin: 0 -5em; // workaround to bring the apex chart gauges closer horizontally
 
   @media (min-width: 600px) {
-    max-width: 220px;
+    max-width: 250px;
   }
 `;
 
