@@ -45,7 +45,7 @@ export class ReadingResolver {
     const timestamp = new Date();
     const reading = {
       device_id,
-      moisture,
+      moisture: Math.min(Math.max(moisture, 0), 100),
       moisture_raw,
       moisture_min,
       moisture_max,
