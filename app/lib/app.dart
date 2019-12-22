@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planty/readings/home.dart';
+import 'package:planty/devices/devices.dart';
 import 'package:planty/settings/settings.dart';
 
 class App extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planty/readings/device_details.dart';
+import 'package:planty/devices/device_details.dart';
 
 class DeviceCard extends StatelessWidget {
   const DeviceCard({@required this.device});

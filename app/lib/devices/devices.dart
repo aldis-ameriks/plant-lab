@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:planty/readings/device_card.dart';
-import 'package:planty/sensors/new_sensor.dart';
-import 'package:planty/sensors/queries.dart';
+import 'package:planty/devices/device_card.dart';
+import 'package:planty/devices/new_device.dart';
+import 'package:planty/devices/queries.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: UserSensorsQuery(
+    return Scaffold(body: DevicesQuery(
       builder: (result, refetch) {
         dynamic userSensors = result['devices'];
 

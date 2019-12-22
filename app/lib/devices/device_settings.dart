@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:planty/sensors/queries.dart';
+import 'package:planty/devices/queries.dart';
 
 class SensorSettings extends StatelessWidget {
   const SensorSettings({@required this.deviceId});
@@ -15,7 +15,7 @@ class SensorSettings extends StatelessWidget {
       ),
       body: Container(
         color: Colors.grey[300],
-        child: UserSensorSettingsQuery(
+        child: DeviceSettingsQuery(
           deviceId: deviceId,
           builder: (result) {
             dynamic device = result['device'];
@@ -23,8 +23,7 @@ class SensorSettings extends StatelessWidget {
             List<Widget> entries = [
               _buildEntry('Device ID', device['id']),
               _buildEntry('Name', device['name']),
-              _buildEntry('Plant', device['plant']['name']),
-              _buildEntry('Location', device['location']),
+              _buildEntry('Room', device['room']),
               _buildEntry('Firmware', device['firmware']),
             ];
 
