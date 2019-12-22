@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:planty/readings/sensor_details.dart';
+import 'package:planty/readings/device_details.dart';
 
-class SensorCard extends StatelessWidget {
-  const SensorCard({@required this.sensor});
+class DeviceCard extends StatelessWidget {
+  const DeviceCard({@required this.device});
 
-  final dynamic sensor;
+  final dynamic device;
 
   @override
   Widget build(BuildContext context) {
-    String sensorId = sensor['id'];
-    String name = sensor['name'];
-    String room = sensor['room'];
+    String deviceId = device['id'];
+    String name = device['name'];
+    String room = device['room'];
 
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SensorDetails(sensorId: sensorId)),
+        MaterialPageRoute(builder: (context) => DeviceDetails(deviceId: deviceId)),
       ),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -37,7 +37,7 @@ class SensorCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(name ?? '', style: Theme.of(context).textTheme.body2),
-                        Text('ID: $sensorId', style: Theme.of(context).textTheme.body2),
+                        Text('ID: $deviceId', style: Theme.of(context).textTheme.body2),
                         Text(room ?? '', style: Theme.of(context).textTheme.body2),
                       ]),
                 )

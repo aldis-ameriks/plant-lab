@@ -2,31 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ReadingsQuery extends StatelessWidget {
-  const ReadingsQuery({@required this.sensorId, @required this.builder});
+  const ReadingsQuery({@required this.deviceId, @required this.builder});
 
-  final String sensorId;
+  final String deviceId;
   final dynamic builder;
 
   @override
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
-          query Readings($sensorId: String!, $date: String) {
-            sensor(sensorId: $sensorId) {
+          query Readings($deviceId: String!, $date: String) {
+            device(deviceId: $deviceId) {
               id
               room
               name
             }
-            lastReading(sensorId: $sensorId) {
-              sensor_id
+            lastReading(deviceId: $deviceId) {
+              device_id
               time
               moisture
               temperature
               light
               battery_voltage
             }
-            lastWateredTime(sensorId: $sensorId)
-            readings(sensorId: $sensorId, date: $date) {
-              sensor_id
+            lastWateredTime(deviceId: $deviceId)
+            readings(deviceId: $deviceId, date: $date) {
+              device_id
               time
               moisture
               temperature
@@ -34,7 +34,7 @@ class ReadingsQuery extends StatelessWidget {
               battery_voltage
             }
           }
-      ''', variables: {'sensorId': sensorId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
+      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             return Center(child: Text(result.errors.toString()));

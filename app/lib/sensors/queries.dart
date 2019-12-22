@@ -10,15 +10,10 @@ class UserSensorsQuery extends StatelessWidget {
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
           query Sensors {
-            sensors {
+            devices {
               id
               name
               room
-              plant {
-                id
-                name
-                description
-              }
             }
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
@@ -41,29 +36,23 @@ class UserSensorsQuery extends StatelessWidget {
 }
 
 class UserSensorSettingsQuery extends StatelessWidget {
-  const UserSensorSettingsQuery({@required this.sensorId, @required this.builder});
+  const UserSensorSettingsQuery({@required this.deviceId, @required this.builder});
 
-  final String sensorId;
+  final String deviceId;
   final dynamic builder;
 
   @override
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
-          query SensorSettings($sensorId: String!) {
-            sensor(sensorId: $sensorId) {
+          query SensorSettings($deviceId: String!) {
+            device(deviceId: $deviceId) {
               id
               room
               name
               firmware
-              location
-              plant {
-                id
-                name
-                description
-              }
             }
           }
-      ''', variables: {'sensorId': sensorId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
+      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             return Center(child: Text(result.errors.toString()));

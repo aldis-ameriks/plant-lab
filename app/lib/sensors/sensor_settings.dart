@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:planty/sensors/queries.dart';
 
 class SensorSettings extends StatelessWidget {
-  const SensorSettings({@required this.sensorId});
+  const SensorSettings({@required this.deviceId});
 
-  final String sensorId;
+  final String deviceId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sensor settings'),
+        title: Text('Device settings'),
       ),
       body: Container(
         color: Colors.grey[300],
         child: UserSensorSettingsQuery(
-          sensorId: sensorId,
+          deviceId: deviceId,
           builder: (result) {
-            dynamic sensor = result['sensor'];
+            dynamic device = result['device'];
 
             List<Widget> entries = [
-              _buildEntry('Sensor ID', sensor['id']),
-              _buildEntry('Name', sensor['name']),
-              _buildEntry('Plant', sensor['plant']['name']),
-              _buildEntry('Location', sensor['location']),
-              _buildEntry('Firmware', sensor['firmware']),
+              _buildEntry('Device ID', device['id']),
+              _buildEntry('Name', device['name']),
+              _buildEntry('Plant', device['plant']['name']),
+              _buildEntry('Location', device['location']),
+              _buildEntry('Firmware', device['firmware']),
             ];
 
             return Column(

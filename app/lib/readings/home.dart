@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:planty/readings/sensor_card.dart';
+import 'package:planty/readings/device_card.dart';
 import 'package:planty/sensors/new_sensor.dart';
 import 'package:planty/sensors/queries.dart';
 
@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(body: UserSensorsQuery(
       builder: (result, refetch) {
-        dynamic userSensors = result['sensors'];
+        dynamic userSensors = result['devices'];
 
         return NestedScrollView(
             headerSliverBuilder: (context, innerBoxScrolled) => [
@@ -46,7 +46,7 @@ class Home extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                children: userSensors.map<Widget>((sensor) => SensorCard(sensor: sensor)).toList(),
+                children: userSensors.map<Widget>((sensor) => DeviceCard(device: sensor)).toList(),
               ),
             ));
       },

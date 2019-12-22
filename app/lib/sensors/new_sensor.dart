@@ -5,9 +5,9 @@ class NewSensor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Add new sensor')),
+        appBar: AppBar(title: Text('Add new device')),
         body: Center(
-          child: Text('New sensor pairing placeholder'),
+          child: Text('New device pairing placeholder'),
         ));
   }
 }

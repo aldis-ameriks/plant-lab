@@ -7,10 +7,10 @@ import 'package:planty/readings/queries.dart';
 import 'package:planty/sensors/sensor_settings.dart';
 import 'package:time_formatter/time_formatter.dart';
 
-class SensorDetails extends StatelessWidget {
-  const SensorDetails({@required this.sensorId});
+class DeviceDetails extends StatelessWidget {
+  const DeviceDetails({@required this.deviceId});
 
-  final String sensorId;
+  final String deviceId;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class SensorDetails extends StatelessWidget {
                   SliverAppBar(
                       pinned: true,
                       flexibleSpace: FlexibleSpaceBar(
-                        title: Text('Device $sensorId', style: Theme.of(context).textTheme.title),
+                        title: Text('Device $deviceId', style: Theme.of(context).textTheme.title),
                       ),
                       actions: <Widget>[
                         IconButton(
@@ -28,13 +28,13 @@ class SensorDetails extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SensorSettings(sensorId: sensorId)),
+                                MaterialPageRoute(builder: (context) => SensorSettings(deviceId: deviceId)),
                               );
                             }),
                       ]),
                 ],
             body: ReadingsQuery(
-              sensorId: sensorId,
+              deviceId: deviceId,
               builder: (result, refetch) {
                 dynamic lastReading = result['lastReading'];
                 dynamic readings = result['readings'];
@@ -45,8 +45,8 @@ class SensorDetails extends StatelessWidget {
                 String formattedLastReading = lastReading == null
                     ? 'Never'
                     : formatTime(DateTime.parse(lastReading['time']).millisecondsSinceEpoch);
-                String name = result['sensor']['name'] ?? '';
-                String room = result['sensor']['room'] ?? '';
+                String name = result['device']['name'] ?? '';
+                String room = result['device']['room'] ?? '';
                 return (RefreshIndicator(
                   onRefresh: () {
                     refetch();
@@ -62,10 +62,13 @@ class SensorDetails extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Image(
-                            image: AssetImage('assets/sensor_v1.0.png'),
-                            width: 100,
-                            height: 150,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 30),
+                            child: Image(
+                              image: AssetImage('assets/sensor_v1.0.png'),
+                              width: 100,
+                              height: 150,
+                            ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
