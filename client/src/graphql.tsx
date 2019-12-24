@@ -24,11 +24,40 @@ export type Device = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  updateDeviceName: Device;
+  updateDeviceRoom: Device;
+  removeDevice: Scalars['ID'];
+  addDevice: Device;
   saveReading: Scalars['String'];
+};
+
+export type MutationUpdateDeviceNameArgs = {
+  name: Scalars['String'];
+  deviceId: Scalars['ID'];
+};
+
+export type MutationUpdateDeviceRoomArgs = {
+  room: Scalars['String'];
+  deviceId: Scalars['ID'];
+};
+
+export type MutationRemoveDeviceArgs = {
+  deviceId: Scalars['ID'];
+};
+
+export type MutationAddDeviceArgs = {
+  input: NewDeviceInput;
 };
 
 export type MutationSaveReadingArgs = {
   input: Scalars['String'];
+};
+
+export type NewDeviceInput = {
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  room?: Maybe<Scalars['String']>;
+  firmware: Scalars['String'];
 };
 
 export type Query = {
@@ -41,20 +70,20 @@ export type Query = {
 };
 
 export type QueryDeviceArgs = {
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
 };
 
 export type QueryReadingsArgs = {
   date?: Maybe<Scalars['String']>;
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
 };
 
 export type QueryLastReadingArgs = {
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
 };
 
 export type QueryLastWateredTimeArgs = {
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
 };
 
 export type Reading = {
@@ -68,7 +97,7 @@ export type Reading = {
 };
 
 export type ReadingsQueryVariables = {
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
   date?: Maybe<Scalars['String']>;
 };
 
@@ -82,7 +111,7 @@ export type ReadingsQuery = { __typename?: 'Query' } & {
 };
 
 export type LastReadingQueryVariables = {
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
 };
 
 export type LastReadingQuery = { __typename?: 'Query' } & {
@@ -95,13 +124,13 @@ export type LastReadingQuery = { __typename?: 'Query' } & {
 };
 
 export type LastWateredTimeQueryVariables = {
-  deviceId: Scalars['String'];
+  deviceId: Scalars['ID'];
 };
 
 export type LastWateredTimeQuery = { __typename?: 'Query' } & Pick<Query, 'lastWateredTime'>;
 
 export const ReadingsDocument = gql`
-  query Readings($deviceId: String!, $date: String) {
+  query Readings($deviceId: ID!, $date: String) {
     readings(deviceId: $deviceId, date: $date) {
       device_id
       time
@@ -144,7 +173,7 @@ export type ReadingsQueryHookResult = ReturnType<typeof useReadingsQuery>;
 export type ReadingsLazyQueryHookResult = ReturnType<typeof useReadingsLazyQuery>;
 export type ReadingsQueryResult = ApolloReactCommon.QueryResult<ReadingsQuery, ReadingsQueryVariables>;
 export const LastReadingDocument = gql`
-  query LastReading($deviceId: String!) {
+  query LastReading($deviceId: ID!) {
     lastReading(deviceId: $deviceId) {
       device_id
       time
@@ -186,7 +215,7 @@ export type LastReadingQueryHookResult = ReturnType<typeof useLastReadingQuery>;
 export type LastReadingLazyQueryHookResult = ReturnType<typeof useLastReadingLazyQuery>;
 export type LastReadingQueryResult = ApolloReactCommon.QueryResult<LastReadingQuery, LastReadingQueryVariables>;
 export const LastWateredTimeDocument = gql`
-  query LastWateredTime($deviceId: String!) {
+  query LastWateredTime($deviceId: ID!) {
     lastWateredTime(deviceId: $deviceId)
   }
 `;

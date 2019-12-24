@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 gql`
-  query Readings($deviceId: String!, $date: String) {
+  query Readings($deviceId: ID!, $date: String) {
     readings(deviceId: $deviceId, date: $date) {
       device_id
       time
@@ -14,7 +14,7 @@ gql`
 `;
 
 gql`
-  query LastReading($deviceId: String!) {
+  query LastReading($deviceId: ID!) {
     lastReading(deviceId: $deviceId) {
       device_id
       time
@@ -27,7 +27,7 @@ gql`
 `;
 
 gql`
-  query LastWateredTime($deviceId: String!) {
+  query LastWateredTime($deviceId: ID!) {
     lastWateredTime(deviceId: $deviceId)
   }
 `;
