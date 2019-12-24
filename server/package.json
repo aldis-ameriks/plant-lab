@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "dev": "DEBUG=knex:query nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
@@ -20,6 +20,7 @@
     "docker:run": "docker run -p 4000:4000 --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
+    "class-validator": "0.10.0",
     "config": "3.2.4",
     "graphql-iso-date": "3.6.1",
     "graphql-yoga": "1.18.3",

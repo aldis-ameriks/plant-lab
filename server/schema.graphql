@@ -14,11 +14,22 @@ type Device {
 }
 
 type Mutation {
+  updateDeviceName(name: String!, deviceId: ID!): Device!
+  updateDeviceRoom(room: String!, deviceId: ID!): Device!
+  removeDevice(deviceId: ID!): ID!
+  addDevice(input: NewDeviceInput!): Device!
   saveReading(input: String!): String!
 }
 
+input NewDeviceInput {
+  id: Float!
+  name: String!
+  room: String
+  firmware: String!
+}
+
 type Query {
-  device(deviceId: String!): Device!
+  device(deviceId: ID!): Device!
   devices: [Device!]!
   readings(date: String, deviceId: String!): [Reading!]!
   lastReading(deviceId: String!): Reading
