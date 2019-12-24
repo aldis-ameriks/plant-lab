@@ -31,9 +31,9 @@ input NewDeviceInput {
 type Query {
   device(deviceId: ID!): Device!
   devices: [Device!]!
-  readings(date: String, deviceId: String!): [Reading!]!
-  lastReading(deviceId: String!): Reading
-  lastWateredTime(deviceId: String!): DateTime
+  readings(date: String, deviceId: ID!): [Reading!]!
+  lastReading(deviceId: ID!): Reading
+  lastWateredTime(deviceId: ID!): DateTime
 }
 
 type Reading {

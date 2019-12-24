@@ -1,36 +1,50 @@
-import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
+import { Context } from '../common/authChecker';
+import { DeviceService } from '../devices/DeviceService';
 import { Reading } from './ReadingEntity';
 import { ReadingService } from './ReadingService';
 
 @Resolver(Reading)
 export class ReadingResolver {
   private readonly readingService: ReadingService;
+  private readonly deviceService: DeviceService;
 
   constructor() {
     this.readingService = new ReadingService();
+    this.deviceService = new DeviceService();
   }
 
   @Query(returns => [Reading])
-  readings(
-    @Arg('deviceId', type => String) deviceId: string,
+  @Authorized()
+  async readings(
+    @Ctx() ctx: Context,
+    @Arg('deviceId', type => ID) deviceId: string,
     @Arg('date', { nullable: true }) date?: string
   ): Promise<Reading> {
+    const userId = ctx.user.id;
+    await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getReadings(deviceId, date);
   }
 
   @Query(returns => Reading, { nullable: true })
-  lastReading(@Arg('deviceId', type => String) deviceId: string): Promise<Reading> {
+  @Authorized()
+  async lastReading(@Ctx() ctx: Context, @Arg('deviceId', type => ID) deviceId: string): Promise<Reading> {
+    const userId = ctx.user.id;
+    await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getLastReading(deviceId);
   }
 
   @Query(returns => Date, { nullable: true })
-  lastWateredTime(@Arg('deviceId', type => String) deviceId: string): Promise<Date> {
+  @Authorized()
+  async lastWateredTime(@Ctx() ctx: Context, @Arg('deviceId', type => ID) deviceId: string): Promise<Date> {
+    const userId = ctx.user.id;
+    await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getLastWateredTime(deviceId);
   }
 
   @Mutation(returns => String)
   @Authorized('HUB')
-  async saveReading(@Arg('input') readingInput: string) {
+  async saveReading(@Ctx() ctx: Context, @Arg('input') readingInput: string) {
     console.log('Received input:', readingInput);
     const parsedInput = readingInput.split(';');
     const device_id = parsedInput[0];
@@ -56,6 +70,8 @@ export class ReadingResolver {
       signal,
     };
 
+    const userId = ctx.user.id;
+    await this.deviceService.verifyUserOwnsDevice(device_id, userId);
     await this.readingService.saveReading(device_id, reading);
     return 'success';
   }
