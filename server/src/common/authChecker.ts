@@ -20,5 +20,5 @@ export const authChecker: AuthChecker<Context> = async ({ context }, roles) => {
   if (!roles) {
     return true;
   }
-  return roles.every(role => user?.roles?.includes(role));
+  return roles.every(role => user.roles?.includes(role));
 };
