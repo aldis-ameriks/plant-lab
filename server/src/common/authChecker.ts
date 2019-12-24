@@ -1,17 +1,16 @@
 import { AuthChecker } from 'type-graphql';
-import { getUserByAccessKey } from './helpers/getUserByAccessKey';
 
-type Context = {
-  accessKey: string;
+type User = {
+  id: string;
+  roles?: string[];
+};
+
+export type Context = {
+  user: User;
 };
 
 export const authChecker: AuthChecker<Context> = async ({ context }, roles) => {
-  const { accessKey } = context;
-  if (!accessKey) {
-    return false;
-  }
-
-  const user = await getUserByAccessKey(accessKey);
+  const { user } = context;
 
   if (!user) {
     return false;

@@ -3,6 +3,7 @@ import { defaultErrorFormatter } from 'graphql-yoga/dist/defaultErrorFormatter';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { authChecker } from './common/authChecker';
+import { getUserByAccessKey } from './common/helpers/getUserByAccessKey';
 import { DeviceResolver } from './devices/DeviceResolver';
 import { ReadingResolver } from './readings/ReadingResolver';
 
@@ -30,10 +31,16 @@ const morgan = require('morgan');
 
   const server = new GraphQLServer({
     schema,
-    context: ({ request }) => {
+    context: async ({ request }) => {
       const accessKeyHeader = request.headers['access-key'];
       const accessKey = Array.isArray(accessKeyHeader) ? accessKeyHeader[0] : accessKeyHeader;
-      return { accessKey };
+
+      if (!accessKey) {
+        return { user: undefined };
+      }
+
+      const user = await getUserByAccessKey(accessKey);
+      return { user };
     },
   });
 
