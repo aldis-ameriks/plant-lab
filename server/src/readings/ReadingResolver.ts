@@ -29,7 +29,7 @@ export class ReadingResolver {
   }
 
   @Mutation(returns => String)
-  @Authorized()
+  @Authorized('HUB')
   async saveReading(@Arg('input') readingInput: string) {
     console.log('Received input:', readingInput);
     const parsedInput = readingInput.split(';');
