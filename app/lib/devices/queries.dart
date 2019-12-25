@@ -44,7 +44,7 @@ class DeviceSettingsQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Query(
     options: QueryOptions(document: r'''
-          query DeviceSettings($deviceId: String!) {
+          query DeviceSettings($deviceId: ID!) {
             device(deviceId: $deviceId) {
               id
               room
@@ -79,7 +79,7 @@ class ReadingsQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Query(
         options: QueryOptions(document: r'''
-          query Readings($deviceId: String!, $date: String) {
+          query Readings($deviceId: ID!, $date: String) {
             device(deviceId: $deviceId) {
               id
               room
