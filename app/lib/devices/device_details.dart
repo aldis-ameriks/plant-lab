@@ -96,7 +96,8 @@ class DeviceDetails extends StatelessWidget {
                               child: new charts.TimeSeriesChart(
                                 _createData(readings, 'moisture'),
                                 primaryMeasureAxis: new charts.NumericAxisSpec(
-                                    tickProviderSpec: new charts.BasicNumericTickProviderSpec(desiredMinTickCount: 4)),
+                                    tickProviderSpec: new charts.BasicNumericTickProviderSpec(
+                                        desiredMinTickCount: 6, zeroBound: true)),
                                 behaviors: [
                                   new charts.ChartTitle('Moisture',
                                       innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
@@ -126,7 +127,8 @@ class DeviceDetails extends StatelessWidget {
                                         showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
                                   ],
                                   primaryMeasureAxis: new charts.NumericAxisSpec(
-                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(zeroBound: false))),
+                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(
+                                          zeroBound: false, desiredMinTickCount: 6))),
                             ),
                           ),
                           Padding(
@@ -161,7 +163,8 @@ class DeviceDetails extends StatelessWidget {
                                         showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
                                   ],
                                   primaryMeasureAxis: new charts.NumericAxisSpec(
-                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(zeroBound: false))),
+                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(
+                                          zeroBound: true, desiredMinTickCount: 4))),
                             ),
                           ),
                         ],
