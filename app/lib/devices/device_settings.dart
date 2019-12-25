@@ -22,10 +22,10 @@ class SensorSettings extends StatelessWidget {
             dynamic device = result['device'];
 
             List<Widget> entries = [
-              _buildEntry('Device ID', device['id']),
+              _buildEntry('Device ID', device['id'], readonly: true),
               _buildEntry('Name', device['name']),
               _buildEntry('Room', device['room']),
-              _buildEntry('Firmware', device['firmware']),
+              _buildEntry('Firmware', device['firmware'], readonly: true),
             ];
 
             return Column(
@@ -66,7 +66,7 @@ class SensorSettings extends StatelessWidget {
     );
   }
 
-  _buildEntry(text, value) {
+  _buildEntry(text, value, {bool readonly: false}) {
     value ??= '';
     return Flex(
       direction: Axis.horizontal,
@@ -81,7 +81,7 @@ class SensorSettings extends StatelessWidget {
                   width: 180,
                   child: Text(value, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
                 )),
-            Icon(Icons.chevron_right, color: Colors.grey[600])
+            Opacity(opacity: readonly ? 0 : 1, child: Icon(Icons.chevron_right, color: Colors.grey[600]))
           ],
         ),
       ],
