@@ -133,6 +133,24 @@ class DeviceDetails extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 16, bottom: 16),
                             child: SizedBox(
                               height: 220,
+                              child: new charts.TimeSeriesChart(_createData(readings, 'light'),
+                                  behaviors: [
+                                    new charts.ChartTitle('Light',
+                                        innerPadding: 16, titleStyleSpec: charts.TextStyleSpec(fontSize: 14)),
+                                    new charts.LinePointHighlighter(
+                                        drawFollowLinesAcrossChart: true,
+                                        showHorizontalFollowLine: charts.LinePointHighlighterFollowLineType.nearest,
+                                        showVerticalFollowLine: charts.LinePointHighlighterFollowLineType.nearest)
+                                  ],
+                                  primaryMeasureAxis: new charts.NumericAxisSpec(
+                                      tickProviderSpec: new charts.BasicNumericTickProviderSpec(
+                                          zeroBound: true, desiredMinTickCount: 4))),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            child: SizedBox(
+                              height: 220,
                               child: new charts.TimeSeriesChart(_createData(readings, 'battery_voltage'),
                                   behaviors: [
                                     new charts.ChartTitle('Battery Voltage',
