@@ -8,7 +8,7 @@ class DevicesQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-    options: QueryOptions(document: r'''
+        options: QueryOptions(document: r'''
           query Devices {
             devices {
               id
@@ -17,22 +17,23 @@ class DevicesQuery extends StatelessWidget {
             }
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
-    builder: (result, {refetch, fetchMore}) {
-      if (result.errors != null) {
-        return Center(
-          child: Text(result.errors.toString()),
-        );
-      }
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            // TODO: Show snackbar upon error
+            return Center(
+              child: Text(result.errors.toString()),
+            );
+          }
 
-      if (result.loading) {
-        return Center(
-          child: const RefreshProgressIndicator(),
-        );
-      }
+          if (result.loading) {
+            return Center(
+              child: const RefreshProgressIndicator(),
+            );
+          }
 
-      return builder(result.data, refetch);
-    },
-  );
+          return builder(result.data, refetch);
+        },
+      );
 }
 
 class DeviceSettingsQuery extends StatelessWidget {
@@ -43,7 +44,7 @@ class DeviceSettingsQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-    options: QueryOptions(document: r'''
+        options: QueryOptions(document: r'''
           query DeviceSettings($deviceId: ID!) {
             device(deviceId: $deviceId) {
               id
@@ -52,23 +53,23 @@ class DeviceSettingsQuery extends StatelessWidget {
               firmware
             }
           }
-      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
-    builder: (result, {refetch, fetchMore}) {
-      if (result.errors != null) {
-        return Center(child: Text(result.errors.toString()));
-      }
+      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.noCache),
+        builder: (result, {refetch, fetchMore}) {
+          if (result.errors != null) {
+            // TODO: Show snackbar upon error
+            return Center(child: Text(result.errors.toString()));
+          }
 
-      if (result.loading) {
-        return Center(
-          child: const RefreshProgressIndicator(),
-        );
-      }
+          if (result.loading) {
+            return Center(
+              child: const RefreshProgressIndicator(),
+            );
+          }
 
-      return builder(result.data);
-    },
-  );
+          return builder(result.data, refetch);
+        },
+      );
 }
-
 
 class ReadingsQuery extends StatelessWidget {
   const ReadingsQuery({@required this.deviceId, @required this.builder});
@@ -103,9 +104,10 @@ class ReadingsQuery extends StatelessWidget {
               battery_voltage
             }
           }
-      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.cacheAndNetwork),
+      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.noCache),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
+            // TODO: Show snackbar upon error
             return Center(child: Text(result.errors.toString()));
           }
 

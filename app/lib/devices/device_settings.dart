@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'mutations.dart';
 import 'queries.dart';
 
 class SensorSettings extends StatelessWidget {
@@ -33,20 +34,21 @@ class SensorSettings extends StatelessWidget {
           margin: EdgeInsets.only(left: 20, right: 20),
           child: DeviceSettingsQuery(
             deviceId: deviceId,
-            builder: (result) {
+            builder: (result, refetch) {
               dynamic device = result['device'];
 
               return Column(
                 children: <Widget>[
-                  _buildEntry('Device ID', device['id'], readonly: true),
-                  _buildEntry('Name', device['name']),
-                  _buildEntry('Room', device['room']),
-                  _buildEntry('Firmware', device['firmware'], readonly: true),
+                  Entry(text: 'Device ID', value: device['id'], readonly: true),
+                  NameEntry(value: device['name'], deviceId: deviceId, refetch: refetch),
+                  RoomEntry(value: device['room'], deviceId: deviceId, refetch: refetch),
+                  Entry(text: 'Firmware', value: device['firmware'], readonly: true),
                   Divider(),
                   Container(
                     margin: EdgeInsets.only(top: 20),
                     child: Container(
                       width: 500,
+//                      TODO: Implement device removal
                       child: RaisedButton(
                         padding: EdgeInsets.all(12),
                         onPressed: () {},
@@ -63,31 +65,143 @@ class SensorSettings extends StatelessWidget {
       ),
     );
   }
+}
 
-  _buildEntry(text, value, {bool readonly: false}) {
-    value ??= '';
+class NameEntry extends StatelessWidget {
+  const NameEntry({@required this.value, @required this.deviceId, @required this.refetch});
+
+  final String value;
+  final String deviceId;
+  final Function refetch;
+
+  @override
+  Widget build(BuildContext context) {
+    return DeviceNameMutation(
+      deviceId: deviceId,
+      builder: (runMutation, result) {
+        return Entry(
+            text: 'Name',
+            value: value,
+            readonly: false,
+            onSubmit: (value) {
+              runMutation({'name': value, 'deviceId': deviceId});
+              refetch();
+            });
+      },
+    );
+  }
+}
+
+class RoomEntry extends StatelessWidget {
+  const RoomEntry({@required this.value, @required this.deviceId, @required this.refetch});
+
+  final String value;
+  final String deviceId;
+  final Function refetch;
+
+  @override
+  Widget build(BuildContext context) {
+    return DeviceRoomMutation(
+      deviceId: deviceId,
+      builder: (runMutation, result) {
+        return Entry(
+            text: 'Room',
+            value: value,
+            readonly: false,
+            onSubmit: (value) {
+              runMutation({'room': value, 'deviceId': deviceId});
+              refetch();
+            });
+      },
+    );
+  }
+}
+
+class Entry extends StatefulWidget {
+  const Entry({@required this.text, @required this.value, this.readonly: false, this.onSubmit});
+
+  final String text;
+  final String value;
+  final bool readonly;
+  final Function onSubmit;
+
+  @override
+  EntryState createState() => EntryState();
+}
+
+class EntryState extends State<Entry> {
+  TextEditingController myController;
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    myController = new TextEditingController(text: widget.value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Divider(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(text),
-              Row(
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Container(
-                        width: 180,
-                        child: Text(value, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
-                      )),
-                  Opacity(opacity: readonly ? 0 : 1, child: Icon(Icons.chevron_right, color: Colors.grey[600]))
-                ],
-              ),
-            ],
+        GestureDetector(
+          onTap: () {
+            if (widget.readonly) {
+              return;
+            }
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('Submit'),
+                          onPressed: () {
+                            print(myController.text);
+                            widget.onSubmit(myController.text);
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                      title: Text('Update ${widget.text}'),
+                      content: Form(
+                        key: GlobalKey(),
+                        child: Padding(padding: EdgeInsets.all(8.0), child: TextFormField(controller: myController)),
+                      ));
+                });
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(widget.text),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Container(
+                          width: 180,
+                          child: Text(myController.text ?? '',
+                              overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
+                        )),
+                    Opacity(opacity: widget.readonly ? 0 : 1, child: Icon(Icons.chevron_right, color: Colors.grey[600]))
+                  ],
+                ),
+              ],
+            ),
           ),
         )
       ],
