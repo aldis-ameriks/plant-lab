@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'mutations.dart';
 import 'queries.dart';
 
+// TODO: Restructure device settings related widgets inside separate module
 class SensorSettings extends StatelessWidget {
   const SensorSettings({@required this.deviceId});
 
