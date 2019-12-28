@@ -19,17 +19,7 @@ class SensorSettings extends StatelessWidget {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text('Device $deviceId', style: Theme.of(context).textTheme.title),
-              ),
-              actions: <Widget>[
-                IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SensorSettings(deviceId: deviceId)),
-                      );
-                    }),
-              ]),
+              )),
         ],
         body: Container(
           margin: EdgeInsets.only(left: 20, right: 20),
