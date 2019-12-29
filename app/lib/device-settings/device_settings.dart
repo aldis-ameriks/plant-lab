@@ -6,7 +6,6 @@ import 'mutations/DeviceRoomMutation.dart';
 import 'queries/DeviceSettingsQuery.dart';
 import 'setting.dart';
 
-// TODO: Restructure device settings related widgets inside separate module
 class DeviceSettings extends StatelessWidget {
   const DeviceSettings({@required this.deviceId});
 
