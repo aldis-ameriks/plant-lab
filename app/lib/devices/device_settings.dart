@@ -74,9 +74,9 @@ class NameEntry extends StatelessWidget {
             text: 'Name',
             value: value,
             readonly: false,
+            loading: result.loading,
             onSubmit: (value) {
               runMutation({'name': value, 'deviceId': deviceId});
-              refetch();
             });
       },
     );
@@ -99,9 +99,9 @@ class RoomEntry extends StatelessWidget {
             text: 'Room',
             value: value,
             readonly: false,
+            loading: result.loading,
             onSubmit: (value) {
               runMutation({'room': value, 'deviceId': deviceId});
-              refetch();
             });
       },
     );
@@ -109,12 +109,13 @@ class RoomEntry extends StatelessWidget {
 }
 
 class Entry extends StatefulWidget {
-  const Entry({@required this.text, @required this.value, this.readonly: false, this.onSubmit});
+  const Entry({@required this.text, @required this.value, this.readonly: false, this.onSubmit, this.loading = false});
 
   final String text;
   final String value;
   final bool readonly;
   final Function onSubmit;
+  final bool loading;
 
   @override
   EntryState createState() => EntryState();
@@ -150,6 +151,7 @@ class EntryState extends State<Entry> {
                 builder: (context) {
                   return AlertDialog(
                       actions: <Widget>[
+                        if (widget.loading) RefreshProgressIndicator(),
                         FlatButton(
                           child: Text('Cancel'),
                           onPressed: () {
@@ -180,11 +182,19 @@ class EntryState extends State<Entry> {
               children: <Widget>[
                 Text(widget.text),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    if (widget.loading)
+                      Container(
+                        margin: EdgeInsets.only(right: 6),
+                        height: 12,
+                        width: 12,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
                     Padding(
                         padding: EdgeInsets.only(right: 10),
                         child: Container(
-                          width: 180,
+                          constraints: BoxConstraints(maxWidth: 180),
                           child: Text(myController.text ?? '',
                               overflow: TextOverflow.ellipsis, textAlign: TextAlign.right),
                         )),
