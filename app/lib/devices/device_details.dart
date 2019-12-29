@@ -29,7 +29,7 @@ class DeviceDetails extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SensorSettings(deviceId: deviceId)),
+                                MaterialPageRoute(builder: (context) => DeviceSettings(deviceId: deviceId)),
                               );
                             }),
                       ]),
