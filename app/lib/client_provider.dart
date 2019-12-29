@@ -1,19 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-String uuidFromObject(Object object) {
-  if (object is Map<String, Object>) {
-    final String typeName = object['__typename'] as String;
-    final String id = object['id'].toString();
-    if (typeName != null && id != null) {
-      return <String>[typeName, id].join('/');
-    }
-  }
-  return null;
-}
-
 final OptimisticCache cache = OptimisticCache(
-  dataIdFromObject: uuidFromObject,
+  dataIdFromObject: typenameDataIdFromObject,
 );
 
 ValueNotifier<GraphQLClient> clientFor({
