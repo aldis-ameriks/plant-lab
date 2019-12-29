@@ -17,6 +17,7 @@ class DeviceNameMutation extends StatelessWidget {
               name
               room
               firmware
+              __typename
             }
           }
       '''),
@@ -42,6 +43,7 @@ class DeviceRoomMutation extends StatelessWidget {
             name
             room
             firmware
+            __typename
           }
         }
       '''),

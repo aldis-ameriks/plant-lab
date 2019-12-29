@@ -12,8 +12,10 @@ class DevicesQuery extends StatelessWidget {
           query Devices {
             devices {
               id
-              name
               room
+              name
+              firmware
+              __typename
             }
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
@@ -51,9 +53,10 @@ class DeviceSettingsQuery extends StatelessWidget {
               room
               name
               firmware
+              __typename
             }
           }
-      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.noCache),
+      ''', variables: {'deviceId': deviceId}),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             // TODO: Show snackbar upon error
@@ -85,6 +88,7 @@ class ReadingsQuery extends StatelessWidget {
               id
               room
               name
+              __typename
             }
             lastReading(deviceId: $deviceId) {
               device_id
@@ -104,7 +108,7 @@ class ReadingsQuery extends StatelessWidget {
               battery_voltage
             }
           }
-      ''', variables: {'deviceId': deviceId}, fetchPolicy: FetchPolicy.noCache),
+      ''', variables: {'deviceId': deviceId}),
         builder: (result, {refetch, fetchMore}) {
           if (result.errors != null) {
             // TODO: Show snackbar upon error
