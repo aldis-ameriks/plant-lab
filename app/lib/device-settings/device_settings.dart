@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'entry.dart';
+import 'setting.dart';
 import 'mutations/DeviceNameMutation.dart';
 import 'mutations/DeviceRoomMutation.dart';
 import 'queries/DeviceSettingsQuery.dart';
@@ -32,10 +32,10 @@ class DeviceSettings extends StatelessWidget {
 
               return Column(
                 children: <Widget>[
-                  Entry(text: 'Device ID', value: device['id'], readonly: true),
+                  Setting(text: 'Device ID', value: device['id'], readonly: true),
                   NameEntry(value: device['name'], deviceId: deviceId, refetch: refetch),
                   RoomEntry(value: device['room'], deviceId: deviceId, refetch: refetch),
-                  Entry(text: 'Firmware', value: device['firmware'], readonly: true),
+                  Setting(text: 'Firmware', value: device['firmware'], readonly: true),
                   Divider(),
                   Container(
                     margin: EdgeInsets.only(top: 20),
@@ -72,7 +72,7 @@ class NameEntry extends StatelessWidget {
     return DeviceNameMutation(
       deviceId: deviceId,
       builder: (runMutation, result) {
-        return Entry(
+        return Setting(
             text: 'Name',
             value: value,
             readonly: false,
@@ -97,7 +97,7 @@ class RoomEntry extends StatelessWidget {
     return DeviceRoomMutation(
       deviceId: deviceId,
       builder: (runMutation, result) {
-        return Entry(
+        return Setting(
             text: 'Room',
             value: value,
             readonly: false,

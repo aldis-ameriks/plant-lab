@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Entry extends StatefulWidget {
-  const Entry({@required this.text, @required this.value, this.readonly: false, this.onSubmit, this.loading = false});
+class Setting extends StatefulWidget {
+  const Setting({@required this.text, @required this.value, this.readonly: false, this.onSubmit, this.loading = false});
 
   final String text;
   final String value;
@@ -10,10 +10,10 @@ class Entry extends StatefulWidget {
   final bool loading;
 
   @override
-  EntryState createState() => EntryState();
+  _SettingState createState() => _SettingState();
 }
 
-class EntryState extends State<Entry> {
+class _SettingState extends State<Setting> {
   TextEditingController myController;
 
   @override
