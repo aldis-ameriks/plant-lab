@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'mutations.dart';
-import 'queries.dart';
+import 'mutations/DeviceNameMutation.dart';
+import 'mutations/DeviceRoomMutation.dart';
+import 'queries/DeviceSettingsQuery.dart';
 
 // TODO: Restructure device settings related widgets inside separate module
 class SensorSettings extends StatelessWidget {

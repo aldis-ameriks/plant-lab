@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 
 import 'device_card.dart';
 import 'new_device.dart';
-import 'queries.dart';
+import 'queries/DevicesQuery.dart';
 
 class Home extends StatelessWidget {
   @override
