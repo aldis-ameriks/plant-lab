@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'setting.dart';
 import 'mutations/DeviceNameMutation.dart';
 import 'mutations/DeviceRoomMutation.dart';
 import 'queries/DeviceSettingsQuery.dart';
+import 'setting.dart';
 
 // TODO: Restructure device settings related widgets inside separate module
 class DeviceSettings extends StatelessWidget {
@@ -109,5 +109,3 @@ class RoomEntry extends StatelessWidget {
     );
   }
 }
-
-
