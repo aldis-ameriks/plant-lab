@@ -53,7 +53,6 @@ class _SettingState extends State<Setting> {
                         FlatButton(
                           child: Text('Submit'),
                           onPressed: () {
-                            print(myController.text);
                             widget.onSubmit(myController.text);
                             Navigator.of(context).pop();
                           },
