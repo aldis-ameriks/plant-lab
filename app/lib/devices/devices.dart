@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../add-device/new_device.dart';
 import 'device_card.dart';
-import 'new_device.dart';
 import 'queries/DevicesQuery.dart';
 
 class Home extends StatelessWidget {
