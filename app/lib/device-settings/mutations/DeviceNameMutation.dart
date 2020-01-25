@@ -9,7 +9,8 @@ class DeviceNameMutation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Mutation(
-        options: MutationOptions(document: r'''
+        options: MutationOptions(
+            document: r'''
           mutation updateDeviceName($deviceId: ID!, $name: String!) {
             updateDeviceName(deviceId: $deviceId, name: $name) {
               id
@@ -19,9 +20,15 @@ class DeviceNameMutation extends StatelessWidget {
               __typename
             }
           }
-      '''),
+      ''',
+            onError: (error) {
+              final snackBar = SnackBar(
+                content: Text('Failed to update device name', textAlign: TextAlign.center),
+                backgroundColor: Colors.red[700],
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+            }),
         builder: (runMutation, result) {
-          // TODO: Show snackbar upon error
           return builder(runMutation, result);
         },
       );

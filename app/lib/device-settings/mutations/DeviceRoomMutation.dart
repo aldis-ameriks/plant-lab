@@ -9,7 +9,8 @@ class DeviceRoomMutation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Mutation(
-        options: MutationOptions(document: r'''
+        options: MutationOptions(
+            document: r'''
         mutation updateDeviceRoom($deviceId: ID!, $room: String!) {
           updateDeviceRoom(deviceId: $deviceId, room: $room) {
             id
@@ -19,9 +20,15 @@ class DeviceRoomMutation extends StatelessWidget {
             __typename
           }
         }
-      '''),
+      ''',
+            onError: (error) {
+              final snackBar = SnackBar(
+                content: Text('Failed to update device room', textAlign: TextAlign.center),
+                backgroundColor: Colors.red[700],
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+            }),
         builder: (runMutation, result) {
-          // TODO: Show snackbar upon error
           return builder(runMutation, result);
         },
       );
