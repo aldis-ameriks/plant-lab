@@ -19,7 +19,7 @@ class DevicesQuery extends StatelessWidget {
               __typename
             }
           }
-      ''', fetchPolicy: FetchPolicy.noCache),
+      ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.hasException) {
             return Column(
