@@ -20,10 +20,10 @@ class DevicesQuery extends StatelessWidget {
           }
       ''', fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
-          if (result.errors != null) {
+          if (result.hasException) {
             // TODO: Show snackbar upon error
             return Center(
-              child: Text(result.errors.toString()),
+              child: Text(result.exception.toString()),
             );
           }
 

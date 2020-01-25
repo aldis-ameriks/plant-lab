@@ -37,9 +37,9 @@ class ReadingsQuery extends StatelessWidget {
           }
       ''', variables: {'deviceId': deviceId}),
         builder: (result, {refetch, fetchMore}) {
-          if (result.errors != null) {
+          if (result.hasException) {
             // TODO: Show snackbar upon error
-            return Center(child: Text(result.errors.toString()));
+            return Center(child: Text(result.exception.toString()));
           }
 
           if (result.loading) {
