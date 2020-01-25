@@ -14,7 +14,7 @@ class _DelayedLoaderState extends State<DelayedLoader> {
   @override
   void initState() {
     super.initState();
-    _future = Future<String>.delayed(Duration(seconds: 1), () => 'Show loader');
+    _future = Future<String>.delayed(Duration(milliseconds: 500), () => 'Show loader');
   }
 
   @override
