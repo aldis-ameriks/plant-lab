@@ -43,7 +43,6 @@ class _SettingState extends State<Setting> {
                 builder: (context) {
                   return AlertDialog(
                       actions: <Widget>[
-                        if (widget.loading) RefreshProgressIndicator(), // TODO: This never happens
                         FlatButton(
                           child: Text('Cancel', style: TextStyle(color: Colors.black)),
                           onPressed: () {
