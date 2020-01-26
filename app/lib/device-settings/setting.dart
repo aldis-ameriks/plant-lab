@@ -43,15 +43,15 @@ class _SettingState extends State<Setting> {
                 builder: (context) {
                   return AlertDialog(
                       actions: <Widget>[
-                        if (widget.loading) RefreshProgressIndicator(),
+                        if (widget.loading) RefreshProgressIndicator(), // TODO: This never happens
                         FlatButton(
-                          child: Text('Cancel'),
+                          child: Text('Cancel', style: TextStyle(color: Colors.black)),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                         ),
                         FlatButton(
-                          child: Text('Submit'),
+                          child: Text('Submit', style: TextStyle(color: Colors.black)),
                           onPressed: () {
                             widget.onSubmit(myController.text);
                             Navigator.of(context).pop();

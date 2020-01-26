@@ -21,10 +21,17 @@ class DeviceNameMutation extends StatelessWidget {
             }
           }
       ''',
+            onCompleted: (result) {
+              final snackBar = SnackBar(
+                content: Text('Device name updated', textAlign: TextAlign.center),
+                backgroundColor: Colors.greenAccent[700],
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+            },
             onError: (error) {
               final snackBar = SnackBar(
                 content: Text('Failed to update device name', textAlign: TextAlign.center),
-                backgroundColor: Colors.red[700],
+                backgroundColor: Colors.redAccent[700],
               );
               Scaffold.of(context).showSnackBar(snackBar);
             }),
