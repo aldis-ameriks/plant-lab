@@ -10,7 +10,7 @@
     "docker:build:push:all": "yarn --cwd client docker:build:push && yarn --cwd server docker:build:push"
   },
   "devDependencies": {
-    "concurrently": "5.0.2",
+    "concurrently": "5.1.0",
     "start-server-and-test": "1.10.7"
   }
 }
