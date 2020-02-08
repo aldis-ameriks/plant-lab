@@ -8,7 +8,6 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
-    "lint:ci": "yarn lint --format junit -o ../results/tslint/result.xml",
     "lint:fix": "eslint . --ext .ts --ignore-path .gitignore --fix",
     "pre-commit": "bash ../.git/hooks/pre-commit",
     "migrate": "NODE_CONFIG_DIR=../config knex migrate:latest --knexfile knexfile.ts --cwd src",

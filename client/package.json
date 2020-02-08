@@ -52,7 +52,6 @@
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .ts,.tsx --fix --ignore-path .gitignore",
-    "lint:ci": "yarn lint --format junit -o ../results/eslint/result.xml",
     "generate": "gql-gen && eslint --fix src/graphql.tsx && prettier --write src/graphql.tsx",
     "docker:build": "docker build -t registry.kataldi.com/plant-client .",
     "docker:push": "docker push registry.kataldi.com/plant-client",
