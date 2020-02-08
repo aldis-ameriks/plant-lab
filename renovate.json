@@ -8,10 +8,6 @@
   },
   "packageRules": [
     {
-      "packagePatterns": ["^eslint"],
-      "groupName": "eslint"
-    },
-    {
       "packageNames": ["react", "react-dom"],
       "groupName": "react"
     }
