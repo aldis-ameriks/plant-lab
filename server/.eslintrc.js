@@ -18,6 +18,17 @@ module.exports = {
     'max-classes-per-file': 0,
     'class-methods-use-this': 0,
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        mjs: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
   },
   settings: {
     'import/parsers': {
