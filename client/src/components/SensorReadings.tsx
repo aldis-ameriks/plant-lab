@@ -25,6 +25,12 @@ const GaugeWrapper = styled.div`
   @media (min-width: 600px) {
     max-width: 200px;
   }
+
+  // workaround to avoid cutting off label when resizing window  
+  min-height: 130px;
+  svg {
+    min-height: 130px;
+  }
 `;
 
 const ReadingWrapper = styled.div`
