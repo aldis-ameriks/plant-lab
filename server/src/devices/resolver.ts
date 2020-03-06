@@ -1,8 +1,7 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '../common/authChecker';
-import { Device } from './DeviceEntity';
-import { DeviceService } from './DeviceService';
-import { NewDeviceInput } from './NewDeviceInput';
+import { DeviceService } from './service';
+import { Device, NewDeviceInput } from './models';
 
 @Resolver(Device)
 export class DeviceResolver {
