@@ -23,7 +23,7 @@
     "config": "3.3.0",
     "graphql-iso-date": "3.6.1",
     "graphql-yoga": "1.18.3",
-    "knex": "0.20.11",
+    "knex": "0.20.12",
     "morgan": "1.9.1",
     "pg": "7.18.2",
     "reflect-metadata": "0.1.13",
