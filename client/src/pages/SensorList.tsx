@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SensorReadings from '../components/SensorReadings';
-import { Card, CardSection, CardWrapper, ImageWrapper } from './SensorDetails';
+import { Card, CardSection, CardWrapper, Image, ImageWrapper } from './SensorDetails';
 
 const deviceIds = ['5', '6', '7'];
 
@@ -34,21 +34,13 @@ const MiniCardSection = styled(CardSection)`
 
   @media (min-width: 700px) {
     display: flex;
-    max-height: 180px;
+    max-height: 250px;
   }
 `;
 
-const ListImage = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url('/plant.jpg');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 200px;
-
+const ListImage = styled(Image)`
   @media (min-width: 700px) {
-    min-height: 130px;
+    width: 90%;
   }
 `;
 
@@ -62,7 +54,7 @@ const SensorList = () => {
             <MiniCardSection>
               <ImageWrapper>
                 <h3>Rubber tree</h3>
-                <ListImage />
+                <ListImage src="/plant.jpg" alt="" width="100%" />
               </ImageWrapper>
               <SensorReadings deviceId={id} />
             </MiniCardSection>

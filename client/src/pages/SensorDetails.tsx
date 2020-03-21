@@ -66,11 +66,7 @@ const LineChartsWrapper = styled.div`
 
 export const ImageWrapper = styled.div`
   text-align: center;
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
 `;
 
 export const Image = styled.img`

@@ -8,6 +8,7 @@ const RowWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   max-height: 100px;
+  margin: 1rem 0;
 
   @media (min-width: 400px) {
     max-height: 130px;
@@ -49,11 +50,11 @@ const ReadingWrapper = styled.div`
   }
 `;
 
-type SensorReadingsProps = {
+type Props = {
   deviceId: string;
 };
 
-const SensorReadings: React.FC<SensorReadingsProps> = ({ deviceId }) => {
+const SensorReadings: React.FC<Props> = ({ deviceId }) => {
   const lastReadingQuery = useLastReadingQuery({ variables: { deviceId } });
   const lastWateredTimeQuery = useLastWateredTimeQuery({ variables: { deviceId } });
 
