@@ -2,53 +2,54 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SensorReadings from '../components/SensorReadings';
-import { Card, CardSection, CardWrapper } from './SensorDetails';
+import { Card, CardSection, CardWrapper, ImageWrapper } from './SensorDetails';
 
-const deviceIds = ['5', '6','7'];
+const deviceIds = ['5', '6', '7'];
 
 const List = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  > div {
-    margin: 2rem;
-  }
 `;
 
-const MiniCard = styled(Card)`
+const ListCardWrapper = styled(CardWrapper)`
+  margin: 2rem 3rem;
+  max-width: 600px;
+`;
+
+const ListCard = styled(Card)`
   font-size: 0.7rem;
-  align-items: center;
-  padding: 1em 2em 2em 2em;
   width: auto;
   cursor: pointer;
 
   @media (min-width: 350px) {
     font-size: 0.8rem;
   }
-  @media (min-width: 1300px) {
-    width: 600px;
-    height: auto;
-  }
 `;
 
 const MiniCardSection = styled(CardSection)`
-  width: 240px;
-
-  @media (min-width: 350px) {
-    width: 290px;
+  > div {
+    max-width: 400px;
   }
 
-  @media (min-width: 500px) {
-    width: 350px;
-  }
   @media (min-width: 700px) {
-    width: 350px;
+    display: flex;
+    max-height: 180px;
   }
 `;
 
-const ImageWrapper = styled.div`
-  text-align: center;
-  width: 200px;
+const ListImage = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url('/plant.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 200px;
+
+  @media (min-width: 700px) {
+    min-height: 130px;
+  }
 `;
 
 const SensorList = () => {
@@ -56,18 +57,17 @@ const SensorList = () => {
   return (
     <List>
       {deviceIds.map(id => (
-        <CardWrapper key={id}>
-          <MiniCard onClick={() => history.push(`/sensors/${id}`)}>
-            <ImageWrapper>
-              <img src="/plant.jpg" alt="" width="100%" />
-              <div>Rubber tree</div>
-              <div>Node ID: {id}</div>
-            </ImageWrapper>
+        <ListCardWrapper key={id}>
+          <ListCard onClick={() => history.push(`/sensors/${id}`)}>
             <MiniCardSection>
+              <ImageWrapper>
+                <h3>Rubber tree</h3>
+                <ListImage />
+              </ImageWrapper>
               <SensorReadings deviceId={id} />
             </MiniCardSection>
-          </MiniCard>
-        </CardWrapper>
+          </ListCard>
+        </ListCardWrapper>
       ))}
     </List>
   );

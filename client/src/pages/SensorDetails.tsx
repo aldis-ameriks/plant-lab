@@ -38,7 +38,6 @@ export const Card = styled.div`
 
   @media (min-width: 1350px) {
     width: 1200px;
-    height: 1250px;
   }
 `;
 
@@ -59,21 +58,22 @@ export const CardSection = styled.div`
   }
 `;
 
-export const CardTitle = styled.h3`
-  text-align: center;
-`;
-
 const LineChartsWrapper = styled.div`
   @media (max-width: 700px) {
     margin-left: -3em; // workaround for the excessive left space for apex charts in mobile layout
   }
 `;
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   text-align: center;
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const Image = styled.img`
+export const Image = styled.img`
   width: 70%;
   @media (min-width: 1300px) {
     width: 80%;
@@ -117,11 +117,13 @@ const SensorDetails = () => {
         <BackLinkWrapper to="/">
           <LeftArrow color="#8c8c8d" />
         </BackLinkWrapper>
+
         <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
         <Info isVisible={isInfoVisible} />
+
         <CardSection>
-          <CardTitle>Rubber tree</CardTitle>
           <ImageWrapper>
+            <h3>Rubber tree</h3>
             <Image src="/plant.jpg" alt="" width="100%" />
           </ImageWrapper>
           <SensorReadings deviceId={id} />
@@ -134,6 +136,7 @@ const SensorDetails = () => {
             <LineChart min={2.0} max={4.3} data={readings} title="Battery voltage" field="battery_voltage" />
           </LineChartsWrapper>
         </CardSection>
+
       </Card>
     </CardWrapper>
   );

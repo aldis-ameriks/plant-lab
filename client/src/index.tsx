@@ -18,6 +18,7 @@ const client = new ApolloClient({
 const GlobalStyle = createGlobalStyle`
   body {
     font-size: 14px;
+    margin: 0;
   }
   
   @media (min-width: 600px) {

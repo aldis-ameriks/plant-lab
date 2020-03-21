@@ -8,25 +8,26 @@ const RowWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   max-height: 100px;
-  
+
   @media (min-width: 400px) {
     max-height: 130px;
   }
-  
+
   @media (min-width: 700px) {
     max-height: 150px;
+  }
 `;
 
 const GaugeWrapper = styled.div`
   width: 100%;
-  max-width: 200px;
+  max-width: 160px;
   margin: 0 -2em; // workaround to bring the apex chart gauges closer horizontally
 
   @media (min-width: 600px) {
     max-width: 200px;
   }
 
-  // workaround to avoid cutting off label when resizing window  
+  // workaround to avoid cutting off label when resizing window
   min-height: 130px;
   svg {
     min-height: 130px;
