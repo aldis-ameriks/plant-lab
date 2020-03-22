@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { Reading } from '../graphql';
+import { Reading } from '../../graphql';
 
 type Props = {
   title: string;

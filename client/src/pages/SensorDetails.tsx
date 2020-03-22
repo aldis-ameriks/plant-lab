@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
-import Info from '../components/Info';
-import InfoToggle from '../components/InfoToggle';
-import LineChart from '../components/LineChart';
-import { useReadingsQuery } from '../graphql';
+
+import BackLink from '../components/BackLink';
+import LineChart from '../components/charts/LineChart';
+import Info from '../components/info/Info';
 import SensorReadings from '../components/SensorReadings';
-import { LeftArrow } from '../components/LeftArrow';
+import { useReadingsQuery } from '../graphql';
 
 export const CardWrapper = styled.div`
   display: flex;
@@ -69,18 +69,6 @@ export const Image = styled.img`
   max-height: 100%;
 `;
 
-const BackLinkWrapper = styled(Link)`
-  position: absolute;
-  cursor: pointer;
-  top: 5px;
-  left: 10px;
-  z-index: 3000;
-  background-color: transparent;
-  padding: 0.5em;
-  font-size: 1.5em;
-  border: 3px solid transparent;
-`;
-
 export const Title = styled.div`
   text-align: center;
 
@@ -115,7 +103,6 @@ export const ImageWrapper = styled.div`
 
 const SensorDetails = () => {
   const { id = '4' } = useParams();
-  const [isInfoVisible, setInfoVisibility] = useState(false);
   const { data, loading, error } = useReadingsQuery({ variables: { deviceId: id } });
 
   if (loading) {
@@ -135,12 +122,8 @@ const SensorDetails = () => {
   return (
     <CardWrapper>
       <Card>
-        <BackLinkWrapper to="/">
-          <LeftArrow color="#8c8c8d" />
-        </BackLinkWrapper>
-
-        <InfoToggle isVisible={isInfoVisible} setVisibility={setInfoVisibility} />
-        <Info isVisible={isInfoVisible} />
+        <BackLink />
+        <Info />
 
         <CardSection>
           <div>

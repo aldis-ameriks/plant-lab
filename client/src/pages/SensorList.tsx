@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
 import SensorReadings from '../components/SensorReadings';
 import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from './SensorDetails';
 
