@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SensorReadings from '../components/SensorReadings';
-import { Card, CardSection, CardWrapper, Image, ImageWrapper } from './SensorDetails';
+import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from './SensorDetails';
 
 const deviceIds = ['5', '6', '7'];
 
@@ -18,8 +18,6 @@ const ListCardWrapper = styled(CardWrapper)`
 `;
 
 const ListCard = styled(Card)`
-  font-size: 0.7rem;
-  width: auto;
   cursor: pointer;
 
   @media (min-width: 350px) {
@@ -27,20 +25,13 @@ const ListCard = styled(Card)`
   }
 `;
 
-const MiniCardSection = styled(CardSection)`
+const ListCardSection = styled(CardSection)`
   > div {
-    max-width: 400px;
+    max-width: 350px;
   }
 
   @media (min-width: 700px) {
     display: flex;
-    max-height: 250px;
-  }
-`;
-
-const ListImage = styled(Image)`
-  @media (min-width: 700px) {
-    width: 90%;
   }
 `;
 
@@ -51,13 +42,20 @@ const SensorList = () => {
       {deviceIds.map(id => (
         <ListCardWrapper key={id}>
           <ListCard onClick={() => history.push(`/sensors/${id}`)}>
-            <MiniCardSection>
-              <ImageWrapper>
-                <h3>Rubber tree</h3>
-                <ListImage src="/plant.jpg" alt="" width="100%" />
-              </ImageWrapper>
+            <ListCardSection>
+              <Header>
+                <Title>
+                  <h3>Rubber tree</h3>
+                  <h5>sensor id: {id}</h5>
+                </Title>
+
+                <ImageWrapper>
+                  <Image src="/plant.jpg" alt="" />
+                </ImageWrapper>
+              </Header>
+
               <SensorReadings deviceId={id} />
-            </MiniCardSection>
+            </ListCardSection>
           </ListCard>
         </ListCardWrapper>
       ))}

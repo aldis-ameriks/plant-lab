@@ -10,8 +10,8 @@ const RowWrapper = styled.div`
   max-height: 100px;
   margin: 1rem 0;
 
-  @media (min-width: 400px) {
-    max-height: 130px;
+  @media (min-width: 500px) {
+    max-height: 120px;
   }
 
   @media (min-width: 700px) {

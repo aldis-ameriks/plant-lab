@@ -64,16 +64,9 @@ const LineChartsWrapper = styled.div`
   }
 `;
 
-export const ImageWrapper = styled.div`
-  text-align: center;
-  overflow: hidden;
-`;
-
 export const Image = styled.img`
-  width: 70%;
-  @media (min-width: 1300px) {
-    width: 80%;
-  }
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 const BackLinkWrapper = styled(Link)`
@@ -86,6 +79,38 @@ const BackLinkWrapper = styled(Link)`
   padding: 0.5em;
   font-size: 1.5em;
   border: 3px solid transparent;
+`;
+
+export const Title = styled.div`
+  text-align: center;
+
+  h3 {
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+  }
+
+  h5 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+  }
+`;
+
+export const Header = styled.div`
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ImageWrapper = styled.div`
+  max-width: 100%;
+  max-height: 100%;
+
+  @media (min-width: 700px) {
+    max-width: 70%;
+    max-height: 70%;
+    margin: auto;
+  }
 `;
 
 const SensorDetails = () => {
@@ -118,10 +143,16 @@ const SensorDetails = () => {
         <Info isVisible={isInfoVisible} />
 
         <CardSection>
-          <ImageWrapper>
-            <h3>Rubber tree</h3>
-            <Image src="/plant.jpg" alt="" width="100%" />
-          </ImageWrapper>
+          <div>
+            <Title>
+              <h3>Rubber tree</h3>
+              <h5>sensor id: {id}</h5>
+            </Title>
+
+            <ImageWrapper>
+              <Image src="/plant.jpg" alt="" />
+            </ImageWrapper>
+          </div>
           <SensorReadings deviceId={id} />
         </CardSection>
 
@@ -132,7 +163,6 @@ const SensorDetails = () => {
             <LineChart min={2.0} max={4.3} data={readings} title="Battery voltage" field="battery_voltage" />
           </LineChartsWrapper>
         </CardSection>
-
       </Card>
     </CardWrapper>
   );
