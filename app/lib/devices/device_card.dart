@@ -27,9 +27,9 @@ class DeviceCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(right: 20),
                   child: Image(
-                    image: AssetImage('assets/sensor_v1.0.png'),
-                    width: 50,
-                    height: 60,
+                    image: AssetImage('assets/sensor_v2.1.png'),
+                    width: 40,
+                    height: 80,
                   ),
                 ),
                 Flexible(
