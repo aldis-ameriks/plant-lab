@@ -14,6 +14,8 @@ dependencies:
   graphql_flutter: 3.0.1-beta.3
   time_formatter: 1.0.0+5
   charts_flutter: 0.9.0
+  shared_preferences: 0.5.6+3
+  provider: 4.0.4
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatelessWidget {
+  const Settings({@required this.setAccessKey});
+
+  final void Function(String accessKey) setAccessKey;
+
   @override
   Widget build(BuildContext context) {
     List<Widget> entries = [
@@ -38,7 +43,11 @@ class Settings extends StatelessWidget {
                 width: 500,
                 child: RaisedButton(
                   padding: EdgeInsets.all(12),
-                  onPressed: () {},
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.remove("access_key");
+                    setAccessKey(null);
+                  },
                   color: Colors.red[700],
                   child: Text("Sign out", style: TextStyle(color: Colors.white)),
                 ),
