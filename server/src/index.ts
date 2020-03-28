@@ -49,7 +49,7 @@ const morgan = require('morgan');
     },
   });
 
-  server.express.use(morgan('combined'));
+  server.express.use(morgan('short'));
 
   await server.start(options, ({ port }: Options) => {
     console.log(`Server started, listening on port ${port} for incoming requests.`);
