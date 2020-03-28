@@ -18,7 +18,7 @@ class _SetupState extends State<Setup> {
   @override
   void initState() {
     super.initState();
-    myController = new TextEditingController(text: "");
+    myController = new TextEditingController(text: '');
   }
 
   @override
@@ -47,7 +47,7 @@ class _SetupState extends State<Setup> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(child: Text("Missing access key"), margin: EdgeInsets.only(bottom: 20)),
+              Container(child: Text('Missing access key'), margin: EdgeInsets.only(bottom: 20)),
               barcodeError != null
                   ? Container(child: Text(barcodeError), margin: EdgeInsets.only(bottom: 20))
                   : Container(),
@@ -55,7 +55,7 @@ class _SetupState extends State<Setup> {
                 child: const Text('Scan QR code'),
                 onPressed: scan,
               ),
-              Container(child: Text("or")),
+              Container(child: Text('or')),
               RaisedButton(
                 child: const Text('Enter access key'),
                 onPressed: () {
