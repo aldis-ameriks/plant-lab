@@ -16,8 +16,6 @@ class UserState extends ChangeNotifier {
   initState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessKey = prefs.getString("access_key");
-    print("initializing state");
-    print(accessKey);
     if (accessKey != null) {
       setAccessKey(accessKey);
     }

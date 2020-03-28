@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'app.dart';
 import 'client_provider.dart';
 import 'config.dart';
 import 'user_state_provider.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  await DotEnv().load('.env');
+  await DotEnv().load('.env.local');
+  updateConfig();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => UserStateProvider(
         child: ClientProvider(
-            uri: GRAPHQL_ENDPOINT,
-            subscriptionUri: SUBSCRIPTION_ENDPOINT,
+            uri: config['graphql']['endpoint'],
+            subscriptionUri: config['graphql']['subscriptions'],
             child: MaterialApp(
                 title: 'Plant Monitoring',
                 theme: ThemeData(
