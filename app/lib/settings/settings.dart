@@ -20,7 +20,6 @@ class Settings extends StatelessWidget {
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: (Column(
                     children: <Widget>[
-                      Divider(),
                       Container(
                         margin: EdgeInsets.only(top: 20),
                         child: Container(
