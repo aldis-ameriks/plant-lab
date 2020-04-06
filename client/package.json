@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/react-common": "3.1.4",
     "@apollo/react-hooks": "3.1.4",
-    "apexcharts": "3.18.0",
+    "apexcharts": "3.18.1",
     "apollo-boost": "0.4.7",
     "date-fns": "2.11.1",
     "graphql": "15.0.0",
