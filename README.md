@@ -7,5 +7,5 @@ A simple plant monitoring system to keep the plants alive.
 https://plant.kataldi.com
 
 <p align="center">
-  <img src="./plant-monitoring.png" width="668">
+  <img src="./.misc/plant-monitoring.png" width="668">
 </p>
