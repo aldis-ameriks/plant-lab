@@ -47,7 +47,7 @@ import { ReadingResolver } from './readings/resolver';
   });
 
   app.register(apolloServer.createHandler({ path: '/graphql' }));
-  const host = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000);
-  console.log(`Server started, listening on ${host} for incoming requests.`);
+  const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
+  console.log(`Server started, listening on ${address} for incoming requests.`);
   console.log('Using environment:', process.env.NODE_ENV);
 })();
