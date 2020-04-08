@@ -19,12 +19,12 @@
     "docker:run": "docker run -p 4000:4000 --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
+    "apollo-server-fastify": "2.12.0",
     "class-validator": "0.11.1",
     "config": "3.3.1",
+    "fastify": "2.13.0",
     "graphql-iso-date": "3.6.1",
-    "graphql-yoga": "1.18.3",
     "knex": "0.20.13",
-    "morgan": "1.10.0",
     "pg": "8.0.0",
     "reflect-metadata": "0.1.13",
     "type-graphql": "0.17.6"

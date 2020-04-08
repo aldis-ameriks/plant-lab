@@ -1,15 +1,13 @@
-import { GraphQLServer, Options } from 'graphql-yoga';
-import { defaultErrorFormatter } from 'graphql-yoga/dist/defaultErrorFormatter';
 import 'reflect-metadata';
+import { ApolloServer } from 'apollo-server-fastify';
+import fastify from 'fastify';
 import { buildSchema } from 'type-graphql';
+
 import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
 import { getUserByAccessKey } from './common/helpers/getUserByAccessKey';
 import { DeviceResolver } from './devices/resolver';
 import { ReadingResolver } from './readings/resolver';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const morgan = require('morgan');
 
 (async () => {
   const schema = await buildSchema({
@@ -21,19 +19,10 @@ const morgan = require('morgan');
     },
   });
 
-  const options = {
-    port: process.env.SERVER_PORT || 4000,
-    endpoint: '/graphql',
-    formatError: err => {
-      console.error(err);
-      return defaultErrorFormatter(err);
-    },
-  };
-
-  const server = new GraphQLServer({
+  const apolloServer = new ApolloServer({
     schema,
-    context: async ({ request }) => {
-      const accessKeyHeader = request.headers['access-key'];
+    context: async ({ headers }) => {
+      const accessKeyHeader = headers['access-key'];
       let accessKey = Array.isArray(accessKeyHeader) ? accessKeyHeader[0] : accessKeyHeader;
 
       if (!accessKey && ACCESS_KEY) {
@@ -47,12 +36,18 @@ const morgan = require('morgan');
       const user = await getUserByAccessKey(accessKey);
       return { user };
     },
+    formatError: (err) => {
+      console.error(err);
+      return err;
+    },
   });
 
-  server.express.use(morgan('short'));
-
-  await server.start(options, ({ port }: Options) => {
-    console.log(`Server started, listening on port ${port} for incoming requests.`);
-    console.log('Using environment:', process.env.NODE_ENV);
+  const app = fastify({
+    logger: true,
   });
+
+  app.register(apolloServer.createHandler({ path: '/graphql' }));
+  const host = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000);
+  console.log(`Server started, listening on ${host} for incoming requests.`);
+  console.log('Using environment:', process.env.NODE_ENV);
 })();
