@@ -80,14 +80,14 @@ class RadialChart extends React.Component<Props, State> {
         },
         fill: {
           type: 'gradient',
-          colors: 'black',
+          colors: 'gray',
           gradient: {
             shade: 'light',
             shadeIntensity: 0.4,
             inverseColors: false,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 50, 53, 91],
+            opacityFrom: 0.7,
+            opacityTo: 0.7,
+            stops: [0, 100],
           },
         },
         labels: [label],
