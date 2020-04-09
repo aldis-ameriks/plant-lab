@@ -39,7 +39,7 @@
     "eslint-config-prettier": "6.10.1",
     "eslint-import-resolver-typescript": "2.0.0",
     "eslint-plugin-import": "2.20.2",
-    "husky": "4.2.3",
+    "husky": "4.2.4",
     "lint-staged": "10.1.2",
     "nodemon": "2.0.2",
     "prettier": "2.0.4",
