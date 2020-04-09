@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'mutations/DeviceNameMutation.dart';
-import 'mutations/DeviceRoomMutation.dart';
-import 'queries/DeviceSettingsQuery.dart';
+import 'mutations/device_name_mutation.dart';
+import 'mutations/device_room_mutation.dart';
+import 'queries/device_settings_query.dart';
 import 'setting.dart';
 
 class DeviceSettings extends StatelessWidget {

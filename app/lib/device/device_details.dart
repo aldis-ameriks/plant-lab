@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:time_formatter/time_formatter.dart';
 
 import '../device-settings/device_settings.dart';
-import 'queries/ReadingsQuery.dart';
+import 'queries/reading_query.dart';
 
 class DeviceDetails extends StatelessWidget {
   const DeviceDetails({@required this.deviceId});
