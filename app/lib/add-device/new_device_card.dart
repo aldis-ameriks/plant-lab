@@ -1,23 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../device/device_details.dart';
-
-class DeviceCard extends StatelessWidget {
-  const DeviceCard({@required this.device});
+class NewDeviceCard extends StatelessWidget {
+  NewDeviceCard({@required this.device});
 
   final dynamic device;
 
   @override
   Widget build(BuildContext context) {
-    String deviceId = device['id'];
-    String name = device['name'];
-    String room = device['room'];
-
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DeviceDetails(deviceId: deviceId)),
-      ),
+      onTap: () {},
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Container(
@@ -27,7 +19,7 @@ class DeviceCard extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(right: 20),
                   child: Image(
-                    image: AssetImage('assets/sensor_v2.1.png'),
+                    image: AssetImage(device['image']),
                     width: 40,
                     height: 60,
                   ),
@@ -37,9 +29,8 @@ class DeviceCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(name ?? '', style: Theme.of(context).textTheme.body2),
-                        Text('ID: $deviceId', style: Theme.of(context).textTheme.body2),
-                        Text(room ?? '', style: Theme.of(context).textTheme.body2),
+                        Text(device['name'],
+                            style: Theme.of(context).textTheme.body2),
                       ]),
                 )
               ],
