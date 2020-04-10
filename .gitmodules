@@ -1,6 +1,0 @@
-[submodule "sensor/lib/RFM69"]
-    path = sensor/lib/RFM69
-    url = https://github.com/LowPowerLab/RFM69.git
-[submodule "sensor/lib/Low-Power"]
-	path = sensor/lib/Low-Power
-	url = https://github.com/rocketscream/Low-Power.git
