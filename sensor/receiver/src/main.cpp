@@ -14,7 +14,7 @@ struct Payload {
     uint16_t moistureRaw;
     uint16_t moistureMin;
     uint16_t moistureMax;
-    int8_t temperature;
+    int16_t temperature;
     uint16_t batteryVoltage;
     uint32_t light;
     uint16_t firmware;
@@ -89,23 +89,23 @@ String formatPayload(Payload payload, uint8_t signal) {
     data += ";";
     data += (String)payload.moistureRaw;
     data += ";";
-    data += (String)payload.moisture;
+    data += (String)(payload.moisture / (float)100);
     data += ";";
     data += (String)payload.moistureMin;
     data += ";";
     data += (String)payload.moistureMax;
     data += ";";
-    data += (String)payload.temperature;
+    data += (String)(payload.temperature / float(100));
     data += ";";
     data += (String)payload.light;
     data += ";";
-    data += (String)payload.batteryVoltage;
+    data += (String)(payload.batteryVoltage / float(100));
     data += ";";
     data += (String)signal;
     data += ";";
     data += (String)payload.readingId;
     data += ";";
-    data += (String)payload.firmware;
+    data += (String)(payload.firmware / float(10));
     return data;
 }
 
