@@ -37,7 +37,7 @@ import { ReadingResolver } from './readings/resolver';
       return { user };
     },
     formatError: (err) => {
-      console.error(err);
+      console.error(JSON.stringify(err));
       return err;
     },
   });

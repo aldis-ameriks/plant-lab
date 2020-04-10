@@ -40,17 +40,17 @@ export class ReadingInput {
 
   @Field()
   @Min(0)
-  @Max(1024)
+  @Max(10000)
   moisture_raw: number;
 
   @Field()
   @Min(0)
-  @Max(1024)
+  @Max(10000)
   moisture_min: number;
 
   @Field()
   @Min(0)
-  @Max(1024)
+  @Max(10000)
   moisture_max: number;
 
   @Field()

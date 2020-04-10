@@ -55,10 +55,10 @@ export class ReadingResolver {
     const moisture_max = Number(parsedInput[4]);
     const temperature = Number(parsedInput[5]);
     const light = Number(parsedInput[6]) || null; // Some of the devices have their light sensor covered and send 0
-    const battery_voltage = Number(parsedInput[7]) / 100;
+    const battery_voltage = Number(parsedInput[7]);
     const signal = Number(parsedInput[8]);
     const reading_id = Number(parsedInput[9]) || 100;
-    const firmware = parsedInput[10] ? `${Number(parsedInput[10]) / 10}` : null;
+    const firmware = `${Number(parsedInput[10])}`;
 
     const readingInput = new ReadingInput();
     readingInput.device_id = device_id;
