@@ -5,11 +5,19 @@
 #include <secrets.h>
 
 #define SERIAL_BAUD 115200
-#define NODE_ID 1
+#define NODE_ID 10
 
 struct Payload {
-    uint8_t nodeId;
-    char data[30];
+    uint16_t nodeId;
+    uint16_t readingId;
+    uint8_t moisture;
+    uint16_t moistureRaw;
+    uint16_t moistureMin;
+    uint16_t moistureMax;
+    int8_t temperature;
+    uint16_t batteryVoltage;
+    uint32_t light;
+    uint16_t firmware;
 } payload;
 
 RF24 radio(7, 8);
@@ -46,11 +54,9 @@ void setup() {
     Serial.println("End of setup");
 }
 
-void sendHttpRequestWithData(Payload payload, uint8_t signalQuality) {
+void sendHttpRequestWithData(String data) {
     // close any connection before send a new request.
     client.stop();
-
-    String data = (String)payload.nodeId + ";" + (String)payload.data + ";" + (String)signalQuality;
 
     String postData =
         "{\"query\":\"mutation($input: String!) {saveReading(input: "
@@ -77,25 +83,66 @@ void sendHttpRequestWithData(Payload payload, uint8_t signalQuality) {
     }
 }
 
+String formatPayload(Payload payload, uint8_t signal) {
+    String data = "";
+    data += (String)payload.nodeId;
+    data += ";";
+    data += (String)payload.moistureRaw;
+    data += ";";
+    data += (String)payload.moisture;
+    data += ";";
+    data += (String)payload.moistureMin;
+    data += ";";
+    data += (String)payload.moistureMax;
+    data += ";";
+    data += (String)payload.temperature;
+    data += ";";
+    data += (String)payload.light;
+    data += ";";
+    data += (String)payload.batteryVoltage;
+    data += ";";
+    data += (String)signal;
+    data += ";";
+    data += (String)payload.readingId;
+    data += ";";
+    data += (String)payload.firmware;
+    return data;
+}
+
+void printPayload(Payload payload) {
+    Serial.println("Received:");
+    Serial.println("device_id: " + (String)payload.nodeId);
+    Serial.println("reading_id: " + (String)payload.readingId);
+    Serial.println("moisture: " + (String)payload.moisture);
+    Serial.println("moisture_raw: " + (String)payload.moistureRaw);
+    Serial.println("moisture_min: " + (String)payload.moistureMin);
+    Serial.println("moisture_max: " + (String)payload.moistureMax);
+    Serial.println("temperature: " + (String)payload.temperature);
+    Serial.println("light: " + (String)payload.light);
+    Serial.println("battery_voltage: " + (String)payload.batteryVoltage);
+    Serial.println("firmware: " + (String)payload.firmware);
+}
+
 void loop() {
+    // TODO: Support encryption
+    // TODO: Separate receiving data / sending data with interrupts
     // TODO: Entering pairing mode
     // TODO: Factory resetting device
 
     while (radio.available()) {
-        radio.writeAckPayload(0, &payload.nodeId, sizeof(uint8_t));
+        radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
 
         bool goodSignal = radio.testRPD();
         Serial.println(goodSignal ? "Strong signal > 64dBm" : "Weak signal < 64dBm");
 
-        memset(payload.data, 0, 30);
         Serial.print("Receiving payload size: ");
         Serial.println(sizeof(payload));
         radio.read(&payload, sizeof(payload));
 
-        // TODO: Support encryption
-        Serial.print("Received: ");
-        Serial.println(payload.data);
+        printPayload(payload);
+        String data = formatPayload(payload, goodSignal ? 1 : 0);
 
-        sendHttpRequestWithData(payload, goodSignal ? 1 : 0);
+        sendHttpRequestWithData(data);
+        Serial.println("-----------------------------");
     }
 }
