@@ -180,6 +180,8 @@ void enterSleep() {
 }
 
 void loop() {
+    memset(&payload, 0, sizeof(payload));
+
     float batteryVoltage = readBatteryVoltage();
     float operatingVoltage = batteryVoltage;
 

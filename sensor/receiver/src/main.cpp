@@ -132,6 +132,7 @@ void loop() {
     // TODO: Factory resetting device
 
     while (radio.available()) {
+        memset(&payload, 0, sizeof(payload));
         radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
 
         bool goodSignal = radio.testRPD();
