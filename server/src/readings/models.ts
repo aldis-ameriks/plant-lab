@@ -63,6 +63,7 @@ export class ReadingInput {
   battery_voltage: number;
 
   @Field({ nullable: true })
+  @IsOptional()
   @Min(0)
   light?: number;
 
