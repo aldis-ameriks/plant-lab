@@ -53,8 +53,17 @@ export class ReadingService {
     return result && result.rows[0] ? result.rows[0].time : null;
   }
 
-  public async saveReading(deviceId: string, reading: ReadingInput) {
-    await knex('readings').insert(reading);
+  public async saveReading(input: ReadingInput) {
+    await knex.raw(
+      `
+      INSERT INTO readings (device_id, moisture, moisture_raw, moisture_max, moisture_min, temperature, light,
+                            battery_voltage, signal, reading_id)
+      VALUES (:device_id, :moisture, :moisture_raw, :moisture_max, :moisture_min, :temperature, :light, :battery_voltage,
+              :signal, :reading_id)
+      ON CONFLICT DO NOTHING;
+    `,
+      { ...input }
+    );
   }
 }
 

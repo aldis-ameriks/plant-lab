@@ -7,40 +7,40 @@
 scalar DateTime
 
 type Device {
+  firmware: String
   id: ID!
   name: String
   room: String
-  firmware: String
 }
 
 type Mutation {
-  updateDeviceName(name: String!, deviceId: ID!): Device!
-  updateDeviceRoom(room: String!, deviceId: ID!): Device!
-  removeDevice(deviceId: ID!): ID!
   addDevice(input: NewDeviceInput!): Device!
+  removeDevice(deviceId: ID!): ID!
   saveReading(input: String!): String!
+  updateDeviceName(deviceId: ID!, name: String!): Device!
+  updateDeviceRoom(deviceId: ID!, room: String!): Device!
 }
 
 input NewDeviceInput {
+  firmware: String!
   id: Float!
   name: String!
   room: String
-  firmware: String!
 }
 
 type Query {
   device(deviceId: ID!): Device!
   devices: [Device!]!
-  readings(date: String, deviceId: ID!): [Reading!]!
   lastReading(deviceId: ID!): Reading
   lastWateredTime(deviceId: ID!): DateTime
+  readings(date: String, deviceId: ID!): [Reading!]!
 }
 
 type Reading {
+  battery_voltage: Float!
   device_id: ID!
-  time: DateTime!
+  light: Float
   moisture: Float!
   temperature: Float!
-  battery_voltage: Float!
-  light: Float
+  time: DateTime!
 }

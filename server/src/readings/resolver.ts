@@ -55,27 +55,28 @@ export class ReadingResolver {
     const moisture_max = Number(parsedInput[4]);
     const temperature = Number(parsedInput[5]);
     const light = Number(parsedInput[6]) || null; // Some of the devices have their light sensor covered and send 0
-    const battery_voltage = Number(parsedInput[7]);
+    const battery_voltage = Number(parsedInput[7]) / 100;
     const signal = Number(parsedInput[8]);
-    const timestamp = new Date();
+    const reading_id = Number(parsedInput[9]) || 100;
+    const firmware = parsedInput[10] ? `${Number(parsedInput[10]) / 10}` : null;
 
-    const readingInput = new ReadingInput({
-      device_id,
-      moisture: Math.min(Math.max(moisture, 0), 100),
-      moisture_raw,
-      moisture_min,
-      moisture_max,
-      temperature,
-      battery_voltage,
-      light,
-      timestamp,
-      signal,
-    });
+    const readingInput = new ReadingInput();
+    readingInput.device_id = device_id;
+    readingInput.reading_id = reading_id;
+    readingInput.moisture = moisture;
+    readingInput.moisture_raw = moisture_raw;
+    readingInput.moisture_min = moisture_min;
+    readingInput.moisture_max = moisture_max;
+    readingInput.temperature = temperature;
+    readingInput.battery_voltage = battery_voltage;
+    readingInput.light = light;
+    readingInput.signal = signal;
+    readingInput.firmware = firmware;
     await validate(readingInput);
 
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(device_id, userId);
-    await this.readingService.saveReading(device_id, readingInput);
+    await this.readingService.saveReading(readingInput);
     return 'success';
   }
 }
