@@ -1,17 +1,5 @@
 import { knex } from '../common/db';
-
-type ReadingInput = {
-  device_id: string;
-  timestamp: Date;
-  moisture: number;
-  moisture_raw: number;
-  moisture_min: number;
-  moisture_max: number;
-  temperature: number;
-  light: number | null;
-  battery_voltage: number;
-  signal: number;
-};
+import { ReadingInput } from './models';
 
 export class ReadingService {
   public async getReadings(deviceId = '99', date) {

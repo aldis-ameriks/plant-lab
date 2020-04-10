@@ -1,8 +1,9 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '../common/authChecker';
 import { DeviceService } from '../devices/service';
-import { Reading } from './models';
+import { Reading, ReadingInput } from './models';
 import { ReadingService } from './service';
+import { validate } from '../common/validate';
 
 @Resolver(Reading)
 export class ReadingResolver {
@@ -14,11 +15,11 @@ export class ReadingResolver {
     this.deviceService = new DeviceService();
   }
 
-  @Query(returns => [Reading])
+  @Query((returns) => [Reading])
   @Authorized()
   async readings(
     @Ctx() ctx: Context,
-    @Arg('deviceId', type => ID) deviceId: string,
+    @Arg('deviceId', (type) => ID) deviceId: string,
     @Arg('date', { nullable: true }) date?: string
   ): Promise<Reading> {
     const userId = ctx.user.id;
@@ -26,27 +27,27 @@ export class ReadingResolver {
     return this.readingService.getReadings(deviceId, date);
   }
 
-  @Query(returns => Reading, { nullable: true })
+  @Query((returns) => Reading, { nullable: true })
   @Authorized()
-  async lastReading(@Ctx() ctx: Context, @Arg('deviceId', type => ID) deviceId: string): Promise<Reading> {
+  async lastReading(@Ctx() ctx: Context, @Arg('deviceId', (type) => ID) deviceId: string): Promise<Reading> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getLastReading(deviceId);
   }
 
-  @Query(returns => Date, { nullable: true })
+  @Query((returns) => Date, { nullable: true })
   @Authorized()
-  async lastWateredTime(@Ctx() ctx: Context, @Arg('deviceId', type => ID) deviceId: string): Promise<Date> {
+  async lastWateredTime(@Ctx() ctx: Context, @Arg('deviceId', (type) => ID) deviceId: string): Promise<Date> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getLastWateredTime(deviceId);
   }
 
-  @Mutation(returns => String)
+  @Mutation((returns) => String)
   @Authorized('HUB')
-  async saveReading(@Ctx() ctx: Context, @Arg('input') readingInput: string) {
-    console.log('Received input:', readingInput);
-    const parsedInput = readingInput.split(';');
+  async saveReading(@Ctx() ctx: Context, @Arg('input') input: string) {
+    console.log('Received input:', input);
+    const parsedInput = input.split(';');
     const device_id = parsedInput[0];
     const moisture_raw = Number(parsedInput[1]);
     const moisture = Number(parsedInput[2]);
@@ -57,7 +58,8 @@ export class ReadingResolver {
     const battery_voltage = Number(parsedInput[7]);
     const signal = Number(parsedInput[8]);
     const timestamp = new Date();
-    const reading = {
+
+    const readingInput = new ReadingInput({
       device_id,
       moisture: Math.min(Math.max(moisture, 0), 100),
       moisture_raw,
@@ -68,11 +70,12 @@ export class ReadingResolver {
       light,
       timestamp,
       signal,
-    };
+    });
+    await validate(readingInput);
 
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(device_id, userId);
-    await this.readingService.saveReading(device_id, reading);
+    await this.readingService.saveReading(device_id, readingInput);
     return 'success';
   }
 }
