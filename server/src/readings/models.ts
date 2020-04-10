@@ -86,7 +86,7 @@ export class ReadingInput {
   battery_voltage: number;
 
   @Min(0)
-  light: number;
+  light?: number;
 
   @IsDate()
   timestamp: Date;
