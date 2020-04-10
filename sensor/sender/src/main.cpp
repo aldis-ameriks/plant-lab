@@ -51,10 +51,12 @@ void setup() {
 
     Serial.println("Setting up RF24");
     radio.begin();
-    radio.setChannel(125);
+    radio.setChannel(110);
     radio.setAutoAck(1);
     radio.enableAckPayload();
     radio.setRetries(15, 25);
+    radio.setPALevel(RF24_PA_MAX);
+    radio.setDataRate(RF24_250KBPS);
     radio.openWritingPipe(address);
     radio.stopListening();
 
