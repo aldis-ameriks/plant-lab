@@ -32,7 +32,7 @@ void setup() {
     radio.setChannel(125);
     radio.setAutoAck(1);
     radio.enableAckPayload();
-    radio.setRetries(15, 15);
+    radio.setRetries(15, 25);
     radio.openReadingPipe(0, address);
     radio.startListening();
 
@@ -80,7 +80,7 @@ void sendHttpRequestWithData(Payload payload, uint8_t signalQuality) {
 void loop() {
     // TODO: Entering pairing mode
     // TODO: Factory resetting device
-    
+
     while (radio.available()) {
         radio.writeAckPayload(0, &payload.nodeId, sizeof(uint8_t));
 
