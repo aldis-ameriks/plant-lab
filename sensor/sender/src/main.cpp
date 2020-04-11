@@ -4,44 +4,13 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <avr/sleep.h>
+#include <main.h>
 
-#define SERIAL_BAUD 115200
-#define NODE_ID 999
-
-#define DELAY_BEFORE_SLEEP (long)1000
-#define REGULATOR_V 3.31
-#define SEND_DATA true
-#define SLEEP true
-
-// For measuring battery voltage
-#define R1 10000000.0  // R1 (10M)
-#define R2 1000000.0   // R2 (1M)
-#define INTERNAL_AREF 1.1
-
-// Maximum payload size is 32 bytes
-struct Payload {
-    uint16_t nodeId;
-    uint16_t readingId;
-    uint8_t moisture;
-    uint16_t moistureRaw;
-    uint16_t moistureMin;
-    uint16_t moistureMax;
-    int16_t temperature;
-    uint16_t batteryVoltage;
-    uint32_t light;
-    uint16_t firmware;
-} payload;
+#define NODE_ID 12
+#define DEBUG true
 
 RF24 radio(7, 8);
 const byte address[6] = "00001";
-
-void initializeLightSensor() {
-    Wire.beginTransmission(0x44);
-    Wire.write(0x01);
-    Wire.write(0xCA);  // 800ms, single shot
-    Wire.write(0x10);
-    Wire.endTransmission();
-}
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
@@ -76,7 +45,60 @@ void setup() {
     Serial.println("End of setup");
 }
 
-void sendData(char* data, uint8_t retries = 0) {
+void loop() {
+    memset(&payload, 0, sizeof(payload));
+
+    float batteryVoltage = readBatteryVoltage();
+    float operatingVoltage = batteryVoltage;
+
+    int moisture = readMoisture();
+    float MOISTURE_MAX = (50 * operatingVoltage) + 242;
+    float MOISTURE_MIN = (50 * operatingVoltage) + 634;
+    float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
+
+    float temperature = readTemperature();
+    int light = readLight();
+
+    payload.nodeId = NODE_ID;
+    payload.readingId = random(65535);
+    payload.moisture = (int)(moisturePercentage * 100);
+    payload.moistureRaw = moisture;
+    payload.moistureMin = (int)MOISTURE_MIN;
+    payload.moistureMax = (int)MOISTURE_MAX;
+    payload.temperature = (int)(temperature * 100);
+    payload.light = light;
+    payload.firmware = 10;
+    payload.batteryVoltage = (int)(batteryVoltage * 100);
+
+    Serial.print("Payload size: ");
+    Serial.println(sizeof(payload));
+
+    if (SEND_DATA == true) {
+        char data[sizeof(payload)];
+        memcpy(data, &payload, sizeof(payload));
+        // TODO: Encrypt payload
+
+#if DEBUG == true
+        printBytes(data);
+#endif
+
+        sendData(data);
+    }
+
+    if (SLEEP == true) {
+        enterSleep();
+    }
+}
+
+void initializeLightSensor() {
+    Wire.beginTransmission(0x44);
+    Wire.write(0x01);
+    Wire.write(0xCA);  // 800ms, single shot
+    Wire.write(0x10);
+    Wire.endTransmission();
+}
+
+void sendData(char* data, uint8_t retries) {
     if (retries == 5) {
         Serial.println("Max retry count reached, giving up.");
         return;
@@ -183,42 +205,10 @@ void enterSleep() {
     }
 }
 
-void loop() {
-    memset(&payload, 0, sizeof(payload));
-
-    float batteryVoltage = readBatteryVoltage();
-    float operatingVoltage = batteryVoltage;
-
-    int moisture = readMoisture();
-    float MOISTURE_MAX = (50 * operatingVoltage) + 242;
-    float MOISTURE_MIN = (50 * operatingVoltage) + 634;
-    float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
-
-    float temperature = readTemperature();
-    int light = readLight();
-
-    payload.nodeId = NODE_ID;
-    payload.readingId = random(65535);
-    payload.moisture = (int)(moisturePercentage * 100);
-    payload.moistureRaw = moisture;
-    payload.moistureMin = (int)MOISTURE_MIN;
-    payload.moistureMax = (int)MOISTURE_MAX;
-    payload.temperature = (int)(temperature * 100);
-    payload.light = light;
-    payload.firmware = 10;
-    payload.batteryVoltage = (int)(batteryVoltage * 100);
-
-    Serial.print("Payload size: ");
-    Serial.println(sizeof(payload));
-
-    if (SEND_DATA == true) {
-        char data[sizeof(payload)];
-        memcpy(data, &payload, sizeof(payload));
-        // TODO: Encrypt payload
-        sendData(data);
+void printBytes(char* data) {
+    for (unsigned int i = 0; i < sizeof(payload); i++) {
+        Serial.print((int)data[i]);
+        Serial.print(", ");
     }
-
-    if (SLEEP == true) {
-        enterSleep();
-    }
+    Serial.println("");
 }
