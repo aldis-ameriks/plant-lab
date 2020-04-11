@@ -76,7 +76,7 @@ void setup() {
     Serial.println("End of setup");
 }
 
-void sendData(Payload payload, uint8_t retries = 0) {
+void sendData(char* data, uint8_t retries = 0) {
     if (retries == 5) {
         Serial.println("Max retry count reached, giving up.");
         return;
@@ -84,10 +84,14 @@ void sendData(Payload payload, uint8_t retries = 0) {
 
     retries++;
 
-    if (!radio.write(&payload, sizeof(payload))) {
+    if (retries > 1) {
+        delay(100);
+    }
+
+    if (!radio.write(data, sizeof(payload))) {
         Serial.print("Failed to send data, retrying. Attempt: ");
         Serial.println(retries);
-        sendData(payload, retries);
+        sendData(data, retries);
     } else {
         if (radio.isAckPayloadAvailable()) {
             uint16_t nodeId;
@@ -97,12 +101,12 @@ void sendData(Payload payload, uint8_t retries = 0) {
 
             if (nodeId != NODE_ID) {
                 Serial.println("Different nodeId in ack payload, retrying.");
-                sendData(payload, retries);
+                sendData(data, retries);
             }
 
         } else {
             Serial.println("Failed to receive ack payload, retrying.");
-            sendData(payload, retries);
+            sendData(data, retries);
         }
     }
 }
@@ -208,7 +212,10 @@ void loop() {
     Serial.println(sizeof(payload));
 
     if (SEND_DATA == true) {
-        sendData(payload);
+        char data[sizeof(payload)];
+        memcpy(data, &payload, sizeof(payload));
+        // TODO: Encrypt payload
+        sendData(data);
     }
 
     if (SLEEP == true) {

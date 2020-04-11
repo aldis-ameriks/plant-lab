@@ -140,12 +140,15 @@ void loop() {
 
         Serial.print("Receiving payload size: ");
         Serial.println(sizeof(payload));
-        radio.read(&payload, sizeof(payload));
+
+        char data[sizeof(payload)];
+        radio.read(&data, sizeof(payload));
+        memcpy(&payload, data, sizeof(payload));
 
         printPayload(payload);
-        String data = formatPayload(payload, goodSignal ? 1 : 0);
+        String requestData = formatPayload(payload, goodSignal ? 1 : 0);
 
-        sendHttpRequestWithData(data);
+        sendHttpRequestWithData(requestData);
         Serial.println("-----------------------------");
     }
 }
