@@ -35,7 +35,9 @@ void setup() {
     radio.setPALevel(RF24_PA_MAX);
     radio.setDataRate(RF24_250KBPS);
     radio.openReadingPipe(0, address);
+    radio.maskIRQ(1, 1, 0);
     radio.startListening();
+    attachInterrupt(0, receiveData, FALLING);
 
     Serial.println("Setting up ethernet");
     // give the ethernet module time to boot up
@@ -47,12 +49,7 @@ void setup() {
     Serial.println("End of setup");
 }
 
-void loop() {
-    // TODO: Support encryption
-    // TODO: Persist readings that can be replayed when there's network
-    // TODO: Entering pairing mode
-    // TODO: Factory resetting device
-
+void receiveData() {
     while (radio.available()) {
         memset(&payload, 0, sizeof(payload));
         memset(&data, 0, sizeof(data));
@@ -65,7 +62,7 @@ void loop() {
         radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
 
 #if DEBUG == true
-        printRawBytes();
+        printBytes();
         printPayload();
 #endif
 
@@ -73,6 +70,13 @@ void loop() {
         sendHttpRequestWithData();
         Serial.println("-----------------------------");
     }
+}
+
+void loop() {
+    // TODO: Support encryption
+    // TODO: Persist readings that can be replayed when there's network
+    // TODO: Entering pairing mode
+    // TODO: Factory resetting device
 }
 
 void formatData(uint8_t signal) {
@@ -118,7 +122,7 @@ void sendHttpRequestWithData() {
     }
 }
 
-void printRawBytes() {
+void printBytes() {
     for (unsigned int i = 0; i < sizeof(payload); i++) {
         Serial.print((int)data[i]);
         Serial.print(", ");

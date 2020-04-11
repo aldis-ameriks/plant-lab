@@ -17,4 +17,4 @@ void receiveData();
 void sendHttpRequestWithData();
 void formatData(uint8_t signal);
 void printPayload();
-void printRawBytes();
+void printBytes();
