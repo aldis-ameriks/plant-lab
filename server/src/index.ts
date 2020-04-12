@@ -5,8 +5,6 @@ import fastify from 'fastify';
 import { buildSchema } from 'type-graphql';
 
 import { authChecker } from 'common/authChecker';
-import { ACCESS_KEY } from 'common/config';
-import { getUserByAccessKey } from 'common/helpers/getUserByAccessKey';
 import { shutdown } from 'common/helpers/shutdown';
 import { DeviceResolver } from 'devices/resolver';
 import { ReadingResolver } from 'readings/resolver';

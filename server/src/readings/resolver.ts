@@ -16,11 +16,11 @@ export class ReadingResolver {
     this.deviceService = new DeviceService();
   }
 
-  @Query((returns) => [Reading])
+  @Query((_returns) => [Reading])
   @Authorized()
   async readings(
     @Ctx() ctx: Context,
-    @Arg('deviceId', (type) => ID) deviceId: string,
+    @Arg('deviceId', (_type) => ID) deviceId: string,
     @Arg('date', { nullable: true }) date?: string
   ): Promise<Reading> {
     const userId = ctx.user.id;
@@ -28,23 +28,23 @@ export class ReadingResolver {
     return this.readingService.getReadings(deviceId, date);
   }
 
-  @Query((returns) => Reading, { nullable: true })
+  @Query((_returns) => Reading, { nullable: true })
   @Authorized()
-  async lastReading(@Ctx() ctx: Context, @Arg('deviceId', (type) => ID) deviceId: string): Promise<Reading> {
+  async lastReading(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string): Promise<Reading> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getLastReading(deviceId);
   }
 
-  @Query((returns) => Date, { nullable: true })
+  @Query((_returns) => Date, { nullable: true })
   @Authorized()
-  async lastWateredTime(@Ctx() ctx: Context, @Arg('deviceId', (type) => ID) deviceId: string): Promise<Date> {
+  async lastWateredTime(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string): Promise<Date> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getLastWateredTime(deviceId);
   }
 
-  @Mutation((returns) => String)
+  @Mutation((_returns) => String)
   @Authorized('HUB')
   async saveReading(@Ctx() ctx: Context, @Arg('input') input: string) {
     console.log('Received input:', input);

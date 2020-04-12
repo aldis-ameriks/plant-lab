@@ -3,7 +3,7 @@ import { Field, ID, InputType, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class Reading {
-  @Field((type) => ID)
+  @Field((_type) => ID)
   device_id: string;
 
   @Field()
