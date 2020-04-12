@@ -1,5 +1,6 @@
 {
-  "private": true,
+  "version": "1.0.0",
+  "license": "GPL-3.0",
   "scripts": {
     "start:all": "concurrently \"yarn --cwd server dev\" \"yarn --cwd client start\"",
     "start:server": "yarn --cwd server dev",

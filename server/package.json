@@ -1,8 +1,8 @@
 {
-  "name": "plant-server",
+  "name": "server",
   "version": "1.0.0",
   "main": "src/index.ts",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "scripts": {
     "dev": "DEBUG=knex:query nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r tsconfig-paths/register --files ./src/index.ts",
     "start": "ts-node -r tsconfig-paths/register --files ./src/index.ts",

@@ -1,7 +1,7 @@
 {
-  "name": "plant-client",
-  "version": "0.1.0",
-  "private": true,
+  "name": "client",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
   "dependencies": {
     "@apollo/react-common": "3.1.4",
     "@apollo/react-hooks": "3.1.4",
