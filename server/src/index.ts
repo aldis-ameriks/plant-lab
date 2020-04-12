@@ -7,6 +7,7 @@ import { authChecker } from 'common/authChecker';
 import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { DeviceResolver } from 'devices/resolver';
+import { devicesRoutes } from 'devices/routes';
 import { ReadingResolver } from 'readings/resolver';
 import { readingsRoutes } from 'readings/routes';
 
@@ -41,6 +42,7 @@ import { readingsRoutes } from 'readings/routes';
   app.head('/', async () => 'hi');
   app.get('/ping', async () => 'pong');
   app.register(readingsRoutes);
+  app.register(devicesRoutes);
 
   app.register(apolloServer.createHandler({ path: '/graphql' }));
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
