@@ -8,6 +8,7 @@ import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { DeviceResolver } from 'devices/resolver';
 import { ReadingResolver } from 'readings/resolver';
+import { readingRoutes } from 'readings/routes';
 
 (async () => {
   const schema = await buildSchema({
@@ -39,6 +40,7 @@ import { ReadingResolver } from 'readings/resolver';
 
   app.head('/', async () => 'hi');
   app.get('/ping', async () => 'pong');
+  app.register(readingRoutes);
 
   app.register(apolloServer.createHandler({ path: '/graphql' }));
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
