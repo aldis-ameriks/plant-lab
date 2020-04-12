@@ -6,6 +6,7 @@ import { buildSchema } from 'type-graphql';
 import { authChecker } from './common/authChecker';
 import { ACCESS_KEY } from './common/config';
 import { getUserByAccessKey } from './common/helpers/getUserByAccessKey';
+import { shutdown } from './common/helpers/shutdown';
 import { DeviceResolver } from './devices/resolver';
 import { ReadingResolver } from './readings/resolver';
 
@@ -52,4 +53,6 @@ import { ReadingResolver } from './readings/resolver';
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
   console.log(`Server started, listening on ${address} for incoming requests.`);
   console.log('Using environment:', process.env.NODE_ENV);
+
+  await shutdown(app.close);
 })();
