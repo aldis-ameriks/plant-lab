@@ -35,7 +35,10 @@ module.exports = {
       '@typescript-eslint/parser': ['.ts'],
     },
     'import/resolver': {
-      typescript: {},
+      node: {
+        paths: ['src'],
+        extensions: ['.ts'],
+      },
     },
   },
 };

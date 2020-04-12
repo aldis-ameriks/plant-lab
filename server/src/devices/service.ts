@@ -1,19 +1,16 @@
 import { ForbiddenError } from 'type-graphql';
-import { knex } from '../common/db';
+import { knex } from 'common/db';
 import { NewDeviceInput } from './models';
 
 export class DeviceService {
   public async addDevice(input: NewDeviceInput, userId: string) {
-    return knex.transaction(async trx => {
+    return knex.transaction(async (trx) => {
       const device = await trx('devices')
         .insert(input)
         .returning('*')
-        .then(rows => rows[0]);
+        .then((rows) => rows[0]);
 
-      await trx('users_devices')
-        .where('user_id', userId)
-        .andWhere('device_id', device.id)
-        .del();
+      await trx('users_devices').where('user_id', userId).andWhere('device_id', device.id).del();
 
       await trx('users_devices').insert({ device_id: device.id, user_id: userId });
 
@@ -42,15 +39,10 @@ export class DeviceService {
   }
 
   public async removeDevice(deviceId: string, userId: string) {
-    return knex.transaction(async trx => {
-      await trx('users_devices')
-        .where('user_id', userId)
-        .andWhere('device_id', deviceId)
-        .del();
+    return knex.transaction(async (trx) => {
+      await trx('users_devices').where('user_id', userId).andWhere('device_id', deviceId).del();
 
-      return trx('devices')
-        .where('id', deviceId)
-        .del();
+      return trx('devices').where('id', deviceId).del();
     });
   }
 
@@ -59,7 +51,7 @@ export class DeviceService {
       .where('id', deviceId)
       .update('name', name)
       .returning('*')
-      .then(rows => rows[0]);
+      .then((rows) => rows[0]);
   }
 
   public async updateDeviceRoom(deviceId: string, room: string) {
@@ -67,14 +59,11 @@ export class DeviceService {
       .where('id', deviceId)
       .update('room', room)
       .returning('*')
-      .then(rows => rows[0]);
+      .then((rows) => rows[0]);
   }
 
   public async verifyUserOwnsDevice(deviceId: string, userId: string) {
-    const res = await knex('users_devices')
-      .where('user_id', userId)
-      .andWhere('device_id', deviceId)
-      .first();
+    const res = await knex('users_devices').where('user_id', userId).andWhere('device_id', deviceId).first();
 
     if (!res) {
       throw new ForbiddenError();

@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { KNEX } from './common/config';
+import { KNEX } from 'common/config';
 
 module.exports = {
   client: 'pg',

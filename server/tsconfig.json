@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"]
+    },
     "lib": ["es2017", "esnext.asynciterable"],
     "module": "commonjs",
     "target": "es2017",

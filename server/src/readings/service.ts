@@ -1,4 +1,4 @@
-import { knex } from '../common/db';
+import { knex } from 'common/db';
 import { ReadingInput } from './models';
 
 export class ReadingService {
