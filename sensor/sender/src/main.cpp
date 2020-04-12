@@ -127,7 +127,8 @@ void sendData(char* data, uint8_t retries) {
             }
 
         } else {
-            Serial.println("Failed to receive ack payload, retrying.");
+            Serial.print("Failed to receive ack payload, retrying. Attempt: ");
+            Serial.println(retries);
             sendData(data, retries);
         }
     }
