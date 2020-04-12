@@ -1,7 +1,7 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
-import { Context } from 'common/authChecker';
 import { DeviceService } from 'devices/service';
 import { validate } from 'common/validate';
+import { Context } from 'types/context';
 
 import { Reading, ReadingInput } from './models';
 import { ReadingService } from './service';

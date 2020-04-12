@@ -1,13 +1,5 @@
 import { AuthChecker } from 'type-graphql';
-
-type User = {
-  id: string;
-  roles?: string[];
-};
-
-export type Context = {
-  user: User;
-};
+import { Context } from 'types/context';
 
 export const authChecker: AuthChecker<Context> = async ({ context }, roles) => {
   const { user } = context;
@@ -19,5 +11,5 @@ export const authChecker: AuthChecker<Context> = async ({ context }, roles) => {
   if (!roles) {
     return true;
   }
-  return roles.every(role => user.roles?.includes(role));
+  return roles.every((role) => user.roles?.includes(role));
 };

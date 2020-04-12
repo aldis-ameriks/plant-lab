@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
+import { createRequestContext } from 'common/helpers/createRequestContext';
 import fastify from 'fastify';
 import { buildSchema } from 'type-graphql';
 
@@ -22,21 +23,7 @@ import { ReadingResolver } from 'readings/resolver';
 
   const apolloServer = new ApolloServer({
     schema,
-    context: async ({ headers }) => {
-      const accessKeyHeader = headers['access-key'];
-      let accessKey = Array.isArray(accessKeyHeader) ? accessKeyHeader[0] : accessKeyHeader;
-
-      if (!accessKey && ACCESS_KEY) {
-        accessKey = ACCESS_KEY;
-      }
-
-      if (!accessKey) {
-        return { user: undefined };
-      }
-
-      const user = await getUserByAccessKey(accessKey);
-      return { user };
-    },
+    context: async (req) => req.context,
     formatError: (err) => {
       console.error(JSON.stringify(err));
       return err;
@@ -45,6 +32,11 @@ import { ReadingResolver } from 'readings/resolver';
 
   const app = fastify({
     logger: true,
+  });
+
+  app.decorateRequest('context', {});
+  app.addHook('preHandler', async (req) => {
+    req.context = await createRequestContext(req.headers);
   });
 
   app.head('/', async () => 'hi');

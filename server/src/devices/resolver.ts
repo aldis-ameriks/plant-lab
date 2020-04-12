@@ -1,5 +1,5 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
-import { Context } from 'common/authChecker';
+import { Context } from 'types/context';
 import { DeviceService } from './service';
 import { Device, NewDeviceInput } from './models';
 
