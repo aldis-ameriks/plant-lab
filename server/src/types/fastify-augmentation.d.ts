@@ -1,5 +1,7 @@
-import { DefaultBody, DefaultHeaders, DefaultParams, DefaultQuery } from 'fastify';
 import * as http from 'http';
+
+import { DefaultBody, DefaultHeaders, DefaultParams, DefaultQuery } from 'fastify';
+
 import { Context } from 'types/context';
 
 declare module 'fastify' {

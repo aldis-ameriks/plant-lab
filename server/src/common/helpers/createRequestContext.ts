@@ -1,6 +1,7 @@
-import { Context } from 'types/context';
 import { ACCESS_KEY } from '../config';
 import { getUserByAccessKey } from './getUserByAccessKey';
+
+import { Context } from 'types/context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createRequestContext(headers: { [key: string]: any }): Promise<Context> {

@@ -1,5 +1,6 @@
-import { knex } from 'common/db';
 import { ReadingInput } from './models';
+
+import { knex } from 'common/db';
 
 export class ReadingService {
   public async getReadings(deviceId = '99', date) {

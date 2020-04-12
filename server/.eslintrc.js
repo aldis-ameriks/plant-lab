@@ -29,6 +29,18 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'import/order': [
+      'error',
+      {
+        'newlines-between': 'always-and-inside-groups',
+        groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
+    'import/no-default-export': 'error',
   },
   settings: {
     'import/parsers': {

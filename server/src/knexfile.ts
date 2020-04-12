@@ -1,4 +1,5 @@
 import { join } from 'path';
+
 import { KNEX } from 'common/config';
 
 module.exports = {

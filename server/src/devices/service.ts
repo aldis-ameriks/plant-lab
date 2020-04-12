@@ -1,6 +1,8 @@
 import { ForbiddenError } from 'type-graphql';
-import { knex } from 'common/db';
+
 import { NewDeviceInput } from './models';
+
+import { knex } from 'common/db';
 
 export class DeviceService {
   public async addDevice(input: NewDeviceInput, userId: string) {

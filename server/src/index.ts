@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
-import { createRequestContext } from 'common/helpers/createRequestContext';
 import fastify from 'fastify';
 import { buildSchema } from 'type-graphql';
 
 import { authChecker } from 'common/authChecker';
+import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { DeviceResolver } from 'devices/resolver';
 import { ReadingResolver } from 'readings/resolver';

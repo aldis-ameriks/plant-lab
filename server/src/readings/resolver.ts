@@ -1,10 +1,11 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
-import { DeviceService } from 'devices/service';
-import { validate } from 'common/validate';
-import { Context } from 'types/context';
 
 import { Reading, ReadingInput } from './models';
 import { ReadingService } from './service';
+
+import { validate } from 'common/validate';
+import { DeviceService } from 'devices/service';
+import { Context } from 'types/context';
 
 @Resolver(Reading)
 export class ReadingResolver {
