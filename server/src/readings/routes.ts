@@ -5,7 +5,7 @@ import { DeviceService } from 'devices/service';
 import { ReadingInput } from 'readings/models';
 import { ReadingService } from 'readings/service';
 
-export function readingRoutes(fastify: FastifyInstance, opts, done) {
+export function readingsRoutes(fastify: FastifyInstance, opts, done) {
   const deviceService = new DeviceService();
   const readingService = new ReadingService();
 
