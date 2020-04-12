@@ -90,11 +90,9 @@ void formatData(uint8_t signal) {
     dtostrf(payload.batteryVoltage / (double)100, 1, 2, batteryVoltage);
     dtostrf(payload.firmware / (double)10, 3, 1, firmware);
 
-    sprintf(postData,
-            "{\"query\":\"mutation($input: String!) {saveReading(input: "
-            "$input)}\",\"variables\":{\"input\":\"%u;%u;%s;%u;%u;%s;%lu;%s;%d;%u;%s\"}}",
-            payload.nodeId, payload.moistureRaw, moisture, payload.moistureMin, payload.moistureMax, temperature,
-            payload.light, batteryVoltage, signal, payload.readingId, firmware);
+    sprintf(postData, "%u;%u;%s;%u;%u;%s;%lu;%s;%d;%u;%s", payload.nodeId, payload.moistureRaw, moisture,
+            payload.moistureMin, payload.moistureMax, temperature, payload.light, batteryVoltage, signal,
+            payload.readingId, firmware);
 }
 
 void sendHttpRequestWithData() {
@@ -105,12 +103,12 @@ void sendHttpRequestWithData() {
         Serial.println("Sending request");
         Serial.println(postData);
 
-        client.println("POST /graphql HTTP/1.1");
+        client.println("POST /reading HTTP/1.1");
         client.println("Host: api.plant.kataldi.com");
         client.println("User-Agent: arduino-ethernet");
         client.print("access-key: ");
         client.println(apiAccessKey);
-        client.println("Content-Type: application/json");
+        client.println("Content-Type: text/plain");
         client.println("Connection: close");
         client.print("Content-Length: ");
         client.println(strlen(postData));
