@@ -5,7 +5,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "dev": "DEBUG=knex:query nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r tsconfig-paths/register --files ./src/index.ts",
-    "start": "ts-node -r tsconfig-paths/register --files ./src/index.ts",
+    "start": "NODE_PATH=build/src node build/src/index.js",
     "build": "tsc",
     "lint": "eslint . --ext .ts --ignore-path .gitignore --ignore-pattern migrations/",
     "lint:fix": "eslint . --ext .ts --ignore-path .gitignore --ignore-pattern migrations/ --fix",
@@ -16,7 +16,7 @@
     "docker:build": "docker build -t registry.kataldi.com/plant-server .",
     "docker:push": "docker push registry.kataldi.com/plant-server",
     "docker:build:push": "yarn docker:build && yarn docker:push",
-    "docker:run": "docker run -p 4000:4000 --rm registry.kataldi.com/plant-server"
+    "docker:run": "docker run -p 4000:4000 --name plant-server -e NODE_CONFIG=\"$(<config/production.json)\" --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
     "apollo-server-fastify": "2.12.0",
