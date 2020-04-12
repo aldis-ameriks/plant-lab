@@ -38,6 +38,7 @@ import { ReadingResolver } from 'readings/resolver';
   });
 
   app.head('/', async () => 'hi');
+  app.get('/ping', async () => 'pong');
 
   app.register(apolloServer.createHandler({ path: '/graphql' }));
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
