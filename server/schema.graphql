@@ -11,10 +11,18 @@ type Device {
   id: ID!
   name: String
   room: String
+  type: DeviceType!
+}
+
+# Device type
+enum DeviceType {
+  hub_10
+  sensor_10
 }
 
 type Mutation {
   addDevice(input: NewDeviceInput!): Device!
+  pairDevice(input: PairDeviceInput!): Boolean!
   removeDevice(deviceId: ID!): ID!
   saveReading(input: String!): String!
   updateDeviceName(deviceId: ID!, name: String!): Device!
@@ -26,6 +34,10 @@ input NewDeviceInput {
   id: Float!
   name: String!
   room: String
+}
+
+input PairDeviceInput {
+  type: String!
 }
 
 type Query {

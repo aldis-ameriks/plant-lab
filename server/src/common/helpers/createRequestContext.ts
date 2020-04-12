@@ -4,7 +4,7 @@ import { getUserByAccessKey } from './getUserByAccessKey';
 import { Context } from 'types/context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function createRequestContext(headers: { [key: string]: any }): Promise<Context> {
+export async function createRequestContext(headers: { [key: string]: any }, ip: string): Promise<Context> {
   const accessKeyHeader = headers['access-key'];
   let accessKey = Array.isArray(accessKeyHeader) ? accessKeyHeader[0] : accessKeyHeader;
 
@@ -13,9 +13,9 @@ export async function createRequestContext(headers: { [key: string]: any }): Pro
   }
 
   if (!accessKey) {
-    return { user: undefined };
+    return { user: undefined, ip };
   }
 
   const user = await getUserByAccessKey(accessKey);
-  return { user };
+  return { user, ip };
 }

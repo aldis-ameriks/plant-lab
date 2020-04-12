@@ -71,4 +71,13 @@ export class DeviceService {
       throw new ForbiddenError();
     }
   }
+
+  public async pairDevice(type: string, userId: string, address: string): Promise<boolean> {
+    const device = await knex('devices').select('id').where('address', address).andWhere('type', type).first();
+    if (!device) {
+      return false;
+    }
+    await knex('users_devices').insert({ user_id: userId, device_id: device.id });
+    return true;
+  }
 }

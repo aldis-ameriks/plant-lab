@@ -1,6 +1,6 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 
-import { Device, NewDeviceInput } from './models';
+import { Device, NewDeviceInput, PairDeviceInput } from './models';
 import { DeviceService } from './service';
 
 import { Context } from 'types/context';
@@ -65,5 +65,13 @@ export class DeviceResolver {
   async addDevice(@Ctx() ctx: Context, @Arg('input', (_type) => NewDeviceInput) input: NewDeviceInput) {
     const userId = ctx.user.id;
     return this.deviceService.addDevice(input, userId);
+  }
+
+  @Mutation((_returns) => Boolean)
+  @Authorized()
+  async pairDevice(@Ctx() ctx: Context, @Arg('input') input: PairDeviceInput) {
+    const userId = ctx.user.id;
+    const address = ctx.ip;
+    return this.deviceService.pairDevice(input.type, userId, address);
   }
 }

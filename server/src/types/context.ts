@@ -5,4 +5,5 @@ type User = {
 
 export type Context = {
   user: User;
+  ip: string;
 };
