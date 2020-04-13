@@ -71,7 +71,7 @@ export class DeviceResolver {
   @Authorized()
   async pairDevice(@Ctx() ctx: Context, @Arg('input') input: PairDeviceInput) {
     const userId = ctx.user.id;
-    const address = ctx.ip;
-    return this.deviceService.pairDevice(input.type, userId, address);
+    const { ip } = ctx;
+    return this.deviceService.pairDevice(input.type, userId, ip);
   }
 }

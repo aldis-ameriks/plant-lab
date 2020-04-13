@@ -1,6 +1,6 @@
 import { ForbiddenError } from 'type-graphql';
 
-import { NewDeviceInput } from './models';
+import { DeviceStatus, NewDeviceInput } from './models';
 
 import { knex } from 'common/db';
 
@@ -73,10 +73,18 @@ export class DeviceService {
   }
 
   public async pairDevice(type: string, userId: string, address: string): Promise<boolean> {
-    const device = await knex('devices').select('id').where('address', address).andWhere('type', type).first();
+    const device = await knex('devices')
+      .select('id')
+      .where('address', address)
+      .andWhere('type', type)
+      .andWhere('status', DeviceStatus.pairing)
+      .first();
+
     if (!device) {
       return false;
     }
+
+    console.log(`Found device, assigning device: ${device.id} to user: ${userId}`);
     await knex('users_devices').insert({ user_id: userId, device_id: device.id });
     return true;
   }

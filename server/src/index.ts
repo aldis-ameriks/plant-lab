@@ -36,7 +36,7 @@ import { readingsRoutes } from 'readings/routes';
 
   app.decorateRequest('context', {});
   app.addHook('preHandler', async (req) => {
-    req.context = await createRequestContext(req.headers, req.ip);
+    req.context = await createRequestContext(req.headers, req.ip, req.hostname);
   });
 
   app.head('/', async () => 'hi');

@@ -11,6 +11,13 @@ registerEnumType(DeviceType, {
   description: 'Device type',
 });
 
+export enum DeviceStatus {
+  new = 'new',
+  pairing = 'pairing',
+  paired = 'paired',
+  reset = 'reset',
+}
+
 @ObjectType()
 export class Device {
   @Field((_type) => ID)
