@@ -22,6 +22,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
     },
     async (req, reply) => {
       const deviceId = req.body;
+      console.log('discover request', deviceId);
 
       const isPaired = await knex('users_devices').select('user_id').where('device_id', deviceId).first();
       if (isPaired) {
@@ -29,14 +30,14 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
         return reply.code(400).send('Device is already paired');
       }
 
-      const device = await knex('devices').where('device_id', deviceId);
+      const device = await knex('devices').where('id', deviceId).first();
       if (!device) {
         console.error('unknown device tried to discover itself, deviceId:', deviceId);
-        return reply.code(400).send('Device is already paired');
+        return reply.code(400).send('Unknown device');
       }
 
       const address = req.ip;
-      await knex('devices').update({ address, last_seen_at: new Date() }).where('device_id', deviceId);
+      await knex('devices').update({ address, last_seen_at: new Date() }).where('id', deviceId);
       return reply.send('success');
     }
   );
