@@ -68,6 +68,7 @@ void loop() {
     payload.light = light;
     payload.firmware = 10;
     payload.batteryVoltage = (int)(batteryVoltage * 100);
+    payload.action = Action::send;
 
     debug.print("Payload size: ");
     debug.println(sizeof(payload));

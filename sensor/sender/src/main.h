@@ -11,6 +11,11 @@
 #define R2 1000000.0   // R2 (1M)
 #define INTERNAL_AREF 1.1
 
+enum class Action {
+    send,
+    pairing
+};
+
 // Maximum payload size is 32 bytes
 struct Payload {
     uint16_t nodeId;
@@ -23,6 +28,7 @@ struct Payload {
     uint16_t batteryVoltage;
     uint32_t light;
     uint16_t firmware;
+    Action action;
 } payload;
 
 class Debug : public Print {

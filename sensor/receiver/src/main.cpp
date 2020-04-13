@@ -283,6 +283,8 @@ void printPayload() {
     debug.println("Received:");
     debug.print("device_id: ");
     debug.println(payload.nodeId);
+    debug.print("action: ");
+    debug.println((int)payload.action);
     debug.print("moisture: ");
     debug.println(payload.moisture);
     debug.print("moistureRaw: ");

@@ -2,6 +2,11 @@
 #define EEPROM_ADDRESS 0
 #define DEBUG true
 
+enum class Action {
+    send,
+    pairing
+};
+
 struct Payload {
     uint16_t nodeId;
     uint16_t readingId;
@@ -13,6 +18,7 @@ struct Payload {
     uint16_t batteryVoltage;
     uint32_t light;
     uint16_t firmware;
+    Action action;
 } payload;
 
 class Debug : public Print {
