@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <EEPROM.h>
 #include <Ethernet.h>
 #include <RF24.h>
 #include <SPI.h>
@@ -6,7 +7,7 @@
 #include <secrets.h>
 
 #define NODE_ID 10
-#define DEBUG true
+#define DEBUG false
 
 RF24 radio(7, 8);
 const byte address[6] = "00001";
@@ -14,17 +15,29 @@ const byte address[6] = "00001";
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 EthernetClient client;
 
-char server[] = "api.plant.kataldi.com";
-char apiAccessKey[] = API_ACCESS_KEY;
+const char server[] = "api.plant.kataldi.com";
+const uint16_t port = 80;
 
 char data[sizeof(payload)];
-char postData[140];
+char postData[80];
+
+char accessKey[25];
+bool isPaired = false;
+char discoverResponse[25];
+uint8_t newLines = 0;
+uint8_t discoverResponseCursor = 0;
+unsigned long lastDiscoverRequestTime = 0;
+const unsigned long discoverRequestInterval = 5000;
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
     while (!Serial) {
         ;  // wait for serial port to connect.
     }
+    EEPROM.begin();
+    Serial.print("Loading access key from eeprom - ");
+    initAccessKey();
+    Serial.println(isPaired);
 
     Serial.println("Setting up RF24");
     radio.begin();
@@ -37,7 +50,10 @@ void setup() {
     radio.openReadingPipe(0, address);
     radio.maskIRQ(1, 1, 0);
     radio.startListening();
-    attachInterrupt(0, receiveData, FALLING);
+
+    if (isPaired) {
+        attachInterrupt(0, receiveData, FALLING);
+    }
 
     Serial.println("Setting up ethernet");
     // give the ethernet module time to boot up
@@ -67,7 +83,7 @@ void receiveData() {
 #endif
 
         formatData(goodSignal ? 1 : 0);
-        sendHttpRequestWithData();
+        sendReadingData();
         Serial.println("-----------------------------");
     }
 }
@@ -75,8 +91,63 @@ void receiveData() {
 void loop() {
     // TODO: Support encryption
     // TODO: Persist readings that can be replayed when there's network
-    // TODO: Entering pairing mode
     // TODO: Factory resetting device
+    if (isPaired) {
+        return;
+    }
+
+    if (client.available()) {
+        char c = client.read();
+
+        if (c == 0x0A) {
+            newLines++;
+        }
+
+        if (newLines == 6 && c != 0x0A) {
+            discoverResponse[discoverResponseCursor] = c;
+            discoverResponseCursor++;
+        }
+    }
+
+    if (discoverResponse[sizeof(discoverResponse) - 2]) {
+        // Null terminate accesskey cstring
+        discoverResponse[sizeof(discoverResponse) - 1] = 0x00;
+
+        Serial.println("Received accessKey");
+        writeAccessKey(discoverResponse);
+        clearDiscoverRequestData();
+        isPaired = true;
+        attachInterrupt(0, receiveData, FALLING);
+    }
+
+    if (millis() - lastDiscoverRequestTime > discoverRequestInterval) {
+        sendDiscoverRequest();
+        clearDiscoverRequestData();
+        lastDiscoverRequestTime = millis();
+    }
+}
+
+void initAccessKey() {
+    uint8_t j = 0;
+    for (uint8_t i = EEPROM_ADDRESS; i < EEPROM_ADDRESS + sizeof(accessKey); i++) {
+        uint8_t val = EEPROM.read(i);
+        accessKey[j] = (char)val;
+        j++;
+    }
+
+    if (strlen(accessKey) == sizeof(accessKey) - 1) {
+        isPaired = true;
+    }
+}
+
+void writeAccessKey(char* key) {
+    Serial.print("Writing: ");
+    Serial.println(key);
+    uint8_t j = 0;
+    for (uint8_t i = EEPROM_ADDRESS; i < EEPROM_ADDRESS + sizeof(accessKey); i++) {
+        EEPROM.write(i, key[j]);
+        j++;
+    }
 }
 
 void formatData(uint8_t signal) {
@@ -95,29 +166,59 @@ void formatData(uint8_t signal) {
             payload.readingId, firmware);
 }
 
-void sendHttpRequestWithData() {
+void sendReadingData() {
     // close any connection before send a new request.
     client.stop();
 
-    if (client.connect(server, 80)) {
+    if (client.connect(server, port)) {
         Serial.println("Sending request");
         Serial.println(postData);
 
         client.println("POST /reading HTTP/1.1");
-        client.println("Host: api.plant.kataldi.com");
+        client.print("Host:");
+        client.println(server);
         client.println("User-Agent: arduino-ethernet");
         client.print("access-key: ");
-        client.println(apiAccessKey);
+        client.println(accessKey);
         client.println("Content-Type: text/plain");
         client.println("Connection: close");
         client.print("Content-Length: ");
         client.println(strlen(postData));
         client.println();
         client.println(postData);
+    } else {
+        Serial.println("Connection failed");
+    }
+}
+
+void sendDiscoverRequest() {
+    // close any connection before send a new request.
+    client.stop();
+
+    if (client.connect(server, port)) {
+        Serial.print("Sending discover request - ");
+        Serial.println(NODE_ID);
+
+        client.println("POST /discover HTTP/1.1");
+        client.print("Host: ");
+        client.println(server);
+        client.println("User-Agent: arduino-ethernet");
+        client.println("Content-Type: text/plain");
+        client.println("Connection: close");
+        client.print("Content-Length: ");
+        client.println(sizeof(NODE_ID));
+        client.println();
+        client.println(NODE_ID);
 
     } else {
         Serial.println("Connection failed");
     }
+}
+
+void clearDiscoverRequestData() {
+    memset(discoverResponse, 0, sizeof(discoverResponse));
+    discoverResponseCursor = 0;
+    newLines = 0;
 }
 
 void printBytes() {

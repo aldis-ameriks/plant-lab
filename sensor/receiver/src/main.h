@@ -1,4 +1,5 @@
 #define SERIAL_BAUD 115200
+#define EEPROM_ADDRESS 0
 
 struct Payload {
     uint16_t nodeId;
@@ -14,7 +15,11 @@ struct Payload {
 } payload;
 
 void receiveData();
-void sendHttpRequestWithData();
+void sendDiscoverRequest();
+void clearDiscoverRequestData();
+void sendReadingData();
 void formatData(uint8_t signal);
+void initAccessKey();
+void writeAccessKey(char* key);
 void printPayload();
 void printBytes();
