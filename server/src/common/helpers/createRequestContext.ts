@@ -1,5 +1,6 @@
-import { ACCESS_KEY } from '../config';
+import { Logger } from 'fastify';
 
+import { ACCESS_KEY } from '../config';
 import { getUserByAccessKey } from './getUserByAccessKey';
 
 import { isRequestWithinLocalNetwork } from 'common/helpers/isRequestWithinLocalNetwork';
@@ -7,6 +8,7 @@ import { Context } from 'types/context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createRequestContext(
+  log: Logger,
   headers: { [key: string]: any },
   ip: string,
   hostname: string
@@ -20,9 +22,9 @@ export async function createRequestContext(
   const isLocal = isRequestWithinLocalNetwork(ip, hostname);
 
   if (!accessKey) {
-    return { user: undefined, ip, isLocal };
+    return { user: undefined, ip, isLocal, log };
   }
 
   const user = await getUserByAccessKey(accessKey);
-  return { user, ip, isLocal };
+  return { user, ip, isLocal, log };
 }

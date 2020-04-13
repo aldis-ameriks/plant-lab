@@ -4,6 +4,7 @@ import fastify from 'fastify';
 import { buildSchema } from 'type-graphql';
 
 import { authChecker } from 'common/authChecker';
+import { isDevelopment } from 'common/config';
 import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { DeviceResolver } from 'devices/resolver';
@@ -31,12 +32,14 @@ import { readingsRoutes } from 'readings/routes';
   });
 
   const app = fastify({
-    logger: true,
+    logger: {
+      prettyPrint: isDevelopment,
+    },
   });
 
   app.decorateRequest('context', {});
   app.addHook('preHandler', async (req) => {
-    req.context = await createRequestContext(req.headers, req.ip, req.hostname);
+    req.context = await createRequestContext(req.log, req.headers, req.ip, req.hostname);
   });
 
   app.head('/', async () => 'hi');

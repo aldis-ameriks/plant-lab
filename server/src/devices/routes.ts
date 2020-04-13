@@ -23,7 +23,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
     },
     async (req, reply) => {
       const deviceId = req.body;
-      console.log('discover request', deviceId);
+      req.log.info('Discover request', deviceId);
 
       const isTaken = await knex('users_devices')
         .select('user_id')
@@ -34,13 +34,13 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
 
       if (isTaken) {
         // Have to remove device from app first to enable re-pairing
-        console.error('device that is already paired tried to discover itself');
+        req.log.error('Device that is already paired tried to discover itself');
         return reply.code(400).send('failed');
       }
 
       const device = await knex('devices').select('id', 'status').where('id', deviceId).first();
       if (!device) {
-        console.error('unknown device tried to discover itself, deviceId:', deviceId);
+        req.log.error('Unknown device tried to discover itself, deviceId:', deviceId);
         return reply.code(400).send('failed');
       }
 
@@ -53,7 +53,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
           .first();
 
         if (accessKey) {
-          console.log('successfully paired device, returning access key');
+          req.log.info('Successfully paired device, returning access key');
           return reply.send(accessKey.access_key);
         }
       }
@@ -84,7 +84,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
       },
     },
     async (req, reply) => {
-      console.log('pairing confirm request', req.body);
+      req.log.info('Pairing confirm request', req.body);
       if (!req.context.user) {
         return reply.code(400).send('failed');
       }

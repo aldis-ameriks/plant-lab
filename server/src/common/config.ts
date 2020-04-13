@@ -8,3 +8,5 @@ export const KNEX: {
   USERNAME: string;
   PASSWORD: string;
 } = config.get('KNEX');
+
+export const isDevelopment = !process.env.NODE_ENV || ['local', 'development'].includes(process.env.NODE_ENV);

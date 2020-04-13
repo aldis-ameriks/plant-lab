@@ -48,7 +48,7 @@ export class ReadingResolver {
   @Mutation((_returns) => String)
   @Authorized('HUB')
   async saveReading(@Ctx() ctx: Context, @Arg('input') input: string) {
-    console.log('Received input:', input);
+    ctx.log.info('Received input:', input);
     const parsedInput = input.split(';');
     const device_id = parsedInput[0];
     const moisture_raw = Number(parsedInput[1]);

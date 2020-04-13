@@ -1,3 +1,4 @@
+import { Logger } from 'fastify';
 import { ForbiddenError } from 'type-graphql';
 
 import { DeviceStatus, NewDeviceInput } from './models';
@@ -72,7 +73,7 @@ export class DeviceService {
     }
   }
 
-  public async pairDevice(type: string, userId: string, address: string): Promise<boolean> {
+  public async pairDevice(log: Logger, type: string, userId: string, address: string): Promise<boolean> {
     const device = await knex('devices')
       .select('id')
       .where('address', address)
@@ -81,10 +82,11 @@ export class DeviceService {
       .first();
 
     if (!device) {
+      log.error('Failed to initiate pairing');
       return false;
     }
 
-    console.log(`Found device, assigning device: ${device.id} to user: ${userId}`);
+    log.info(`Found device, assigning device: ${device.id} to user: ${userId}`);
     await knex('users_devices').insert({ user_id: userId, device_id: device.id });
     return true;
   }

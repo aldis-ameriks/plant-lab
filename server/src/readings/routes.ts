@@ -42,7 +42,7 @@ export function readingsRoutes(fastify: FastifyInstance, opts, done) {
       },
     },
     async (req, reply) => {
-      console.log('Received input:', req.body);
+      req.log.info('Received input:', req.body);
       const parsedInput = req.body.split(';');
       const device_id = parsedInput[0];
       const moisture_raw = Number(parsedInput[1]);
