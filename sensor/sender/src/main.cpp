@@ -7,7 +7,6 @@
 #include <main.h>
 
 #define NODE_ID 12
-#define DEBUG true
 
 RF24 radio(7, 8);
 const byte address[6] = "00001";
@@ -18,7 +17,7 @@ void setup() {
         ;  // wait for serial port to connect.
     }
 
-    Serial.println("Setting up RF24");
+    debug.println("Setting up RF24");
     radio.begin();
     radio.setChannel(110);
     radio.setAutoAck(1);
@@ -29,10 +28,10 @@ void setup() {
     radio.openWritingPipe(address);
     radio.stopListening();
 
-    Serial.println("Setting up Wire");
+    debug.println("Setting up Wire");
     Wire.begin();
 
-    Serial.println("Setting up light sensor");
+    debug.println("Setting up light sensor");
     initializeLightSensor();
 
     // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
@@ -42,7 +41,7 @@ void setup() {
     pinMode(7, OUTPUT);  // Powers capacitance sensor
     pinMode(8, OUTPUT);  // Powers temperature sensor
 
-    Serial.println("End of setup");
+    debug.println("End of setup");
 }
 
 void loop() {
@@ -70,18 +69,15 @@ void loop() {
     payload.firmware = 10;
     payload.batteryVoltage = (int)(batteryVoltage * 100);
 
-    Serial.print("Payload size: ");
-    Serial.println(sizeof(payload));
+    debug.print("Payload size: ");
+    debug.println(sizeof(payload));
 
     if (SEND_DATA == true) {
         char data[sizeof(payload)];
         memcpy(data, &payload, sizeof(payload));
         // TODO: Encrypt payload
 
-#if DEBUG == true
         printBytes(data);
-#endif
-
         sendData(data);
     }
 
@@ -100,7 +96,7 @@ void initializeLightSensor() {
 
 void sendData(char* data, uint8_t retries) {
     if (retries == 5) {
-        Serial.println("Max retry count reached, giving up.");
+        debug.println("Max retry count reached, giving up.");
         return;
     }
 
@@ -111,24 +107,24 @@ void sendData(char* data, uint8_t retries) {
     }
 
     if (!radio.write(data, sizeof(payload))) {
-        Serial.print("Failed to send data, retrying. Attempt: ");
-        Serial.println(retries);
+        debug.print("Failed to send data, retrying. Attempt: ");
+        debug.println(retries);
         sendData(data, retries);
     } else {
         if (radio.isAckPayloadAvailable()) {
             uint16_t nodeId;
             radio.read(&nodeId, sizeof(nodeId));
-            Serial.print("Received ack payload: ");
-            Serial.println(nodeId);
+            debug.print("Received ack payload: ");
+            debug.println(nodeId);
 
             if (nodeId != NODE_ID) {
-                Serial.println("Different nodeId in ack payload, retrying.");
+                debug.println("Different nodeId in ack payload, retrying.");
                 sendData(data, retries);
             }
 
         } else {
-            Serial.print("Failed to receive ack payload, retrying. Attempt: ");
-            Serial.println(retries);
+            debug.print("Failed to receive ack payload, retrying. Attempt: ");
+            debug.println(retries);
             sendData(data, retries);
         }
     }
@@ -208,8 +204,8 @@ void enterSleep() {
 
 void printBytes(char* data) {
     for (unsigned int i = 0; i < sizeof(payload); i++) {
-        Serial.print((int)data[i]);
-        Serial.print(", ");
+        debug.print((int)data[i]);
+        debug.print(", ");
     }
-    Serial.println("");
+    debug.println("");
 }

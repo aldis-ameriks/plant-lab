@@ -3,7 +3,8 @@
 #define DELAY_BEFORE_SLEEP (long)1000
 #define REGULATOR_V 3.31
 #define SEND_DATA true
-#define SLEEP false
+#define SLEEP true
+#define DEBUG true
 
 // For measuring battery voltage
 #define R1 10000000.0  // R1 (10M)
@@ -23,6 +24,18 @@ struct Payload {
     uint32_t light;
     uint16_t firmware;
 } payload;
+
+class Debug : public Print {
+public:
+    Debug() : debug(DEBUG) {}
+    virtual size_t write(uint8_t c) {
+        if (debug) {
+            Serial.write(c);
+        }
+        return 1;
+    }
+    bool debug;
+} debug;
 
 int readLight();
 int readMoisture();

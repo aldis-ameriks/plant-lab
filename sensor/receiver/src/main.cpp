@@ -7,7 +7,6 @@
 #include <secrets.h>
 
 #define NODE_ID 10
-#define DEBUG false
 
 RF24 radio(7, 8);
 const byte address[6] = "00001";
@@ -35,11 +34,11 @@ void setup() {
         ;  // wait for serial port to connect.
     }
     EEPROM.begin();
-    Serial.print("Loading access key from eeprom - ");
+    debug.print("Loading access key from eeprom -");
     initAccessKey();
-    Serial.println(isPaired);
+    debug.println(isPaired);
 
-    Serial.println("Setting up RF24");
+    debug.println("Setting up RF24");
     radio.begin();
     radio.setChannel(110);
     radio.setAutoAck(1);
@@ -55,14 +54,14 @@ void setup() {
         attachInterrupt(0, receiveData, FALLING);
     }
 
-    Serial.println("Setting up ethernet");
+    debug.println("Setting up ethernet");
     // give the ethernet module time to boot up
     delay(1000);
     Ethernet.begin(mac);
-    Serial.print("My IP address: ");
-    Serial.println(Ethernet.localIP());
+    debug.print("My IP address: ");
+    debug.println(Ethernet.localIP());
 
-    Serial.println("End of setup");
+    debug.println("End of setup");
 }
 
 void receiveData() {
@@ -84,7 +83,7 @@ void receiveData() {
 
         formatData(goodSignal ? 1 : 0);
         sendReadingData();
-        Serial.println("-----------------------------");
+        debug.println("-----------------------------");
     }
 }
 
@@ -113,7 +112,7 @@ void loop() {
         // Null terminate accesskey cstring
         discoverResponse[sizeof(discoverResponse) - 1] = 0x00;
 
-        Serial.println("Received accessKey");
+        debug.println("Received accessKey");
         writeAccessKey(discoverResponse);
         clearDiscoverRequestData();
         isPaired = true;
@@ -141,8 +140,8 @@ void initAccessKey() {
 }
 
 void writeAccessKey(char* key) {
-    Serial.print("Writing: ");
-    Serial.println(key);
+    debug.print("Writing: ");
+    debug.println(key);
     uint8_t j = 0;
     for (uint8_t i = EEPROM_ADDRESS; i < EEPROM_ADDRESS + sizeof(accessKey); i++) {
         EEPROM.write(i, key[j]);
@@ -171,8 +170,8 @@ void sendReadingData() {
     client.stop();
 
     if (client.connect(server, port)) {
-        Serial.println("Sending request");
-        Serial.println(postData);
+        debug.println("Sending request");
+        debug.println(postData);
 
         client.println("POST /reading HTTP/1.1");
         client.print("Host:");
@@ -187,7 +186,7 @@ void sendReadingData() {
         client.println();
         client.println(postData);
     } else {
-        Serial.println("Connection failed");
+        debug.println("Connection failed");
     }
 }
 
@@ -196,8 +195,8 @@ void sendDiscoverRequest() {
     client.stop();
 
     if (client.connect(server, port)) {
-        Serial.print("Sending discover request - ");
-        Serial.println(NODE_ID);
+        debug.print("Sending discover request - ");
+        debug.println(NODE_ID);
 
         client.println("POST /discover HTTP/1.1");
         client.print("Host: ");
@@ -211,7 +210,7 @@ void sendDiscoverRequest() {
         client.println(NODE_ID);
 
     } else {
-        Serial.println("Connection failed");
+        debug.println("Connection failed");
     }
 }
 
@@ -223,30 +222,30 @@ void clearDiscoverRequestData() {
 
 void printBytes() {
     for (unsigned int i = 0; i < sizeof(payload); i++) {
-        Serial.print((int)data[i]);
-        Serial.print(", ");
+        debug.print((int)data[i]);
+        debug.print(", ");
     }
-    Serial.println("");
+    debug.println("");
 }
 
 void printPayload() {
-    Serial.println("Received:");
-    Serial.print("device_id: ");
-    Serial.println(payload.nodeId);
-    Serial.print("moisture: ");
-    Serial.println(payload.moisture);
-    Serial.print("moistureRaw: ");
-    Serial.println(payload.moistureRaw);
-    Serial.print("moistureMin: ");
-    Serial.println(payload.moistureMin);
-    Serial.print("moistureMax: ");
-    Serial.println(payload.moistureMax);
-    Serial.print("temperature: ");
-    Serial.println(payload.temperature);
-    Serial.print("light: ");
-    Serial.println(payload.light);
-    Serial.print("batteryVoltage: ");
-    Serial.println(payload.batteryVoltage);
-    Serial.print("firmware: ");
-    Serial.println(payload.firmware);
+    debug.println("Received:");
+    debug.print("device_id: ");
+    debug.println(payload.nodeId);
+    debug.print("moisture: ");
+    debug.println(payload.moisture);
+    debug.print("moistureRaw: ");
+    debug.println(payload.moistureRaw);
+    debug.print("moistureMin: ");
+    debug.println(payload.moistureMin);
+    debug.print("moistureMax: ");
+    debug.println(payload.moistureMax);
+    debug.print("temperature: ");
+    debug.println(payload.temperature);
+    debug.print("light: ");
+    debug.println(payload.light);
+    debug.print("batteryVoltage: ");
+    debug.println(payload.batteryVoltage);
+    debug.print("firmware: ");
+    debug.println(payload.firmware);
 }

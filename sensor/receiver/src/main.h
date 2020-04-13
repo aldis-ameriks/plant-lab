@@ -1,5 +1,6 @@
 #define SERIAL_BAUD 115200
 #define EEPROM_ADDRESS 0
+#define DEBUG true
 
 struct Payload {
     uint16_t nodeId;
@@ -13,6 +14,18 @@ struct Payload {
     uint32_t light;
     uint16_t firmware;
 } payload;
+
+class Debug : public Print {
+public:
+    Debug() : debug(DEBUG) {}
+    virtual size_t write(uint8_t c) {
+        if (debug) {
+            Serial.write(c);
+        }
+        return 1;
+    }
+    bool debug;
+} debug;
 
 void receiveData();
 void sendDiscoverRequest();
