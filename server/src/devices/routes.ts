@@ -53,10 +53,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
           .first();
 
         if (accessKey) {
-          console.log('successfully paired device, returning access key', accessKey.access_key);
-
-          // TODO: Update status to paired only when hub sends a confirmation request
-          await knex('devices').update('status', DeviceStatus.paired).where('id', device.id);
+          console.log('successfully paired device, returning access key');
           return reply.send(accessKey.access_key);
         }
       }
@@ -65,6 +62,45 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
       await knex('devices')
         .update({ address, last_seen_at: new Date(), status: DeviceStatus.pairing })
         .where('id', deviceId);
+      return reply.send('success');
+    }
+  );
+
+  fastify.post(
+    '/confirm-pairing',
+    {
+      schema: {
+        body: {
+          type: 'string',
+        },
+        response: {
+          200: {
+            type: 'string',
+          },
+          400: {
+            type: 'string',
+          },
+        },
+      },
+    },
+    async (req, reply) => {
+      console.log('pairing confirm request', req.body);
+      if (!req.context.user) {
+        return reply.code(400).send('failed');
+      }
+
+      const device = await knex('devices')
+        .innerJoin('users_devices', 'users_devices.device_id', 'devices.id')
+        .where('users_devices.user_id', req.context.user.id)
+        .andWhere('devices.id', req.body)
+        .first();
+
+      if (!device) {
+        return reply.code(400).send('failed');
+      }
+
+      const deviceId = req.body;
+      await knex('devices').update('status', DeviceStatus.paired).where('id', deviceId);
       return reply.send('success');
     }
   );

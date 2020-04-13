@@ -29,6 +29,7 @@ public:
 
 void receiveData();
 void sendDiscoverRequest();
+void sendPairingConfirmedRequest(char* newKey);
 void clearDiscoverRequestData();
 void sendReadingData();
 void formatData(uint8_t signal);

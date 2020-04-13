@@ -21,12 +21,18 @@ char data[sizeof(payload)];
 char postData[80];
 
 char accessKey[25];
+char pairingAccessKey[25];
 bool isPaired = false;
-char discoverResponse[25];
+char response[25];
 uint8_t newLines = 0;
-uint8_t discoverResponseCursor = 0;
+uint8_t responseCursor = 0;
 unsigned long lastDiscoverRequestTime = 0;
 const unsigned long discoverRequestInterval = 5000;
+
+bool isPairing = false;
+uint8_t pairingConfirmedAttempts = 0;
+unsigned long lastPairingCnfirmedRequestTime = 0;
+const unsigned long pairingConfirmedRequestInterval = 5000;
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
@@ -90,7 +96,7 @@ void receiveData() {
 void loop() {
     // TODO: Check response and reset access key if received 403
     // TODO: Support encryption
-    // TODO: Persist readings that can be replayed when there's network
+    // TODO: Persist readings that can be replayed when there's network outage
     // TODO: Factory resetting device
     if (isPaired) {
         return;
@@ -104,23 +110,40 @@ void loop() {
         }
 
         if (newLines == 6 && c != 0x0A) {
-            discoverResponse[discoverResponseCursor] = c;
-            discoverResponseCursor++;
+            response[responseCursor] = c;
+            responseCursor++;
         }
     }
 
-    if (discoverResponse[sizeof(discoverResponse) - 2]) {
-        // Null terminate accesskey cstring
-        discoverResponse[sizeof(discoverResponse) - 1] = 0x00;
-
-        debug.println("Received accessKey");
-        writeAccessKey(discoverResponse);
-        clearDiscoverRequestData();
+    if (isPairing && strcmp(response, "success") == 0) {
+        isPairing = false;
         isPaired = true;
+        writeAccessKey(pairingAccessKey);
         attachInterrupt(0, receiveData, FALLING);
+        return;
     }
 
-    if (millis() - lastDiscoverRequestTime > discoverRequestInterval) {
+    if (isPairing && (millis() - lastPairingCnfirmedRequestTime > pairingConfirmedRequestInterval)) {
+        sendPairingConfirmedRequest(pairingAccessKey);
+        lastPairingCnfirmedRequestTime = millis();
+        pairingConfirmedAttempts++;
+
+        if (pairingConfirmedAttempts > 5) {
+            isPairing = false;
+        }
+    }
+
+    if (!isPairing && response[sizeof(response) - 2]) {
+        // Null terminate accesskey cstring
+        response[sizeof(response) - 1] = 0x00;
+
+        debug.println("Received accessKey");
+        memcpy(pairingAccessKey, response, sizeof(pairingAccessKey));
+        clearDiscoverRequestData();
+        isPairing = true;
+    }
+
+    if (!isPairing && (millis() - lastDiscoverRequestTime > discoverRequestInterval)) {
         sendDiscoverRequest();
         clearDiscoverRequestData();
         lastDiscoverRequestTime = millis();
@@ -216,9 +239,35 @@ void sendDiscoverRequest() {
     }
 }
 
+void sendPairingConfirmedRequest(char* newAccessKey) {
+        // close any connection before send a new request.
+    client.stop();
+
+    if (client.connect(server, port)) {
+        debug.print("Sending pairing confirmed request - ");
+        debug.println(NODE_ID);
+
+        client.println("POST /confirm-pairing HTTP/1.1");
+        client.print("Host: ");
+        client.println(server);
+        client.println("User-Agent: arduino-ethernet");
+        client.print("access-key: ");
+        client.println(newAccessKey);
+        client.println("Content-Type: text/plain");
+        client.println("Connection: close");
+        client.print("Content-Length: ");
+        client.println(sizeof(NODE_ID));
+        client.println();
+        client.println(NODE_ID);
+
+    } else {
+        debug.println("Connection failed");
+    }
+}
+
 void clearDiscoverRequestData() {
-    memset(discoverResponse, 0, sizeof(discoverResponse));
-    discoverResponseCursor = 0;
+    memset(response, 0, sizeof(response));
+    responseCursor = 0;
     newLines = 0;
 }
 
