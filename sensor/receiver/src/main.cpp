@@ -34,7 +34,7 @@ void setup() {
         ;  // wait for serial port to connect.
     }
     EEPROM.begin();
-    debug.print("Loading access key from eeprom -");
+    debug.print("Loading access key from eeprom - ");
     initAccessKey();
     debug.println(isPaired);
 
@@ -88,6 +88,7 @@ void receiveData() {
 }
 
 void loop() {
+    // TODO: Check response and reset access key if received 403
     // TODO: Support encryption
     // TODO: Persist readings that can be replayed when there's network
     // TODO: Factory resetting device
@@ -147,6 +148,7 @@ void writeAccessKey(char* key) {
         EEPROM.write(i, key[j]);
         j++;
     }
+    memcpy(accessKey, key, sizeof(accessKey));
 }
 
 void formatData(uint8_t signal) {
