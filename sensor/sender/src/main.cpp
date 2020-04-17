@@ -7,6 +7,7 @@
 #include <avr/sleep.h>
 #include <main.h>
 #include <sensors/light.h>
+#include <sensors/moisture.h>
 
 #define NODE_ID 12
 
@@ -17,6 +18,7 @@ Debug debug;
 RF24 radio(7, 8);
 
 LightSensor lightSensor;
+MoistureSensor moistureSensor;
 
 const byte address[6] = "00001";
 const uint16_t pairingInterval = 5000;
@@ -70,6 +72,7 @@ void initSensors() {
     debug.println("Setting up light sensor");
 
     lightSensor.init();
+    moistureSensor.init();
 
     // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
     pinMode(6, OUTPUT);
@@ -85,7 +88,7 @@ void processReadings() {
     float batteryVoltage = readBatteryVoltage();
     float operatingVoltage = batteryVoltage;
 
-    int moisture = readMoisture();
+    int moisture = moistureSensor.read();
     float MOISTURE_MAX = (50 * operatingVoltage) + 242;
     float MOISTURE_MIN = (50 * operatingVoltage) + 634;
     float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
@@ -192,24 +195,6 @@ void sendData(char* data, uint8_t retries) {
             sendData(data, retries);
         }
     }
-}
-
-int readMoisture() {
-    digitalWrite(7, HIGH);
-    delay(100);
-    analogRead(A1);  // Discard first reading after ADC init
-    delay(20);
-    int sampleCount = 10;
-    int sampleSum = 0.0;
-
-    for (int sample = 0; sample < sampleCount; sample++) {
-        int capacitance = analogRead(A1);
-        delay(20);
-        sampleSum += capacitance;
-    }
-
-    digitalWrite(7, LOW);
-    return sampleSum / (float)sampleCount;
 }
 
 float readTemperature() {
