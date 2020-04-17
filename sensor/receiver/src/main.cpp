@@ -16,7 +16,7 @@ Debug debug;
 
 const byte address[6] = "00001";
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-char encryptionKey[24] = "PlaceholderEncryption123";
+char encryptionKey[25] = "PlaceholderEncryption123";
 
 const char server[] = "api.plant.kataldi.com";
 const uint16_t port = 80;
