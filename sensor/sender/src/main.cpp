@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <EEPROM.h>
 #include <LowPower.h>
 #include <RF24.h>
 #include <SPI.h>
@@ -8,13 +9,28 @@
 
 #define NODE_ID 12
 
+State state;
+Payload payload;
+AckPayload ackPayload;
+Debug debug;
 RF24 radio(7, 8);
+
 const byte address[6] = "00001";
+const uint16_t pairingInterval = 5000;
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
     while (!Serial) {
         ;  // wait for serial port to connect.
+    }
+
+    EEPROM.begin();
+    debug.print("Loading pairing state from eeprom - ");
+    uint8_t value = EEPROM.read(EEPROM_ADDRESS);
+    if (value == 1) {
+        state = State::paired;
+    } else {
+        state = State::unpaired;
     }
 
     debug.println("Setting up RF24");
@@ -28,11 +44,28 @@ void setup() {
     radio.openWritingPipe(address);
     radio.stopListening();
 
+    if (state == State::paired) {
+        initSensors();
+    }
+
+    debug.println("End of setup");
+}
+
+void loop() {
+    if (state == State::paired) {
+        processReadings();
+    } else {
+        processPairing();
+    }
+}
+
+void initSensors() {
+    debug.println("Setting up sensors");
     debug.println("Setting up Wire");
     Wire.begin();
 
     debug.println("Setting up light sensor");
-    initializeLightSensor();
+    initLightSensor();
 
     // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
     pinMode(6, OUTPUT);
@@ -40,11 +73,17 @@ void setup() {
 
     pinMode(7, OUTPUT);  // Powers capacitance sensor
     pinMode(8, OUTPUT);  // Powers temperature sensor
-
-    debug.println("End of setup");
 }
 
-void loop() {
+void initLightSensor() {
+    Wire.beginTransmission(0x44);
+    Wire.write(0x01);
+    Wire.write(0xCA);  // 800ms, single shot
+    Wire.write(0x10);
+    Wire.endTransmission();
+}
+
+void processReadings() {
     memset(&payload, 0, sizeof(payload));
 
     float batteryVoltage = readBatteryVoltage();
@@ -87,15 +126,23 @@ void loop() {
     }
 }
 
-void initializeLightSensor() {
-    Wire.beginTransmission(0x44);
-    Wire.write(0x01);
-    Wire.write(0xCA);  // 800ms, single shot
-    Wire.write(0x10);
-    Wire.endTransmission();
+void processPairing() {
+    debug.println("Starting pairing");
+    memset(&payload, 0, sizeof(payload));
+
+    payload.nodeId = NODE_ID;
+    payload.action = Action::pairing;
+
+    char data[sizeof(payload)];
+    memcpy(data, &payload, sizeof(payload));
+    printBytes(data);
+    sendData(data);
+    delay(pairingInterval);
 }
 
 void sendData(char* data, uint8_t retries) {
+    memset(&ackPayload, 0, sizeof(ackPayload));
+
     if (retries == 5) {
         debug.println("Max retry count reached, giving up.");
         return;
@@ -113,14 +160,34 @@ void sendData(char* data, uint8_t retries) {
         sendData(data, retries);
     } else {
         if (radio.isAckPayloadAvailable()) {
-            uint16_t nodeId;
-            radio.read(&nodeId, sizeof(nodeId));
+            radio.read(&ackPayload, sizeof(AckPayload));
             debug.print("Received ack payload: ");
-            debug.println(nodeId);
+            debug.println(ackPayload.nodeId);
 
-            if (nodeId != NODE_ID) {
+            if (ackPayload.nodeId != NODE_ID) {
                 debug.println("Different nodeId in ack payload, retrying.");
                 sendData(data, retries);
+            }
+
+            if (state == State::unpaired) {
+                debug.println("Received pairing ack payload:");
+                debug.print("status: ");
+                debug.println(ackPayload.status);
+                debug.print("encryption key:");
+                debug.println(ackPayload.encryptionKey);
+
+                debug.print("encryption key strlen: ");
+                debug.println(strlen(ackPayload.encryptionKey));
+                debug.print("encryption key size: ");
+                debug.println(sizeof(ackPayload.encryptionKey));
+
+                if (ackPayload.status && strlen(ackPayload.encryptionKey) == sizeof(ackPayload.encryptionKey)) {
+                    // TODO: Persist encryption key
+                    state = State::paired;
+                    initSensors();
+                }
+
+                return;
             }
 
         } else {
@@ -132,7 +199,7 @@ void sendData(char* data, uint8_t retries) {
 }
 
 int readLight() {
-    initializeLightSensor();
+    initLightSensor();
     delay(1000);
     Wire.beginTransmission(0x44);
     Wire.write(0x00);

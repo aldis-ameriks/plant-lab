@@ -5,16 +5,16 @@
 #define SEND_DATA true
 #define SLEEP true
 #define DEBUG true
+#define EEPROM_ADDRESS 0
 
 // For measuring battery voltage
 #define R1 10000000.0  // R1 (10M)
 #define R2 1000000.0   // R2 (1M)
 #define INTERNAL_AREF 1.1
 
-enum class Action {
-    send,
-    pairing
-};
+enum class Action { send, pairing };
+
+enum class State { unpaired, paired };
 
 // Maximum payload size is 32 bytes
 struct Payload {
@@ -29,7 +29,13 @@ struct Payload {
     uint32_t light;
     uint16_t firmware;
     Action action;
-} payload;
+};
+
+struct AckPayload {
+    uint16_t nodeId;
+    bool status;
+    char encryptionKey[25];
+};
 
 class Debug : public Print {
 public:
@@ -41,13 +47,17 @@ public:
         return 1;
     }
     bool debug;
-} debug;
+};
 
+float readBatteryVoltage();
+float readTemperature();
 int readLight();
 int readMoisture();
-float readTemperature();
-float readBatteryVoltage();
-void initializeLightSensor();
 void enterSleep();
-void sendData(char* data, uint8_t retries = 0);
+void initLightSensor();
+void initSensors();
 void printBytes(char* data);
+void processPairing();
+void processReadings();
+void sendData(char* data, uint8_t retries = 0);
+void sendSensorPairing();

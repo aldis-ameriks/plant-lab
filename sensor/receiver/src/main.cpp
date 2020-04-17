@@ -8,11 +8,15 @@
 
 #define NODE_ID 10
 
+Payload payload;
+AckPayload ackPayload;
 RF24 radio(7, 8);
-const byte address[6] = "00001";
-
-byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 EthernetClient client;
+Debug debug;
+
+const byte address[6] = "00001";
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+char encryptionKey[24] = "PlaceholderEncryption123";
 
 const char server[] = "api.plant.kataldi.com";
 const uint16_t port = 80;
@@ -29,7 +33,10 @@ uint8_t responseCursor = 0;
 unsigned long lastDiscoverRequestTime = 0;
 const unsigned long discoverRequestInterval = 5000;
 
+uint16_t pendingPairingNodeId;
 bool isPairing = false;
+size_t pairedSensorCount = 0;
+uint8_t pairedSensors[64];
 uint8_t pairingConfirmedAttempts = 0;
 unsigned long lastPairingCnfirmedRequestTime = 0;
 const unsigned long pairingConfirmedRequestInterval = 5000;
@@ -75,11 +82,29 @@ void receiveData() {
         memset(&payload, 0, sizeof(payload));
         memset(&data, 0, sizeof(data));
         memset(&postData, 0, sizeof(postData));
+        memset(&ackPayload, 0, sizeof(ackPayload));
 
         bool goodSignal = radio.testRPD();
 
         radio.read(&data, sizeof(payload));
         memcpy(&payload, data, sizeof(payload));
+
+        ackPayload.nodeId = payload.nodeId;
+
+        if (payload.action == Action::pairing) {
+            debug.print("Received pairing payload, nodeId: ");
+            debug.println(payload.nodeId);
+
+            if (isSensorPaired(payload.nodeId)) {
+                ackPayload.status = true;
+                memcpy(ackPayload.encryptionKey, encryptionKey, sizeof(encryptionKey));
+                radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
+            }
+
+            pendingPairingNodeId = payload.nodeId;
+            sendDiscoverRequest(payload.nodeId);
+        }
+
         radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
 
 #if DEBUG == true
@@ -93,15 +118,7 @@ void receiveData() {
     }
 }
 
-void loop() {
-    // TODO: Check response and reset access key if received 403
-    // TODO: Support encryption
-    // TODO: Persist readings that can be replayed when there's network outage
-    // TODO: Factory resetting device
-    if (isPaired) {
-        return;
-    }
-
+void parseResponse() {
     if (client.available()) {
         char c = client.read();
 
@@ -114,8 +131,30 @@ void loop() {
             responseCursor++;
         }
     }
+}
 
-    if (isPairing && strcmp(response, "success") == 0) {
+void loop() {
+    // TODO: Check response and reset access key if received 403
+    // TODO: Support encryption
+    // TODO: Persist readings that can be replayed when there's network outage
+    // TODO: Factory resetting device
+    if (isPaired) {
+        return;
+    }
+
+    parseResponse();
+
+    if (strcmp(response, "success: sensor pairing") == 0) {
+        pairedSensorCount++;
+        if (pairedSensorCount == sizeof(pairedSensors)) {
+            pairedSensorCount = 0;
+        }
+        // TODO: Extract nodeid from response
+        pairedSensors[pairedSensorCount] = pendingPairingNodeId;
+        return;
+    }
+
+    if (isPairing && strcmp(response, "success: hub pairing") == 0) {
         isPairing = false;
         isPaired = true;
         writeAccessKey(pairingAccessKey);
@@ -139,13 +178,13 @@ void loop() {
 
         debug.println("Received accessKey");
         memcpy(pairingAccessKey, response, sizeof(pairingAccessKey));
-        clearDiscoverRequestData();
+        clearResponseData();
         isPairing = true;
     }
 
     if (!isPairing && (millis() - lastDiscoverRequestTime > discoverRequestInterval)) {
-        sendDiscoverRequest();
-        clearDiscoverRequestData();
+        sendDiscoverRequest(NODE_ID);
+        clearResponseData();
         lastDiscoverRequestTime = millis();
     }
 }
@@ -215,13 +254,13 @@ void sendReadingData() {
     }
 }
 
-void sendDiscoverRequest() {
+void sendDiscoverRequest(uint16_t nodeId) {
     // close any connection before send a new request.
     client.stop();
 
     if (client.connect(server, port)) {
         debug.print("Sending discover request - ");
-        debug.println(NODE_ID);
+        debug.println(nodeId);
 
         client.println("POST /discover HTTP/1.1");
         client.print("Host: ");
@@ -230,9 +269,9 @@ void sendDiscoverRequest() {
         client.println("Content-Type: text/plain");
         client.println("Connection: close");
         client.print("Content-Length: ");
-        client.println(sizeof(NODE_ID));
+        client.println(sizeof(nodeId));
         client.println();
-        client.println(NODE_ID);
+        client.println(nodeId);
 
     } else {
         debug.println("Connection failed");
@@ -240,7 +279,7 @@ void sendDiscoverRequest() {
 }
 
 void sendPairingConfirmedRequest(char* newAccessKey) {
-        // close any connection before send a new request.
+    // close any connection before send a new request.
     client.stop();
 
     if (client.connect(server, port)) {
@@ -265,7 +304,7 @@ void sendPairingConfirmedRequest(char* newAccessKey) {
     }
 }
 
-void clearDiscoverRequestData() {
+void clearResponseData() {
     memset(response, 0, sizeof(response));
     responseCursor = 0;
     newLines = 0;
@@ -301,4 +340,13 @@ void printPayload() {
     debug.println(payload.batteryVoltage);
     debug.print("firmware: ");
     debug.println(payload.firmware);
+}
+
+bool isSensorPaired(uint16_t sensorNodeId) {
+    for (size_t i = 0; i < sizeof(pairedSensors); i++) {
+        if (pairedSensors[i] == sensorNodeId) {
+            return true;
+        }
+    }
+    return false;
 }

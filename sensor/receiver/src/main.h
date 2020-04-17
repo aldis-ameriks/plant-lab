@@ -19,7 +19,13 @@ struct Payload {
     uint32_t light;
     uint16_t firmware;
     Action action;
-} payload;
+};
+
+struct AckPayload {
+    uint16_t nodeId;
+    bool status;
+    char encryptionKey[25];
+};
 
 class Debug : public Print {
 public:
@@ -31,15 +37,16 @@ public:
         return 1;
     }
     bool debug;
-} debug;
+};
 
 void receiveData();
-void sendDiscoverRequest();
+void sendDiscoverRequest(uint16_t nodeId);
 void sendPairingConfirmedRequest(char* newKey);
-void clearDiscoverRequestData();
+void clearResponseData();
 void sendReadingData();
 void formatData(uint8_t signal);
 void initAccessKey();
 void writeAccessKey(char* key);
 void printPayload();
 void printBytes();
+bool isSensorPaired(uint16_t sensorNodeId);
