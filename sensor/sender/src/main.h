@@ -51,10 +51,8 @@ public:
 
 float readBatteryVoltage();
 float readTemperature();
-int readLight();
 int readMoisture();
 void enterSleep();
-void initLightSensor();
 void initSensors();
 void printBytes(char* data);
 void processPairing();

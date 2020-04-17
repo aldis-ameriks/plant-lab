@@ -6,6 +6,7 @@
 #include <Wire.h>
 #include <avr/sleep.h>
 #include <main.h>
+#include <sensors/light.h>
 
 #define NODE_ID 12
 
@@ -14,6 +15,8 @@ Payload payload;
 AckPayload ackPayload;
 Debug debug;
 RF24 radio(7, 8);
+
+LightSensor lightSensor;
 
 const byte address[6] = "00001";
 const uint16_t pairingInterval = 5000;
@@ -65,7 +68,8 @@ void initSensors() {
     Wire.begin();
 
     debug.println("Setting up light sensor");
-    initLightSensor();
+
+    lightSensor.init();
 
     // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
     pinMode(6, OUTPUT);
@@ -73,14 +77,6 @@ void initSensors() {
 
     pinMode(7, OUTPUT);  // Powers capacitance sensor
     pinMode(8, OUTPUT);  // Powers temperature sensor
-}
-
-void initLightSensor() {
-    Wire.beginTransmission(0x44);
-    Wire.write(0x01);
-    Wire.write(0xCA);  // 800ms, single shot
-    Wire.write(0x10);
-    Wire.endTransmission();
 }
 
 void processReadings() {
@@ -95,7 +91,7 @@ void processReadings() {
     float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
 
     float temperature = readTemperature();
-    int light = readLight();
+    int light = lightSensor.read();
 
     payload.nodeId = NODE_ID;
     payload.readingId = random(65535);
@@ -196,32 +192,6 @@ void sendData(char* data, uint8_t retries) {
             sendData(data, retries);
         }
     }
-}
-
-int readLight() {
-    initLightSensor();
-    delay(1000);
-    Wire.beginTransmission(0x44);
-    Wire.write(0x00);
-    Wire.endTransmission();
-
-    uint8_t buf[2];
-    Wire.requestFrom(0x44, 2);
-
-    int counter = 0;
-    while (Wire.available() < 2) {
-        counter++;
-        delay(10);
-        if (counter > 100) {
-            return -1;
-        }
-    }
-
-    Wire.readBytes(buf, 2);
-    uint16_t data = (buf[0] << 8) | buf[1];
-    uint16_t fraction = data & 0x0FFF;
-    uint16_t exponent = (data & 0xF000) >> 12;
-    return fraction * (0.01 * pow(2, exponent));
 }
 
 int readMoisture() {
