@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
 import { knex } from 'common/db';
+import { formatSuccessResponse } from 'devices/helpers/formatSuccessResponse';
 import { DeviceStatus } from 'devices/models';
 
 export function devicesRoutes(fastify: FastifyInstance, opts, done) {
@@ -38,7 +39,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
         return reply.code(400).send('failed');
       }
 
-      const device = await knex('devices').select('id', 'status').where('id', deviceId).first();
+      const device = await knex('devices').select('id', 'status', 'type').where('id', deviceId).first();
       if (!device) {
         req.log.error('Unknown device tried to discover itself, deviceId:', deviceId);
         return reply.code(400).send('failed');
@@ -62,7 +63,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
       await knex('devices')
         .update({ address, last_seen_at: new Date(), status: DeviceStatus.pairing })
         .where('id', deviceId);
-      return reply.send('success');
+      return reply.send(formatSuccessResponse(device.type, 'discover'));
     }
   );
 
@@ -101,7 +102,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
 
       const deviceId = req.body;
       await knex('devices').update('status', DeviceStatus.paired).where('id', deviceId);
-      return reply.send('success');
+      return reply.send(formatSuccessResponse(device.type, 'paired'));
     }
   );
 

@@ -1,7 +1,7 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, ID, InputType, ObjectType, registerEnumType } from 'type-graphql';
 
-enum DeviceType {
+export enum DeviceType {
   hub_10 = 'hub_10',
   sensor_10 = 'sensor_10',
 }
