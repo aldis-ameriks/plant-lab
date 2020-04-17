@@ -144,7 +144,7 @@ void loop() {
 
     parseResponse();
 
-    if (strcmp(response, "success: sensor pairing") == 0) {
+    if (strcmp(response, "success: sensor paired") == 0) {
         pairedSensorCount++;
         if (pairedSensorCount == sizeof(pairedSensors)) {
             pairedSensorCount = 0;
@@ -154,7 +154,7 @@ void loop() {
         return;
     }
 
-    if (isPairing && strcmp(response, "success: hub pairing") == 0) {
+    if (isPairing && strcmp(response, "success: hub paired") == 0) {
         isPairing = false;
         isPaired = true;
         writeAccessKey(pairingAccessKey);
