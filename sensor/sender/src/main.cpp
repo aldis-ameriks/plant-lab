@@ -26,6 +26,7 @@ ConductivitySensor conductivitySensor;
 
 const byte address[6] = "00001";
 const uint16_t pairingInterval = 10000;
+char encryptionKey[25];
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
@@ -35,7 +36,7 @@ void setup() {
 
     EEPROM.begin();
     debug.print("Loading pairing state from eeprom - ");
-    uint8_t value = EEPROM.read(EEPROM_ADDRESS);
+    uint8_t value = EEPROM.read(EEPROM_STATE_ADDRESS);
     if (value == 1) {
         state = State::paired;
     } else {
@@ -84,6 +85,7 @@ void processReadings() {
     float operatingVoltage = batteryVoltage;
 
     int moisture = moistureSensor.read();
+    // TODO: Move inside moisture module
     float MOISTURE_MAX = (50 * operatingVoltage) + 242;
     float MOISTURE_MIN = (50 * operatingVoltage) + 634;
     float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
@@ -121,7 +123,7 @@ void processReadings() {
 }
 
 void processPairing() {
-    debug.println("Starting pairing");
+    debug.println("Trying to pair");
     memset(&payload, 0, sizeof(payload));
 
     payload.nodeId = NODE_ID;
@@ -176,10 +178,10 @@ void sendData(char* data, uint8_t retries) {
                 debug.println(sizeof(ackPayload.encryptionKey));
 
                 if (ackPayload.status && strlen(ackPayload.encryptionKey) == sizeof(ackPayload.encryptionKey) - 1) {
-                    // TODO: Persist encryption key
                     debug.println("Received encryption key, set paired state");
                     state = State::paired;
-                    EEPROM.write(EEPROM_ADDRESS, 1);
+                    EEPROM.write(EEPROM_STATE_ADDRESS, (uint8_t)State::paired);
+                    writeEncryptionKey(ackPayload.encryptionKey);
                 }
 
                 return;
@@ -211,7 +213,7 @@ void enterSleep() {
     // 30 minutes = 60x30 = 1800s
     // 1800 s / 8 s = 225
     unsigned int sleepCounter;
-    for (sleepCounter = 225; sleepCounter > 0; sleepCounter--) {
+    for (sleepCounter = 1; sleepCounter > 0; sleepCounter--) {
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
     }
 }
@@ -222,4 +224,27 @@ void printBytes(char* data) {
         debug.print(", ");
     }
     debug.println("");
+}
+
+void initEncryptionKey() {
+    uint8_t j = 0;
+    for (uint8_t i = EEPROM_EK_ADDRESS; i < EEPROM_EK_ADDRESS + sizeof(encryptionKey); i++) {
+        uint8_t val = EEPROM.read(i);
+        encryptionKey[j] = (char)val;
+        j++;
+    }
+
+    debug.print("Reading encryption key with length: ");
+    debug.println(strlen(encryptionKey));
+}
+
+void writeEncryptionKey(char* key) {
+    debug.print("Writing: ");
+    debug.println(key);
+    uint8_t j = 0;
+    for (uint8_t i = EEPROM_EK_ADDRESS; i < EEPROM_EK_ADDRESS + sizeof(encryptionKey); i++) {
+        EEPROM.write(i, key[j]);
+        j++;
+    }
+    memcpy(encryptionKey, key, sizeof(encryptionKey));
 }

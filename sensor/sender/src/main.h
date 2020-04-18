@@ -5,14 +5,15 @@
 #define SEND_DATA true
 #define SLEEP true
 #define DEBUG true
-#define EEPROM_ADDRESS 0
+#define EEPROM_STATE_ADDRESS 0
+#define EEPROM_EK_ADDRESS 50
 
 // For measuring battery voltage
 #define R1 10000000.0  // R1 (10M)
 #define R2 1000000.0   // R2 (1M)
 #define INTERNAL_AREF 1.1
 
-enum class Action { send, pairing };
+enum class Action { send, pairing, confirmPairing };
 
 enum class State { unpaired, paired };
 
@@ -56,3 +57,5 @@ void processPairing();
 void processReadings();
 void sendData(char* data, uint8_t retries = 0);
 void sendSensorPairing();
+void writeEncryptionKey(char* key);
+void initEncryptionKey();
