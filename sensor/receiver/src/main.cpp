@@ -4,7 +4,6 @@
 #include <SPI.h>
 #include <api.h>
 #include <main.h>
-#include <payload.h>
 #include <secrets.h>
 
 #define NODE_ID 10
@@ -55,12 +54,7 @@ void setup() {
     radio.setPALevel(RF24_PA_MAX);
     radio.setDataRate(RF24_250KBPS);
     radio.openReadingPipe(0, address);
-    radio.maskIRQ(1, 1, 0);
     radio.startListening();
-
-    if (isPaired) {
-        attachInterrupt(0, receiveData, FALLING);
-    }
 
     debug.println(F("Setting up api client"));
     apiClient.init(accessKey);
@@ -115,12 +109,16 @@ void receiveData() {
 void loop() {
     // TODO: Check response and reset access key if received 403
     // TODO: Support encryption
-    // TODO: Persist readings that can be replayed when there's network outage
     // TODO: Factory resetting device
+
+    if (isPaired) {
+        receiveData();
+    }
 
     if (isPaired && !pendingPairingNodeId) {
         return;
     }
+
     apiClient.parseResponse();
 
     if (strcmp(apiClient.response, "success: sensor paired") == 0) {

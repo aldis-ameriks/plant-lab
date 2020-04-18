@@ -18,7 +18,7 @@ void ApiClient::parseResponse() {
             newLines++;
         }
 
-        if (responseCursor == sizeof(response) - 2) {
+        if (responseCursor >= sizeof(response)) {
             Serial.println(F("Response overflow"));
             Serial.println(response);
             client.stop();
