@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 
 import { knex } from 'common/db';
 import { formatSuccessResponse } from 'devices/helpers/formatSuccessResponse';
-import { DeviceStatus } from 'devices/models';
+import { DeviceStatus, DeviceType } from 'devices/models';
 
 export function devicesRoutes(fastify: FastifyInstance, opts, done) {
   fastify.post(
@@ -26,36 +26,42 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
       const deviceId = req.body;
       req.log.info('Discover request', deviceId);
 
-      const isTaken = await knex('users_devices')
-        .select('user_id')
-        .innerJoin('devices', 'devices.id', 'users_devices.device_id')
-        .where('device_id', deviceId)
-        .andWhere('status', DeviceStatus.paired)
+      const device = await knex('devices')
+        .select('devices.*', 'users_devices.user_id')
+        .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
+        .where('devices.id', deviceId)
         .first();
 
-      if (isTaken) {
-        // Have to remove device from app first to enable re-pairing
-        req.log.error('Device that is already paired tried to discover itself');
-        return reply.code(400).send('failed');
-      }
-
-      const device = await knex('devices').select('id', 'status', 'type').where('id', deviceId).first();
       if (!device) {
         req.log.error('Unknown device tried to discover itself, deviceId:', deviceId);
         return reply.code(400).send('failed');
       }
 
-      if (device.status === DeviceStatus.pairing) {
-        const accessKey = await knex('users_access_keys')
-          .select('access_key')
-          .innerJoin('users_devices', 'users_devices.user_id', 'users_access_keys.user_id')
-          .whereRaw("'HUB' = ANY(roles)")
-          .andWhere('users_devices.device_id', deviceId)
-          .first();
+      if (device.status === DeviceStatus.paired && device.user_id) {
+        // Have to remove device from app first to enable re-pairing
+        req.log.error('Device that is already paired tried to discover itself');
+        return reply.code(400).send('failed');
+      }
 
-        if (accessKey) {
-          req.log.info('Successfully paired device, returning access key');
-          return reply.send(accessKey.access_key);
+      if (device.status === DeviceStatus.pairing && device.user_id) {
+        if (device.type === DeviceType.hub_10) {
+          const accessKey = await knex('users_access_keys')
+            .select('access_key')
+            .innerJoin('users_devices', 'users_devices.user_id', 'users_access_keys.user_id')
+            .whereRaw("'HUB' = ANY(roles)")
+            .andWhere('users_devices.device_id', deviceId)
+            .first();
+
+          if (accessKey) {
+            req.log.info('Successfully paired hub, returning access key');
+            return reply.send(accessKey.access_key);
+          }
+        }
+
+        if (device.type === DeviceType.sensor_10) {
+          req.log.info('Successfully paired sensor');
+          await knex('devices').update('status', DeviceStatus.paired).where('id', deviceId);
+          return reply.send(formatSuccessResponse(device.type, 'paired'));
         }
       }
 
