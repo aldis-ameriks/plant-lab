@@ -33,7 +33,7 @@ struct Payload {
 
 struct AckPayload {
     uint16_t nodeId;
-    bool status;
+    uint8_t status;
     char encryptionKey[25];
 };
 

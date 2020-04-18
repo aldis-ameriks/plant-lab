@@ -25,7 +25,7 @@ TemperatureSensor temperatureSensor;
 ConductivitySensor conductivitySensor;
 
 const byte address[6] = "00001";
-const uint16_t pairingInterval = 5000;
+const uint16_t pairingInterval = 10000;
 
 void setup() {
     Serial.begin(SERIAL_BAUD);
@@ -154,7 +154,7 @@ void sendData(char* data, uint8_t retries) {
         sendData(data, retries);
     } else {
         if (radio.isAckPayloadAvailable()) {
-            radio.read(&ackPayload, sizeof(AckPayload));
+            radio.read(&ackPayload, sizeof(ackPayload));
             debug.print("Received ack payload: ");
             debug.println(ackPayload.nodeId);
 
@@ -175,9 +175,11 @@ void sendData(char* data, uint8_t retries) {
                 debug.print("encryption key size: ");
                 debug.println(sizeof(ackPayload.encryptionKey));
 
-                if (ackPayload.status && strlen(ackPayload.encryptionKey) == sizeof(ackPayload.encryptionKey)) {
+                if (ackPayload.status && strlen(ackPayload.encryptionKey) == sizeof(ackPayload.encryptionKey) - 1) {
                     // TODO: Persist encryption key
+                    debug.println("Received encryption key, set paired state");
                     state = State::paired;
+                    EEPROM.write(EEPROM_ADDRESS, 1);
                 }
 
                 return;
