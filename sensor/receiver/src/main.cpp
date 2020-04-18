@@ -1,9 +1,10 @@
 #include <Arduino.h>
 #include <EEPROM.h>
-#include <Ethernet.h>
 #include <RF24.h>
 #include <SPI.h>
+#include <api.h>
 #include <main.h>
+#include <payload.h>
 #include <secrets.h>
 
 #define NODE_ID 10
@@ -11,15 +12,11 @@
 Payload payload;
 AckPayload ackPayload;
 RF24 radio(7, 8);
-EthernetClient client;
 Debug debug;
+ApiClient apiClient;
 
 const byte address[6] = "00001";
-byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-char encryptionKey[25] = "PlaceholderEncryption123";
-
-const char server[] = "api.plant.kataldi.com";
-const uint16_t port = 80;
+char encryptionKey[25] = "PlaceholderEncryptionKey";
 
 char data[sizeof(payload)];
 char postData[80];
@@ -27,9 +24,7 @@ char postData[80];
 char accessKey[25];
 char pairingAccessKey[25];
 bool isPaired = false;
-char response[25];
-uint8_t newLines = 0;
-uint8_t responseCursor = 0;
+
 unsigned long lastDiscoverRequestTime = 0;
 const unsigned long discoverRequestInterval = 5000;
 
@@ -67,12 +62,8 @@ void setup() {
         attachInterrupt(0, receiveData, FALLING);
     }
 
-    debug.println("Setting up ethernet");
-    // give the ethernet module time to boot up
-    delay(1000);
-    Ethernet.begin(mac);
-    debug.print("My IP address: ");
-    debug.println(Ethernet.localIP());
+    debug.println("Setting up api client");
+    apiClient.init(accessKey);
 
     debug.println("End of setup");
 }
@@ -102,7 +93,7 @@ void receiveData() {
             }
 
             pendingPairingNodeId = payload.nodeId;
-            sendDiscoverRequest(payload.nodeId);
+            apiClient.sendDiscoverRequest(payload.nodeId);
         }
 
         radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
@@ -113,23 +104,8 @@ void receiveData() {
 #endif
 
         formatData(goodSignal ? 1 : 0);
-        sendReadingData();
+        apiClient.sendReadingData(postData);
         debug.println("-----------------------------");
-    }
-}
-
-void parseResponse() {
-    if (client.available()) {
-        char c = client.read();
-
-        if (c == 0x0A) {
-            newLines++;
-        }
-
-        if (newLines == 6 && c != 0x0A) {
-            response[responseCursor] = c;
-            responseCursor++;
-        }
     }
 }
 
@@ -142,9 +118,9 @@ void loop() {
         return;
     }
 
-    parseResponse();
+    apiClient.parseResponse();
 
-    if (strcmp(response, "success: sensor paired") == 0) {
+    if (strcmp(apiClient.response, "success: sensor paired") == 0) {
         pairedSensorCount++;
         if (pairedSensorCount == sizeof(pairedSensors)) {
             pairedSensorCount = 0;
@@ -154,7 +130,7 @@ void loop() {
         return;
     }
 
-    if (isPairing && strcmp(response, "success: hub paired") == 0) {
+    if (isPairing && strcmp(apiClient.response, "success: hub paired") == 0) {
         isPairing = false;
         isPaired = true;
         writeAccessKey(pairingAccessKey);
@@ -163,7 +139,7 @@ void loop() {
     }
 
     if (isPairing && (millis() - lastPairingCnfirmedRequestTime > pairingConfirmedRequestInterval)) {
-        sendPairingConfirmedRequest(pairingAccessKey);
+        apiClient.sendPairingConfirmedRequest(NODE_ID, pairingAccessKey);
         lastPairingCnfirmedRequestTime = millis();
         pairingConfirmedAttempts++;
 
@@ -172,19 +148,19 @@ void loop() {
         }
     }
 
-    if (!isPairing && response[sizeof(response) - 2]) {
+    if (!isPairing && apiClient.response[sizeof(apiClient.response) - 2]) {
         // Null terminate accesskey cstring
-        response[sizeof(response) - 1] = 0x00;
+        apiClient.response[sizeof(apiClient.response) - 1] = 0x00;
 
         debug.println("Received accessKey");
-        memcpy(pairingAccessKey, response, sizeof(pairingAccessKey));
-        clearResponseData();
+        memcpy(pairingAccessKey, apiClient.response, sizeof(pairingAccessKey));
+        apiClient.clearResponseData();
         isPairing = true;
     }
 
     if (!isPairing && (millis() - lastDiscoverRequestTime > discoverRequestInterval)) {
-        sendDiscoverRequest(NODE_ID);
-        clearResponseData();
+        apiClient.sendDiscoverRequest(NODE_ID);
+        apiClient.clearResponseData();
         lastDiscoverRequestTime = millis();
     }
 }
@@ -227,87 +203,6 @@ void formatData(uint8_t signal) {
     sprintf(postData, "%u;%u;%s;%u;%u;%s;%lu;%s;%d;%u;%s", payload.nodeId, payload.moistureRaw, moisture,
             payload.moistureMin, payload.moistureMax, temperature, payload.light, batteryVoltage, signal,
             payload.readingId, firmware);
-}
-
-void sendReadingData() {
-    // close any connection before send a new request.
-    client.stop();
-
-    if (client.connect(server, port)) {
-        debug.println("Sending request");
-        debug.println(postData);
-
-        client.println("POST /reading HTTP/1.1");
-        client.print("Host:");
-        client.println(server);
-        client.println("User-Agent: arduino-ethernet");
-        client.print("access-key: ");
-        client.println(accessKey);
-        client.println("Content-Type: text/plain");
-        client.println("Connection: close");
-        client.print("Content-Length: ");
-        client.println(strlen(postData));
-        client.println();
-        client.println(postData);
-    } else {
-        debug.println("Connection failed");
-    }
-}
-
-void sendDiscoverRequest(uint16_t nodeId) {
-    // close any connection before send a new request.
-    client.stop();
-
-    if (client.connect(server, port)) {
-        debug.print("Sending discover request - ");
-        debug.println(nodeId);
-
-        client.println("POST /discover HTTP/1.1");
-        client.print("Host: ");
-        client.println(server);
-        client.println("User-Agent: arduino-ethernet");
-        client.println("Content-Type: text/plain");
-        client.println("Connection: close");
-        client.print("Content-Length: ");
-        client.println(sizeof(nodeId));
-        client.println();
-        client.println(nodeId);
-
-    } else {
-        debug.println("Connection failed");
-    }
-}
-
-void sendPairingConfirmedRequest(char* newAccessKey) {
-    // close any connection before send a new request.
-    client.stop();
-
-    if (client.connect(server, port)) {
-        debug.print("Sending pairing confirmed request - ");
-        debug.println(NODE_ID);
-
-        client.println("POST /confirm-pairing HTTP/1.1");
-        client.print("Host: ");
-        client.println(server);
-        client.println("User-Agent: arduino-ethernet");
-        client.print("access-key: ");
-        client.println(newAccessKey);
-        client.println("Content-Type: text/plain");
-        client.println("Connection: close");
-        client.print("Content-Length: ");
-        client.println(sizeof(NODE_ID));
-        client.println();
-        client.println(NODE_ID);
-
-    } else {
-        debug.println("Connection failed");
-    }
-}
-
-void clearResponseData() {
-    memset(response, 0, sizeof(response));
-    responseCursor = 0;
-    newLines = 0;
 }
 
 void printBytes() {
