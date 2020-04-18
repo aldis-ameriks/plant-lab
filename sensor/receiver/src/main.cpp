@@ -31,7 +31,7 @@ const unsigned long discoverRequestInterval = 5000;
 uint16_t pendingPairingNodeId;
 bool isPairing = false;
 size_t pairedSensorCount = 0;
-uint8_t pairedSensors[64];
+uint8_t pairedSensors[32];
 uint8_t pairingConfirmedAttempts = 0;
 unsigned long lastPairingCnfirmedRequestTime = 0;
 const unsigned long pairingConfirmedRequestInterval = 5000;
@@ -42,11 +42,11 @@ void setup() {
         ;  // wait for serial port to connect.
     }
     EEPROM.begin();
-    debug.print("Loading access key from eeprom - ");
+    debug.print(F("Loading access key from eeprom - "));
     initAccessKey();
     debug.println(isPaired);
 
-    debug.println("Setting up RF24");
+    debug.println(F("Setting up RF24"));
     radio.begin();
     radio.setChannel(110);
     radio.setAutoAck(1);
@@ -62,10 +62,10 @@ void setup() {
         attachInterrupt(0, receiveData, FALLING);
     }
 
-    debug.println("Setting up api client");
+    debug.println(F("Setting up api client"));
     apiClient.init(accessKey);
 
-    debug.println("End of setup");
+    debug.println(F("End of setup"));
 }
 
 void receiveData() {
@@ -83,28 +83,31 @@ void receiveData() {
         ackPayload.nodeId = payload.nodeId;
 
         if (payload.action == Action::pairing) {
-            debug.print("Received pairing payload, nodeId: ");
+            debug.print(F("Received pairing payload, nodeId: "));
             debug.println(payload.nodeId);
 
             if (isSensorPaired(payload.nodeId)) {
-                ackPayload.status = true;
+                debug.println(F("Sensor is paired"));
+                ackPayload.status = 1;
                 memcpy(ackPayload.encryptionKey, encryptionKey, sizeof(encryptionKey));
-                radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
+                radio.writeAckPayload(0, &ackPayload, sizeof(ackPayload));
+            } else {
+                pendingPairingNodeId = payload.nodeId;
+                apiClient.sendDiscoverRequest(payload.nodeId);
             }
-
-            pendingPairingNodeId = payload.nodeId;
-            apiClient.sendDiscoverRequest(payload.nodeId);
         }
 
-        radio.writeAckPayload(0, &payload.nodeId, sizeof(&payload.nodeId));
+        radio.writeAckPayload(0, &ackPayload, sizeof(&ackPayload));
 
 #if DEBUG == true
         printBytes();
         printPayload();
 #endif
 
-        formatData(goodSignal ? 1 : 0);
-        apiClient.sendReadingData(postData);
+        if (payload.action == Action::send) {
+            formatData(goodSignal ? 1 : 0);
+            apiClient.sendReadingData(postData);
+        }
         debug.println("-----------------------------");
     }
 }
@@ -114,23 +117,32 @@ void loop() {
     // TODO: Support encryption
     // TODO: Persist readings that can be replayed when there's network outage
     // TODO: Factory resetting device
-    if (isPaired) {
+
+    if (isPaired && !pendingPairingNodeId) {
         return;
     }
-
     apiClient.parseResponse();
 
     if (strcmp(apiClient.response, "success: sensor paired") == 0) {
+        apiClient.clearResponseData();
+        if (!pendingPairingNodeId) {
+            return;
+        }
+
         pairedSensorCount++;
         if (pairedSensorCount == sizeof(pairedSensors)) {
             pairedSensorCount = 0;
         }
         // TODO: Extract nodeid from response
+        debug.print(F("Pending pairing nodeId: "));
+        debug.println(pendingPairingNodeId);
         pairedSensors[pairedSensorCount] = pendingPairingNodeId;
+        pendingPairingNodeId = 0;
         return;
     }
 
     if (isPairing && strcmp(apiClient.response, "success: hub paired") == 0) {
+        apiClient.clearResponseData();
         isPairing = false;
         isPaired = true;
         writeAccessKey(pairingAccessKey);
@@ -148,17 +160,18 @@ void loop() {
         }
     }
 
-    if (!isPairing && apiClient.response[sizeof(apiClient.response) - 2]) {
+    if (!isPairing && !isPaired && apiClient.response[sizeof(apiClient.response) - 2]) {
         // Null terminate accesskey cstring
         apiClient.response[sizeof(apiClient.response) - 1] = 0x00;
 
-        debug.println("Received accessKey");
+        debug.println(F("Received accessKey"));
         memcpy(pairingAccessKey, apiClient.response, sizeof(pairingAccessKey));
+        debug.println(pairingAccessKey);
         apiClient.clearResponseData();
         isPairing = true;
     }
 
-    if (!isPairing && (millis() - lastDiscoverRequestTime > discoverRequestInterval)) {
+    if (!isPairing && !isPaired && (millis() - lastDiscoverRequestTime > discoverRequestInterval)) {
         apiClient.sendDiscoverRequest(NODE_ID);
         apiClient.clearResponseData();
         lastDiscoverRequestTime = millis();
@@ -179,7 +192,7 @@ void initAccessKey() {
 }
 
 void writeAccessKey(char* key) {
-    debug.print("Writing: ");
+    debug.print(F("Writing: "));
     debug.println(key);
     uint8_t j = 0;
     for (uint8_t i = EEPROM_ADDRESS; i < EEPROM_ADDRESS + sizeof(accessKey); i++) {
@@ -214,26 +227,26 @@ void printBytes() {
 }
 
 void printPayload() {
-    debug.println("Received:");
-    debug.print("device_id: ");
+    debug.println(F("Received:"));
+    debug.print(F("device_id: "));
     debug.println(payload.nodeId);
-    debug.print("action: ");
+    debug.print(F("action: "));
     debug.println((int)payload.action);
-    debug.print("moisture: ");
+    debug.print(F("moisture: "));
     debug.println(payload.moisture);
-    debug.print("moistureRaw: ");
+    debug.print(F("moistureRaw: "));
     debug.println(payload.moistureRaw);
-    debug.print("moistureMin: ");
+    debug.print(F("moistureMin: "));
     debug.println(payload.moistureMin);
-    debug.print("moistureMax: ");
+    debug.print(F("moistureMax: "));
     debug.println(payload.moistureMax);
-    debug.print("temperature: ");
+    debug.print(F("temperature: "));
     debug.println(payload.temperature);
-    debug.print("light: ");
+    debug.print(F("light: "));
     debug.println(payload.light);
-    debug.print("batteryVoltage: ");
+    debug.print(F("batteryVoltage: "));
     debug.println(payload.batteryVoltage);
-    debug.print("firmware: ");
+    debug.print(F("firmware: "));
     debug.println(payload.firmware);
 }
 

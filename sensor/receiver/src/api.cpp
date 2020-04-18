@@ -5,7 +5,7 @@ byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 void ApiClient::init(char key[25]) {
     delay(1000);
     Ethernet.begin(mac);
-    Serial.print("My IP address: ");
+    Serial.print(F("My IP address: "));
     Serial.println(Ethernet.localIP());
     memcpy(accessKey, key, sizeof(accessKey));
 }
@@ -36,22 +36,22 @@ void ApiClient::sendDiscoverRequest(uint16_t nodeId) {
     client.stop();
 
     if (client.connect(server, port)) {
-        Serial.print("Sending discover request - ");
+        Serial.print(F("Sending discover request - "));
         Serial.println(nodeId);
 
-        client.println("POST /discover HTTP/1.1");
-        client.print("Host: ");
+        client.println(F("POST /discover HTTP/1.1"));
+        client.print(F("Host: "));
         client.println(server);
-        client.println("User-Agent: arduino-ethernet");
-        client.println("Content-Type: text/plain");
-        client.println("Connection: close");
-        client.print("Content-Length: ");
+        client.println(F("User-Agent: arduino-ethernet"));
+        client.println(F("Content-Type: text/plain"));
+        client.println(F("Connection: close"));
+        client.print(F("Content-Length: "));
         client.println(sizeof(nodeId));
         client.println();
         client.println(nodeId);
 
     } else {
-        Serial.println("Connection failed");
+        Serial.println(F("Connection failed"));
     }
 }
 
@@ -60,23 +60,23 @@ void ApiClient::sendReadingData(char postData[80]) {
     client.stop();
 
     if (client.connect(server, port)) {
-        Serial.println("Sending request");
+        Serial.println(F("Sending request"));
         Serial.println(postData);
 
-        client.println("POST /reading HTTP/1.1");
-        client.print("Host:");
+        client.println(F("POST /reading HTTP/1.1"));
+        client.print(F("Host:"));
         client.println(server);
-        client.println("User-Agent: arduino-ethernet");
-        client.print("access-key: ");
+        client.println(F("User-Agent: arduino-ethernet"));
+        client.print(F("access-key: "));
         client.println(accessKey);
-        client.println("Content-Type: text/plain");
-        client.println("Connection: close");
-        client.print("Content-Length: ");
+        client.println(F("Content-Type: text/plain"));
+        client.println(F("Connection: close"));
+        client.print(F("Content-Length: "));
         client.println(strlen(postData));
         client.println();
         client.println(postData);
     } else {
-        Serial.println("Connection failed");
+        Serial.println(F("Connection failed"));
     }
 }
 
@@ -85,23 +85,23 @@ void ApiClient::sendPairingConfirmedRequest(uint16_t nodeId, char* newKey) {
     client.stop();
 
     if (client.connect(server, port)) {
-        Serial.print("Sending pairing confirmed request - ");
+        Serial.print(F("Sending pairing confirmed request - "));
         Serial.println(nodeId);
 
-        client.println("POST /confirm-pairing HTTP/1.1");
-        client.print("Host: ");
+        client.println(F("POST /confirm-pairing HTTP/1.1"));
+        client.print(F("Host: "));
         client.println(server);
-        client.println("User-Agent: arduino-ethernet");
-        client.print("access-key: ");
+        client.println(F("User-Agent: arduino-ethernet"));
+        client.print(F("access-key: "));
         client.println(newKey);
-        client.println("Content-Type: text/plain");
-        client.println("Connection: close");
-        client.print("Content-Length: ");
+        client.println(F("Content-Type: text/plain"));
+        client.println(F("Connection: close"));
+        client.print(F("Content-Length: "));
         client.println(sizeof(nodeId));
         client.println();
         client.println(nodeId);
 
     } else {
-        Serial.println("Connection failed");
+        Serial.println(F("Connection failed"));
     }
 }
