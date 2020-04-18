@@ -16,7 +16,6 @@ struct Payload {
     uint32_t light;
     uint16_t firmware;
     Action action;
-    uint8_t signal;
 };
 
 struct AckPayload {
