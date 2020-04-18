@@ -18,6 +18,14 @@ void ApiClient::parseResponse() {
             newLines++;
         }
 
+        if (responseCursor == sizeof(response) - 2) {
+            Serial.println(F("Response overflow"));
+            Serial.println(response);
+            client.stop();
+            clearResponseData();
+            return;
+        }
+
         if (newLines == 6 && c != 0x0A) {
             response[responseCursor] = c;
             responseCursor++;
