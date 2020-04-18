@@ -29,7 +29,7 @@
     "pg": "8.0.2",
     "pino-pretty": "4.0.0",
     "reflect-metadata": "0.1.13",
-    "type-graphql": "0.18.0-beta.16"
+    "type-graphql": "0.18.0-beta.17"
   },
   "devDependencies": {
     "@types/graphql": "14.5.0",
