@@ -1,7 +1,9 @@
 #include <Arduino.h>
 #include <sensors/moisture.h>
 
-void MoistureSensor::init() {}
+void MoistureSensor::init() {
+    pinMode(7, OUTPUT);  // Powers capacitance sensor
+}
 
 int MoistureSensor::read() {
     digitalWrite(7, HIGH);

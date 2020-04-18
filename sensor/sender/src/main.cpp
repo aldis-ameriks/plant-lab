@@ -6,8 +6,10 @@
 #include <Wire.h>
 #include <avr/sleep.h>
 #include <main.h>
+#include <sensors/conductivity.h>
 #include <sensors/light.h>
 #include <sensors/moisture.h>
+#include <sensors/temperature.h>
 
 #define NODE_ID 12
 
@@ -19,6 +21,8 @@ RF24 radio(7, 8);
 
 LightSensor lightSensor;
 MoistureSensor moistureSensor;
+TemperatureSensor temperatureSensor;
+ConductivitySensor conductivitySensor;
 
 const byte address[6] = "00001";
 const uint16_t pairingInterval = 5000;
@@ -49,9 +53,18 @@ void setup() {
     radio.openWritingPipe(address);
     radio.stopListening();
 
-    if (state == State::paired) {
-        initSensors();
-    }
+    debug.println("Setting up sensors");
+    Wire.begin();
+
+    lightSensor.init();
+    moistureSensor.init();
+    temperatureSensor.init();
+    conductivitySensor.init();
+
+    // LEDs
+    // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
+    pinMode(6, OUTPUT);
+    pinMode(5, OUTPUT);
 
     debug.println("End of setup");
 }
@@ -62,24 +75,6 @@ void loop() {
     } else {
         processPairing();
     }
-}
-
-void initSensors() {
-    debug.println("Setting up sensors");
-    debug.println("Setting up Wire");
-    Wire.begin();
-
-    debug.println("Setting up light sensor");
-
-    lightSensor.init();
-    moistureSensor.init();
-
-    // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
-    pinMode(6, OUTPUT);
-    pinMode(5, OUTPUT);
-
-    pinMode(7, OUTPUT);  // Powers capacitance sensor
-    pinMode(8, OUTPUT);  // Powers temperature sensor
 }
 
 void processReadings() {
@@ -93,7 +88,7 @@ void processReadings() {
     float MOISTURE_MIN = (50 * operatingVoltage) + 634;
     float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
 
-    float temperature = readTemperature();
+    float temperature = temperatureSensor.read();
     int light = lightSensor.read();
 
     payload.nodeId = NODE_ID;
@@ -183,7 +178,6 @@ void sendData(char* data, uint8_t retries) {
                 if (ackPayload.status && strlen(ackPayload.encryptionKey) == sizeof(ackPayload.encryptionKey)) {
                     // TODO: Persist encryption key
                     state = State::paired;
-                    initSensors();
                 }
 
                 return;
@@ -195,11 +189,6 @@ void sendData(char* data, uint8_t retries) {
             sendData(data, retries);
         }
     }
-}
-
-float readTemperature() {
-    // TODO
-    return 24;
 }
 
 float readBatteryVoltage() {

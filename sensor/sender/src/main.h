@@ -50,9 +50,7 @@ public:
 };
 
 float readBatteryVoltage();
-float readTemperature();
 void enterSleep();
-void initSensors();
 void printBytes(char* data);
 void processPairing();
 void processReadings();
