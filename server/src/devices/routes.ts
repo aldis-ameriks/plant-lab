@@ -37,6 +37,10 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
         return reply.code(400).send('failed');
       }
 
+      if (req.context.user.id === device.user_id) {
+        return reply.send(formatSuccessResponse(device.type, 'paired'));
+      }
+
       if (device.status === DeviceStatus.paired && device.user_id) {
         // Have to remove device from app first to enable re-pairing
         req.log.error('Device that is already paired tried to discover itself');
