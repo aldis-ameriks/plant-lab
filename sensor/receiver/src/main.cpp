@@ -91,6 +91,12 @@ void receiveData() {
             }
         }
 
+        if (payload.action == Action::confirmPairing) {
+            debug.print(F("Clearing paired sensor: "));
+            debug.println(payload.nodeId);
+            clearPairedSensor(payload.nodeId);
+        }
+
         radio.writeAckPayload(0, &ackPayload, sizeof(&ackPayload));
 
 #if DEBUG == true
@@ -248,11 +254,19 @@ void printPayload() {
     debug.println(payload.firmware);
 }
 
-bool isSensorPaired(uint16_t sensorNodeId) {
+bool isSensorPaired(uint16_t nodeId) {
     for (size_t i = 0; i < sizeof(pairedSensors); i++) {
-        if (pairedSensors[i] == sensorNodeId) {
+        if (pairedSensors[i] == nodeId) {
             return true;
         }
     }
     return false;
+}
+
+void clearPairedSensor(uint16_t nodeId) {
+        for (size_t i = 0; i < sizeof(pairedSensors); i++) {
+        if (pairedSensors[i] == nodeId) {
+            pairedSensors[i] = 0;
+        }
+    }
 }

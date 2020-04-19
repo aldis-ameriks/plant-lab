@@ -182,6 +182,13 @@ void sendData(char* data, uint8_t retries) {
                     state = State::paired;
                     EEPROM.write(EEPROM_STATE_ADDRESS, (uint8_t)State::paired);
                     writeEncryptionKey(ackPayload.encryptionKey);
+                    
+                    memset(&payload, 0, sizeof(payload));
+                    payload.nodeId = NODE_ID;
+                    payload.action = Action::confirmPairing;
+                    char data[sizeof(payload)];
+                    memcpy(data, &payload, sizeof(payload));
+                    sendData(data, retries);
                 }
 
                 return;

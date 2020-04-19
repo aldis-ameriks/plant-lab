@@ -46,4 +46,5 @@ void initAccessKey();
 void writeAccessKey(char* key);
 void printPayload();
 void printBytes();
-bool isSensorPaired(uint16_t sensorNodeId);
+bool isSensorPaired(uint16_t nodeId);
+void clearPairedSensor(uint16_t nodeId);
