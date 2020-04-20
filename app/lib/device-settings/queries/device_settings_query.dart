@@ -10,7 +10,7 @@ class DeviceSettingsQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Query(
-        options: QueryOptions(document: r'''
+        options: QueryOptions(documentNode: gql(r'''
           query DeviceSettings($deviceId: ID!) {
             device(deviceId: $deviceId) {
               id
@@ -20,7 +20,7 @@ class DeviceSettingsQuery extends StatelessWidget {
               __typename
             }
           }
-      ''', variables: {'deviceId': deviceId}),
+      '''), variables: {'deviceId': deviceId}),
         builder: (result, {refetch, fetchMore}) {
           if (result.hasException) {
             return Column(
@@ -29,7 +29,8 @@ class DeviceSettingsQuery extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Center(
-                    child: Text(result.exception.toString(), textAlign: TextAlign.center),
+                    child: Text(result.exception.toString(),
+                        textAlign: TextAlign.center),
                   ),
                 ),
                 RaisedButton(
@@ -38,7 +39,8 @@ class DeviceSettingsQuery extends StatelessWidget {
                     refetch();
                   },
                   color: Theme.of(context).accentColor,
-                  child: Text("Press to retry", style: TextStyle(color: Colors.white)),
+                  child: Text("Press to retry",
+                      style: TextStyle(color: Colors.white)),
                 )
               ],
             );
