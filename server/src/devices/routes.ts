@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 
 import { knex } from 'common/db';
 import { formatSuccessResponse } from 'devices/helpers/formatSuccessResponse';
-import { DeviceStatus, DeviceType } from 'devices/models';
+import { DeviceStatus, DeviceVersion } from 'devices/models';
 
 export function devicesRoutes(fastify: FastifyInstance, opts, done) {
   fastify.post(
@@ -48,7 +48,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
       }
 
       if (device.status === DeviceStatus.pairing && device.user_id) {
-        if (device.type === DeviceType.hub_10) {
+        if (device.version === DeviceVersion.hub_10) {
           const accessKey = await knex('users_access_keys')
             .select('access_key')
             .innerJoin('users_devices', 'users_devices.user_id', 'users_access_keys.user_id')
@@ -62,7 +62,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
           }
         }
 
-        if (device.type === DeviceType.sensor_10) {
+        if (device.version === DeviceVersion.sensor_10) {
           req.log.info('Successfully paired sensor');
           await knex('devices').update('status', DeviceStatus.paired).where('id', deviceId);
           return reply.send(formatSuccessResponse(device.type, 'paired'));

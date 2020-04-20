@@ -73,6 +73,6 @@ export class DeviceResolver {
     const userId = ctx.user.id;
     const { ip } = ctx;
     ctx.log.info('Pair device request', input);
-    return this.deviceService.pairDevice(ctx.log, input.type, userId, ip);
+    return this.deviceService.pairDevice(ctx.log, input.version, userId, ip);
   }
 }

@@ -1,10 +1,20 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, ID, InputType, ObjectType, registerEnumType } from 'type-graphql';
 
-export enum DeviceType {
+export enum DeviceVersion {
   hub_10 = 'hub_10',
   sensor_10 = 'sensor_10',
 }
+
+export enum DeviceType {
+  hub = 'hub',
+  sensor = 'sensor',
+}
+
+registerEnumType(DeviceVersion, {
+  name: 'DeviceVersion',
+  description: 'Device version',
+});
 
 registerEnumType(DeviceType, {
   name: 'DeviceType',
@@ -34,6 +44,9 @@ export class Device {
 
   @Field((_type) => DeviceType)
   type: DeviceType;
+
+  @Field((_type) => DeviceVersion)
+  version: DeviceVersion;
 }
 
 @InputType()
@@ -59,5 +72,5 @@ export class NewDeviceInput {
 export class PairDeviceInput {
   @Field()
   @MaxLength(20)
-  type: DeviceType;
+  version: DeviceVersion;
 }

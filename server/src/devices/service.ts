@@ -1,7 +1,7 @@
 import { Logger } from 'fastify';
 import { ForbiddenError } from 'type-graphql';
 
-import { DeviceStatus, NewDeviceInput } from './models';
+import { DeviceStatus, DeviceVersion, NewDeviceInput } from './models';
 
 import { knex } from 'common/db';
 
@@ -14,9 +14,7 @@ export class DeviceService {
         .then((rows) => rows[0]);
 
       await trx('users_devices').where('user_id', userId).andWhere('device_id', device.id).del();
-
       await trx('users_devices').insert({ device_id: device.id, user_id: userId });
-
       return device;
     });
   }
@@ -73,11 +71,11 @@ export class DeviceService {
     }
   }
 
-  public async pairDevice(log: Logger, type: string, userId: string, address: string): Promise<boolean> {
+  public async pairDevice(log: Logger, version: DeviceVersion, userId: string, address: string): Promise<boolean> {
     const device = await knex('devices')
       .select('id')
       .where('address', address)
-      .andWhere('type', type)
+      .andWhere('version', version)
       .andWhere('status', DeviceStatus.pairing)
       .first();
 

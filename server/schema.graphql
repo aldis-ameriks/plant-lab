@@ -12,10 +12,17 @@ type Device {
   name: String
   room: String
   type: DeviceType!
+  version: DeviceVersion!
 }
 
 # Device type
 enum DeviceType {
+  hub
+  sensor
+}
+
+# Device version
+enum DeviceVersion {
   hub_10
   sensor_10
 }
@@ -37,7 +44,7 @@ input NewDeviceInput {
 }
 
 input PairDeviceInput {
-  type: String!
+  version: String!
 }
 
 type Query {
