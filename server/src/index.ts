@@ -33,7 +33,11 @@ import { readingsRoutes } from 'readings/routes';
 
   const app = fastify({
     logger: {
-      prettyPrint: isDevelopment,
+      prettyPrint: isDevelopment
+        ? {
+            translateTime: true,
+          }
+        : false,
     },
   });
 
