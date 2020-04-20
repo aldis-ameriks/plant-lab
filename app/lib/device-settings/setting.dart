@@ -60,7 +60,11 @@ class _SettingState extends State<Setting> {
                       title: Text('Update ${widget.text}'),
                       content: Form(
                         key: GlobalKey(),
-                        child: Padding(padding: EdgeInsets.all(8.0), child: TextFormField(controller: myController)),
+                        child: Padding(padding: EdgeInsets.all(8.0), child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                            controller: myController)),
                       ));
                 });
           },

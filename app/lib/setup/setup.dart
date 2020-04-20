@@ -81,7 +81,10 @@ class _SetupState extends State<Setup> {
                               content: Form(
                                 key: GlobalKey(),
                                 child: Padding(
-                                    padding: EdgeInsets.all(8.0), child: TextFormField(controller: myController)),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: TextFormField(
+                                        decoration: InputDecoration(border: OutlineInputBorder()),
+                                        controller: myController)),
                               )));
                 },
               ),
