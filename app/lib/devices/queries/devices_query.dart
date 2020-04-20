@@ -15,6 +15,7 @@ class DevicesQuery extends StatelessWidget {
               id
               room
               name
+              type
               firmware
               __typename
             }

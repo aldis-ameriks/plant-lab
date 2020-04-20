@@ -16,6 +16,7 @@ class ReadingsQuery extends StatelessWidget {
               id
               room
               name
+              type
               __typename
             }
             lastReading(deviceId: $deviceId) {

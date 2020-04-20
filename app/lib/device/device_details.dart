@@ -66,7 +66,7 @@ class DeviceDetails extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 30),
                             child: Image(
-                              image: AssetImage('assets/sensor_v2.1.png'),
+                              image: AssetImage('assets/${result['device']['type']}.png'),
                               width: 100,
                               height: 180,
                             ),
