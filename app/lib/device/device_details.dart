@@ -39,7 +39,6 @@ class DeviceDetails extends StatelessWidget {
               builder: (result, refetch) {
                 String type = result['device']['type'];
                 Widget child;
-                print(type);
                 if (type == 'sensor') {
                   child = SensorDetails(result: result);
                 } else if (type == 'hub') {

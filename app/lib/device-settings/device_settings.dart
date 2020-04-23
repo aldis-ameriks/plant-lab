@@ -1,3 +1,4 @@
+import 'package:aa.iot/device-settings/mutations/remove_device_mutation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,16 +37,19 @@ class DeviceSettings extends StatelessWidget {
                   RoomEntry(value: device['room'], deviceId: deviceId, refetch: refetch),
                   Setting(text: 'Firmware', value: device['firmware'], readonly: true),
                   Divider(),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: Container(
-                      width: 500,
-//                      TODO: Implement device removal
-                      child: RaisedButton(
-                        padding: EdgeInsets.all(12),
-                        onPressed: () {},
-                        color: Colors.red[700],
-                        child: Text("Remove", style: TextStyle(color: Colors.white)),
+                  RemoveDeviceMutation(
+                    builder: (runMutation, result) => Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Container(
+                        width: 500,
+                        child: RaisedButton(
+                          padding: EdgeInsets.all(12),
+                          onPressed: () {
+                            runMutation({'deviceId': deviceId});
+                          },
+                          color: Colors.red[700],
+                          child: Text("Remove", style: TextStyle(color: Colors.white)),
+                        ),
                       ),
                     ),
                   )

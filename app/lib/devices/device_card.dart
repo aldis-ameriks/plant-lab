@@ -14,10 +14,19 @@ class DeviceCard extends StatelessWidget {
     String room = device['room'];
 
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DeviceDetails(deviceId: deviceId)),
-      ),
+      onTap: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DeviceDetails(deviceId: deviceId)),
+        );
+        if (result == 'removed') {
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+                backgroundColor: Colors.greenAccent[700],
+                content: Text('Device removed successfully', textAlign: TextAlign.center)));
+        }
+      },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Container(
