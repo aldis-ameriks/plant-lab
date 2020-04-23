@@ -24,11 +24,18 @@ class Home extends StatelessWidget {
                       actions: <Widget>[
                         IconButton(
                             icon: Icon(Icons.add_circle),
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                              final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => NewSensor()),
                               );
+                              if (result == 'paired') {
+                                Scaffold.of(context)
+                                  ..removeCurrentSnackBar()
+                                  ..showSnackBar(SnackBar(
+                                      backgroundColor: Colors.greenAccent[700],
+                                      content: Text('Device paired successfully', textAlign: TextAlign.center)));
+                              }
                             }),
                       ]),
                 ],

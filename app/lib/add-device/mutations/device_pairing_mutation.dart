@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class DevicePairingMutation extends StatelessWidget {
-  const DevicePairingMutation({@required this.builder});
+  const DevicePairingMutation({@required this.builder, @required this.deviceVersion});
 
   final dynamic builder;
+  final String deviceVersion;
 
   @override
   Widget build(BuildContext context) => Mutation(
@@ -14,22 +17,79 @@ class DevicePairingMutation extends StatelessWidget {
             pairDevice(input: $input)
           }
       '''),
+            fetchPolicy: FetchPolicy.noCache,
             onCompleted: (result) {
-              final snackBar = SnackBar(
-                content: Text('Device has been paired', textAlign: TextAlign.center),
-                backgroundColor: Colors.greenAccent[700],
-              );
-              Scaffold.of(context).showSnackBar(snackBar);
+              if (result != null && result['pairDevice'] == true) {
+                Navigator.of(context)..pop()..pop('paired');
+              }
             },
             onError: (error) {
-              final snackBar = SnackBar(
-                content: Text('Failed to pair device', textAlign: TextAlign.center),
-                backgroundColor: Colors.redAccent[700],
-              );
-              Scaffold.of(context).showSnackBar(snackBar);
+              Navigator.of(context).pop('failed');
             }),
-        builder: (runMutation, result) {
-          return builder(runMutation, result);
-        },
+        builder: (runMutation, QueryResult result) => StateContainer(
+          mutation: runMutation,
+          result: result,
+          builder: builder,
+          deviceVersion: deviceVersion,
+        ),
       );
+}
+
+class StateContainer extends StatefulWidget {
+  const StateContainer(
+      {@required this.builder, @required this.mutation, @required this.result, @required this.deviceVersion});
+
+  final dynamic builder;
+  final dynamic mutation;
+  final dynamic result;
+  final String deviceVersion;
+
+  @override
+  _StateContainerState createState() => _StateContainerState();
+}
+
+class _StateContainerState extends State<StateContainer> {
+  bool isPairing = false;
+  Timer interval;
+
+  @override
+  void initState() {
+    super.initState();
+    this.startPairing();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(widget.result, this.stopPairing);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (this.isPairing || (this.interval != null && this.interval.isActive)) {
+      this.interval.cancel();
+    }
+  }
+
+  void startPairing() {
+    setState(() {
+      if (!this.isPairing || (this.interval != null && !this.interval.isActive)) {
+        this.interval = Timer.periodic(Duration(seconds: 2), (timer) {
+          widget.mutation({
+            'input': {'version': widget.deviceVersion}
+          });
+        });
+      }
+      this.isPairing = true;
+    });
+  }
+
+  void stopPairing() {
+    setState(() {
+      if (this.isPairing || (this.interval != null && this.interval.isActive)) {
+        this.interval.cancel();
+      }
+      this.isPairing = false;
+    });
+  }
 }
