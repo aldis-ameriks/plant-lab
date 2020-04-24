@@ -7,8 +7,8 @@ import 'config.dart';
 import 'user_state_provider.dart';
 
 Future<void> main() async {
-  await DotEnv().load('.env');
-  await DotEnv().load('.env.local');
+  await DotEnv().load('envs/.env');
+  await DotEnv().load('envs/.env.local');
   updateConfig();
   runApp(MyApp());
 }
