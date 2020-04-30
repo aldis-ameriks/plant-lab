@@ -20,10 +20,10 @@
     "styled-components": "5.1.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "1.13.3",
-    "@graphql-codegen/typescript": "1.13.3",
-    "@graphql-codegen/typescript-operations": "1.13.3",
-    "@graphql-codegen/typescript-react-apollo": "1.13.3",
+    "@graphql-codegen/cli": "1.13.4",
+    "@graphql-codegen/typescript": "1.13.4",
+    "@graphql-codegen/typescript-operations": "1.13.4",
+    "@graphql-codegen/typescript-react-apollo": "1.13.4",
     "@types/jest": "25.2.1",
     "@types/node": "12.12.37",
     "@types/react": "16.9.34",
