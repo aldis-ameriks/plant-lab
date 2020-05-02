@@ -16,33 +16,34 @@ class NewDeviceCard extends StatelessWidget {
               builder: (context) => DevicePairingMutation(
                   deviceVersion: device['version'],
                   builder: (result, stopPairing) => AlertDialog(
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text('Cancel', style: TextStyle(color: Colors.black)),
-                              onPressed: () {
-                                stopPairing();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                          title: Text('Pairing ${device['name']}'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              device['pairingImage'],
-                              Container(
-                                child: Text(device['pairingText']),
-                                margin: EdgeInsets.only(bottom: 20),
-                              ),
-                              CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
-                              Container(
-                                child: Text('Pairing in progress'),
-                                margin: EdgeInsets.only(top: 20),
-                              )
-                            ],
-                          ))));
+                      scrollable: true,
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Cancel', style: TextStyle(color: Colors.black)),
+                          onPressed: () {
+                            stopPairing();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                      title: Text('Pairing ${device['name']}'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          device['pairingImage'],
+                          Container(
+                            child: Text(device['pairingText']),
+                            margin: EdgeInsets.only(bottom: 20),
+                          ),
+                          CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                          Container(
+                            child: Text('Pairing in progress'),
+                            margin: EdgeInsets.only(top: 20),
+                          )
+                        ],
+                      ))));
 
           if (result == 'failed') {
             Scaffold.of(context)
