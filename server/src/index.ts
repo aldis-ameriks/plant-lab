@@ -46,12 +46,13 @@ import { readingsRoutes } from 'readings/routes';
     req.context = await createRequestContext(req.log, req.headers, req.ip, req.hostname);
   });
 
-  app.head('/', async () => 'hi');
+  app.head('/', async () => 'head');
   app.get('/ping', async () => 'pong');
+
   app.register(readingsRoutes);
   app.register(devicesRoutes);
-
   app.register(apolloServer.createHandler({ path: '/graphql' }));
+
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
   console.log(`Server started, listening on ${address} for incoming requests.`);
   console.log('Using environment:', process.env.NODE_ENV);
