@@ -38,6 +38,7 @@ async function initiateShutdown(event, err: {} | null | undefined | Error, close
     console.warn('Server closed');
   } catch (e) {
     console.error('Failed to close server', e);
+    process.exit(1);
   }
 
   process.exit(0);
