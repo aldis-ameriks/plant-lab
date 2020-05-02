@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserState extends ChangeNotifier {
   String _accessKey;
+  bool _isLoaded = false;
 
   UserState() {
     initState();
@@ -11,6 +12,10 @@ class UserState extends ChangeNotifier {
 
   get accessKey {
     return _accessKey;
+  }
+
+  get isLoaded {
+    return _isLoaded;
   }
 
   initState() async {
@@ -23,6 +28,7 @@ class UserState extends ChangeNotifier {
 
   setAccessKey(accessKey) async {
     _accessKey = accessKey;
+    _isLoaded = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("access_key", accessKey);
     notifyListeners();
@@ -42,8 +48,10 @@ class UserStateProvider extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
         create: (_) => UserState(),
         child: child,
       );
+  }
 }

@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 class DelayedLoader extends StatefulWidget {
+  DelayedLoader({this.delay = 500});
+
+  final int delay;
+
   @override
   State<StatefulWidget> createState() {
     return _DelayedLoaderState();
@@ -14,7 +19,7 @@ class _DelayedLoaderState extends State<DelayedLoader> {
   @override
   void initState() {
     super.initState();
-    _future = Future<String>.delayed(Duration(milliseconds: 500), () => 'Show loader');
+    _future = Future<String>.delayed(Duration(milliseconds: widget.delay), () => 'Show loader');
   }
 
   @override
