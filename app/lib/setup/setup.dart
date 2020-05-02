@@ -78,13 +78,16 @@ class _SetupState extends State<Setup> {
                                 )
                               ],
                               title: Text('Enter access key'),
-                              content: Form(
-                                key: GlobalKey(),
-                                child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: TextFormField(
-                                        decoration: InputDecoration(border: OutlineInputBorder()),
-                                        controller: myController)),
+                              content: Container(
+                                width: MediaQuery.of(context).size.width - 24,
+                                child: Form(
+                                  key: GlobalKey(),
+                                  child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: TextFormField(
+                                          decoration: InputDecoration(border: OutlineInputBorder()),
+                                          controller: myController)),
+                                ),
                               )));
                 },
               ),
