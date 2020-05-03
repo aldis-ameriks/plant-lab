@@ -18,6 +18,7 @@ dependencies:
   provider: 4.0.5
   barcode_scan: 2.0.2
   flutter_dotenv: 2.1.0
+  state_machine: 2.2.0
 
 dev_dependencies:
   flutter_test:

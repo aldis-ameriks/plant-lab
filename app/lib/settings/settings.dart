@@ -27,7 +27,7 @@ class Settings extends StatelessWidget {
                           child: RaisedButton(
                             padding: EdgeInsets.all(12),
                             onPressed: () {
-                              userState.removeAccessKey();
+                              userState.logout();
                             },
                             color: Colors.red[700],
                             child: Text("Sign out", style: TextStyle(color: Colors.white)),

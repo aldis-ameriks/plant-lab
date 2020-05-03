@@ -18,11 +18,11 @@ class _AppState extends State {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserState>(builder: (context, userState, _) {
-      if (!userState.isLoaded) {
+      if (userState.isUninitialized()) {
         return Scaffold(body: Center(child: DelayedLoader(delay: 1000)));
       }
 
-      if (userState.accessKey == null) {
+      if (userState.isAnonymous()) {
         return Setup();
       }
 

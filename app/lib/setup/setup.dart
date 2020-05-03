@@ -28,7 +28,7 @@ class _SetupState extends State<Setup> {
         Future scan() async {
           try {
             String barcode = await BarcodeScanner.scan();
-            userState.setAccessKey(barcode);
+            userState.authenticate(barcode);
           } on PlatformException catch (e) {
             if (e.code == BarcodeScanner.CameraAccessDenied) {
               setState(() {
@@ -72,7 +72,7 @@ class _SetupState extends State<Setup> {
                                 FlatButton(
                                   child: Text('Submit', style: TextStyle(color: Colors.black)),
                                   onPressed: () {
-                                    userState.setAccessKey(myController.text);
+                                    userState.authenticate(myController.text);
                                     Navigator.of(context).pop();
                                   },
                                 )
