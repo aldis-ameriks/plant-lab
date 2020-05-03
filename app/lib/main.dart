@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           uri: config['graphql']['endpoint'],
           subscriptionUri: config['graphql']['subscriptions'],
           child: MaterialApp(
-              title: 'Plant Monitoring',
+              title: 'PlantLab',
               theme: ThemeData(
                 brightness: Brightness.light,
                 primaryColor: Colors.grey[50],

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:aa.iot/device/sensor_details.dart';
+import 'package:plantlab/device/sensor_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

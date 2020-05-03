@@ -1,4 +1,4 @@
-import 'package:aa.iot/device-settings/mutations/remove_device_mutation.dart';
+import 'package:plantlab/device-settings/mutations/remove_device_mutation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

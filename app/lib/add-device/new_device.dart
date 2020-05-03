@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:aa.iot/add-device/new_device_card.dart';
+import 'package:plantlab/add-device/new_device_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
