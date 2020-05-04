@@ -27,7 +27,7 @@ class UserState extends ChangeNotifier {
     initialize = user.newStateTransition('initialize', [isUninitialized], isAnonymous);
     authenticate = user.newStateTransition('authenticate', [isAnonymous, isError], isAuthenticated);
     error = user.newStateTransition('error', [SM.State.any], isError);
-    logout = user.newStateTransition('logout', [isAuthenticated], isUninitialized);
+    logout = user.newStateTransition('logout', [isAuthenticated], isAnonymous);
 
     user.start(isUninitialized);
 
