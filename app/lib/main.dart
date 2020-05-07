@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:plantlab/background_task_provider.dart';
 import 'package:plantlab/notifications_provider.dart';
 
 import 'app.dart';
@@ -42,7 +43,9 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               debugShowCheckedModeBanner: false,
-              home: NotificationsProvider(child: App()))),
+              home: NotificationsProvider(child: BackgroundTaskProvider(builder: () {
+                return App();
+              })))),
     );
   }
 }
