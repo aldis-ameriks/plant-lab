@@ -35,7 +35,7 @@ class _BackgroundTaskState extends State<BackgroundTaskProvider> {
       switch (task) {
         case Workmanager.iOSBackgroundTask:
           print("The iOS background fetch was triggered");
-          http.get('${config['backend']['endpoint']}/ping');
+          http.get('${config['backend']['endpoint']}/ping?test=true');
           break;
       }
 
