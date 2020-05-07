@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../user_state_provider.dart';
+import '../providers/user_state_provider.dart';
 
 class Settings extends StatelessWidget {
   @override

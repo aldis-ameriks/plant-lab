@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:plantlab/background_task_provider.dart';
-import 'package:plantlab/notifications_provider.dart';
 
 import 'app.dart';
-import 'client_provider.dart';
 import 'config.dart';
-import 'user_state_provider.dart';
+import 'providers/background_task_provider.dart';
+import 'providers/client_provider.dart';
+import 'providers/notifications_provider.dart';
+import 'providers/user_state_provider.dart';
 
 Future<void> main() async {
   await DotEnv().load('envs/.env');

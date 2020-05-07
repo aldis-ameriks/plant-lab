@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:http/http.dart' as http;
+import 'package:workmanager/workmanager.dart';
 
-import 'config.dart';
+import '../config.dart';
 
 class BackgroundTaskProvider extends StatefulWidget {
   BackgroundTaskProvider({@required this.builder});

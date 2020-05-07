@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:plantlab/delayed_loader.dart';
 import 'package:plantlab/setup/setup.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'devices/devices.dart';
+import 'providers/user_state_provider.dart';
 import 'settings/settings.dart';
-import 'user_state_provider.dart';
 
 class App extends StatefulWidget {
   @override

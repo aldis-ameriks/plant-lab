@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../user_state_provider.dart';
+import '../providers/user_state_provider.dart';
 
 class Setup extends StatefulWidget {
   @override
