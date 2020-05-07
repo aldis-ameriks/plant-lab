@@ -50,5 +50,9 @@
 	<false/>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Location is required to trigger sensors based on your location.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Location is required to trigger sensors based on your location.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Location is required to trigger sensors based on your location.</string>
 </dict>
 </plist>
