@@ -38,6 +38,7 @@ class _BackgroundTaskState extends State<BackgroundTaskProvider> {
           http.get('${config['backend']['endpoint']}/ping?test=true');
           break;
       }
+      http.get('${config['backend']['endpoint']}/ping?test2=true');
 
       return Future.value(true);
     });
