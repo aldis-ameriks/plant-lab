@@ -22,7 +22,7 @@
     "apollo-server-fastify": "2.13.0",
     "class-validator": "0.12.2",
     "config": "3.3.1",
-    "fastify": "2.14.0",
+    "fastify": "2.14.1",
     "graphql": "14.6.0",
     "graphql-iso-date": "3.6.1",
     "knex": "0.21.1",
