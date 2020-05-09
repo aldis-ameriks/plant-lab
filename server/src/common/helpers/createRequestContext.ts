@@ -9,7 +9,7 @@ import { Context } from 'types/context';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createRequestContext(
   log: Logger,
-  headers: { [key: string]: any },
+  headers: { [key: string]: string },
   ip: string,
   hostname: string
 ): Promise<Context> {
