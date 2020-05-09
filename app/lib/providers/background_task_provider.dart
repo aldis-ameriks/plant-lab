@@ -4,6 +4,27 @@ import 'package:workmanager/workmanager.dart';
 
 import '../config.dart';
 
+void callbackDispatcher() {
+  Workmanager.executeTask((task, inputData) async {
+    print('Task triggered: $task');
+    switch (task) {
+      case Workmanager.iOSBackgroundTask:
+        print("The iOS background fetch was triggered");
+        await ping('/ping?test=true');
+        break;
+    }
+    await ping('/ping?test2=true');
+    return Future.value(true);
+  });
+}
+
+Future<void> ping(String path) async {
+  String url = '${config['backend']['endpoint']}$path';
+  print('Fetching $url');
+  http.Response res = await http.get(url);
+  print(res.body);
+}
+
 class BackgroundTaskProvider extends StatefulWidget {
   BackgroundTaskProvider({@required this.builder});
 
@@ -28,19 +49,5 @@ class _BackgroundTaskState extends State<BackgroundTaskProvider> {
       callbackDispatcher,
       isInDebugMode: true,
     );
-  }
-
-  static void callbackDispatcher() {
-    Workmanager.executeTask((task, inputData) async {
-      switch (task) {
-        case Workmanager.iOSBackgroundTask:
-          print("The iOS background fetch was triggered");
-          http.get('${config['backend']['endpoint']}/ping?test=true');
-          break;
-      }
-      http.get('${config['backend']['endpoint']}/ping?test2=true');
-
-      return Future.value(true);
-    });
   }
 }
