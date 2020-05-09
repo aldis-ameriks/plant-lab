@@ -12,6 +12,8 @@ class Setup extends StatefulWidget {
 }
 
 class _SetupState extends State<Setup> {
+  static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
   TextEditingController myController;
   String barcodeError;
 
@@ -82,7 +84,7 @@ class _SetupState extends State<Setup> {
                               content: Container(
                                 width: MediaQuery.of(context).size.width - 24,
                                 child: Form(
-                                  key: GlobalKey(),
+                                  key: _formKey,
                                   child: Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: TextFormField(
