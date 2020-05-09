@@ -26,9 +26,9 @@ Future<void> ping(String path) async {
 }
 
 class BackgroundTaskProvider extends StatefulWidget {
-  BackgroundTaskProvider({@required this.builder});
+  BackgroundTaskProvider({@required this.child});
 
-  final dynamic builder;
+  final Widget child;
 
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +39,7 @@ class BackgroundTaskProvider extends StatefulWidget {
 class _BackgroundTaskState extends State<BackgroundTaskProvider> {
   @override
   Widget build(BuildContext context) {
-    return widget.builder();
+    return widget.child;
   }
 
   @override

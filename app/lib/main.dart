@@ -43,9 +43,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               debugShowCheckedModeBanner: false,
-              home: NotificationsProvider(child: BackgroundTaskProvider(builder: () {
-                return App();
-              })))),
+              home: NotificationsProvider(child: BackgroundTaskProvider(child: App())))),
     );
   }
 }
