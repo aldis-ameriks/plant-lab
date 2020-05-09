@@ -9,6 +9,7 @@ import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { DeviceResolver } from 'devices/resolver';
 import { devicesRoutes } from 'devices/routes';
+import { NotificationsResolver } from 'notifications/resolver';
 import { ReadingResolver } from 'readings/resolver';
 import { readingsRoutes } from 'readings/routes';
 import { userRoutes } from 'user/routes';
@@ -16,7 +17,7 @@ import { userRoutes } from 'user/routes';
 (async () => {
   const schema = await buildSchema({
     authChecker,
-    resolvers: [ReadingResolver, DeviceResolver],
+    resolvers: [ReadingResolver, DeviceResolver, NotificationsResolver],
     emitSchemaFile: {
       path: `${__dirname}/../schema.graphql`,
       commentDescriptions: true,

@@ -43,6 +43,12 @@ input NewDeviceInput {
   room: String
 }
 
+type Notification {
+  body: String!
+  id: ID!
+  title: String!
+}
+
 input PairDeviceInput {
   version: String!
 }
@@ -52,6 +58,7 @@ type Query {
   devices: [Device!]!
   lastReading(deviceId: ID!): Reading
   lastWateredTime(deviceId: ID!): DateTime
+  newNotifications: Notification!
   readings(date: String, deviceId: ID!): [Reading!]!
 }
 
