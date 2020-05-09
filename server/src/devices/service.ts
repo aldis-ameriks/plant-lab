@@ -1,9 +1,9 @@
 import { Logger } from 'fastify';
-import { ForbiddenError } from 'type-graphql';
 
 import { DeviceStatus, DeviceVersion, NewDeviceInput } from './models';
 
 import { knex } from 'common/db';
+import { ForbiddenError } from 'common/errors/ForbiddenError';
 
 export class DeviceService {
   public async addDevice(input: NewDeviceInput, userId: string) {
@@ -67,7 +67,7 @@ export class DeviceService {
     const res = await knex('users_devices').where('user_id', userId).andWhere('device_id', deviceId).first();
 
     if (!res) {
-      throw new ForbiddenError();
+      throw new ForbiddenError('Access denied');
     }
   }
 

@@ -11,6 +11,7 @@ import { DeviceResolver } from 'devices/resolver';
 import { devicesRoutes } from 'devices/routes';
 import { ReadingResolver } from 'readings/resolver';
 import { readingsRoutes } from 'readings/routes';
+import { userRoutes } from 'user/routes';
 
 (async () => {
   const schema = await buildSchema({
@@ -51,6 +52,7 @@ import { readingsRoutes } from 'readings/routes';
 
   app.register(readingsRoutes);
   app.register(devicesRoutes);
+  app.register(userRoutes);
   app.register(apolloServer.createHandler({ path: '/graphql' }));
 
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');

@@ -42,14 +42,15 @@ class _SetupState extends State<Setup> {
           }
         }
 
+        String error = userState.error ?? barcodeError;
         return Scaffold(
             body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(child: Text('Missing access key'), margin: EdgeInsets.only(bottom: 20)),
-              barcodeError != null
-                  ? Container(child: Text(barcodeError), margin: EdgeInsets.only(bottom: 20))
+              error != null
+                  ? Container(child: Text(error), margin: EdgeInsets.only(bottom: 20))
                   : Container(),
               RaisedButton(
                 child: const Text('Scan QR code'),
@@ -71,8 +72,8 @@ class _SetupState extends State<Setup> {
                                 ),
                                 FlatButton(
                                   child: Text('Submit', style: TextStyle(color: Colors.black)),
-                                  onPressed: () {
-                                    userState.authenticate(myController.text);
+                                  onPressed: () async {
+                                    await userState.authenticate(myController.text);
                                     Navigator.of(context).pop();
                                   },
                                 )
