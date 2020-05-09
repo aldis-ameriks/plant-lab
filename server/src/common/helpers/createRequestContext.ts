@@ -4,7 +4,7 @@ import { ACCESS_KEY } from '../config';
 import { getUserByAccessKey } from './getUserByAccessKey';
 
 import { isRequestWithinLocalNetwork } from 'common/helpers/isRequestWithinLocalNetwork';
-import { Context } from 'types/context';
+import { Context } from 'common/types/context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createRequestContext(

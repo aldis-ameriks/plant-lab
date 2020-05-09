@@ -3,9 +3,9 @@ import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphq
 import { Reading, ReadingInput } from './models';
 import { ReadingService } from './service';
 
+import { Context } from 'common/types/context';
 import { validate } from 'common/validate';
 import { DeviceService } from 'devices/service';
-import { Context } from 'types/context';
 
 @Resolver(Reading)
 export class ReadingResolver {

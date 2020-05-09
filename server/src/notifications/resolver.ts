@@ -1,8 +1,8 @@
 import { Ctx, Query, Resolver } from 'type-graphql';
 
+import { Context } from 'common/types/context';
 import { Notification } from 'notifications/models';
 import { NotificationsService } from 'notifications/service';
-import { Context } from 'types/context';
 
 @Resolver()
 export class NotificationsResolver {

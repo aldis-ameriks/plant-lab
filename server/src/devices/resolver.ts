@@ -3,7 +3,7 @@ import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphq
 import { Device, NewDeviceInput, PairDeviceInput } from './models';
 import { DeviceService } from './service';
 
-import { Context } from 'types/context';
+import { Context } from 'common/types/context';
 
 @Resolver(Device)
 export class DeviceResolver {
