@@ -7,6 +7,7 @@ import { authChecker } from 'common/authChecker';
 import { isDevelopment } from 'common/config';
 import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
+import { initJsonSchema } from 'common/jsonSchema';
 import { DeviceResolver } from 'devices/resolver';
 import { devicesRoutes } from 'devices/routes';
 import { NotificationsResolver } from 'notifications/resolver';
@@ -42,6 +43,8 @@ import { userRoutes } from 'user/routes';
         : false,
     },
   });
+
+  initJsonSchema();
 
   app.decorateRequest('context', {});
   app.addHook('preHandler', async (req) => {

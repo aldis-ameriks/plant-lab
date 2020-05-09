@@ -1,5 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
+import { jsonSchema } from 'common/jsonSchema';
+
 import { UserService } from 'user/service';
 
 export function userRoutes(fastify: FastifyInstance, opts, done) {
@@ -24,15 +26,7 @@ export function userRoutes(fastify: FastifyInstance, opts, done) {
             },
             required: ['accessKey'],
           },
-          400: {
-            type: 'object',
-            properties: {
-              statusCode: { type: 'number' },
-              error: { type: 'string' },
-              message: { type: 'string' },
-            },
-            required: ['statusCode', 'error', 'message'],
-          },
+          400: jsonSchema.BaseError,
         },
       },
     },
