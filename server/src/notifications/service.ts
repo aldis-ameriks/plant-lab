@@ -1,19 +1,18 @@
 import { knex } from 'common/db';
-import { NotificationType } from 'notifications/models';
+import { LastNotification, NotificationType } from 'notifications/models';
 
 export class NotificationsService {
   getUnsentNotifications(userId: string) {
     return knex('notifications').where('sent_at', null).andWhere('user_id', userId);
   }
 
-  getLastNotificationTimestamp(deviceId: string, type: NotificationType): Promise<Date> {
+  getLastNotificationTimestamp(deviceId: string, type: NotificationType): Promise<LastNotification> {
     return knex('notifications')
-      .select('created_at')
+      .select('created_at', 'sent_at')
       .where('device_id', deviceId)
       .andWhere('type', type)
       .orderBy('created_at', 'desc')
-      .first()
-      .then((result) => (result ? result.created_at : result));
+      .first();
   }
 
   async createDeviceNotification(deviceId: string, type: NotificationType, title: string, body: string): Promise<void> {

@@ -37,15 +37,7 @@ export class NotificationsCron {
   };
 
   handleLowMoisture = async (reading: Reading) => {
-    const oneDayAgo = new Date();
-    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
-
-    const lastNotificationTimestamp = await this.notificationsService.getLastNotificationTimestamp(
-      reading.device_id,
-      NotificationType.low_moisture
-    );
-
-    if (lastNotificationTimestamp && lastNotificationTimestamp > oneDayAgo) {
+    if (await this.hasUnsentNotification(reading.device_id, NotificationType.low_moisture)) {
       return;
     }
 
@@ -63,15 +55,7 @@ export class NotificationsCron {
   };
 
   handleLowBattery = async (reading: Reading) => {
-    const oneDayAgo = new Date();
-    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
-
-    const lastNotificationTimestamp = await this.notificationsService.getLastNotificationTimestamp(
-      reading.device_id,
-      NotificationType.low_battery
-    );
-
-    if (lastNotificationTimestamp && lastNotificationTimestamp > oneDayAgo) {
+    if (await this.hasUnsentNotification(reading.device_id, NotificationType.low_battery)) {
       return;
     }
 
@@ -85,6 +69,19 @@ export class NotificationsCron {
       NotificationType.low_battery,
       title,
       body
+    );
+  };
+
+  hasUnsentNotification = async (deviceId: string, type: NotificationType) => {
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    const lastNotificationTimestamp = await this.notificationsService.getLastNotificationTimestamp(deviceId, type);
+
+    return (
+      lastNotificationTimestamp &&
+      (!lastNotificationTimestamp.sent_at ||
+        (lastNotificationTimestamp && lastNotificationTimestamp.created_at > oneDayAgo))
     );
   };
 }

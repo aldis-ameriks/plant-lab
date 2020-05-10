@@ -20,3 +20,8 @@ export class Notification {
   @IsString()
   body: string;
 }
+
+export class LastNotification {
+  created_at: Date;
+  sent_at: Date;
+}
