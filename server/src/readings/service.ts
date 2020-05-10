@@ -1,6 +1,7 @@
-import { ReadingInput } from './models';
+import { Reading, ReadingInput } from './models';
 
 import { knex } from 'common/db';
+import { DeviceType } from 'devices/models';
 
 export class ReadingService {
   public async getReadings(deviceId = '99', date) {
@@ -67,6 +68,30 @@ export class ReadingService {
       `,
       { ...input }
     );
+  }
+
+  public async getAllSensorLastAverageReadings(): Promise<Reading[]> {
+    return knex
+      .raw(
+        `
+          SELECT DISTINCT ON (device_id) device_id,
+                                         timestamp AS time,
+                                         avg(moisture)
+                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) moisture,
+                                         avg(temperature)
+                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) temperature,
+                                         avg(light)
+                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) light,
+                                         avg(battery_voltage)
+                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) battery_voltage
+          FROM readings
+          LEFT JOIN devices d ON readings.device_id = d.id
+          WHERE d.type = :type
+          ORDER BY device_id, timestamp DESC
+      `,
+        { type: DeviceType.sensor }
+      )
+      .then((result) => result.rows);
   }
 }
 

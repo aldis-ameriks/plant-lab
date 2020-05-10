@@ -10,6 +10,7 @@ import { shutdown } from 'common/helpers/shutdown';
 import { initJsonSchema } from 'common/jsonSchema';
 import { DeviceResolver } from 'devices/resolver';
 import { devicesRoutes } from 'devices/routes';
+import { NotificationsCron } from 'notifications/cron';
 import { NotificationsResolver } from 'notifications/resolver';
 import { ReadingResolver } from 'readings/resolver';
 import { readingsRoutes } from 'readings/routes';
@@ -45,6 +46,7 @@ import { userRoutes } from 'user/routes';
   });
 
   initJsonSchema();
+  new NotificationsCron(app.log).start();
 
   app.decorateRequest('context', {});
   app.addHook('preHandler', async (req) => {

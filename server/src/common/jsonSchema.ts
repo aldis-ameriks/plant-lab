@@ -5,5 +5,4 @@ export let jsonSchema;
 
 export function initJsonSchema() {
   jsonSchema = validationMetadatasToSchemas();
-  console.log('jsonSchema: ', jsonSchema);
 }
