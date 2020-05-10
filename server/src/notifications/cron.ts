@@ -16,7 +16,7 @@ export class NotificationsCron {
     this.logger = logger;
     this.readingService = new ReadingService();
     this.notificationsService = new NotificationsService();
-    this.job = new CronJob('*/10 * * * * *', this.handleNotificationCron);
+    this.job = new CronJob('* 0 * * * *', this.handleNotificationCron);
   }
 
   public start() {
