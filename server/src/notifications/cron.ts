@@ -9,8 +9,8 @@ import { ReadingService } from 'readings/service';
 export class NotificationsCron {
   private readonly readingService: ReadingService;
   private readonly notificationsService: NotificationsService;
+  private readonly logger: Logger;
   private readonly job;
-  private readonly logger;
 
   constructor(logger: Logger) {
     this.logger = logger;
@@ -24,8 +24,12 @@ export class NotificationsCron {
   }
 
   handleNotificationCron = async () => {
-    const readings = await this.readingService.getAllSensorLastAverageReadings();
-    readings.forEach(this.handleReading);
+    try {
+      const readings = await this.readingService.getAllSensorLastAverageReadings();
+      readings.forEach(this.handleReading);
+    } catch (e) {
+      this.logger.error('Notifications cron job failed', e);
+    }
   };
 
   handleReading = async (reading: Reading): Promise<void> => {
