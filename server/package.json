@@ -28,7 +28,7 @@
     "graphql": "15.0.0",
     "graphql-iso-date": "3.6.1",
     "knex": "0.21.1",
-    "pg": "8.1.0",
+    "pg": "8.2.0",
     "pino-pretty": "4.0.0",
     "reflect-metadata": "0.1.13",
     "type-graphql": "1.0.0-rc.1"
