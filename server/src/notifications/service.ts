@@ -3,7 +3,11 @@ import { NotificationType, NotificationEntity } from 'common/types/entities';
 
 export class NotificationsService {
   getUnsentNotifications(userId: string): Promise<NotificationEntity[]> {
-    return knex('notifications').where('sent_at', null).andWhere('user_id', userId);
+    return knex('notifications')
+      .update('sent_at', new Date())
+      .where('sent_at', null)
+      .andWhere('user_id', userId)
+      .returning('*');
   }
 
   getLastNotificationTimestamp(
