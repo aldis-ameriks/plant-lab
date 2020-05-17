@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "apollo-server-fastify": "2.13.1",
+    "class-transformer": "0.2.3",
     "class-validator": "0.12.2",
     "class-validator-jsonschema": "2.0.1",
     "config": "3.3.1",
@@ -48,8 +49,8 @@
     "husky": "4.2.5",
     "lint-staged": "10.2.2",
     "nodemon": "2.0.4",
-    "prettier": "2.0.5",
     "nu-schemats": "4.9.0",
+    "prettier": "2.0.5",
     "ts-node": "8.10.1",
     "tsconfig-paths": "3.9.0",
     "typescript": "3.9.2"
