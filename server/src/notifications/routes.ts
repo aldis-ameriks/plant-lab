@@ -13,7 +13,7 @@ export function notificationRoutes(fastify: FastifyInstance, opts, done) {
     {
       preHandler: async (req) => {
         if (!req.context.user) {
-          throw new ForbiddenError('Forbidden');
+          throw new ForbiddenError();
         }
       },
       schema: {
