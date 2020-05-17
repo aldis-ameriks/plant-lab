@@ -29,9 +29,9 @@ export class Notification implements Pick<notifications, 'id' | 'title' | 'body'
 
 export class NotificationResponse {
   @IsArray()
-  data: Notification[];
+  data: notifications[];
 
-  constructor(_notifications: Notification[]) {
+  constructor(_notifications: notifications[]) {
     this.data = _notifications;
   }
 }
