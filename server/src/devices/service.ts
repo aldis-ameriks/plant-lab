@@ -24,17 +24,17 @@ export class DeviceService {
     return knex('devices')
       .select('*')
       .from('devices')
-      .leftJoin('users_devices', 'users_devices.device_id', 'DeviceEntity.id')
-      .where('DeviceEntity.id', deviceId)
+      .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
+      .where('devices.id', deviceId)
       .andWhere('users_devices.user_id', userId)
       .first();
   }
 
   public getUserDevices(userId: string) {
     return knex('devices')
-      .select('DeviceEntity.*')
+      .select('devices.*')
       .from('devices')
-      .leftJoin('users_devices', 'users_devices.device_id', 'DeviceEntity.id')
+      .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
       .where('users_devices.user_id', userId)
       .andWhereNot('test', true)
       .orderBy('id');
