@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plantlab/delayed_loader.dart';
-import 'package:plantlab/providers/notifications_provider.dart';
 import 'package:plantlab/setup/setup.dart';
 import 'package:provider/provider.dart';
 
@@ -18,43 +17,37 @@ class _AppState extends State {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<NotificationsState>(builder: (context, notificationsState, _) {
-      return Consumer<UserState>(builder: (context, userState, _) {
-        if (userState.isUninitialized()) {
-          return Scaffold(body: Center(child: DelayedLoader(delay: 1000)));
-        }
+    return Consumer<UserState>(builder: (context, userState, _) {
+      if (userState.isUninitialized()) {
+        return Scaffold(body: Center(child: DelayedLoader(delay: 1000)));
+      }
 
-        if (userState.isAnonymous()) {
-          return Setup();
-        }
+      if (userState.isAnonymous()) {
+        return Setup();
+      }
 
-        notificationsState.showNotification('7', 'Title', 'Body');
+      Widget child;
+      switch (_selectedIndex) {
+        case 0:
+          child = Home();
+          break;
+        case 1:
+          child = Settings();
+          break;
+      }
 
-        Widget child;
-        switch (_selectedIndex) {
-          case 0:
-            child = Home();
-            break;
-          case 1:
-            child = Settings();
-            break;
-        }
-
-        return Scaffold(
-          body: child,
-          bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(title: Text('Devices'), icon: Icon(Icons.dashboard)),
-              BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Theme
-                .of(context)
-                .accentColor,
-            onTap: _onItemTapped,
-          ),
-        );
-      });
+      return Scaffold(
+        body: child,
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(title: Text('Devices'), icon: Icon(Icons.dashboard)),
+            BottomNavigationBarItem(title: Text('Settings'), icon: Icon(Icons.settings)),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Theme.of(context).accentColor,
+          onTap: _onItemTapped,
+        ),
+      );
     });
   }
 
