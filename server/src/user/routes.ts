@@ -1,31 +1,19 @@
-import { FastifyInstance } from 'fastify';
+import { DefaultHeaders, DefaultParams, DefaultQuery, FastifyInstance } from 'fastify';
 
 import { jsonSchema } from 'common/jsonSchema';
-
+import { LoginInput, LoginResponse } from 'user/models';
 import { UserService } from 'user/service';
 
 export function userRoutes(fastify: FastifyInstance, opts, done) {
   const userService = new UserService();
 
-  fastify.post(
+  fastify.post<DefaultQuery, DefaultParams, DefaultHeaders, LoginInput>(
     '/login',
     {
       schema: {
-        body: {
-          type: 'object',
-          properties: {
-            accessKey: { type: 'string', maxLength: 256 },
-          },
-          required: ['accessKey'],
-        },
+        body: jsonSchema.LoginInput,
         response: {
-          200: {
-            type: 'object',
-            properties: {
-              accessKey: { type: 'string' },
-            },
-            required: ['accessKey'],
-          },
+          200: jsonSchema.LoginResponse,
           400: jsonSchema.BaseError,
         },
       },
@@ -33,7 +21,9 @@ export function userRoutes(fastify: FastifyInstance, opts, done) {
     async (req, reply) => {
       const { accessKey } = req.body;
       await userService.validateAccessKey(accessKey);
-      reply.send({ accessKey });
+
+      const response = new LoginResponse(accessKey);
+      reply.send(response);
     }
   );
 
