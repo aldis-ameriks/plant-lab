@@ -1,11 +1,11 @@
-import 'package:plantlab/device-settings/mutations/remove_device_mutation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:plantlab/device-settings/mutations/remove_device_mutation.dart';
+import 'package:plantlab/shared/setting.dart';
 
 import 'mutations/device_name_mutation.dart';
 import 'mutations/device_room_mutation.dart';
 import 'queries/device_settings_query.dart';
-import 'setting.dart';
 
 class DeviceSettings extends StatelessWidget {
   const DeviceSettings({@required this.deviceId});

@@ -34,6 +34,7 @@ type Mutation {
   saveReading(input: String!): String!
   updateDeviceName(deviceId: ID!, name: String!): Device!
   updateDeviceRoom(deviceId: ID!, room: String!): Device!
+  updateUserSetting(input: UserSettingInput!): UserSetting!
 }
 
 input NewDeviceInput {
@@ -67,6 +68,8 @@ type Query {
   lastWateredTime(deviceId: ID!): DateTime
   newNotifications: [Notification!]!
   readings(date: String, deviceId: ID!): [Reading!]!
+  userSetting(name: String!): UserSetting
+  userSettings: [UserSetting!]!
 }
 
 type Reading {
@@ -76,4 +79,14 @@ type Reading {
   moisture: Float!
   temperature: Float!
   time: DateTime!
+}
+
+type UserSetting {
+  name: String!
+  value: String!
+}
+
+input UserSettingInput {
+  name: String!
+  value: String!
 }

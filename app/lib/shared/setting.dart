@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO: Add support for radio input
 class Setting extends StatefulWidget {
   const Setting({@required this.text, @required this.value, this.readonly: false, this.onSubmit, this.loading = false});
 

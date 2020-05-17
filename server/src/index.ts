@@ -15,12 +15,13 @@ import { NotificationsResolver } from 'notifications/resolver';
 import { notificationRoutes } from 'notifications/routes';
 import { ReadingResolver } from 'readings/resolver';
 import { readingsRoutes } from 'readings/routes';
+import { UserResolver } from 'user/resolver';
 import { userRoutes } from 'user/routes';
 
 (async () => {
   const schema = await buildSchema({
     authChecker,
-    resolvers: [ReadingResolver, DeviceResolver, NotificationsResolver],
+    resolvers: [ReadingResolver, DeviceResolver, NotificationsResolver, UserResolver],
     emitSchemaFile: {
       path: `${__dirname}/../schema.graphql`,
       commentDescriptions: true,

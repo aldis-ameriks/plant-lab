@@ -13,7 +13,7 @@
     "migrate": "NODE_CONFIG_DIR=../config knex migrate:latest --knexfile knexfile.ts --cwd src",
     "migrate:make": "NODE_CONFIG_DIR=../config knex migrate:make -x ts --knexfile knexfile.ts --cwd src",
     "migrate:down": "NODE_CONFIG_DIR=../config knex migrate:down --knexfile knexfile.ts --cwd src",
-    "generate:types": "schemats generate -c postgres://postgres:pg123@localhost/monitoring --camelCaseInterface --suffix Entity -o src/common/types/entities.ts && prettier --write src/common/types/entities.ts && yarn lint:fix",
+    "generate:entities": "schemats generate -c postgres://postgres:pg123@localhost/monitoring --camelCaseInterface --suffix Entity -o src/common/types/entities.ts && prettier --write src/common/types/entities.ts && yarn lint:fix",
     "docker:build": "docker build -t registry.kataldi.com/plant-server .",
     "docker:push": "docker push registry.kataldi.com/plant-server",
     "docker:build:push": "yarn docker:build && yarn docker:push",
