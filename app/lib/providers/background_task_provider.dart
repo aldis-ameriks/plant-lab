@@ -1,10 +1,36 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../config.dart';
+
+class Notification {
+  final String id;
+  final String title;
+  final String body;
+
+  Notification({@required this.id, @required this.title, @required this.body});
+
+  factory Notification.fromJson(Map<String, dynamic> json) {
+    return Notification(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      body: json['body'] as String,
+    );
+  }
+}
+
+Future<List<Notification>> fetchNotifications(String accessKey) async {
+  String url = '${config['backend']['endpoint']}/notifications/new';
+  http.Response res = await http.get(url, headers: {'access-key': accessKey});
+  final parsed = json.decode(res.body).cast<Map<String, dynamic>>();
+  return parsed.map<Notification>((json) => Notification.fromJson(json)).toList();
+}
 
 Future<void> showNotification(String deviceId, String title, String body) async {
   // TODO: Update fields for Android devices
@@ -22,21 +48,20 @@ void callbackDispatcher() {
     print('Task triggered: $task');
     switch (task) {
       case Workmanager.iOSBackgroundTask:
-        showNotification('7', 'Notification title', 'Notification body');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String accessKey = prefs.getString("access_key");
+        if (accessKey != null) {
+          List<Notification> notifications = await fetchNotifications(accessKey);
+          notifications.forEach((element) {
+            showNotification(element.id, element.title, element.body);
+          });
+        }
+
         print("The iOS background fetch was triggered");
-        await ping('/ping?test=true');
         break;
     }
-    await ping('/ping?test2=true');
     return Future.value(true);
   });
-}
-
-Future<void> ping(String path) async {
-  String url = '${config['backend']['endpoint']}$path';
-  print('Fetching $url');
-  http.Response res = await http.get(url);
-  print(res.body);
 }
 
 class BackgroundTaskProvider extends StatefulWidget {
