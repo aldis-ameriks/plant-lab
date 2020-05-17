@@ -12,7 +12,7 @@ export class NotificationsResolver {
     this.notificationsService = new NotificationsService();
   }
 
-  @Query((_returns) => Notification)
+  @Query((_returns) => [Notification])
   newNotifications(@Ctx() ctx: Context) {
     const userId = ctx.user.id;
     return this.notificationsService.getUnsentNotifications(userId);
