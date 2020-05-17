@@ -1,25 +1,25 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, ID, InputType, ObjectType, registerEnumType } from 'type-graphql';
 
-import { device_status, device_type, device_version, devices } from 'common/types/entities';
+import { DeviceStatus, DeviceType, DeviceVersion, DeviceEntity } from 'common/types/entities';
 
-registerEnumType(device_version, {
+registerEnumType(DeviceVersion, {
   name: 'DeviceVersion',
   description: 'Device version',
 });
 
-registerEnumType(device_type, {
+registerEnumType(DeviceType, {
   name: 'DeviceType',
   description: 'Device type',
 });
 
-registerEnumType(device_status, {
+registerEnumType(DeviceStatus, {
   name: 'DeviceStatus',
   description: 'Device status',
 });
 
 @ObjectType()
-export class Device implements Pick<devices, 'name' | 'room' | 'firmware' | 'type' | 'version'> {
+export class Device implements Pick<DeviceEntity, 'name' | 'room' | 'firmware' | 'type' | 'version'> {
   @Field((_type) => ID)
   id: string;
 
@@ -32,15 +32,15 @@ export class Device implements Pick<devices, 'name' | 'room' | 'firmware' | 'typ
   @Field({ nullable: true })
   firmware: string;
 
-  @Field((_type) => device_type)
-  type: device_type;
+  @Field((_type) => DeviceType)
+  type: DeviceType;
 
-  @Field((_type) => device_version)
-  version: device_version;
+  @Field((_type) => DeviceVersion)
+  version: DeviceVersion;
 }
 
 @InputType()
-export class NewDeviceInput implements Pick<devices, 'id' | 'name' | 'room' | 'firmware'> {
+export class NewDeviceInput implements Pick<DeviceEntity, 'id' | 'name' | 'room' | 'firmware'> {
   @Field()
   @IsNumber()
   id: number;
@@ -62,5 +62,5 @@ export class NewDeviceInput implements Pick<devices, 'id' | 'name' | 'room' | 'f
 export class PairDeviceInput {
   @Field()
   @MaxLength(20)
-  version: device_version;
+  version: DeviceVersion;
 }

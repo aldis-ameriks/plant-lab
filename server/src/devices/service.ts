@@ -4,7 +4,7 @@ import { NewDeviceInput } from './models';
 
 import { knex } from 'common/db';
 import { ForbiddenError } from 'common/errors/ForbiddenError';
-import { device_status, device_version } from 'common/types/entities';
+import { DeviceStatus, DeviceVersion } from 'common/types/entities';
 
 export class DeviceService {
   public async addDevice(input: NewDeviceInput, userId: string) {
@@ -24,17 +24,17 @@ export class DeviceService {
     return knex('devices')
       .select('*')
       .from('devices')
-      .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
-      .where('devices.id', deviceId)
+      .leftJoin('users_devices', 'users_devices.device_id', 'DeviceEntity.id')
+      .where('DeviceEntity.id', deviceId)
       .andWhere('users_devices.user_id', userId)
       .first();
   }
 
   public getUserDevices(userId: string) {
     return knex('devices')
-      .select('devices.*')
+      .select('DeviceEntity.*')
       .from('devices')
-      .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
+      .leftJoin('users_devices', 'users_devices.device_id', 'DeviceEntity.id')
       .where('users_devices.user_id', userId)
       .andWhereNot('test', true)
       .orderBy('id');
@@ -72,12 +72,12 @@ export class DeviceService {
     }
   }
 
-  public async pairDevice(log: Logger, version: device_version, userId: string, address: string): Promise<boolean> {
+  public async pairDevice(log: Logger, version: DeviceVersion, userId: string, address: string): Promise<boolean> {
     const device = await knex('devices')
       .select('id')
       .where('address', address)
       .andWhere('version', version)
-      .andWhere('status', device_status.pairing)
+      .andWhere('status', DeviceStatus.pairing)
       .first();
 
     if (!device) {
