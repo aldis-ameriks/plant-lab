@@ -14,7 +14,7 @@ export function userRoutes(fastify: FastifyInstance, opts, done) {
         body: jsonSchema.LoginInput,
         response: {
           200: jsonSchema.LoginResponse,
-          400: jsonSchema.BaseError,
+          '4xx': jsonSchema.BaseError,
         },
       },
     },
