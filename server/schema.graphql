@@ -47,6 +47,13 @@ type Notification {
   body: String!
   id: ID!
   title: String!
+  type: NotificationType!
+}
+
+# Notification type
+enum NotificationType {
+  low_battery
+  low_moisture
 }
 
 input PairDeviceInput {
@@ -58,7 +65,7 @@ type Query {
   devices: [Device!]!
   lastReading(deviceId: ID!): Reading
   lastWateredTime(deviceId: ID!): DateTime
-  newNotifications: Notification!
+  newNotifications: [Notification!]!
   readings(date: String, deviceId: ID!): [Reading!]!
 }
 

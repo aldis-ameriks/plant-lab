@@ -1,6 +1,8 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, ID, InputType, ObjectType, registerEnumType } from 'type-graphql';
 
+import { devices } from 'common/types/entities';
+
 export enum DeviceVersion {
   hub_10 = 'hub_10',
   sensor_10 = 'sensor_10',
@@ -29,7 +31,7 @@ export enum DeviceStatus {
 }
 
 @ObjectType()
-export class Device {
+export class Device implements Pick<devices, 'name' | 'room' | 'firmware' | 'type' | 'version'> {
   @Field((_type) => ID)
   id: string;
 
@@ -50,7 +52,7 @@ export class Device {
 }
 
 @InputType()
-export class NewDeviceInput {
+export class NewDeviceInput implements Pick<devices, 'id' | 'name' | 'room' | 'firmware'> {
   @Field()
   @IsNumber()
   id: number;
