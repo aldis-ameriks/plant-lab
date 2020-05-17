@@ -28,8 +28,8 @@ class Notification {
 Future<List<Notification>> fetchNotifications(String accessKey) async {
   String url = '${config['backend']['endpoint']}/notifications/new';
   http.Response res = await http.get(url, headers: {'access-key': accessKey});
-  final parsed = json.decode(res.body).cast<Map<String, dynamic>>();
-  return parsed.map<Notification>((json) => Notification.fromJson(json)).toList();
+  Map<String, dynamic> parsed = json.decode(res.body);
+  return parsed['data'].map<Notification>((json) => Notification.fromJson(json)).toList();
 }
 
 Future<void> showNotification(String deviceId, String title, String body) async {
@@ -48,13 +48,17 @@ void callbackDispatcher() {
     print('Task triggered: $task');
     switch (task) {
       case Workmanager.iOSBackgroundTask:
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String accessKey = prefs.getString("access_key");
-        if (accessKey != null) {
-          List<Notification> notifications = await fetchNotifications(accessKey);
-          notifications.forEach((element) {
-            showNotification(element.id, element.title, element.body);
-          });
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String accessKey = prefs.getString("access_key");
+          if (accessKey != null) {
+            List<Notification> notifications = await fetchNotifications(accessKey);
+            notifications.forEach((element) {
+              showNotification(element.id, element.title, element.body);
+            });
+          }
+        } catch (e) {
+          print(e);
         }
 
         print("The iOS background fetch was triggered");
