@@ -12,6 +12,7 @@ import { DeviceResolver } from 'devices/resolver';
 import { devicesRoutes } from 'devices/routes';
 import { NotificationsCron } from 'notifications/cron';
 import { NotificationsResolver } from 'notifications/resolver';
+import { notificationRoutes } from 'notifications/routes';
 import { ReadingResolver } from 'readings/resolver';
 import { readingsRoutes } from 'readings/routes';
 import { userRoutes } from 'user/routes';
@@ -59,6 +60,7 @@ import { userRoutes } from 'user/routes';
   app.register(readingsRoutes);
   app.register(devicesRoutes);
   app.register(userRoutes);
+  app.register(notificationRoutes);
   app.register(apolloServer.createHandler({ path: '/graphql' }));
 
   const address = await app.listen(process.env.SERVER_PORT ? +process.env.SERVER_PORT : 4000, '0.0.0.0');
