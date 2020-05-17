@@ -12,10 +12,10 @@ export class ReadingService {
                 FROM (
                     SELECT device_id,
                            TIME_BUCKET_GAPFILL('1 day'::interval, timestamp, :time, NOW()) AS time,
-                           LOCF(AVG(moisture))                                             AS moisture,
-                           LOCF(AVG(temperature))                                          AS temperature,
-                           LOCF(AVG(light))                                                AS light,
-                           LOCF(AVG(battery_voltage))                                      AS battery_voltage
+                           LOCF(AVG(moisture)) AS moisture,
+                           LOCF(AVG(temperature)) AS temperature,
+                           LOCF(AVG(light)) AS light,
+                           LOCF(AVG(battery_voltage)) AS battery_voltage
                     FROM readings
                     WHERE device_id = :deviceId
                       AND timestamp > :time
@@ -44,7 +44,7 @@ export class ReadingService {
                 SELECT *
                 FROM (
                     SELECT device_id,
-                           timestamp                                                AS time,
+                           timestamp AS time,
                            moisture - LEAD(moisture) OVER (ORDER BY timestamp DESC) AS moisture_increase
                     FROM readings
                     WHERE device_id = :deviceId
@@ -74,21 +74,25 @@ export class ReadingService {
     return knex
       .raw(
         `
-          SELECT DISTINCT ON (device_id) device_id,
-                                         timestamp AS time,
-                                         avg(moisture)
-                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) moisture,
-                                         avg(temperature)
-                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) temperature,
-                                         avg(light)
-                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) light,
-                                         avg(battery_voltage)
-                                         OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) battery_voltage
-          FROM readings
-          LEFT JOIN devices d ON readings.device_id = d.id
-          WHERE d.type = :type
-          ORDER BY device_id, timestamp DESC
-      `,
+                  SELECT DISTINCT ON (d.id) d.id AS device_id,
+                                            timestamp AS time,
+                                            avg(moisture)
+                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) moisture,
+                                            avg(temperature)
+                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) temperature,
+                                            avg(light)
+                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) light,
+                                            avg(battery_voltage)
+                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) battery_voltage
+                  FROM readings
+                  LEFT JOIN devices d ON readings.device_id = d.id
+                  LEFT JOIN users_devices ud ON d.id = ud.device_id
+                  LEFT JOIN user_settings us ON ud.user_id = us.user_id
+                  WHERE d.type = :type
+                    AND us.name = 'notifications'
+                    AND us.value = 'enabled'
+                  ORDER BY device_id, timestamp DESC
+        `,
         { type: DeviceType.sensor }
       )
       .then((result) => result.rows);
