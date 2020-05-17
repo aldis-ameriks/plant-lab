@@ -1,14 +1,9 @@
-import { IsEnum, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsString } from 'class-validator';
 import { Field, ID, ObjectType, registerEnumType } from 'type-graphql';
 
-import { notifications } from 'common/types/entities';
+import { notification_type, notifications } from 'common/types/entities';
 
-export enum NotificationType {
-  low_moisture = 'low_moisture',
-  low_battery = 'low_battery',
-}
-
-registerEnumType(NotificationType, {
+registerEnumType(notification_type, {
   name: 'NotificationType',
   description: 'Notification type',
 });
@@ -27,12 +22,16 @@ export class Notification implements Pick<notifications, 'id' | 'title' | 'body'
   @IsString()
   body: string;
 
-  @Field((_type) => NotificationType)
-  @IsEnum(NotificationType)
-  type: NotificationType;
+  @Field((_type) => notification_type)
+  @IsEnum(notification_type)
+  type: notification_type;
 }
 
-export class LastNotification implements Pick<notifications, 'created_at' | 'sent_at'> {
-  created_at: Date;
-  sent_at: Date;
+export class NotificationResponse {
+  @IsArray()
+  notifications: Notification[];
+
+  constructor(_notifications: Notification[]) {
+    this.notifications = _notifications;
+  }
 }

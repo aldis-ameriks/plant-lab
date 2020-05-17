@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify';
 
 import { knex } from 'common/db';
+import { device_status, device_version } from 'common/types/entities';
 import { formatSuccessResponse } from 'devices/helpers/formatSuccessResponse';
-import { DeviceStatus, DeviceVersion } from 'devices/models';
 
 export function devicesRoutes(fastify: FastifyInstance, opts, done) {
   fastify.post(
@@ -41,14 +41,14 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
         return reply.send(formatSuccessResponse(device.type, 'paired'));
       }
 
-      if (device.status === DeviceStatus.paired && device.user_id) {
+      if (device.status === device_status.paired && device.user_id) {
         // Have to remove device from app first to enable re-pairing
         req.log.error('Device that is already paired tried to discover itself');
         return reply.code(400).send('failed');
       }
 
-      if (device.status === DeviceStatus.pairing && device.user_id) {
-        if (device.version === DeviceVersion.hub_10) {
+      if (device.status === device_status.pairing && device.user_id) {
+        if (device.version === device_version.hub_10) {
           const accessKey = await knex('users_access_keys')
             .select('access_key')
             .innerJoin('users_devices', 'users_devices.user_id', 'users_access_keys.user_id')
@@ -62,16 +62,16 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
           }
         }
 
-        if (device.version === DeviceVersion.sensor_10) {
+        if (device.version === device_version.sensor_10) {
           req.log.info('Successfully paired sensor');
-          await knex('devices').update('status', DeviceStatus.paired).where('id', deviceId);
+          await knex('devices').update('status', device_status.paired).where('id', deviceId);
           return reply.send(formatSuccessResponse(device.type, 'paired'));
         }
       }
 
       const address = req.context.isLocal ? '127.0.0.1' : req.ip;
       await knex('devices')
-        .update({ address, last_seen_at: new Date(), status: DeviceStatus.pairing })
+        .update({ address, last_seen_at: new Date(), status: device_status.pairing })
         .where('id', deviceId);
       return reply.send(formatSuccessResponse(device.type, 'discover'));
     }
@@ -111,7 +111,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
       }
 
       const deviceId = req.body;
-      await knex('devices').update('status', DeviceStatus.paired).where('id', deviceId);
+      await knex('devices').update('status', device_status.paired).where('id', deviceId);
       return reply.send(formatSuccessResponse(device.type, 'paired'));
     }
   );

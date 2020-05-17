@@ -1,9 +1,10 @@
 import { Logger } from 'fastify';
 
-import { DeviceStatus, DeviceVersion, NewDeviceInput } from './models';
+import { NewDeviceInput } from './models';
 
 import { knex } from 'common/db';
 import { ForbiddenError } from 'common/errors/ForbiddenError';
+import { device_status, device_version } from 'common/types/entities';
 
 export class DeviceService {
   public async addDevice(input: NewDeviceInput, userId: string) {
@@ -71,12 +72,12 @@ export class DeviceService {
     }
   }
 
-  public async pairDevice(log: Logger, version: DeviceVersion, userId: string, address: string): Promise<boolean> {
+  public async pairDevice(log: Logger, version: device_version, userId: string, address: string): Promise<boolean> {
     const device = await knex('devices')
       .select('id')
       .where('address', address)
       .andWhere('version', version)
-      .andWhere('status', DeviceStatus.pairing)
+      .andWhere('status', device_status.pairing)
       .first();
 
     if (!device) {

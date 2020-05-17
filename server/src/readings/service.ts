@@ -1,7 +1,7 @@
 import { Reading, ReadingInput } from './models';
 
 import { knex } from 'common/db';
-import { DeviceType } from 'devices/models';
+import { device_type } from 'common/types/entities';
 
 export class ReadingService {
   public async getReadings(deviceId = '99', date) {
@@ -89,7 +89,7 @@ export class ReadingService {
           WHERE d.type = :type
           ORDER BY device_id, timestamp DESC
       `,
-        { type: DeviceType.sensor }
+        { type: device_type.sensor }
       )
       .then((result) => result.rows);
   }
