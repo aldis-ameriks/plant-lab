@@ -53,8 +53,8 @@ void callbackDispatcher() {
           String accessKey = prefs.getString("access_key");
           if (accessKey != null) {
             List<Notification> notifications = await fetchNotifications(accessKey);
-            notifications.forEach((element) {
-              showNotification(element.id, element.title, element.body);
+            notifications.forEach((notification) {
+              showNotification(notification.id, notification.title, notification.body);
             });
           }
         } catch (e) {
