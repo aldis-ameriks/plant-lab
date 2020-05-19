@@ -91,6 +91,7 @@ export class ReadingService {
                   WHERE d.type = :type
                     AND us.name = 'notifications'
                     AND us.value = 'enabled'
+                    AND d.test = FALSE
                   ORDER BY device_id, timestamp DESC
         `,
         { type: DeviceType.sensor }
