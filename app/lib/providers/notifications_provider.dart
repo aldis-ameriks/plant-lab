@@ -111,6 +111,6 @@ class NotificationsState extends ChangeNotifier {
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(0, title, body, platformChannelSpecifics, payload: deviceId);
+    await flutterLocalNotificationsPlugin.show(int.parse(deviceId), title, body, platformChannelSpecifics, payload: deviceId);
   }
 }

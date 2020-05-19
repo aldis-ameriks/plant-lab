@@ -40,7 +40,7 @@ Future<void> showNotification(String deviceId, String title, String body) async 
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
   var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  await flutterLocalNotificationsPlugin.show(0, title, body, platformChannelSpecifics, payload: deviceId);
+  await flutterLocalNotificationsPlugin.show(int.parse(deviceId), title, body, platformChannelSpecifics, payload: deviceId);
 }
 
 void callbackDispatcher() {
