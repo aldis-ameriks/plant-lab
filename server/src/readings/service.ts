@@ -77,13 +77,13 @@ export class ReadingService {
                   SELECT DISTINCT ON (d.id) d.id AS device_id,
                                             timestamp AS time,
                                             avg(moisture)
-                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) moisture,
+                                            OVER (PARTITION BY d.id ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) moisture,
                                             avg(temperature)
-                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) temperature,
+                                            OVER (PARTITION BY d.id ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) temperature,
                                             avg(light)
-                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) light,
+                                            OVER (PARTITION BY d.id ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) light,
                                             avg(battery_voltage)
-                                            OVER (ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) battery_voltage
+                                            OVER (PARTITION BY d.id ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) battery_voltage
                   FROM readings
                   LEFT JOIN devices d ON readings.device_id = d.id
                   LEFT JOIN users_devices ud ON d.id = ud.device_id
