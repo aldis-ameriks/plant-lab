@@ -90,7 +90,7 @@ class _BackgroundTaskState extends State<BackgroundTaskProvider> {
     super.initState();
     Workmanager.initialize(
       callbackDispatcher,
-      isInDebugMode: true,
+      isInDebugMode: false,
     );
   }
 }
