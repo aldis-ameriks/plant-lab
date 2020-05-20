@@ -14,12 +14,89 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Query = {
+  __typename?: 'Query';
+  device: Device;
+  devices: Array<Device>;
+  newNotifications: Array<Notification>;
+  readings: Array<Reading>;
+  lastReading?: Maybe<Reading>;
+  lastWateredTime?: Maybe<Scalars['DateTime']>;
+  userSettings: Array<UserSetting>;
+  userSetting?: Maybe<UserSetting>;
+};
+
+export type QueryDeviceArgs = {
+  deviceId: Scalars['ID'];
+};
+
+export type QueryReadingsArgs = {
+  date?: Maybe<Scalars['String']>;
+  deviceId: Scalars['ID'];
+};
+
+export type QueryLastReadingArgs = {
+  deviceId: Scalars['ID'];
+};
+
+export type QueryLastWateredTimeArgs = {
+  deviceId: Scalars['ID'];
+};
+
+export type QueryUserSettingArgs = {
+  name: Scalars['String'];
+};
+
 export type Device = {
   __typename?: 'Device';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   room?: Maybe<Scalars['String']>;
   firmware?: Maybe<Scalars['String']>;
+  type: DeviceType;
+  version: DeviceVersion;
+};
+
+/** Device type */
+export enum DeviceType {
+  Hub = 'hub',
+  Sensor = 'sensor',
+}
+
+/** Device version */
+export enum DeviceVersion {
+  Hub_10 = 'hub_10',
+  Sensor_10 = 'sensor_10',
+}
+
+export type Notification = {
+  __typename?: 'Notification';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  body: Scalars['String'];
+  type: NotificationType;
+};
+
+/** Notification type */
+export enum NotificationType {
+  LowBattery = 'low_battery',
+  LowMoisture = 'low_moisture',
+}
+
+export type Reading = {
+  __typename?: 'Reading';
+  device_id: Scalars['ID'];
+  time: Scalars['DateTime'];
+  moisture: Scalars['Float'];
+  temperature: Scalars['Float'];
+  battery_voltage: Scalars['Float'];
+  light?: Maybe<Scalars['Float']>;
+};
+
+export type UserSetting = {
+  __typename?: 'UserSetting';
+  name: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type Mutation = {
@@ -28,7 +105,9 @@ export type Mutation = {
   updateDeviceRoom: Device;
   removeDevice: Scalars['ID'];
   addDevice: Device;
+  pairDevice: Scalars['Boolean'];
   saveReading: Scalars['String'];
+  updateUserSetting: UserSetting;
 };
 
 export type MutationUpdateDeviceNameArgs = {
@@ -49,8 +128,16 @@ export type MutationAddDeviceArgs = {
   input: NewDeviceInput;
 };
 
+export type MutationPairDeviceArgs = {
+  input: PairDeviceInput;
+};
+
 export type MutationSaveReadingArgs = {
   input: Scalars['String'];
+};
+
+export type MutationUpdateUserSettingArgs = {
+  input: UserSettingInput;
 };
 
 export type NewDeviceInput = {
@@ -60,40 +147,13 @@ export type NewDeviceInput = {
   firmware: Scalars['String'];
 };
 
-export type Query = {
-  __typename?: 'Query';
-  device: Device;
-  devices: Array<Device>;
-  readings: Array<Reading>;
-  lastReading?: Maybe<Reading>;
-  lastWateredTime?: Maybe<Scalars['DateTime']>;
+export type PairDeviceInput = {
+  version: Scalars['String'];
 };
 
-export type QueryDeviceArgs = {
-  deviceId: Scalars['ID'];
-};
-
-export type QueryReadingsArgs = {
-  date?: Maybe<Scalars['String']>;
-  deviceId: Scalars['ID'];
-};
-
-export type QueryLastReadingArgs = {
-  deviceId: Scalars['ID'];
-};
-
-export type QueryLastWateredTimeArgs = {
-  deviceId: Scalars['ID'];
-};
-
-export type Reading = {
-  __typename?: 'Reading';
-  device_id: Scalars['ID'];
-  time: Scalars['DateTime'];
-  moisture: Scalars['Float'];
-  temperature: Scalars['Float'];
-  battery_voltage: Scalars['Float'];
-  light?: Maybe<Scalars['Float']>;
+export type UserSettingInput = {
+  name: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type ReadingsQueryVariables = {
@@ -115,7 +175,7 @@ export type LastReadingQueryVariables = {
 };
 
 export type LastReadingQuery = { __typename?: 'Query' } & {
-  lastReading: Maybe<
+  lastReading?: Maybe<
     { __typename?: 'Reading' } & Pick<
       Reading,
       'device_id' | 'time' | 'moisture' | 'temperature' | 'light' | 'battery_voltage'

@@ -6,7 +6,7 @@ import { BackLink } from 'components/BackLink';
 import { LineChart } from 'components/charts/LineChart';
 import { Info } from 'components/info/Info';
 import { SensorReadings } from 'components/SensorReadings';
-import { useReadingsQuery } from 'graphql';
+import { useReadingsQuery } from 'graphql-gen';
 
 export const CardWrapper = styled.div`
   display: flex;
