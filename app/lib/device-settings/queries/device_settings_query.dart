@@ -1,4 +1,4 @@
-import 'package:plantlab/delayed_loader.dart';
+import 'package:plantlab/shared/delayed_page_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -48,7 +48,7 @@ class DeviceSettingsQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: DelayedLoader(),
+              child: DelayedPageLoader(),
             );
           }
 

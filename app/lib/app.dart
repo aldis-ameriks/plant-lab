@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plantlab/delayed_loader.dart';
+import 'package:plantlab/shared/delayed_page_loader.dart';
 import 'package:plantlab/setup/setup.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class _AppState extends State {
   Widget build(BuildContext context) {
     return Consumer<UserState>(builder: (context, userState, _) {
       if (userState.isUninitialized()) {
-        return Scaffold(body: Center(child: DelayedLoader(delay: 1000)));
+        return Scaffold(body: Center(child: DelayedPageLoader(delay: 1000)));
       }
 
       if (userState.isAnonymous()) {

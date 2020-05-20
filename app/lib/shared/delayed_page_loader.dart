@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class DelayedLoader extends StatefulWidget {
-  DelayedLoader({this.delay = 500});
+class DelayedPageLoader extends StatefulWidget {
+  DelayedPageLoader({this.delay = 500});
 
   final int delay;
 
   @override
   State<StatefulWidget> createState() {
-    return _DelayedLoaderState();
+    return _DelayedPageLoaderState();
   }
 }
 
-class _DelayedLoaderState extends State<DelayedLoader> {
+class _DelayedPageLoaderState extends State<DelayedPageLoader> {
   Future<String> _future;
 
   @override

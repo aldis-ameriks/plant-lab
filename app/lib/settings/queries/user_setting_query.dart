@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:plantlab/delayed_loader.dart';
+import 'package:plantlab/shared/delayed_page_loader.dart';
 
 class UserSettingQuery extends StatelessWidget {
   const UserSettingQuery({@required this.name, @required this.builder});
@@ -43,7 +43,7 @@ class UserSettingQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: DelayedLoader(),
+              child: DelayedPageLoader(),
             );
           }
 

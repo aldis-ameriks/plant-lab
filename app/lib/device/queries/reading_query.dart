@@ -1,6 +1,6 @@
-import 'package:plantlab/delayed_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:plantlab/shared/delayed_page_loader.dart';
 
 class ReadingsQuery extends StatelessWidget {
   const ReadingsQuery({@required this.deviceId, @required this.builder});
@@ -47,8 +47,7 @@ class ReadingsQuery extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Center(
-                    child: Text(result.exception.toString(),
-                        textAlign: TextAlign.center),
+                    child: Text(result.exception.toString(), textAlign: TextAlign.center),
                   ),
                 ),
                 RaisedButton(
@@ -57,8 +56,7 @@ class ReadingsQuery extends StatelessWidget {
                     refetch();
                   },
                   color: Theme.of(context).accentColor,
-                  child: Text("Press to retry",
-                      style: TextStyle(color: Colors.white)),
+                  child: Text("Press to retry", style: TextStyle(color: Colors.white)),
                 )
               ],
             );
@@ -66,7 +64,7 @@ class ReadingsQuery extends StatelessWidget {
 
           if (result.loading) {
             return Center(
-              child: DelayedLoader(),
+              child: DelayedPageLoader(),
             );
           }
 
