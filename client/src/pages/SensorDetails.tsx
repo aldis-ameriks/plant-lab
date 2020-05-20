@@ -2,11 +2,11 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { BackLink } from '../components/BackLink';
-import { LineChart } from '../components/charts/LineChart';
-import { Info } from '../components/info/Info';
-import { SensorReadings } from '../components/SensorReadings';
-import { useReadingsQuery } from '../graphql';
+import { BackLink } from 'components/BackLink';
+import { LineChart } from 'components/charts/LineChart';
+import { Info } from 'components/info/Info';
+import { SensorReadings } from 'components/SensorReadings';
+import { useReadingsQuery } from 'graphql';
 
 export const CardWrapper = styled.div`
   display: flex;

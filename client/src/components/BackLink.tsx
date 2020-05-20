@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { LeftArrowIcon } from './icons/LeftArrowIcon';
+import { LeftArrowIcon } from 'components/icons/LeftArrowIcon';
 
 const BackLinkWrapper = styled(Link)`
   position: absolute;

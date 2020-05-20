@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { InfoIcon } from '../icons/InfoIcon';
-import { TimesIcon } from '../icons/TimesIcon';
+import { InfoIcon } from 'components/icons/InfoIcon';
+import { TimesIcon } from 'components/icons/TimesIcon';
 
 const InfoToggleWrapper = styled.button<{ isVisible: boolean }>`
   position: absolute;

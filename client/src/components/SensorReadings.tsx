@@ -2,8 +2,8 @@ import { formatDistanceToNow } from 'date-fns';
 import React from 'react';
 import styled from 'styled-components';
 
-import { useLastReadingQuery, useLastWateredTimeQuery } from '../graphql';
-import { RadialChart } from './charts/RadialChart';
+import { RadialChart } from 'components/charts/RadialChart';
+import { useLastReadingQuery, useLastWateredTimeQuery } from 'graphql';
 
 const RowWrapper = styled.div`
   display: flex;

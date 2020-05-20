@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { InfoToggle } from './InfoToggle';
+import { InfoToggle } from 'components/info/InfoToggle';
 
 const InfoOverlay = styled.div<{ isVisible: boolean }>`
   position: absolute;

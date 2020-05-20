@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { SensorDetails } from './pages/SensorDetails';
-import { SensorList } from './pages/SensorList';
+import { SensorDetails } from 'pages/SensorDetails';
+import { SensorList } from 'pages/SensorList';
 
 export const App = () => (
   <Router>
