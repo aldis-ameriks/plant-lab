@@ -54,14 +54,16 @@ class UserSettingEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return UserSettingQuery(
       name: name,
-      builder: (queryResult, _refetch) {
+      builder: (queryResult, refetch) {
         return UserSettingMutation(
+          refetch: refetch,
           builder: (runMutation, mutationResult) {
             return Setting(
                 text: title,
+                type: SettingValueType.boolean,
                 value: mutationResult.data != null
                     ? mutationResult.data['updateUserSetting']['value']
-                    : queryResult['userSetting'] != null ? queryResult['userSetting']['value'] : '',
+                    : queryResult.data['userSetting'] != null ? queryResult.data['userSetting']['value'] : '',
                 readonly: false,
                 loading: mutationResult.loading,
                 onSubmit: (value) {

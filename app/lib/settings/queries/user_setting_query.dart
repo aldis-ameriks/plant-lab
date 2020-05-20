@@ -17,7 +17,7 @@ class UserSettingQuery extends StatelessWidget {
               value
             }
           }
-      '''), variables: {'name': name}),
+      '''), variables: {'name': name}, fetchPolicy: FetchPolicy.cacheAndNetwork),
         builder: (result, {refetch, fetchMore}) {
           if (result.hasException) {
             return Column(
@@ -47,7 +47,7 @@ class UserSettingQuery extends StatelessWidget {
             );
           }
 
-          return builder(result.data, refetch);
+          return builder(result, refetch);
         },
       );
 }

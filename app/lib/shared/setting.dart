@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
 
-// TODO: Add support for radio input
+enum SettingValueType { text, boolean }
+
 class Setting extends StatefulWidget {
-  const Setting({@required this.text, @required this.value, this.readonly: false, this.onSubmit, this.loading = false});
+  const Setting(
+      {@required this.text,
+      @required this.value,
+      this.readonly: false,
+      this.onSubmit,
+      this.loading = false,
+      this.type = SettingValueType.text});
 
   final String text;
   final String value;
   final bool readonly;
   final Function onSubmit;
   final bool loading;
+  final SettingValueType type;
 
   @override
-  _SettingState createState() => _SettingState();
+  State<Setting> createState() {
+    print(value);
+    switch (this.type) {
+      case SettingValueType.text:
+        return _SettingTextEditingState();
+      case SettingValueType.boolean:
+        return _SettingBooleanEditingState();
+      default:
+        return _SettingTextEditingState();
+    }
+  }
 }
 
-class _SettingState extends State<Setting> {
+class _SettingTextEditingState extends State<Setting> {
   TextEditingController myController;
 
   @override
@@ -61,11 +79,13 @@ class _SettingState extends State<Setting> {
                       title: Text('Update ${widget.text}'),
                       content: Form(
                         key: GlobalKey(),
-                        child: Padding(padding: EdgeInsets.all(8.0), child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                          ),
-                            controller: myController)),
+                        child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                controller: myController)),
                       ));
                 });
           },
@@ -98,6 +118,52 @@ class _SettingState extends State<Setting> {
                 ),
               ],
             ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _SettingBooleanEditingState extends State<Setting> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Divider(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(widget.text),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  if (widget.loading)
+                    Container(
+                      margin: EdgeInsets.only(right: 6),
+                      height: 12,
+                      width: 12,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 180),
+                        child: Switch(
+                          value: widget.value == 'enabled',
+                          onChanged: widget.readonly
+                              ? null
+                              : (bool value) {
+                                  widget.onSubmit(value ? 'enabled' : 'disabled');
+                                },
+                        ),
+                      )),
+                ],
+              ),
+            ],
           ),
         )
       ],

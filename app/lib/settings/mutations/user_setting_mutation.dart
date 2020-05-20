@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class UserSettingMutation extends StatelessWidget {
-  const UserSettingMutation({@required this.builder});
+  const UserSettingMutation({@required this.builder, this.refetch});
 
   final dynamic builder;
+  final dynamic refetch;
 
   @override
   Widget build(BuildContext context) => Mutation(
@@ -17,11 +18,15 @@ class UserSettingMutation extends StatelessWidget {
           }
         }
       '''),
+            fetchPolicy: FetchPolicy.noCache,
             onCompleted: (result) {
               final snackBar = SnackBar(
                 content: Text('User setting updated', textAlign: TextAlign.center),
                 backgroundColor: Colors.greenAccent[700],
               );
+              if (this.refetch != null) {
+                refetch();
+              }
               Scaffold.of(context).showSnackBar(snackBar);
             },
             onError: (error) {
