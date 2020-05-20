@@ -1,6 +1,5 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['import'],
   extends: [
     'airbnb-base',
     'eslint:recommended',
@@ -8,22 +7,19 @@ module.exports = {
     'prettier',
     'prettier/@typescript-eslint',
   ],
+  plugins: ['import'],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
   rules: {
-    '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: false }],
     '@typescript-eslint/camelcase': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/explicit-member-accessibility': 0,
-    '@typescript-eslint/prefer-interface': 0,
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'import/prefer-default-export': 0,
-    'no-console': 0,
-    'max-classes-per-file': 0,
+    '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: false }],
+    '@typescript-eslint/prefer-interface': 0,
     'class-methods-use-this': 0,
-    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -35,6 +31,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'import/no-default-export': 'error',
     'import/order': [
       'error',
       {
@@ -46,7 +43,11 @@ module.exports = {
         },
       },
     ],
-    'import/no-default-export': 'error',
+    'import/prefer-default-export': 0,
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    'max-classes-per-file': 0,
+    'no-console': 0,
+    'no-unused-expressions': 0,
   },
   settings: {
     'import/parsers': {
