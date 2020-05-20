@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plantlab/shared/delayed_loader.dart';
 
 enum SettingValueType { text, boolean }
 
@@ -104,7 +105,7 @@ class _SettingTextEditingState extends State<Setting> {
                         margin: EdgeInsets.only(right: 6),
                         height: 12,
                         width: 12,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: DelayedLoader(strokeWidth: 2),
                       ),
                     Padding(
                         padding: EdgeInsets.only(right: 10),
@@ -146,7 +147,7 @@ class _SettingBooleanEditingState extends State<Setting> {
                       margin: EdgeInsets.only(right: 6),
                       height: 12,
                       width: 12,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: DelayedLoader(strokeWidth: 2),
                     ),
                   Padding(
                       padding: EdgeInsets.only(right: 10),
