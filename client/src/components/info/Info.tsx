@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import InfoToggle from './InfoToggle';
+
+import { InfoToggle } from './InfoToggle';
 
 const InfoOverlay = styled.div<{ isVisible: boolean }>`
   position: absolute;
@@ -13,7 +14,7 @@ const InfoOverlay = styled.div<{ isVisible: boolean }>`
   opacity: 0;
   border-radius: 30px;
   transition: all 300ms ease;
-  ${props =>
+  ${(props) =>
     props.isVisible &&
     `
       opacity: 0.7;
@@ -34,7 +35,7 @@ const TextWrapper = styled.div<{ isVisible: boolean }>`
   z-index: -1;
   padding: 3em;
   opacity: 0;
-  ${props =>
+  ${(props) =>
     props.isVisible &&
     `
       opacity: 1;
@@ -48,7 +49,7 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
-const Info = () => {
+export const Info = () => {
   const [isVisible, setVisibility] = useState(false);
 
   return (
@@ -82,5 +83,3 @@ const Info = () => {
     </>
   );
 };
-
-export default Info;

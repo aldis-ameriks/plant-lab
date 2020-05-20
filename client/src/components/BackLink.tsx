@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import LeftArrowIcon from './icons/LeftArrowIcon';
+import { LeftArrowIcon } from './icons/LeftArrowIcon';
 
 const BackLinkWrapper = styled(Link)`
   position: absolute;
@@ -16,10 +16,8 @@ const BackLinkWrapper = styled(Link)`
   border: 3px solid transparent;
 `;
 
-const BackLink = () => (
+export const BackLink = () => (
   <BackLinkWrapper to="/">
     <LeftArrowIcon color="#8c8c8d" />
   </BackLinkWrapper>
 );
-
-export default BackLink;

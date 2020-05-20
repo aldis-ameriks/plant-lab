@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useLastReadingQuery, useLastWateredTimeQuery } from '../graphql';
-import RadialChart from './charts/RadialChart';
+import { RadialChart } from './charts/RadialChart';
 
 const RowWrapper = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ type Props = {
   deviceId: string;
 };
 
-const SensorReadings: React.FC<Props> = ({ deviceId }) => {
+export const SensorReadings: React.FC<Props> = ({ deviceId }) => {
   const lastReadingQuery = useLastReadingQuery({ variables: { deviceId } });
   const lastWateredTimeQuery = useLastWateredTimeQuery({ variables: { deviceId } });
 
@@ -106,5 +106,3 @@ const SensorReadings: React.FC<Props> = ({ deviceId }) => {
     </div>
   );
 };
-
-export default SensorReadings;

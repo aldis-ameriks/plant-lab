@@ -2,10 +2,10 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import BackLink from '../components/BackLink';
-import LineChart from '../components/charts/LineChart';
-import Info from '../components/info/Info';
-import SensorReadings from '../components/SensorReadings';
+import { BackLink } from '../components/BackLink';
+import { LineChart } from '../components/charts/LineChart';
+import { Info } from '../components/info/Info';
+import { SensorReadings } from '../components/SensorReadings';
 import { useReadingsQuery } from '../graphql';
 
 export const CardWrapper = styled.div`
@@ -101,7 +101,7 @@ export const ImageWrapper = styled.div`
   }
 `;
 
-const SensorDetails = () => {
+export const SensorDetails = () => {
   const { id = '4' } = useParams();
   const { data, loading, error } = useReadingsQuery({ variables: { deviceId: id } });
 
@@ -150,5 +150,3 @@ const SensorDetails = () => {
     </CardWrapper>
   );
 };
-
-export default SensorDetails;

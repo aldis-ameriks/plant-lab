@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import SensorReadings from '../components/SensorReadings';
+import { SensorReadings } from '../components/SensorReadings';
 import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from './SensorDetails';
 
 const deviceIds = ['5', '6', '7'];
@@ -36,11 +36,11 @@ const ListCardSection = styled(CardSection)`
   }
 `;
 
-const SensorList = () => {
+export const SensorList = () => {
   const history = useHistory();
   return (
     <List>
-      {deviceIds.map(id => (
+      {deviceIds.map((id) => (
         <ListCardWrapper key={id}>
           <ListCard onClick={() => history.push(`/sensors/${id}`)}>
             <ListCardSection>
@@ -63,5 +63,3 @@ const SensorList = () => {
     </List>
   );
 };
-
-export default SensorList;

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+
 import { Reading } from '../../graphql';
 
 type Props = {
@@ -15,7 +16,7 @@ type State = {
   series: any;
 };
 
-class LineChart extends React.Component<Props, State> {
+export class LineChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -85,7 +86,7 @@ class LineChart extends React.Component<Props, State> {
           },
         },
       },
-      series: [{ name: title, data: data.map(row => row[field]) }],
+      series: [{ name: title, data: data.map((row) => row[field]) }],
     };
   }
 
@@ -94,5 +95,3 @@ class LineChart extends React.Component<Props, State> {
     return <ReactApexChart options={options} series={series} type="line" width="100%" />;
   }
 }
-
-export default LineChart;

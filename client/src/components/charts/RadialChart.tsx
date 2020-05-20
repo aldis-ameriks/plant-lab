@@ -15,7 +15,7 @@ type State = {
   series: any;
 };
 
-class RadialChart extends React.Component<Props, State> {
+export class RadialChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -115,5 +115,3 @@ class RadialChart extends React.Component<Props, State> {
     return <ReactApexChart options={options} series={series} type="radialBar" />;
   }
 }
-
-export default RadialChart;

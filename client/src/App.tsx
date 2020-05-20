@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import SensorDetails from './pages/SensorDetails';
-import SensorList from './pages/SensorList';
+import { SensorDetails } from './pages/SensorDetails';
+import { SensorList } from './pages/SensorList';
 
-const App = () => (
+export const App = () => (
   <Router>
     <Switch>
       <Route path="/sensors/:id">
@@ -16,5 +16,3 @@ const App = () => (
     </Switch>
   </Router>
 );
-
-export default App;

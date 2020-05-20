@@ -4,7 +4,8 @@ import { ApolloProvider } from 'react-apollo';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import { createGlobalStyle } from 'styled-components';
-import App from './App';
+
+import { App } from './App';
 
 if (process.env.REACT_APP_GA_TRACKING_ID) {
   ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID);

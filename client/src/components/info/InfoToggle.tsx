@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import InfoIcon from '../icons/InfoIcon';
-import TimesIcon from '../icons/TimesIcon';
+
+import { InfoIcon } from '../icons/InfoIcon';
+import { TimesIcon } from '../icons/TimesIcon';
 
 const InfoToggleWrapper = styled.button<{ isVisible: boolean }>`
   position: absolute;
@@ -9,7 +10,7 @@ const InfoToggleWrapper = styled.button<{ isVisible: boolean }>`
   top: 4px;
   right: 10px;
   z-index: 3000;
-  ${props => props.isVisible && 'color: white'};
+  ${(props) => props.isVisible && 'color: white'};
   background-color: transparent;
   padding: 0.5em;
   font-size: 1.5em;
@@ -26,10 +27,8 @@ type Props = {
   setVisibility: (isVisible: boolean) => void;
 };
 
-const InfoToggle: React.FC<Props> = ({ isVisible, setVisibility }) => (
+export const InfoToggle: React.FC<Props> = ({ isVisible, setVisibility }) => (
   <InfoToggleWrapper isVisible={isVisible} onClick={() => setVisibility(!isVisible)} tabIndex={0} role="button">
     {isVisible ? <TimesIcon color="#8c8c8d" /> : <InfoIcon color="#8c8c8d" />}
   </InfoToggleWrapper>
 );
-
-export default InfoToggle;
