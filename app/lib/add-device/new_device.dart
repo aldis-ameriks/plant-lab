@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:plantlab/add-device/new_device_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:plantlab/add-device/new_device_card.dart';
 
 class NewSensor extends StatelessWidget {
   @override
@@ -44,7 +44,7 @@ Make sure the Hub is powered and connected to the network, then power up the sen
             ''',
       }
     ];
-
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
@@ -55,7 +55,7 @@ Make sure the Hub is powered and connected to the network, then power up the sen
               )),
         ],
         body: GridView.count(
-          crossAxisCount: 2,
+          crossAxisCount: (width / 200).round(),
           childAspectRatio: 1.6,
           padding: const EdgeInsets.all(10),
           crossAxisSpacing: 10,

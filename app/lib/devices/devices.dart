@@ -13,6 +13,7 @@ class Home extends StatelessWidget {
     return Scaffold(body: DevicesQuery(
       builder: (result, refetch) {
         dynamic userSensors = result['devices'];
+        double width = MediaQuery.of(context).size.width;
 
         return NestedScrollView(
             headerSliverBuilder: (context, innerBoxScrolled) => [
@@ -49,7 +50,7 @@ class Home extends StatelessWidget {
                 return completer.future;
               },
               child: GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: (width / 200).round(),
                 childAspectRatio: 1.6,
                 padding: const EdgeInsets.all(10),
                 crossAxisSpacing: 10,

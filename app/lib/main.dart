@@ -19,10 +19,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-
     return UserStateProvider(
       child: ClientProvider(
           uri: config['graphql']['endpoint'],
