@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { Container } from 'typedi';
 
 import { ForbiddenError } from 'common/errors/ForbiddenError';
 import { jsonSchema } from 'common/jsonSchema';
@@ -6,7 +7,7 @@ import { NotificationResponse } from 'notifications/models';
 import { NotificationsService } from 'notifications/service';
 
 export function notificationRoutes(fastify: FastifyInstance, opts, done) {
-  const notificationsService = new NotificationsService();
+  const notificationsService = Container.get(NotificationsService);
 
   fastify.get(
     '/notifications/new',

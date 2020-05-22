@@ -1,15 +1,15 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Inject, Service } from 'typedi';
 
 import { Context } from 'common/types/context';
 import { UserSetting, UserSettingInput } from 'user/models';
 import { UserService } from 'user/service';
 
+@Service()
 @Resolver()
 export class UserResolver {
+  @Inject()
   private readonly userService: UserService;
-  constructor() {
-    this.userService = new UserService();
-  }
 
   @Authorized()
   @Query((_returns) => [UserSetting])

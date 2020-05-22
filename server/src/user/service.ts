@@ -1,8 +1,11 @@
+import { Service } from 'typedi';
+
 import { knex } from 'common/db';
 import { ForbiddenError } from 'common/errors/ForbiddenError';
 import { UserSettingEntity } from 'common/types/entities';
 import { UserSettingInput } from 'user/models';
 
+@Service()
 export class UserService {
   async validateAccessKey(accessKey: string): Promise<boolean> {
     const result = await knex('users_access_keys').where('access_key', accessKey).first();

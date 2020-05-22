@@ -1,17 +1,16 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
+import { Inject, Service } from 'typedi';
 
 import { Device, NewDeviceInput, PairDeviceInput } from './models';
 import { DeviceService } from './service';
 
 import { Context } from 'common/types/context';
 
+@Service()
 @Resolver(Device)
 export class DeviceResolver {
+  @Inject()
   private readonly deviceService: DeviceService;
-
-  constructor() {
-    this.deviceService = new DeviceService();
-  }
 
   @Query((_returns) => Device)
   @Authorized()

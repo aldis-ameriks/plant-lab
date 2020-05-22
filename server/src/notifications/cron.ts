@@ -1,21 +1,26 @@
 import { CronJob } from 'cron';
 import { Logger } from 'fastify';
+import { Inject, Service } from 'typedi';
 
 import { NotificationType } from 'common/types/entities';
 import { NotificationsService } from 'notifications/service';
 import { Reading } from 'readings/models';
 import { ReadingService } from 'readings/service';
 
+@Service()
 export class NotificationsCron {
-  private readonly readingService: ReadingService;
-  private readonly notificationsService: NotificationsService;
-  private readonly logger: Logger;
   private readonly job;
 
-  constructor(logger: Logger) {
-    this.logger = logger;
-    this.readingService = new ReadingService();
-    this.notificationsService = new NotificationsService();
+  @Inject()
+  private readonly readingService: ReadingService;
+
+  @Inject()
+  private readonly notificationsService: NotificationsService;
+
+  @Inject('logger')
+  private readonly logger: Logger;
+
+  constructor() {
     this.job = new CronJob('* 0 * * * *', this.handleNotificationCron);
   }
 

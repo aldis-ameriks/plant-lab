@@ -1,8 +1,11 @@
+import { Service } from 'typedi';
+
 import { Reading, ReadingInput } from './models';
 
 import { knex } from 'common/db';
 import { DeviceType } from 'common/types/entities';
 
+@Service()
 export class ReadingService {
   public async getReadings(deviceId = '99', date) {
     const time = getTimestamp(date);

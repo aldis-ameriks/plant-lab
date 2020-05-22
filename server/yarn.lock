@@ -4834,6 +4834,11 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
+typedi@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/typedi/-/typedi-0.8.0.tgz#d8e203bd1d41a96e2b0a5c6295147d74b2b2d03e"
+  integrity sha512-/c7Bxnm6eh5kXx2I+mTuO+2OvoWni5+rXA3PhXwVWCtJRYmz3hMok5s1AKLzoDvNAZqj/Q/acGstN0ri5aQoOA==
+
 typescript-formatter@^7.0.1:
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/typescript-formatter/-/typescript-formatter-7.2.2.tgz#a147181839b7bb09c2377b072f20f6336547c00a"

@@ -1,4 +1,5 @@
 import { Logger } from 'fastify';
+import { Service } from 'typedi';
 
 import { NewDeviceInput } from './models';
 
@@ -6,6 +7,7 @@ import { knex } from 'common/db';
 import { ForbiddenError } from 'common/errors/ForbiddenError';
 import { DeviceStatus, DeviceVersion } from 'common/types/entities';
 
+@Service()
 export class DeviceService {
   public async addDevice(input: NewDeviceInput, userId: string) {
     return knex.transaction(async (trx) => {

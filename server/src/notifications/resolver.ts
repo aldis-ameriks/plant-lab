@@ -1,16 +1,15 @@
 import { Ctx, Query, Resolver } from 'type-graphql';
+import { Inject, Service } from 'typedi';
 
 import { Context } from 'common/types/context';
 import { Notification } from 'notifications/models';
 import { NotificationsService } from 'notifications/service';
 
+@Service()
 @Resolver()
 export class NotificationsResolver {
-  private readonly notificationsService;
-
-  constructor() {
-    this.notificationsService = new NotificationsService();
-  }
+  @Inject()
+  private readonly notificationsService: NotificationsService;
 
   @Query((_returns) => [Notification])
   newNotifications(@Ctx() ctx: Context) {

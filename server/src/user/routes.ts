@@ -1,11 +1,12 @@
 import { DefaultHeaders, DefaultParams, DefaultQuery, FastifyInstance } from 'fastify';
+import { Container } from 'typedi';
 
 import { jsonSchema } from 'common/jsonSchema';
 import { LoginInput, LoginResponse } from 'user/models';
 import { UserService } from 'user/service';
 
 export function userRoutes(fastify: FastifyInstance, opts, done) {
-  const userService = new UserService();
+  const userService = Container.get(UserService);
 
   fastify.post<DefaultQuery, DefaultParams, DefaultHeaders, LoginInput>(
     '/login',

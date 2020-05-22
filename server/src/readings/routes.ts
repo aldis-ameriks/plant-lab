@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { Container } from 'typedi';
 
 import { validate } from 'common/validate';
 import { DeviceService } from 'devices/service';
@@ -6,8 +7,8 @@ import { ReadingInput } from 'readings/models';
 import { ReadingService } from 'readings/service';
 
 export function readingsRoutes(fastify: FastifyInstance, opts, done) {
-  const deviceService = new DeviceService();
-  const readingService = new ReadingService();
+  const deviceService = Container.get(DeviceService);
+  const readingService = Container.get(ReadingService);
 
   fastify.post(
     '/reading',

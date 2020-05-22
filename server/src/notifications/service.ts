@@ -1,6 +1,9 @@
+import { Service } from 'typedi';
+
 import { knex } from 'common/db';
 import { NotificationType, NotificationEntity } from 'common/types/entities';
 
+@Service()
 export class NotificationsService {
   getUnsentNotifications(userId: string): Promise<NotificationEntity[]> {
     return knex('notifications')

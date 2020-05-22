@@ -1,4 +1,5 @@
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
+import { Inject, Service } from 'typedi';
 
 import { Reading, ReadingInput } from './models';
 import { ReadingService } from './service';
@@ -7,15 +8,14 @@ import { Context } from 'common/types/context';
 import { validate } from 'common/validate';
 import { DeviceService } from 'devices/service';
 
+@Service()
 @Resolver(Reading)
 export class ReadingResolver {
+  @Inject()
   private readonly readingService: ReadingService;
-  private readonly deviceService: DeviceService;
 
-  constructor() {
-    this.readingService = new ReadingService();
-    this.deviceService = new DeviceService();
-  }
+  @Inject()
+  private readonly deviceService: DeviceService;
 
   @Query((_returns) => [Reading])
   @Authorized()

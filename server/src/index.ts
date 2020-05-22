@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
 import fastify from 'fastify';
 import { buildSchema } from 'type-graphql';
+import { Container } from 'typedi';
 
 import { authChecker } from 'common/authChecker';
 import { isDevelopment } from 'common/config';
@@ -26,6 +27,7 @@ import { userRoutes } from 'user/routes';
       path: `${__dirname}/../schema.graphql`,
       commentDescriptions: true,
     },
+    container: Container,
   });
 
   const apolloServer = new ApolloServer({
@@ -47,8 +49,10 @@ import { userRoutes } from 'user/routes';
     },
   });
 
+  Container.set('logger', app.log);
+
   initJsonSchema();
-  new NotificationsCron(app.log).start();
+  Container.get(NotificationsCron).start();
 
   app.decorateRequest('context', {});
   app.addHook('preHandler', async (req) => {
