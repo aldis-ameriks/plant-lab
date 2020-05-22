@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
 import fastify from 'fastify';
+import { fieldExtensionsEstimator, getComplexity, simpleEstimator } from 'graphql-query-complexity';
 import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi';
 
@@ -37,6 +38,26 @@ import { userRoutes } from 'user/routes';
       console.error(JSON.stringify(err));
       return err;
     },
+    plugins: [
+      {
+        requestDidStart: (_requestContext) => ({
+          didResolveOperation({ request, document }) {
+            const complexity = getComplexity({
+              schema,
+              operationName: request.operationName,
+              query: document,
+              variables: request.variables,
+              estimators: [fieldExtensionsEstimator(), simpleEstimator({ defaultComplexity: 1 })],
+            });
+            if (complexity >= 20) {
+              throw new Error(
+                `Sorry, too complicated query! ${complexity} is over 20 that is the max allowed complexity.`
+              );
+            }
+          },
+        }),
+      },
+    ],
   });
 
   const app = fastify({
