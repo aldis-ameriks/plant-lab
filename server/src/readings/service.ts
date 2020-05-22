@@ -1,15 +1,18 @@
-import { Service } from 'typedi';
+import Knex from 'knex';
+import { Inject, Service } from 'typedi';
 
 import { Reading, ReadingInput } from './models';
 
-import { knex } from 'common/db';
 import { DeviceType } from 'common/types/entities';
 
 @Service()
 export class ReadingService {
+  @Inject('knex')
+  private readonly knex: Knex;
+
   public async getReadings(deviceId = '99', date) {
     const time = getTimestamp(date);
-    const result = await knex.raw(
+    const result = await this.knex.raw(
       `
                 SELECT *
                 FROM (
@@ -33,8 +36,8 @@ export class ReadingService {
   }
 
   public async getLastReading(deviceId) {
-    return knex('readings')
-      .select('device_id', knex.ref('timestamp').as('time'), 'moisture', 'temperature', 'light', 'battery_voltage')
+    return this.knex('readings')
+      .select('device_id', this.knex.ref('timestamp').as('time'), 'moisture', 'temperature', 'light', 'battery_voltage')
       .where('device_id', deviceId)
       .orderBy('time', 'desc')
       .limit(1)
@@ -42,7 +45,7 @@ export class ReadingService {
   }
 
   public async getLastWateredTime(deviceId) {
-    const result = await knex.raw(
+    const result = await this.knex.raw(
       `
                 SELECT *
                 FROM (
@@ -60,7 +63,7 @@ export class ReadingService {
   }
 
   public async saveReading(input: ReadingInput) {
-    await knex.raw(
+    await this.knex.raw(
       `
                 INSERT INTO readings (device_id, moisture, moisture_raw, moisture_max, moisture_min, temperature, light,
                                       battery_voltage, signal, reading_id)
@@ -74,7 +77,7 @@ export class ReadingService {
   }
 
   public async getAllSensorLastAverageReadings(): Promise<Reading[]> {
-    return knex
+    return this.knex
       .raw(
         `
                   SELECT DISTINCT ON (d.id) d.id AS device_id,

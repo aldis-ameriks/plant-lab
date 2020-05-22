@@ -1,10 +1,14 @@
 import { FastifyInstance } from 'fastify';
+import Knex from 'knex';
 
-import { knex } from 'common/db';
+import { Container } from 'typedi';
+
 import { DeviceStatus, DeviceVersion } from 'common/types/entities';
 import { formatSuccessResponse } from 'devices/helpers/formatSuccessResponse';
 
 export function devicesRoutes(fastify: FastifyInstance, opts, done) {
+  const knex: Knex = Container.get('knex');
+
   fastify.post(
     '/discover',
     {

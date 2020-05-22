@@ -1,12 +1,15 @@
-import { Service } from 'typedi';
+import Knex from 'knex';
+import { Inject, Service } from 'typedi';
 
-import { knex } from 'common/db';
 import { NotificationType, NotificationEntity } from 'common/types/entities';
 
 @Service()
 export class NotificationsService {
+  @Inject('knex')
+  private readonly knex: Knex;
+
   getUnsentNotifications(userId: string): Promise<NotificationEntity[]> {
-    return knex('notifications')
+    return this.knex('notifications')
       .update('sent_at', new Date())
       .where('sent_at', null)
       .andWhere('user_id', userId)
@@ -17,7 +20,7 @@ export class NotificationsService {
     deviceId: string,
     type: NotificationType
   ): Promise<Pick<NotificationEntity, 'created_at' | 'sent_at'>> {
-    return knex('notifications')
+    return this.knex('notifications')
       .select('created_at', 'sent_at')
       .where('device_id', deviceId)
       .andWhere('type', type)
@@ -26,7 +29,7 @@ export class NotificationsService {
   }
 
   async createDeviceNotification(deviceId: string, type: NotificationType, title: string, body: string): Promise<void> {
-    const userId = await knex('users_devices')
+    const userId = await this.knex('users_devices')
       .select('user_id')
       .where('device_id', deviceId)
       .first()
@@ -36,7 +39,7 @@ export class NotificationsService {
       return;
     }
 
-    await knex('notifications').insert({
+    await this.knex('notifications').insert({
       user_id: userId,
       device_id: deviceId,
       type,

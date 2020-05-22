@@ -1,14 +1,17 @@
-import { Service } from 'typedi';
+import Knex from 'knex';
+import { Inject, Service } from 'typedi';
 
-import { knex } from 'common/db';
 import { ForbiddenError } from 'common/errors/ForbiddenError';
 import { UserSettingEntity } from 'common/types/entities';
 import { UserSettingInput } from 'user/models';
 
 @Service()
 export class UserService {
+  @Inject('knex')
+  private readonly knex: Knex;
+
   async validateAccessKey(accessKey: string): Promise<boolean> {
-    const result = await knex('users_access_keys').where('access_key', accessKey).first();
+    const result = await this.knex('users_access_keys').where('access_key', accessKey).first();
     if (!result) {
       throw new ForbiddenError('Invalid access key');
     }
@@ -16,7 +19,7 @@ export class UserService {
   }
 
   updateUserSetting(id: string, input: UserSettingInput): Promise<UserSettingEntity> {
-    return knex
+    return this.knex
       .raw(
         `
       INSERT INTO user_settings values (:userId, :name, :value)
@@ -29,10 +32,10 @@ export class UserService {
   }
 
   getUserSettings(id: string): Promise<UserSettingEntity[]> {
-    return knex<UserSettingEntity>('user_settings').where('user_id', id);
+    return this.knex<UserSettingEntity>('user_settings').where('user_id', id);
   }
 
   getUserSetting(id: string, name: string): Promise<UserSettingEntity> {
-    return knex<UserSettingEntity>('user_settings').where('user_id', id).andWhere('name', name).first();
+    return this.knex<UserSettingEntity>('user_settings').where('user_id', id).andWhere('name', name).first();
   }
 }

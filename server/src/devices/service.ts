@@ -1,16 +1,19 @@
 import { Logger } from 'fastify';
-import { Service } from 'typedi';
+import Knex from 'knex';
+import { Inject, Service } from 'typedi';
 
 import { NewDeviceInput } from './models';
 
-import { knex } from 'common/db';
 import { ForbiddenError } from 'common/errors/ForbiddenError';
 import { DeviceStatus, DeviceVersion } from 'common/types/entities';
 
 @Service()
 export class DeviceService {
+  @Inject('knex')
+  private readonly knex: Knex;
+
   public async addDevice(input: NewDeviceInput, userId: string) {
-    return knex.transaction(async (trx) => {
+    return this.knex.transaction(async (trx) => {
       const device = await trx('devices')
         .insert(input)
         .returning('*')
@@ -23,7 +26,7 @@ export class DeviceService {
   }
 
   public getUserDevice(deviceId: string, userId: string) {
-    return knex('devices')
+    return this.knex('devices')
       .select('*')
       .from('devices')
       .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
@@ -33,7 +36,7 @@ export class DeviceService {
   }
 
   public getUserDevices(userId: string) {
-    return knex('devices')
+    return this.knex('devices')
       .select('devices.*')
       .from('devices')
       .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
@@ -43,7 +46,7 @@ export class DeviceService {
   }
 
   public async removeDevice(deviceId: string, userId: string) {
-    return knex.transaction(async (trx) => {
+    return this.knex.transaction(async (trx) => {
       await trx('users_devices').where('user_id', userId).andWhere('device_id', deviceId).del();
 
       return trx('devices').where('id', deviceId).del();
@@ -51,7 +54,7 @@ export class DeviceService {
   }
 
   public async updateDeviceName(deviceId: string, name: string) {
-    return knex('devices')
+    return this.knex('devices')
       .where('id', deviceId)
       .update('name', name)
       .returning('*')
@@ -59,7 +62,7 @@ export class DeviceService {
   }
 
   public async updateDeviceRoom(deviceId: string, room: string) {
-    return knex('devices')
+    return this.knex('devices')
       .where('id', deviceId)
       .update('room', room)
       .returning('*')
@@ -67,7 +70,7 @@ export class DeviceService {
   }
 
   public async verifyUserOwnsDevice(deviceId: string, userId: string) {
-    const res = await knex('users_devices').where('user_id', userId).andWhere('device_id', deviceId).first();
+    const res = await this.knex('users_devices').where('user_id', userId).andWhere('device_id', deviceId).first();
 
     if (!res) {
       throw new ForbiddenError('Access denied');
@@ -75,7 +78,7 @@ export class DeviceService {
   }
 
   public async pairDevice(log: Logger, version: DeviceVersion, userId: string, address: string): Promise<boolean> {
-    const device = await knex('devices')
+    const device = await this.knex('devices')
       .select('id')
       .where('address', address)
       .andWhere('version', version)
@@ -88,7 +91,7 @@ export class DeviceService {
     }
 
     log.info(`Found device, assigning device: ${device.id} to user: ${userId}`);
-    await knex('users_devices').insert({ user_id: userId, device_id: device.id });
+    await this.knex('users_devices').insert({ user_id: userId, device_id: device.id });
     return true;
   }
 }

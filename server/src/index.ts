@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
+
 import fastify from 'fastify';
 import { fieldExtensionsEstimator, getComplexity, simpleEstimator } from 'graphql-query-complexity';
 import { buildSchema } from 'type-graphql';
@@ -7,6 +8,7 @@ import { Container } from 'typedi';
 
 import { authChecker } from 'common/authChecker';
 import { isDevelopment } from 'common/config';
+import { knex } from 'common/db';
 import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { initJsonSchema } from 'common/jsonSchema';
@@ -80,6 +82,7 @@ import { userRoutes } from 'user/routes';
   });
 
   Container.set('logger', app.log);
+  Container.set('knex', knex);
 
   initJsonSchema();
   Container.get(NotificationsCron).start();
