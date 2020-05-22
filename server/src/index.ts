@@ -40,6 +40,15 @@ import { userRoutes } from 'user/routes';
     },
     plugins: [
       {
+        requestDidStart: (requestContext) => {
+          requestContext.context.log.info(
+            `user: ${requestContext.context.user?.id},`,
+            requestContext.request.operationName,
+            requestContext.request.variables
+          );
+        },
+      },
+      {
         requestDidStart: (_requestContext) => ({
           didResolveOperation({ request, document }) {
             const complexity = getComplexity({
