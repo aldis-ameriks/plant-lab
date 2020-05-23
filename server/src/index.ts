@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
-
 import fastify from 'fastify';
 import { fieldExtensionsEstimator, getComplexity, simpleEstimator } from 'graphql-query-complexity';
 import { buildSchema } from 'type-graphql';

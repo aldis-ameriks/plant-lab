@@ -18,7 +18,7 @@ export class UserService {
     return true;
   }
 
-  updateUserSetting(id: string, input: UserSettingInput): Promise<UserSettingEntity> {
+  updateUserSetting(userId: string, input: UserSettingInput): Promise<UserSettingEntity> {
     return this.knex
       .raw(
         `
@@ -26,7 +26,7 @@ export class UserService {
       ON CONFLICT(user_id, name) DO UPDATE SET value = :value
       RETURNING *;
     `,
-        { userId: id, ...input }
+        { userId, ...input }
       )
       .then((result) => result.rows[0]);
   }
@@ -35,7 +35,7 @@ export class UserService {
     return this.knex<UserSettingEntity>('user_settings').where('user_id', id);
   }
 
-  getUserSetting(id: string, name: string): Promise<UserSettingEntity> {
+  getUserSetting(id: string, name: string): Promise<UserSettingEntity | undefined> {
     return this.knex<UserSettingEntity>('user_settings').where('user_id', id).andWhere('name', name).first();
   }
 }
