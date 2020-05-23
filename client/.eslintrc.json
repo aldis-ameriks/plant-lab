@@ -80,6 +80,9 @@
     "react/prop-types": 0,
     "react/jsx-one-expression-per-line": 0
   },
+  "env": {
+    "jest": true
+  },
   "globals": {
     "document": true,
     "window": true

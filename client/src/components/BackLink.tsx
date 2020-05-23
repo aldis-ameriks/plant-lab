@@ -17,7 +17,7 @@ const BackLinkWrapper = styled(Link)`
 `;
 
 export const BackLink = () => (
-  <BackLinkWrapper to="/">
+  <BackLinkWrapper to="/" data-testid="back-link">
     <LeftArrowIcon color="#8c8c8d" />
   </BackLinkWrapper>
 );
