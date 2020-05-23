@@ -42,3 +42,4 @@ jobs:
       - run: yarn --cwd server test
     env:
       CI: true
+      NODE_CONFIG: ${{ secrets.NODE_CONFIG }}
