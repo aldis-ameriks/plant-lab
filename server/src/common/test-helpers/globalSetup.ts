@@ -15,33 +15,17 @@ import '../../../migrations/20200424000859_unique-users-devices';
 import '../../../migrations/20200510003011_notifications';
 import '../../../migrations/20200517192741_user_settings';
 
-import { getTestKnexConfig, testDatabaseName } from './testDb';
+import { dropDatabase, createDatabase, getTestKnexConfig, testDatabaseName, runMigrations } from './testDb';
 
 module.exports = async function globalSetup() {
   let knex = Knex(getTestKnexConfig());
 
   try {
-    await knex.raw('DROP DATABASE :database:', { database: testDatabaseName });
+    await dropDatabase(knex);
     // eslint-disable-next-line no-empty
   } catch (e) {}
 
-  await knex.raw('CREATE DATABASE :database:', { database: testDatabaseName });
-
+  await createDatabase(knex);
   knex = Knex(getTestKnexConfig(testDatabaseName));
-  let result = await knex
-    .raw(`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`)
-    .then((res) => res.rows.map((row) => row.tablename));
-
-  if (result.length) {
-    throw new Error('Existing tables before migration');
-  }
-
-  await knex.migrate.latest();
-
-  result = await knex
-    .raw(`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`)
-    .then((res) => res.rows.map((row) => row.tablename));
-  if (!result.length) {
-    throw new Error('No tables after migration');
-  }
+  await runMigrations(knex);
 };
