@@ -146,65 +146,39 @@ describe('user resolver', () => {
         }
       }
     `;
-    const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
-    const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
 
-    describe('with missing input', () => {
-      it('returns error', async () => {
-        const result = await testClient.mutate({ mutation: updateSettingMutation });
-        expect(result.data).toBeUndefined();
-        expect(result.errors.length).toBe(1);
-      });
+    test('validates user input', async () => {
+      const tests = [
+        { input: undefined, output: 'got invalid value undefined' },
+        { input: { name: settingName, value: 'x'.repeat(300) }, output: 'Argument Validation Error' },
+        { input: { name: 'x'.repeat(300), value: 'yes' }, output: 'Argument Validation Error' },
+        { input: { name: settingName, value: true }, output: 'got invalid value' },
+        { input: { name: 123, value: 'true' }, output: 'got invalid value' },
+      ];
+
+      await Promise.all(
+        tests.map(async (test) => {
+          const result = await testClient.query({
+            query: updateSettingMutation,
+            variables: { input: test.input },
+          });
+          expect(result.data).toBeFalsy();
+          expect(result.errors.length).toBe(1);
+          expect(result.errors[0].message).toContain(test.output);
+        })
+      );
     });
 
-    describe('when setting name is too long', () => {
-      it('returns error', async () => {
-        const result = await testClient.query({
-          query: updateSettingMutation,
-          variables: { input: { name: settingName, value: 'x'.repeat(300) } },
-        });
-        expect(result.data).toBeNull();
-        expect(result.errors.length).toBe(1);
-        expect(result.errors[0].message).toBe('Argument Validation Error');
-      });
-    });
+    test('returns updated setting', async () => {
+      const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
+      const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
+      updateUserSettingMock.mockReturnValue(expectedSetting);
 
-    describe('when setting value is too long', () => {
-      it('returns error', async () => {
-        const result = await testClient.query({
-          query: updateSettingMutation,
-          variables: { input: { name: 'x'.repeat(300), value: 'yes' } },
-        });
-        expect(result.data).toBeNull();
-        expect(result.errors.length).toBe(1);
-        expect(result.errors[0].message).toBe('Argument Validation Error');
+      const result = await testClient.query({
+        query: updateSettingMutation,
+        variables: { input: { name: setting.name, value: setting.value } },
       });
-    });
-
-    describe('when setting value is not a string', () => {
-      it('returns error', async () => {
-        const result = await testClient.query({
-          query: updateSettingMutation,
-          variables: { input: { name: setting.name, value: true } },
-        });
-        expect(result.data).toBeUndefined();
-        expect(result.errors.length).toBe(1);
-        expect(result.errors[0].message).toContain('got invalid value');
-      });
-    });
-
-    describe('when input is valid', () => {
-      beforeEach(() => {
-        updateUserSettingMock.mockReturnValue(expectedSetting);
-      });
-
-      it('returns updated setting', async () => {
-        const result = await testClient.query({
-          query: updateSettingMutation,
-          variables: { input: { name: setting.name, value: setting.value } },
-        });
-        expect(result.data.updateUserSetting).toEqual(expectedSetting);
-      });
+      expect(result.data.updateUserSetting).toEqual(expectedSetting);
     });
   });
 });
