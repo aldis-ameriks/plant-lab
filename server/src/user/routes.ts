@@ -1,7 +1,7 @@
 import { DefaultHeaders, DefaultParams, DefaultQuery, FastifyInstance } from 'fastify';
 import { Container } from 'typedi';
 
-import { jsonSchema } from 'common/jsonSchema';
+import jsonSchema from 'common/jsonSchema-generated.json';
 import { LoginInput, LoginResponse } from 'user/models';
 import { UserService } from 'user/service';
 
