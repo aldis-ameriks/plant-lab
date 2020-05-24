@@ -29,10 +29,10 @@ class _SetupState extends State<Setup> {
       builder: (context, userState, _) {
         Future scan() async {
           try {
-            String barcode = await BarcodeScanner.scan();
-            userState.authenticate(barcode);
+            ScanResult barcode = await BarcodeScanner.scan();
+            userState.authenticate(barcode.rawContent);
           } on PlatformException catch (e) {
-            if (e.code == BarcodeScanner.CameraAccessDenied) {
+            if (e.code == BarcodeScanner.cameraAccessDenied) {
               setState(() {
                 this.barcodeError = 'Missing camera permission.';
               });

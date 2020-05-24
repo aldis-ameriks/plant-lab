@@ -2,6 +2,7 @@ PODS:
   - barcode_scan (0.0.1):
     - Flutter
     - MTBBarcodeScanner
+    - SwiftProtobuf
   - connectivity (0.0.1):
     - Flutter
     - Reachability
@@ -22,6 +23,7 @@ PODS:
     - Flutter
   - shared_preferences_web (0.0.1):
     - Flutter
+  - SwiftProtobuf (1.9.0)
   - workmanager (0.0.1):
     - Flutter
 
@@ -42,6 +44,7 @@ SPEC REPOS:
   trunk:
     - MTBBarcodeScanner
     - Reachability
+    - SwiftProtobuf
 
 EXTERNAL SOURCES:
   barcode_scan:
@@ -68,7 +71,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/workmanager/ios"
 
 SPEC CHECKSUMS:
-  barcode_scan: 33f586d02270046fc6559135038b34b5754eaa4f
+  barcode_scan: a5c27959edfafaa0c771905bad0b29d6d39e4479
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   connectivity_macos: e2e9731b6b22dda39eb1b128f6969d574460e191
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
@@ -80,6 +83,7 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
+  SwiftProtobuf: ecbec1be9036d15655f6b3443a1c4ea693c97932
   workmanager: ffff78bf18495e2bc5b8c955ead94a81db340681
 
 PODFILE CHECKSUM: a2b0bf7fe93e4e6b732ab20a6fda201dc8a23f90
