@@ -7,7 +7,7 @@ import { UserSettingEntity } from 'common/types/entities';
 import { UserSettingInput } from 'user/models';
 import { UserService } from 'user/service';
 
-describe('service', () => {
+describe('user service', () => {
   const userId = '99';
   const secondUserId = '123';
   const settingName = 'notifications';
