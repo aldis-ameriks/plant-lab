@@ -68,6 +68,13 @@
     "max-classes-per-file": 0,
     "no-console": 0,
     "no-unused-expressions": 0,
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false
+      }
+    ],
     "react/prop-types": 0,
     "react/jsx-one-expression-per-line": 0,
     "react/jsx-props-no-spreading": 0
