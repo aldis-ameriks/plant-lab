@@ -8,13 +8,11 @@
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "plugins": [
-    "react",
-    "import"
-  ],
+  "plugins": ["react", "import"],
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "rules": {
     "@typescript-eslint/camelcase": 0,
@@ -52,15 +50,7 @@
       "error",
       {
         "newlines-between": "always-and-inside-groups",
-        "groups": [
-          "builtin",
-          "external",
-          [
-            "parent",
-            "sibling"
-          ],
-          "index"
-        ],
+        "groups": ["builtin", "external", ["parent", "sibling"], "index"],
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
@@ -79,7 +69,8 @@
     "no-console": 0,
     "no-unused-expressions": 0,
     "react/prop-types": 0,
-    "react/jsx-one-expression-per-line": 0
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-props-no-spreading": 0
   },
   "env": {
     "jest": true
@@ -90,19 +81,12 @@
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [
-        ".ts", ".tsx"
-      ]
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
       "node": {
-        "paths": [
-          "src"
-        ],
-        "extensions": [
-          ".ts",
-          ".tsx"
-        ]
+        "paths": ["src"],
+        "extensions": [".ts", ".tsx"]
       }
     }
   }
