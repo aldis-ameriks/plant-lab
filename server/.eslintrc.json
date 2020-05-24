@@ -45,6 +45,7 @@
         "tsx": "never"
       }
     ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*.test.ts"] }],
     "import/no-default-export": "error",
     "import/order": [
       "error",
