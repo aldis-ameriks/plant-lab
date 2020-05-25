@@ -3140,7 +3140,14 @@ graphql-iso-date@3.6.1:
   resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.6.1.tgz#bd2d0dc886e0f954cbbbc496bbf1d480b57ffa96"
   integrity sha512-AwFGIuYMJQXOEAgRlJlFL4H1ncFM8n8XmoVDTNypNOZyQ8LFDG2ppMFlsS862BSTCDcSUfHp8PD3/uJhv7t59Q==
 
-graphql-query-complexity@0.5.0, graphql-query-complexity@^0.5.0:
+graphql-query-complexity@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.6.0.tgz#522f452212eb0ffab66601097251bbf411c3cd11"
+  integrity sha512-xYLLvN7PSeSYtiQ2nR53B7B/C6iGOWVPBrzcpbheVxE78GYdiNZffDRNCoMvYGCOAY0eQTpsnTfwncVszQsOJw==
+  dependencies:
+    lodash.get "^4.4.2"
+
+graphql-query-complexity@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.5.0.tgz#7a14958f92f22480f4e84ff351adaf0df41d4874"
   integrity sha512-RRbBbqWi2pTNWOeore/AdCGOdDwywGCZu3zy42c3JLURyX5caAK4PS/xthSg3WeV45gmJsI884Fu/Uvs0tGDnQ==
