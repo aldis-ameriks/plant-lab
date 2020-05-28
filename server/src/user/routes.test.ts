@@ -11,6 +11,7 @@ import { UserService } from 'user/service';
 describe('user routes', () => {
   let app: FastifyInstance;
   let userServiceMock: { [key in keyof UserService]: jest.Mock };
+
   beforeAll(async () => {
     userServiceMock = mockClassMethods(UserService);
     Container.set(UserService, userServiceMock);

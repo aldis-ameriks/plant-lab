@@ -5,6 +5,7 @@ import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi';
 
 import { authChecker } from 'common/authChecker';
+import { mockClassMethods } from 'common/test-helpers/mockClassMethods';
 import { UserSettingEntity } from 'common/types/entities';
 import { UserSetting } from 'user/models';
 import { UserResolver } from 'user/resolver';
@@ -13,27 +14,13 @@ import { UserService } from 'user/service';
 describe('user resolver', () => {
   let server: ApolloServer;
   let testClient: ApolloServerTestClient;
-  let userServiceMock;
-  let validateAccessKeyMock: jest.Mock;
-  let getUserSettingsMock: jest.Mock;
-  let getUserSettingMock: jest.Mock;
-  let updateUserSettingMock: jest.Mock;
+  let userServiceMock: { [key in keyof UserService]: jest.Mock };
 
   const userId = '123';
   const user = { id: userId, roles: ['role'] };
 
   beforeAll(async () => {
-    validateAccessKeyMock = jest.fn();
-    getUserSettingsMock = jest.fn();
-    getUserSettingMock = jest.fn();
-    updateUserSettingMock = jest.fn();
-    // TODO: Create test helper for auto mocking class methods
-    userServiceMock = {
-      validateAccessKey: validateAccessKeyMock,
-      getUserSettings: getUserSettingsMock,
-      getUserSetting: getUserSettingMock,
-      updateUserSetting: updateUserSettingMock,
-    };
+    userServiceMock = mockClassMethods(UserService);
     Container.set(UserService, userServiceMock);
 
     // TODO: Extract as test helper
@@ -65,7 +52,7 @@ describe('user resolver', () => {
 
     describe('when user has no settings', () => {
       beforeEach(() => {
-        getUserSettingsMock.mockReturnValue([]);
+        userServiceMock.getUserSettings.mockReturnValue([]);
       });
 
       it('returns empty', async () => {
@@ -79,7 +66,7 @@ describe('user resolver', () => {
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
 
       beforeEach(() => {
-        getUserSettingsMock.mockReturnValue([setting]);
+        userServiceMock.getUserSettings.mockReturnValue([setting]);
       });
 
       it('returns settings', async () => {
@@ -110,13 +97,13 @@ describe('user resolver', () => {
 
     describe('when user has no settings', () => {
       beforeEach(() => {
-        getUserSettingMock.mockReturnValue(undefined);
+        userServiceMock.getUserSetting.mockReturnValue(undefined);
       });
 
       it('returns empty', async () => {
         const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
         expect(result.data.userSetting).toEqual(null);
-        expect(getUserSettingMock).toHaveBeenCalledWith(userId, settingName);
+        expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
       });
     });
 
@@ -125,13 +112,13 @@ describe('user resolver', () => {
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
 
       beforeEach(() => {
-        getUserSettingMock.mockReturnValue(setting);
+        userServiceMock.getUserSetting.mockReturnValue(setting);
       });
 
       it('returns settings', async () => {
         const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
         expect(result.data.userSetting).toEqual(expectedSetting);
-        expect(getUserSettingMock).toHaveBeenCalledWith(userId, settingName);
+        expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
       });
     });
   });
@@ -172,7 +159,7 @@ describe('user resolver', () => {
     test('returns updated setting', async () => {
       const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
-      updateUserSettingMock.mockReturnValue(expectedSetting);
+      userServiceMock.updateUserSetting.mockReturnValue(expectedSetting);
 
       const result = await testClient.query({
         query: updateSettingMutation,
