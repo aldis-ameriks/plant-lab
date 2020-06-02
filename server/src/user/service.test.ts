@@ -28,125 +28,55 @@ describe('user service', () => {
     await knex('users').insert({ id: secondUserId });
   });
 
-  describe('getUserSettings', () => {
-    describe('when user has no settings', () => {
-      it('returns empty', async () => {
-        expect(await userService.getUserSettings(userId)).toEqual([]);
-      });
-    });
+  test('getUserSettings', async () => {
+    expect(await userService.getUserSettings(userId)).toEqual([]);
 
-    describe('when user has settings', () => {
-      const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
+    let setting: UserSettingEntity = { user_id: +secondUserId, name: settingName, value: 'yes' };
+    await knex('user_settings').insert(setting);
+    expect(await userService.getUserSettings(userId)).toEqual([]);
 
-      beforeEach(async () => {
-        await knex('user_settings').insert(setting);
-      });
-
-      it('returns settings', async () => {
-        expect(await userService.getUserSettings(userId)).toEqual([setting]);
-      });
-    });
-
-    describe('when different user has settings', () => {
-      const setting: UserSettingEntity = { user_id: +secondUserId, name: settingName, value: 'yes' };
-
-      beforeEach(async () => {
-        await knex('user_settings').insert(setting);
-      });
-
-      it('returns empty', async () => {
-        expect(await userService.getUserSettings(userId)).toEqual([]);
-      });
-    });
+    setting = { user_id: +userId, name: settingName, value: 'yes' };
+    await knex('user_settings').insert(setting);
+    expect(await userService.getUserSettings(userId)).toEqual([setting]);
   });
 
-  describe('getUserSetting', () => {
-    describe('when user has no settings', () => {
-      it('returns empty', async () => {
-        expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
-      });
-    });
+  test('getUserSetting', async () => {
+    expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
 
-    describe('when user has setting', () => {
-      const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
+    let setting: UserSettingEntity = { user_id: +userId, name: 'different', value: 'yes' };
+    await knex('user_settings').insert(setting);
+    expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
 
-      beforeEach(async () => {
-        await knex('user_settings').insert(setting);
-      });
+    setting = { user_id: +secondUserId, name: settingName, value: 'yes' };
+    await knex('user_settings').insert(setting);
+    expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
 
-      it('returns setting', async () => {
-        expect(await userService.getUserSetting(userId, settingName)).toEqual(setting);
-      });
-    });
-
-    describe('when user has different setting', () => {
-      const setting: UserSettingEntity = { user_id: +userId, name: 'different', value: 'yes' };
-
-      beforeEach(async () => {
-        await knex('user_settings').insert(setting);
-      });
-
-      it('returns empty', async () => {
-        expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
-      });
-    });
-
-    describe('when different user has setting', () => {
-      const setting: UserSettingEntity = { user_id: +secondUserId, name: settingName, value: 'yes' };
-
-      beforeEach(async () => {
-        await knex('user_settings').insert(setting);
-      });
-
-      it('returns empty', async () => {
-        expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
-      });
-    });
+    setting = { user_id: +userId, name: settingName, value: 'yes' };
+    await knex('user_settings').insert(setting);
+    expect(await userService.getUserSetting(userId, settingName)).toEqual(setting);
   });
 
-  describe('updateUserSetting', () => {
+  test('updateUserSetting', async () => {
     const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
 
-    describe('when user setting does not exist', () => {
-      beforeEach(async () => {
-        expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
-        const input: UserSettingInput = { name: settingName, value: 'yes' };
-        await userService.updateUserSetting(userId, input);
-      });
+    expect(await userService.getUserSetting(userId, settingName)).toBeUndefined();
+    let input: UserSettingInput = { name: settingName, value: 'yes' };
+    await userService.updateUserSetting(userId, input);
+    expect(await userService.getUserSetting(userId, settingName)).toEqual(setting);
 
-      it('inserts setting entry', async () => {
-        expect(await userService.getUserSetting(userId, settingName)).toEqual(setting);
-      });
-
-      describe('and updating existing setting entry', () => {
-        beforeEach(async () => {
-          expect(await userService.getUserSetting(userId, settingName)).toEqual(setting);
-          const input: UserSettingInput = { name: settingName, value: 'no' };
-          await userService.updateUserSetting(userId, input);
-        });
-
-        it('updates setting entry', async () => {
-          expect(await userService.getUserSetting(userId, settingName)).toEqual({ ...setting, value: 'no' });
-        });
-      });
-    });
+    input = { name: settingName, value: 'no' };
+    await userService.updateUserSetting(userId, input);
+    expect(await userService.getUserSetting(userId, settingName)).toEqual({ ...setting, value: 'no' });
   });
 
   describe('validateAccessKey', () => {
-    describe('with unknown key', () => {
-      it('throws an error', async () => {
-        await expect(userService.validateAccessKey(accessKey)).rejects.toThrow(ForbiddenError);
-      });
+    test('unknown key', async () => {
+      await expect(userService.validateAccessKey(accessKey)).rejects.toThrow(ForbiddenError);
     });
 
-    describe('with known access key', () => {
-      beforeEach(async () => {
-        await knex('users_access_keys').insert({ user_id: userId, access_key: accessKey, roles: ['role'] });
-      });
-
-      it('returns given access key', async () => {
-        expect(await userService.validateAccessKey(accessKey)).toBe(true);
-      });
+    test('known key', async () => {
+      await knex('users_access_keys').insert({ user_id: userId, access_key: accessKey, roles: ['role'] });
+      expect(await userService.validateAccessKey(accessKey)).toBe(true);
     });
   });
 });

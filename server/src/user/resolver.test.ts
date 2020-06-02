@@ -50,29 +50,20 @@ describe('user resolver', () => {
           }
     `;
 
-    describe('when user has no settings', () => {
-      beforeEach(() => {
-        userServiceMock.getUserSettings.mockReturnValue([]);
-      });
+    test('user has no settings', async () => {
+      userServiceMock.getUserSettings.mockReturnValue([]);
 
-      it('returns empty', async () => {
-        const result = await testClient.query({ query: getSettingsQuery });
-        expect(result.data.userSettings).toEqual([]);
-      });
+      const result = await testClient.query({ query: getSettingsQuery });
+      expect(result.data.userSettings).toEqual([]);
     });
 
-    describe('when user has settings', () => {
+    test('user has settings', async () => {
       const setting: UserSettingEntity = { user_id: +userId, name: 'setting', value: 'yes' };
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
+      userServiceMock.getUserSettings.mockReturnValue([setting]);
 
-      beforeEach(() => {
-        userServiceMock.getUserSettings.mockReturnValue([setting]);
-      });
-
-      it('returns settings', async () => {
-        const result = await testClient.query({ query: getSettingsQuery });
-        expect(result.data.userSettings).toEqual([expectedSetting]);
-      });
+      const result = await testClient.query({ query: getSettingsQuery });
+      expect(result.data.userSettings).toEqual([expectedSetting]);
     });
   });
 
@@ -87,39 +78,28 @@ describe('user resolver', () => {
       }
     `;
 
-    describe('with missing setting name', () => {
-      it('returns error', async () => {
-        const result = await testClient.query({ query: getSettingQuery });
-        expect(result.data).toBeUndefined();
-        expect(result.errors.length).toBe(1);
-      });
+    test('missing setting name', async () => {
+      const result = await testClient.query({ query: getSettingQuery });
+      expect(result.data).toBeUndefined();
+      expect(result.errors.length).toBe(1);
     });
 
-    describe('when user has no settings', () => {
-      beforeEach(() => {
-        userServiceMock.getUserSetting.mockReturnValue(undefined);
-      });
+    test('user has no settings', async () => {
+      userServiceMock.getUserSetting.mockReturnValue(undefined);
 
-      it('returns empty', async () => {
-        const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
-        expect(result.data.userSetting).toEqual(null);
-        expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
-      });
+      const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
+      expect(result.data.userSetting).toEqual(null);
+      expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
     });
 
-    describe('when user has setting', () => {
+    test('user has setting', async () => {
       const setting: UserSettingEntity = { user_id: +userId, name: settingName, value: 'yes' };
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
+      userServiceMock.getUserSetting.mockReturnValue(setting);
 
-      beforeEach(() => {
-        userServiceMock.getUserSetting.mockReturnValue(setting);
-      });
-
-      it('returns settings', async () => {
-        const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
-        expect(result.data.userSetting).toEqual(expectedSetting);
-        expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
-      });
+      const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
+      expect(result.data.userSetting).toEqual(expectedSetting);
+      expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
     });
   });
 
