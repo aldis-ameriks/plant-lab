@@ -13,19 +13,22 @@ export class UserResolver {
 
   @Authorized()
   @Query((_returns) => [UserSetting])
-  userSettings(@Ctx() ctx: Context) {
+  userSettings(@Ctx() ctx: Context): Promise<UserSetting[]> {
     return this.userService.getUserSettings(ctx.user.id);
   }
 
   @Authorized()
   @Query((_returns) => UserSetting, { nullable: true })
-  userSetting(@Ctx() ctx: Context, @Arg('name') name: string) {
+  userSetting(@Ctx() ctx: Context, @Arg('name') name: string): Promise<UserSetting> {
     return this.userService.getUserSetting(ctx.user.id, name);
   }
 
   @Authorized()
   @Mutation((_returns) => UserSetting)
-  updateUserSetting(@Ctx() ctx: Context, @Arg('input', (_type) => UserSettingInput) input: UserSettingInput) {
+  updateUserSetting(
+    @Ctx() ctx: Context,
+    @Arg('input', (_type) => UserSettingInput) input: UserSettingInput
+  ): Promise<UserSetting> {
     return this.userService.updateUserSetting(ctx.user.id, input);
   }
 }
