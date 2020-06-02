@@ -23,7 +23,7 @@ export class ReadingResolver {
     @Ctx() ctx: Context,
     @Arg('deviceId', (_type) => ID) deviceId: string,
     @Arg('date', { nullable: true }) date?: string
-  ): Promise<Reading> {
+  ): Promise<Reading[]> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     return this.readingService.getReadings(deviceId, date);
@@ -47,7 +47,7 @@ export class ReadingResolver {
 
   @Mutation((_returns) => String)
   @Authorized('HUB')
-  async saveReading(@Ctx() ctx: Context, @Arg('input') input: string) {
+  async saveReading(@Ctx() ctx: Context, @Arg('input') input: string): Promise<string> {
     ctx.log.info('Received input:', input);
     const parsedInput = input.split(';');
     const device_id = parsedInput[0];

@@ -1,10 +1,8 @@
 import { IsNumber, IsOptional, IsPositive, Length, Max, Min } from 'class-validator';
 import { Field, ID, InputType, ObjectType } from 'type-graphql';
 
-import { ReadingEntity } from 'common/types/entities';
-
 @ObjectType()
-export class Reading implements Pick<ReadingEntity, 'moisture' | 'temperature' | 'battery_voltage' | 'light'> {
+export class Reading {
   @Field((_type) => ID)
   device_id: string;
 
@@ -25,19 +23,7 @@ export class Reading implements Pick<ReadingEntity, 'moisture' | 'temperature' |
 }
 
 @InputType()
-export class ReadingInput
-  implements
-    Pick<
-      ReadingEntity,
-      | 'reading_id'
-      | 'moisture'
-      | 'moisture_raw'
-      | 'moisture_min'
-      | 'moisture_max'
-      | 'temperature'
-      | 'battery_voltage'
-      | 'light'
-    > {
+export class ReadingInput {
   @Field()
   @Length(1, 6)
   device_id: string;
