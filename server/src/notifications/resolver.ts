@@ -12,8 +12,9 @@ export class NotificationsResolver {
   private readonly notificationsService: NotificationsService;
 
   @Query((_returns) => [Notification])
-  newNotifications(@Ctx() ctx: Context) {
+  async newNotifications(@Ctx() ctx: Context): Promise<Notification[]> {
     const userId = ctx.user.id;
-    return this.notificationsService.getUnsentNotifications(userId);
+    const result = await this.notificationsService.getUnsentNotifications(userId);
+    return result.map((entry) => Notification.from(entry));
   }
 }

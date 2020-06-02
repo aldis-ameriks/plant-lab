@@ -5,14 +5,14 @@ import { Inject, Service } from 'typedi';
 import { NewDeviceInput } from './models';
 
 import { ForbiddenError } from 'common/errors/ForbiddenError';
-import { DeviceStatus, DeviceVersion } from 'common/types/entities';
+import { DeviceEntity, DeviceStatus, DeviceVersion } from 'common/types/entities';
 
 @Service()
 export class DeviceService {
   @Inject('knex')
   private readonly knex: Knex;
 
-  public async addDevice(input: NewDeviceInput, userId: string) {
+  public async addDevice(input: NewDeviceInput, userId: string): Promise<DeviceEntity> {
     return this.knex.transaction(async (trx) => {
       const device = await trx('devices')
         .insert(input)
@@ -25,8 +25,8 @@ export class DeviceService {
     });
   }
 
-  public getUserDevice(deviceId: string, userId: string) {
-    return this.knex('devices')
+  public getUserDevice(deviceId: string, userId: string): Promise<DeviceEntity> {
+    return this.knex<DeviceEntity>('devices')
       .select('*')
       .from('devices')
       .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
@@ -35,8 +35,8 @@ export class DeviceService {
       .first();
   }
 
-  public getUserDevices(userId: string) {
-    return this.knex('devices')
+  public getUserDevices(userId: string): Promise<DeviceEntity[]> {
+    return this.knex<DeviceEntity>('devices')
       .select('devices.*')
       .from('devices')
       .leftJoin('users_devices', 'users_devices.device_id', 'devices.id')
@@ -45,7 +45,7 @@ export class DeviceService {
       .orderBy('id');
   }
 
-  public async removeDevice(deviceId: string, userId: string) {
+  public async removeDevice(deviceId: string, userId: string): Promise<void> {
     return this.knex.transaction(async (trx) => {
       await trx('users_devices').where('user_id', userId).andWhere('device_id', deviceId).del();
 
@@ -53,23 +53,23 @@ export class DeviceService {
     });
   }
 
-  public async updateDeviceName(deviceId: string, name: string) {
-    return this.knex('devices')
+  public async updateDeviceName(deviceId: string, name: string): Promise<DeviceEntity> {
+    return this.knex<DeviceEntity>('devices')
       .where('id', deviceId)
       .update('name', name)
       .returning('*')
       .then((rows) => rows[0]);
   }
 
-  public async updateDeviceRoom(deviceId: string, room: string) {
-    return this.knex('devices')
+  public async updateDeviceRoom(deviceId: string, room: string): Promise<DeviceEntity> {
+    return this.knex<DeviceEntity>('devices')
       .where('id', deviceId)
       .update('room', room)
       .returning('*')
       .then((rows) => rows[0]);
   }
 
-  public async verifyUserOwnsDevice(deviceId: string, userId: string) {
+  public async verifyUserOwnsDevice(deviceId: string, userId: string): Promise<void> {
     const res = await this.knex('users_devices').where('user_id', userId).andWhere('device_id', deviceId).first();
 
     if (!res) {

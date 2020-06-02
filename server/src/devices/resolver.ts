@@ -14,16 +14,18 @@ export class DeviceResolver {
 
   @Query((_returns) => Device)
   @Authorized()
-  device(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string) {
+  async device(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string): Promise<Device> {
     const userId = ctx.user.id;
-    return this.deviceService.getUserDevice(deviceId, userId);
+    const result = await this.deviceService.getUserDevice(deviceId, userId);
+    return Device.from(result);
   }
 
   @Query((_returns) => [Device])
   @Authorized()
-  devices(@Ctx() ctx: Context) {
+  async devices(@Ctx() ctx: Context): Promise<Device[]> {
     const userId = ctx.user.id;
-    return this.deviceService.getUserDevices(userId);
+    const result = await this.deviceService.getUserDevices(userId);
+    return result.map((entry) => Device.from(entry));
   }
 
   @Mutation((_returns) => Device)
@@ -32,10 +34,11 @@ export class DeviceResolver {
     @Ctx() ctx: Context,
     @Arg('deviceId', (_type) => ID) deviceId: string,
     @Arg('name') name: string
-  ) {
+  ): Promise<Device> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
-    return this.deviceService.updateDeviceName(deviceId, name);
+    const result = await this.deviceService.updateDeviceName(deviceId, name);
+    return Device.from(result);
   }
 
   @Mutation((_returns) => Device)
@@ -44,15 +47,16 @@ export class DeviceResolver {
     @Ctx() ctx: Context,
     @Arg('deviceId', (_type) => ID) deviceId: string,
     @Arg('room') room: string
-  ) {
+  ): Promise<Device> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
-    return this.deviceService.updateDeviceRoom(deviceId, room);
+    const result = await this.deviceService.updateDeviceRoom(deviceId, room);
+    return Device.from(result);
   }
 
   @Mutation((_returns) => ID)
   @Authorized()
-  async removeDevice(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string) {
+  async removeDevice(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string): Promise<string> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
     await this.deviceService.removeDevice(deviceId, userId);
@@ -61,14 +65,18 @@ export class DeviceResolver {
 
   @Mutation((_returns) => Device)
   @Authorized()
-  async addDevice(@Ctx() ctx: Context, @Arg('input', (_type) => NewDeviceInput) input: NewDeviceInput) {
+  async addDevice(
+    @Ctx() ctx: Context,
+    @Arg('input', (_type) => NewDeviceInput) input: NewDeviceInput
+  ): Promise<Device> {
     const userId = ctx.user.id;
-    return this.deviceService.addDevice(input, userId);
+    const result = await this.deviceService.addDevice(input, userId);
+    return Device.from(result);
   }
 
   @Mutation((_returns) => Boolean)
   @Authorized()
-  async pairDevice(@Ctx() ctx: Context, @Arg('input') input: PairDeviceInput) {
+  async pairDevice(@Ctx() ctx: Context, @Arg('input') input: PairDeviceInput): Promise<boolean> {
     const userId = ctx.user.id;
     const { ip } = ctx;
     ctx.log.info('Pair device request', input);

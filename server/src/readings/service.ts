@@ -1,18 +1,19 @@
 import Knex from 'knex';
 import { Inject, Service } from 'typedi';
 
-import { Reading, ReadingInput } from './models';
+import { ReadingInput } from './models';
 
-import { DeviceType } from 'common/types/entities';
+import { DeviceType, ReadingEntity } from 'common/types/entities';
+import { TimeBucketedReading } from 'readings/entities';
 
 @Service()
 export class ReadingService {
   @Inject('knex')
   private readonly knex: Knex;
 
-  public async getReadings(deviceId = '99', date) {
+  public async getReadings(deviceId = '99', date): Promise<TimeBucketedReading[]> {
     const time = getTimestamp(date);
-    const result = await this.knex.raw(
+    const result = await this.knex.raw<{ rows: TimeBucketedReading[] }>(
       `
                 SELECT *
                 FROM (
@@ -35,22 +36,21 @@ export class ReadingService {
     return result.rows;
   }
 
-  public async getLastReading(deviceId) {
-    return this.knex('readings')
-      .select('device_id', this.knex.ref('timestamp').as('time'), 'moisture', 'temperature', 'light', 'battery_voltage')
+  public async getLastReading(deviceId): Promise<ReadingEntity> {
+    return this.knex<ReadingEntity>('readings')
       .where('device_id', deviceId)
-      .orderBy('time', 'desc')
+      .orderBy('timestamp', 'desc')
       .limit(1)
       .first();
   }
 
-  public async getLastWateredTime(deviceId) {
+  public async getLastWateredTime(deviceId): Promise<Date | undefined> {
     const result = await this.knex.raw(
       `
                 SELECT *
                 FROM (
                     SELECT device_id,
-                           timestamp AS time,
+                           timestamp,
                            moisture - LEAD(moisture) OVER (ORDER BY timestamp DESC) AS moisture_increase
                     FROM readings
                     WHERE device_id = :deviceId
@@ -59,10 +59,10 @@ export class ReadingService {
       `,
       { deviceId }
     );
-    return result && result.rows[0] ? result.rows[0].time : null;
+    return result?.rows?.[0]?.timestamp;
   }
 
-  public async saveReading(input: ReadingInput) {
+  public async saveReading(input: ReadingInput): Promise<void> {
     await this.knex.raw(
       `
                 INSERT INTO readings (device_id, moisture, moisture_raw, moisture_max, moisture_min, temperature, light,
@@ -76,12 +76,12 @@ export class ReadingService {
     );
   }
 
-  public async getAllSensorLastAverageReadings(): Promise<Reading[]> {
+  public async getAllSensorLastAverageReadings(): Promise<ReadingEntity[]> {
     return this.knex
-      .raw(
+      .raw<{ rows: ReadingEntity[] }>(
         `
                   SELECT DISTINCT ON (d.id) d.id AS device_id,
-                                            timestamp AS time,
+                                            timestamp,
                                             avg(moisture)
                                             OVER (PARTITION BY d.id ORDER BY timestamp DESC ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING) moisture,
                                             avg(temperature)

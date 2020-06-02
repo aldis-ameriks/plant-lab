@@ -1,7 +1,7 @@
 import { IsNumber, MaxLength } from 'class-validator';
 import { Field, ID, InputType, ObjectType, registerEnumType } from 'type-graphql';
 
-import { DeviceStatus, DeviceType, DeviceVersion } from 'common/types/entities';
+import { DeviceEntity, DeviceStatus, DeviceType, DeviceVersion } from 'common/types/entities';
 
 registerEnumType(DeviceVersion, {
   name: 'DeviceVersion',
@@ -37,6 +37,17 @@ export class Device {
 
   @Field((_type) => DeviceVersion)
   version: DeviceVersion;
+
+  static from(device: DeviceEntity): Device {
+    return {
+      id: `${device.id}`,
+      firmware: device.firmware,
+      name: device.name,
+      room: device.room,
+      type: device.type,
+      version: device.version,
+    };
+  }
 }
 
 @InputType()

@@ -17,7 +17,7 @@ export class NotificationsService {
   }
 
   getLastNotificationTimestamp(
-    deviceId: string,
+    deviceId: number,
     type: NotificationType
   ): Promise<Pick<NotificationEntity, 'created_at' | 'sent_at'>> {
     return this.knex('notifications')
@@ -28,7 +28,7 @@ export class NotificationsService {
       .first();
   }
 
-  async createDeviceNotification(deviceId: string, type: NotificationType, title: string, body: string): Promise<void> {
+  async createDeviceNotification(deviceId: number, type: NotificationType, title: string, body: string): Promise<void> {
     const userId = await this.knex('users_devices')
       .select('user_id')
       .where('device_id', deviceId)

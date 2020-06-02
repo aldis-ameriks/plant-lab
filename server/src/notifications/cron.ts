@@ -2,9 +2,8 @@ import { CronJob } from 'cron';
 import { Logger } from 'fastify';
 import { Inject, Service } from 'typedi';
 
-import { NotificationType } from 'common/types/entities';
+import { NotificationType, ReadingEntity } from 'common/types/entities';
 import { NotificationsService } from 'notifications/service';
-import { Reading } from 'readings/models';
 import { ReadingService } from 'readings/service';
 
 @Service()
@@ -37,7 +36,7 @@ export class NotificationsCron {
     }
   };
 
-  handleReading = async (reading: Reading): Promise<void> => {
+  handleReading = async (reading: ReadingEntity): Promise<void> => {
     if (reading.moisture < 20) {
       await this.handleLowMoisture(reading);
     } else if (reading.battery_voltage < 2.5) {
@@ -45,7 +44,7 @@ export class NotificationsCron {
     }
   };
 
-  handleLowMoisture = async (reading: Reading) => {
+  handleLowMoisture = async (reading: ReadingEntity) => {
     if (await this.hasUnsentNotification(reading.device_id, NotificationType.low_moisture)) {
       return;
     }
@@ -63,7 +62,7 @@ export class NotificationsCron {
     );
   };
 
-  handleLowBattery = async (reading: Reading) => {
+  handleLowBattery = async (reading: ReadingEntity) => {
     if (await this.hasUnsentNotification(reading.device_id, NotificationType.low_battery)) {
       return;
     }
@@ -81,7 +80,7 @@ export class NotificationsCron {
     );
   };
 
-  hasUnsentNotification = async (deviceId: string, type: NotificationType) => {
+  hasUnsentNotification = async (deviceId: number, type: NotificationType) => {
     const oneDayAgo = new Date();
     oneDayAgo.setDate(oneDayAgo.getDate() - 1);
 

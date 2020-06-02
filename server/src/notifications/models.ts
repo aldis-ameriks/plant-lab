@@ -9,7 +9,7 @@ registerEnumType(NotificationType, {
 });
 
 @ObjectType()
-export class Notification implements Pick<NotificationEntity, 'id' | 'title' | 'body' | 'type'> {
+export class Notification {
   @Field((_type) => ID)
   @IsString()
   id: string;
@@ -25,6 +25,15 @@ export class Notification implements Pick<NotificationEntity, 'id' | 'title' | '
   @Field((_type) => NotificationType)
   @IsEnum(NotificationType)
   type: NotificationType;
+
+  static from(notification: NotificationEntity): Notification {
+    return {
+      id: notification.id,
+      body: notification.body,
+      title: notification.title,
+      type: notification.type,
+    };
+  }
 }
 
 export class NotificationResponse {

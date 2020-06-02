@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 
 import { ForbiddenError } from 'common/errors/ForbiddenError';
 import { jsonSchema } from 'common/jsonSchema';
-import { NotificationResponse } from 'notifications/models';
+import { Notification, NotificationResponse } from 'notifications/models';
 import { NotificationsService } from 'notifications/service';
 
 export function notificationRoutes(fastify: FastifyInstance, opts, done) {
@@ -24,7 +24,8 @@ export function notificationRoutes(fastify: FastifyInstance, opts, done) {
       },
     },
     async (req, reply) => {
-      const notifications = await notificationsService.getUnsentNotifications(req.context.user.id);
+      const result = await notificationsService.getUnsentNotifications(req.context.user.id);
+      const notifications = result.map((entry) => Notification.from(entry));
       const response = new NotificationResponse(notifications);
       reply.send(response);
     }

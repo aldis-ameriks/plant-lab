@@ -1,5 +1,8 @@
 import { IsString, MaxLength } from 'class-validator';
+
 import { Field, InputType, ObjectType } from 'type-graphql';
+
+import { UserSettingEntity } from 'common/types/entities';
 
 @ObjectType()
 export class UserSetting {
@@ -12,6 +15,13 @@ export class UserSetting {
   @IsString()
   @MaxLength(255)
   value: string;
+
+  static from(userSetting: UserSettingEntity): UserSetting {
+    return {
+      name: userSetting.name,
+      value: userSetting.value,
+    };
+  }
 }
 
 @InputType()

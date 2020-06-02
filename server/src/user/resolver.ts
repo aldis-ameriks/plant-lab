@@ -13,22 +13,25 @@ export class UserResolver {
 
   @Authorized()
   @Query((_returns) => [UserSetting])
-  userSettings(@Ctx() ctx: Context): Promise<UserSetting[]> {
-    return this.userService.getUserSettings(ctx.user.id);
+  async userSettings(@Ctx() ctx: Context): Promise<UserSetting[]> {
+    const result = await this.userService.getUserSettings(ctx.user.id);
+    return result.map((entry) => UserSetting.from(entry));
   }
 
   @Authorized()
   @Query((_returns) => UserSetting, { nullable: true })
-  userSetting(@Ctx() ctx: Context, @Arg('name') name: string): Promise<UserSetting> {
-    return this.userService.getUserSetting(ctx.user.id, name);
+  async userSetting(@Ctx() ctx: Context, @Arg('name') name: string): Promise<UserSetting> {
+    const result = await this.userService.getUserSetting(ctx.user.id, name);
+    return result ? UserSetting.from(result) : undefined;
   }
 
   @Authorized()
   @Mutation((_returns) => UserSetting)
-  updateUserSetting(
+  async updateUserSetting(
     @Ctx() ctx: Context,
     @Arg('input', (_type) => UserSettingInput) input: UserSettingInput
   ): Promise<UserSetting> {
-    return this.userService.updateUserSetting(ctx.user.id, input);
+    const result = await this.userService.updateUserSetting(ctx.user.id, input);
+    return UserSetting.from(result);
   }
 }

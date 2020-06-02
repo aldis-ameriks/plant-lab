@@ -1,6 +1,9 @@
 import { IsNumber, IsOptional, IsPositive, Length, Max, Min } from 'class-validator';
 import { Field, ID, InputType, ObjectType } from 'type-graphql';
 
+import { ReadingEntity } from 'common/types/entities';
+import { TimeBucketedReading } from 'readings/entities';
+
 @ObjectType()
 export class Reading {
   @Field((_type) => ID)
@@ -20,6 +23,28 @@ export class Reading {
 
   @Field({ nullable: true })
   light?: number;
+
+  static from(reading: ReadingEntity): Reading {
+    return {
+      device_id: `${reading.device_id}`,
+      battery_voltage: reading.battery_voltage,
+      temperature: reading.temperature,
+      moisture: reading.moisture,
+      light: reading.light,
+      time: reading.timestamp,
+    };
+  }
+
+  static fromTimeBucketedReading(reading: TimeBucketedReading): Reading {
+    return {
+      device_id: `${reading.device_id}`,
+      battery_voltage: reading.battery_voltage,
+      temperature: reading.temperature,
+      moisture: reading.moisture,
+      light: reading.light,
+      time: reading.time,
+    };
+  }
 }
 
 @InputType()

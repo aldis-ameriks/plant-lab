@@ -26,7 +26,8 @@ export class ReadingResolver {
   ): Promise<Reading[]> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
-    return this.readingService.getReadings(deviceId, date);
+    const readings = await this.readingService.getReadings(deviceId, date);
+    return readings.map((reading) => Reading.fromTimeBucketedReading(reading));
   }
 
   @Query((_returns) => Reading, { nullable: true })
@@ -34,7 +35,8 @@ export class ReadingResolver {
   async lastReading(@Ctx() ctx: Context, @Arg('deviceId', (_type) => ID) deviceId: string): Promise<Reading> {
     const userId = ctx.user.id;
     await this.deviceService.verifyUserOwnsDevice(deviceId, userId);
-    return this.readingService.getLastReading(deviceId);
+    const result = await this.readingService.getLastReading(deviceId);
+    return Reading.from(result);
   }
 
   @Query((_returns) => Date, { nullable: true })
