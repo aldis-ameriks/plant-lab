@@ -1,7 +1,8 @@
-node_modules
-coverage
-build
-.idea
-.git
-.env
-config/local.json
+*
+!tsconfig.json
+!package.json
+!yarn.lock
+!src/
+!migrations/
+!config/default.json
+!config/test.json
