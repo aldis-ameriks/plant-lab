@@ -18,7 +18,12 @@
       }
     },
     "type": "object",
-    "required": ["id", "name", "room", "firmware"]
+    "required": [
+      "id",
+      "name",
+      "room",
+      "firmware"
+    ]
   },
   "PairDeviceInput": {
     "properties": {
@@ -28,7 +33,9 @@
       }
     },
     "type": "object",
-    "required": ["version"]
+    "required": [
+      "version"
+    ]
   },
   "BaseError": {
     "properties": {
@@ -43,7 +50,11 @@
       }
     },
     "type": "object",
-    "required": ["statusCode", "error", "message"]
+    "required": [
+      "statusCode",
+      "error",
+      "message"
+    ]
   },
   "Notification": {
     "properties": {
@@ -57,12 +68,20 @@
         "type": "string"
       },
       "type": {
-        "enum": ["low_battery", "low_moisture"],
+        "enum": [
+          "low_battery",
+          "low_moisture"
+        ],
         "type": "string"
       }
     },
     "type": "object",
-    "required": ["id", "title", "body", "type"]
+    "required": [
+      "id",
+      "title",
+      "body",
+      "type"
+    ]
   },
   "NotificationResponse": {
     "properties": {
@@ -72,7 +91,9 @@
       }
     },
     "type": "object",
-    "required": ["data"]
+    "required": [
+      "data"
+    ]
   },
   "ReadingInput": {
     "properties": {
@@ -154,7 +175,10 @@
       }
     },
     "type": "object",
-    "required": ["name", "value"]
+    "required": [
+      "name",
+      "value"
+    ]
   },
   "UserSettingInput": {
     "properties": {
@@ -168,7 +192,10 @@
       }
     },
     "type": "object",
-    "required": ["name", "value"]
+    "required": [
+      "name",
+      "value"
+    ]
   },
   "LoginResponse": {
     "properties": {
@@ -178,7 +205,9 @@
       }
     },
     "type": "object",
-    "required": ["accessKey"]
+    "required": [
+      "accessKey"
+    ]
   },
   "LoginInput": {
     "properties": {
@@ -188,6 +217,8 @@
       }
     },
     "type": "object",
-    "required": ["accessKey"]
+    "required": [
+      "accessKey"
+    ]
   }
 }
