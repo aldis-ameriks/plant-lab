@@ -55,7 +55,7 @@
     "fast-check": "1.24.2",
     "husky": "4.2.5",
     "jest": "26.0.1",
-    "lint-staged": "10.2.7",
+    "lint-staged": "10.2.8",
     "nodemon": "2.0.4",
     "nu-schemats": "4.9.0",
     "prettier": "2.0.5",
