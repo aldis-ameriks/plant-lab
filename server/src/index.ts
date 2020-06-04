@@ -59,9 +59,9 @@ import { userRoutes } from 'user/routes';
               variables: request.variables,
               estimators: [fieldExtensionsEstimator(), simpleEstimator({ defaultComplexity: 1 })],
             });
-            if (complexity >= 20) {
+            if (complexity >= 30) {
               throw new Error(
-                `Sorry, too complicated query! ${complexity} is over 20 that is the max allowed complexity.`
+                `Sorry, too complicated query! ${complexity} is over 30 that is the max allowed complexity.`
               );
             }
           },
