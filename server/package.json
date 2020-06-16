@@ -22,7 +22,7 @@
     "docker:run": "docker run -p 4000:4000 --name plant-server -e NODE_CONFIG=\"$(<config/production.json)\" --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
-    "apollo-server-fastify": "2.14.4",
+    "apollo-server-fastify": "2.14.5",
     "class-transformer": "0.2.3",
     "class-validator": "0.12.2",
     "class-validator-jsonschema": "2.0.1",
@@ -46,7 +46,7 @@
     "@types/node": "13.13.10",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
-    "apollo-server-testing": "2.14.4",
+    "apollo-server-testing": "2.14.5",
     "eslint": "7.1.0",
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-config-prettier": "6.11.0",
