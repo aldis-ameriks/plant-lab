@@ -8,6 +8,7 @@ import { Container } from 'typedi';
 import { authChecker } from 'common/authChecker';
 import { isDevelopment } from 'common/config';
 import { knex } from 'common/db';
+import { executor } from 'common/graphqlExecutor';
 import { createRequestContext } from 'common/helpers/createRequestContext';
 import { shutdown } from 'common/helpers/shutdown';
 import { initJsonSchema } from 'common/jsonSchema';
@@ -35,6 +36,7 @@ import { userRoutes } from 'user/routes';
   const apolloServer = new ApolloServer({
     schema,
     context: async (req) => req.context,
+    executor: executor(schema),
     formatError: (err) => {
       console.error(JSON.stringify(err));
       return err;
