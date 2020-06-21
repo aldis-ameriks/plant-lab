@@ -1,0 +1,10 @@
+{
+  "name": "bench",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "autocannon": "5.0.1",
+    "dotenv": "8.2.0"
+  }
+}
