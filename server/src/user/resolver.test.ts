@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-fastify';
-import { ApolloServerTestClient, createTestClient } from 'apollo-server-testing';
+import fastify, { FastifyInstance } from 'fastify';
 import { buildSchema } from 'type-graphql';
 import { Container } from 'typedi';
 
@@ -12,8 +12,7 @@ import { UserResolver } from 'user/resolver';
 import { UserService } from 'user/service';
 
 describe('user resolver', () => {
-  let server: ApolloServer;
-  let testClient: ApolloServerTestClient;
+  let app: FastifyInstance;
   let userServiceMock: { [key in keyof UserService]: jest.Mock };
 
   const userId = '123';
@@ -30,14 +29,15 @@ describe('user resolver', () => {
       container: Container,
     });
 
-    server = new ApolloServer({
+    const server = new ApolloServer({
       schema,
       context: async () => {
         return { user, ip: '0.0.0.0', isLocal: false, log: jest.fn() };
       },
     });
 
-    testClient = createTestClient(server);
+    app = fastify();
+    app.register(server.createHandler({ path: '/graphql' }));
   });
 
   describe('userSettings', () => {
@@ -52,9 +52,8 @@ describe('user resolver', () => {
 
     test('user has no settings', async () => {
       userServiceMock.getUserSettings.mockReturnValue([]);
-
-      const result = await testClient.query({ query: getSettingsQuery });
-      expect(result.data.userSettings).toEqual([]);
+      const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: getSettingsQuery } });
+      expect(JSON.parse(result.body).data.userSettings).toEqual([]);
     });
 
     test('user has settings', async () => {
@@ -62,8 +61,8 @@ describe('user resolver', () => {
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
       userServiceMock.getUserSettings.mockReturnValue([setting]);
 
-      const result = await testClient.query({ query: getSettingsQuery });
-      expect(result.data.userSettings).toEqual([expectedSetting]);
+      const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: getSettingsQuery } });
+      expect(JSON.parse(result.body).data.userSettings).toEqual([expectedSetting]);
     });
   });
 
@@ -79,16 +78,20 @@ describe('user resolver', () => {
     `;
 
     test('missing setting name', async () => {
-      const result = await testClient.query({ query: getSettingQuery });
-      expect(result.data).toBeUndefined();
-      expect(result.errors.length).toBe(1);
+      const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: getSettingQuery } });
+      expect(JSON.parse(result.body).data).toBeUndefined();
+      expect(JSON.parse(result.body).errors.length).toBe(1);
     });
 
     test('user has no settings', async () => {
       userServiceMock.getUserSetting.mockReturnValue(undefined);
 
-      const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
-      expect(result.data.userSetting).toEqual(null);
+      const result = await app.inject({
+        method: 'POST',
+        url: '/graphql',
+        payload: { query: getSettingQuery, variables: { name: settingName } },
+      });
+      expect(JSON.parse(result.body).data.userSetting).toEqual(null);
       expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
     });
 
@@ -97,8 +100,12 @@ describe('user resolver', () => {
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
       userServiceMock.getUserSetting.mockReturnValue(setting);
 
-      const result = await testClient.query({ query: getSettingQuery, variables: { name: settingName } });
-      expect(result.data.userSetting).toEqual(expectedSetting);
+      const result = await app.inject({
+        method: 'POST',
+        url: '/graphql',
+        payload: { query: getSettingQuery, variables: { name: settingName } },
+      });
+      expect(JSON.parse(result.body).data.userSetting).toEqual(expectedSetting);
       expect(userServiceMock.getUserSetting).toHaveBeenCalledWith(userId, settingName);
     });
   });
@@ -116,7 +123,6 @@ describe('user resolver', () => {
 
     test('validates user input', async () => {
       const tests = [
-        { input: undefined, output: 'got invalid value undefined' },
         { input: { name: settingName, value: 'x'.repeat(300) }, output: 'Argument Validation Error' },
         { input: { name: 'x'.repeat(300), value: 'yes' }, output: 'Argument Validation Error' },
         { input: { name: settingName, value: true }, output: 'got invalid value' },
@@ -125,13 +131,15 @@ describe('user resolver', () => {
 
       await Promise.all(
         tests.map(async (test) => {
-          const result = await testClient.query({
-            query: updateSettingMutation,
-            variables: { input: test.input },
+          const result = await app.inject({
+            method: 'POST',
+            url: '/graphql',
+            payload: { query: updateSettingMutation, variables: { input: test.input } },
           });
-          expect(result.data).toBeFalsy();
-          expect(result.errors.length).toBe(1);
-          expect(result.errors[0].message).toContain(test.output);
+          const body = JSON.parse(result.body);
+          expect(body.data).toBeFalsy();
+          expect(body.errors.length).toBe(1);
+          expect(body.errors[0].message).toContain(test.output);
         })
       );
     });
@@ -141,11 +149,13 @@ describe('user resolver', () => {
       const expectedSetting: UserSetting = { name: setting.name, value: setting.value };
       userServiceMock.updateUserSetting.mockReturnValue(expectedSetting);
 
-      const result = await testClient.query({
-        query: updateSettingMutation,
-        variables: { input: { name: setting.name, value: setting.value } },
+      const result = await app.inject({
+        method: 'POST',
+        url: '/graphql',
+        payload: { query: updateSettingMutation, variables: { input: { name: setting.name, value: setting.value } } },
       });
-      expect(result.data.updateUserSetting).toEqual(expectedSetting);
+
+      expect(JSON.parse(result.body).data.updateUserSetting).toEqual(expectedSetting);
     });
   });
 });
