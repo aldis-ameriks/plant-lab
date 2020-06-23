@@ -55,7 +55,7 @@
     "eslint-plugin-import": "2.21.2",
     "fast-check": "1.25.1",
     "husky": "4.2.5",
-    "jest": "26.0.1",
+    "jest": "26.1.0",
     "lint-staged": "10.2.11",
     "nodemon": "2.0.4",
     "nu-schemats": "4.9.0",
