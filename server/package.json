@@ -38,7 +38,7 @@
     "pino-pretty": "4.0.0",
     "reflect-metadata": "0.1.13",
     "tiny-lru": "7.0.6",
-    "type-graphql": "1.0.0-rc.2",
+    "type-graphql": "1.0.0-rc.3",
     "typedi": "0.8.0"
   },
   "devDependencies": {
