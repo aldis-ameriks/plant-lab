@@ -17,7 +17,8 @@ import '../../../migrations/20200517192741_user_settings';
 
 import { dropDatabase, createDatabase, getTestKnexConfig, testDatabaseName, runMigrations } from './testDb';
 
-module.exports = async function globalSetup() {
+// eslint-disable-next-line import/no-default-export
+export default async function globalSetup() {
   let knex = Knex(getTestKnexConfig());
 
   try {
@@ -28,4 +29,4 @@ module.exports = async function globalSetup() {
   await createDatabase(knex);
   knex = Knex(getTestKnexConfig(testDatabaseName));
   await runMigrations(knex);
-};
+}
