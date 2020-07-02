@@ -123,8 +123,16 @@ describe('user resolver', () => {
 
     test('validates user input', async () => {
       const tests = [
-        { input: { name: settingName, value: 'x'.repeat(300) }, output: 'Argument Validation Error' },
-        { input: { name: 'x'.repeat(300), value: 'yes' }, output: 'Argument Validation Error' },
+        {
+          input: { name: settingName, value: 'x'.repeat(300) },
+          output: 'Argument Validation Error',
+          validationMessage: 'value must be shorter than or equal to 255 characters',
+        },
+        {
+          input: { name: 'x'.repeat(300), value: 'yes' },
+          output: 'Argument Validation Error',
+          validationMessage: 'name must be shorter than or equal to 255 characters',
+        },
         { input: { name: settingName, value: true }, output: 'got invalid value' },
         { input: { name: 123, value: 'true' }, output: 'got invalid value' },
       ];
@@ -140,6 +148,11 @@ describe('user resolver', () => {
           expect(body.data).toBeFalsy();
           expect(body.errors.length).toBe(1);
           expect(body.errors[0].message).toContain(test.output);
+          if (test.validationMessage) {
+            expect(body.errors[0].extensions.exception.validationErrors[0].constraints.maxLength).toBe(
+              test.validationMessage
+            );
+          }
         })
       );
     });
