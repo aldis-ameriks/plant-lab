@@ -22,7 +22,7 @@
     "docker:run": "docker run -p 4000:4000 --name plant-server -e NODE_CONFIG=\"$(<config/production.json)\" --rm registry.kataldi.com/plant-server"
   },
   "dependencies": {
-    "apollo-server-fastify": "2.15.0",
+    "apollo-server-fastify": "2.15.1",
     "class-transformer": "0.2.3",
     "class-validator": "0.12.2",
     "class-validator-jsonschema": "2.0.2",
