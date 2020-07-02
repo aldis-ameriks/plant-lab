@@ -10,3 +10,4 @@ export const KNEX: {
 } = config.get('KNEX');
 
 export const isDevelopment = !process.env.NODE_ENV || ['local', 'development'].includes(process.env.NODE_ENV);
+export const isLocal = process.env.NODE_ENV === 'local';

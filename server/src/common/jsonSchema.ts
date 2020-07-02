@@ -2,10 +2,11 @@ import { writeFileSync } from 'fs';
 
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 
-// eslint-disable-next-line import/no-mutable-exports
-export let jsonSchema;
+import { isLocal } from 'common/config';
 
 export function initJsonSchema() {
-  jsonSchema = validationMetadatasToSchemas();
-  writeFileSync(`${__dirname}/jsonSchema-generated.json`, JSON.stringify(jsonSchema, null, 2));
+  if (isLocal) {
+    const jsonSchema = validationMetadatasToSchemas();
+    writeFileSync(`${__dirname}/jsonSchema-generated.json`, JSON.stringify(jsonSchema, null, 2));
+  }
 }

@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { Container } from 'typedi';
 
 import { ForbiddenError } from 'common/errors/ForbiddenError';
-import { jsonSchema } from 'common/jsonSchema';
+import jsonSchema from 'common/jsonSchema-generated.json';
 import { Notification, NotificationResponse } from 'notifications/models';
 import { NotificationsService } from 'notifications/service';
 
