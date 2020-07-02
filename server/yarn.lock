@@ -4889,10 +4889,10 @@ npm-run-path@^4.0.0:
   dependencies:
     path-key "^3.0.0"
 
-nu-schemats@4.9.0:
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/nu-schemats/-/nu-schemats-4.9.0.tgz#c991dba4dfda3db115e8686498f900429d2496ce"
-  integrity sha512-FIkNooBvOu+ca6qceRcPr1H9JLtqZyMDmq909xsVfOAgCEo0OrD3jp02sS9+kszVcLTqftYUarR1kx+wK0nuNQ==
+nu-schemats@4.9.1:
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/nu-schemats/-/nu-schemats-4.9.1.tgz#49077129066ad03239256dc323b922b776e653ce"
+  integrity sha512-KqRNJrhAmSsI1tfxyPnqDqphCvammAkVL1NyS6JOXMAH/4ZMOMVYqR1v1KiNXBw/JAirT9cn9c2V4QLmBtSV2g==
   dependencies:
     bluebird "^3.5.0"
     diff "^3.2.0"
