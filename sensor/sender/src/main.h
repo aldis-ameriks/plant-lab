@@ -62,3 +62,4 @@ void sendSensorPairing();
 void writeEncryptionKey(char* key);
 void initEncryptionKey();
 void factoryReset();
+void flashLeds();
