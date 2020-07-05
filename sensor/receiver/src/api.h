@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <Ethernet.h>
 
-const char server[] = "192.168.0.102";
-const uint16_t port = 4000;
+const char server[] = "api.plant.kataldi.com";
+const uint16_t port = 80;
 
 class ApiClient {
     char accessKey[25];
