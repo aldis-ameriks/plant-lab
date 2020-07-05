@@ -15,7 +15,11 @@ void ApiClient::parseResponse() {
         char c = client.read();
 
         if (c == 0x0A) {
-            newLines++;
+            if (newLines == 6) {
+                response[responseCursor] = c;
+            } else {
+                newLines++;
+            }
         }
 
         if (responseCursor >= sizeof(response)) {
@@ -26,7 +30,8 @@ void ApiClient::parseResponse() {
             return;
         }
 
-        if (newLines == 6 && c != 0x0A) {
+        // Skip null terminate and carriage return
+        if (newLines == 6 && c != 0x0A && c != 0xD) {
             response[responseCursor] = c;
             responseCursor++;
         }

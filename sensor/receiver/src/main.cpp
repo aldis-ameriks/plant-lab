@@ -128,6 +128,7 @@ void loop() {
     apiClient.parseResponse();
 
     if (strcmp(apiClient.response, "success: sensor paired") == 0) {
+        debug.println(F("Successful pairing"));
         apiClient.clearResponseData();
         if (!pendingPairingNodeId) {
             return;
@@ -176,8 +177,8 @@ void loop() {
     }
 
     if (!isPairing && !isPaired && (millis() - lastDiscoverRequestTime > discoverRequestInterval)) {
-        apiClient.sendDiscoverRequest(NODE_ID);
         apiClient.clearResponseData();
+        apiClient.sendDiscoverRequest(NODE_ID);
         lastDiscoverRequestTime = millis();
     }
 }
