@@ -1,5 +1,5 @@
 class LightSensor {
 public:
     void init();
-    int read();
+    uint32_t read();
 };
