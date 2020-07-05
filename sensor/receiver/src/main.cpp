@@ -210,16 +210,18 @@ void formatData(uint8_t signal) {
     // Convert to char* due to Arduino not supporting %f in sprintf
     char moisture[7];
     char temperature[7];
+    char humidity[7];
     char batteryVoltage[5];
     char firmware[5];
     dtostrf(payload.moisture / (double)100, 4, 2, moisture);
     dtostrf(payload.temperature / (double)100, 4, 2, temperature);
+    dtostrf(payload.humidity / (double)100, 4, 2, humidity);
     dtostrf(payload.batteryVoltage / (double)100, 1, 2, batteryVoltage);
     dtostrf(payload.firmware / (double)10, 3, 1, firmware);
 
-    sprintf(postData, "%u;%u;%s;%u;%u;%s;%lu;%s;%d;%u;%s", payload.nodeId, payload.moistureRaw, moisture,
+    sprintf(postData, "%u;%u;%s;%u;%u;%s;%lu;%s;%d;%u;%s;%s", payload.nodeId, payload.moistureRaw, moisture,
             payload.moistureMin, payload.moistureMax, temperature, payload.light, batteryVoltage, signal,
-            payload.readingId, firmware);
+            payload.readingId, firmware, humidity);
 }
 
 void printBytes() {
@@ -246,6 +248,8 @@ void printPayload() {
     debug.println(payload.moistureMax);
     debug.print(F("temperature: "));
     debug.println(payload.temperature);
+    debug.print(F("humidity: "));
+    debug.println(payload.humidity);
     debug.print(F("light: "));
     debug.println(payload.light);
     debug.print(F("batteryVoltage: "));

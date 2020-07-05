@@ -86,11 +86,12 @@ void processReadings() {
 
     int moisture = moistureSensor.read();
     // TODO: Move inside moisture module
-    float MOISTURE_MAX = (50 * operatingVoltage) + 242;
-    float MOISTURE_MIN = (50 * operatingVoltage) + 634;
+    float MOISTURE_MAX = (50 * operatingVoltage) + 277;
+    float MOISTURE_MIN = (50 * operatingVoltage) + 642;
     float moisturePercentage = (1 - (MOISTURE_MAX - moisture) / (MOISTURE_MAX - (float)MOISTURE_MIN)) * 100;
 
-    float temperature = temperatureSensor.read();
+    float temperature = temperatureSensor.readTemperature();
+    float humidity = temperatureSensor.readHumidity();
     int light = lightSensor.read();
 
     payload.nodeId = NODE_ID;
@@ -100,7 +101,8 @@ void processReadings() {
     payload.moistureMin = (int)MOISTURE_MIN;
     payload.moistureMax = (int)MOISTURE_MAX;
     payload.temperature = (int)(temperature * 100);
-    payload.light = light;
+    payload.humidity = (int)(humidity * 100);
+    payload.light = 0; // TODO: Enable light readings
     payload.firmware = 10;
     payload.batteryVoltage = (int)(batteryVoltage * 100);
     payload.action = Action::send;
@@ -202,6 +204,32 @@ void sendData(char* data, uint8_t retries) {
     }
 }
 
+float readBatteryVoltageWithoutDivider() {
+  // Read 1.1V reference against AVcc
+  // set the reference to Vcc and the measurement to the internal 1.1V reference
+  #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+    ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  #elif defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+    ADMUX = _BV(MUX5) | _BV(MUX0);
+  #elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+    ADMUX = _BV(MUX3) | _BV(MUX2);
+  #else
+    ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  #endif  
+
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Start conversion
+  while (bit_is_set(ADCSRA,ADSC)); // measuring
+
+  uint8_t low  = ADCL; // must read ADCL first - it then locks ADCH  
+  uint8_t high = ADCH; // unlocks both
+
+  long result = (high<<8) | low;
+
+  result = 1125300L / result; // Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
+  return result / 1000.0; // Vcc in volts
+}
+
 float readBatteryVoltage() {
     analogReference(INTERNAL);
     delay(100);
@@ -220,7 +248,7 @@ void enterSleep() {
     // 30 minutes = 60x30 = 1800s
     // 1800 s / 8 s = 225
     unsigned int sleepCounter;
-    for (sleepCounter = 1; sleepCounter > 0; sleepCounter--) {
+    for (sleepCounter = 255; sleepCounter > 0; sleepCounter--) {
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
     }
 }
