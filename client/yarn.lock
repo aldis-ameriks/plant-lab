@@ -1971,13 +1971,14 @@
     lodash "^4.17.15"
     redent "^3.0.0"
 
-"@testing-library/react@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-10.4.2.tgz#9f1ee0051a516469d4afaf350d2a467ac19cd57f"
-  integrity sha512-srhsdY+Mq2xhjE/ha8xh0U9YJSCNYbOhzPsUiNvxy4bgltB87PjuxDtkWMWwWJOIkngyJaMgoJuHm13EOq4V0Q==
+"@testing-library/react@10.4.4":
+  version "10.4.4"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-10.4.4.tgz#f05edf827df288c6c7b19fe96fff2b33cddbb809"
+  integrity sha512-SKDQ2jBdg9UQQYQragkvXOzNp4hnCdOvXyZ52rg+OXiiumVxkAutdvvRzBF4PrbvMQ27Z6gx0GVo2YQ1Mcip8g==
   dependencies:
     "@babel/runtime" "^7.10.3"
     "@testing-library/dom" "^7.17.1"
+    semver "^7.3.2"
 
 "@types/babel__core@^7.1.0":
   version "7.1.7"
