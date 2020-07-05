@@ -1,5 +1,6 @@
 class TemperatureSensor {
 public:
     void init();
-    float read();
+    float readTemperature();
+    float readHumidity();
 };
