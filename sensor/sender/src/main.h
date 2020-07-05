@@ -61,3 +61,4 @@ void sendData(char* data, uint8_t retries = 0);
 void sendSensorPairing();
 void writeEncryptionKey(char* key);
 void initEncryptionKey();
+void factoryReset();

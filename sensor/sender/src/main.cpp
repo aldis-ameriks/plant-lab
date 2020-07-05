@@ -25,7 +25,7 @@ TemperatureSensor temperatureSensor;
 ConductivitySensor conductivitySensor;
 
 const byte address[6] = "00001";
-const uint16_t pairingInterval = 5000;
+const uint16_t pairingInterval = 20000;
 char encryptionKey[25];
 
 void setup() {
@@ -63,11 +63,18 @@ void setup() {
     conductivitySensor.init();
 
     // LEDs
-    // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RFM69
+    // pinMode(13, OUTPUT); // SCK pin LED, flashes when interfacing with RF24
     pinMode(6, OUTPUT);
     pinMode(5, OUTPUT);
+    pinMode(PD3, INPUT);
 
     debug.println("End of setup");
+
+    if (digitalRead(PD3) == LOW) {
+        debug.println("Factory resetting device");
+        factoryReset();
+        state = State::unpaired;
+    }
 }
 
 void loop() {
@@ -92,7 +99,7 @@ void processReadings() {
 
     float temperature = temperatureSensor.readTemperature();
     float humidity = temperatureSensor.readHumidity();
-    int light = lightSensor.read();
+    uint32_t light = lightSensor.read();
 
     payload.nodeId = NODE_ID;
     payload.readingId = random(65535);
@@ -102,7 +109,7 @@ void processReadings() {
     payload.moistureMax = (int)MOISTURE_MAX;
     payload.temperature = (int)(temperature * 100);
     payload.humidity = (int)(humidity * 100);
-    payload.light = 0; // TODO: Enable light readings
+    payload.light = light;
     payload.firmware = 10;
     payload.batteryVoltage = (int)(batteryVoltage * 100);
     payload.action = Action::send;
@@ -282,4 +289,10 @@ void writeEncryptionKey(char* key) {
         j++;
     }
     memcpy(encryptionKey, key, sizeof(encryptionKey));
+}
+
+void factoryReset() {
+    EEPROM.write(EEPROM_STATE_ADDRESS, (uint8_t)State::unpaired);
+    memset(&encryptionKey, 0, sizeof(encryptionKey));
+    writeEncryptionKey(encryptionKey);
 }
