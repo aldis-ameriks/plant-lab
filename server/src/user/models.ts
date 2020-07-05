@@ -17,10 +17,12 @@ export class UserSetting {
   value: string;
 
   static from(userSetting: UserSettingEntity): UserSetting {
-    return {
-      name: userSetting.name,
-      value: userSetting.value,
-    };
+    return userSetting
+      ? {
+          name: userSetting.name,
+          value: userSetting.value,
+        }
+      : undefined;
   }
 }
 

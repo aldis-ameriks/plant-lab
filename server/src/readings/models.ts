@@ -25,25 +25,29 @@ export class Reading {
   light?: number;
 
   static from(reading: ReadingEntity): Reading {
-    return {
-      device_id: `${reading.device_id}`,
-      battery_voltage: reading.battery_voltage,
-      temperature: reading.temperature,
-      moisture: reading.moisture,
-      light: reading.light,
-      time: reading.timestamp,
-    };
+    return reading
+      ? {
+          device_id: `${reading.device_id}`,
+          battery_voltage: reading.battery_voltage,
+          temperature: reading.temperature,
+          moisture: reading.moisture,
+          light: reading.light,
+          time: reading.timestamp,
+        }
+      : undefined;
   }
 
   static fromTimeBucketedReading(reading: TimeBucketedReading): Reading {
-    return {
-      device_id: `${reading.device_id}`,
-      battery_voltage: reading.battery_voltage,
-      temperature: reading.temperature,
-      moisture: reading.moisture,
-      light: reading.light,
-      time: reading.time,
-    };
+    return reading
+      ? {
+          device_id: `${reading.device_id}`,
+          battery_voltage: reading.battery_voltage,
+          temperature: reading.temperature,
+          moisture: reading.moisture,
+          light: reading.light,
+          time: reading.time,
+        }
+      : undefined;
   }
 }
 

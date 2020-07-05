@@ -27,12 +27,14 @@ export class Notification {
   type: NotificationType;
 
   static from(notification: NotificationEntity): Notification {
-    return {
-      id: notification.id,
-      body: notification.body,
-      title: notification.title,
-      type: notification.type,
-    };
+    return notification
+      ? {
+          id: notification.id,
+          body: notification.body,
+          title: notification.title,
+          type: notification.type,
+        }
+      : undefined;
   }
 }
 

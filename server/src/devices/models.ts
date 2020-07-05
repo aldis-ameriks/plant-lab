@@ -39,14 +39,16 @@ export class Device {
   version: DeviceVersion;
 
   static from(device: DeviceEntity): Device {
-    return {
-      id: `${device.id}`,
-      firmware: device.firmware,
-      name: device.name,
-      room: device.room,
-      type: device.type,
-      version: device.version,
-    };
+    return device
+      ? {
+          id: `${device.id}`,
+          firmware: device.firmware,
+          name: device.name,
+          room: device.room,
+          type: device.type,
+          version: device.version,
+        }
+      : undefined;
   }
 }
 
