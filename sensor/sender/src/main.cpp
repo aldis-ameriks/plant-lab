@@ -151,6 +151,9 @@ void sendData(char* data, uint8_t retries) {
 
     if (retries == 5) {
         debug.println("Max retry count reached, giving up.");
+        digitalWrite(PD5, HIGH);
+        delay(200);
+        digitalWrite(PD5, LOW);
         return;
     }
 
