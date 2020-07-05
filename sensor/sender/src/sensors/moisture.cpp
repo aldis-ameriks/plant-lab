@@ -2,11 +2,11 @@
 #include <sensors/moisture.h>
 
 void MoistureSensor::init() {
-    pinMode(7, OUTPUT);  // Powers capacitance sensor
+    pinMode(2, OUTPUT);  // Powers capacitance sensor
 }
 
 int MoistureSensor::read() {
-    digitalWrite(7, HIGH);
+    digitalWrite(2, HIGH);
     delay(100);
     analogRead(A1);  // Discard first reading after ADC init
     delay(20);
@@ -19,6 +19,6 @@ int MoistureSensor::read() {
         sampleSum += capacitance;
     }
 
-    digitalWrite(7, LOW);
+    digitalWrite(2, LOW);
     return sampleSum / (float)sampleCount;
 }
