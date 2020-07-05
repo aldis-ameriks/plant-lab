@@ -25,7 +25,7 @@ TemperatureSensor temperatureSensor;
 ConductivitySensor conductivitySensor;
 
 const byte address[6] = "00001";
-const uint16_t pairingInterval = 20000;
+const uint16_t pairingInterval = 5000;
 char encryptionKey[25];
 
 void setup() {
