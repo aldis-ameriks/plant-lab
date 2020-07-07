@@ -26,10 +26,12 @@ import { userRoutes } from 'user/routes';
   const schema = await buildSchema({
     authChecker,
     resolvers: [ReadingResolver, DeviceResolver, NotificationsResolver, UserResolver],
-    emitSchemaFile: {
-      path: `${__dirname}/../schema.graphql`,
-      commentDescriptions: true,
-    },
+    emitSchemaFile: isDevelopment
+      ? {
+          path: `${__dirname}/../schema.graphql`,
+          commentDescriptions: true,
+        }
+      : false,
     container: Container,
   });
 
