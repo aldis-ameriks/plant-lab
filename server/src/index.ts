@@ -47,9 +47,9 @@ import { userRoutes } from 'user/routes';
       {
         requestDidStart: (requestContext) => {
           requestContext.context.log.info(
-            `user: ${requestContext.context.user?.id},`,
-            requestContext.request.operationName,
-            requestContext.request.variables
+            `user: ${requestContext.context.user?.id}, operationName: ${
+              requestContext.request.operationName
+            }, variables: ${JSON.stringify(requestContext.request.variables)}`
           );
         },
       },
