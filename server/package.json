@@ -59,7 +59,7 @@
     "lint-staged": "10.2.11",
     "nodemon": "2.0.4",
     "prettier": "2.0.5",
-    "schema-typegen": "1.0.2",
+    "schema-typegen": "1.1.0",
     "ts-jest": "26.1.2",
     "ts-node": "8.10.2",
     "tsconfig-paths": "3.9.0",
