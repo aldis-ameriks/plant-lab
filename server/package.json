@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "apollo-server-fastify": "2.15.1",
-    "class-transformer": "0.2.3",
+    "class-transformer": "0.3.1",
     "class-validator": "0.12.2",
     "class-validator-jsonschema": "2.0.2",
     "config": "3.3.1",
