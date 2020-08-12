@@ -44,7 +44,7 @@
     "eslint-plugin-react": "7.20.6",
     "graphql-codegen": "0.4.0",
     "prettier": "2.0.5",
-    "react-scripts": "3.4.1",
+    "react-scripts": "3.4.3",
     "typescript": "3.9.7"
   },
   "scripts": {
