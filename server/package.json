@@ -32,7 +32,7 @@
     "graphql": "15.3.0",
     "graphql-iso-date": "3.6.1",
     "graphql-jit": "0.4.3",
-    "graphql-query-complexity": "0.6.0",
+    "graphql-query-complexity": "0.7.0",
     "knex": "0.21.2",
     "pg": "8.3.0",
     "pino-pretty": "4.1.0",
