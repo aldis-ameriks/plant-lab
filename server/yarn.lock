@@ -3081,7 +3081,14 @@ graphql-jit@0.4.3:
     lodash.merge "4.6.2"
     lodash.mergewith "4.6.2"
 
-graphql-query-complexity@0.6.0, graphql-query-complexity@^0.6.0:
+graphql-query-complexity@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.7.0.tgz#16e3dbd1baf89ee925baec93b451858a7628156e"
+  integrity sha512-nl/aOzRdQ1Opj/sND9Wx+/FHnsU4SFA0wePWJzyZajyht43nP9/1edP6YaoupXfNeUocHFXsmAOOFVTwTLu/6A==
+  dependencies:
+    lodash.get "^4.4.2"
+
+graphql-query-complexity@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.6.0.tgz#522f452212eb0ffab66601097251bbf411c3cd11"
   integrity sha512-xYLLvN7PSeSYtiQ2nR53B7B/C6iGOWVPBrzcpbheVxE78GYdiNZffDRNCoMvYGCOAY0eQTpsnTfwncVszQsOJw==
