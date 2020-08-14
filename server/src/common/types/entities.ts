@@ -21,62 +21,62 @@ export enum NotificationType {
 }
 
 export type DeviceEntity = {
-  address?: string;
-  firmware?: string;
+  address: string | null;
+  firmware: string | null;
   id: number;
-  last_seen_at?: Date;
-  name?: string;
-  room?: string;
+  last_seen_at: Date | null;
+  name: string | null;
+  room: string | null;
   status: DeviceStatus;
-  test?: boolean;
+  test: boolean | null;
   type: DeviceType;
   version: DeviceVersion;
 };
 
 export type FaultyReadingEntity = {
-  battery_voltage?: number;
+  battery_voltage: number | null;
   device_id: number;
-  hub_id?: number;
-  light?: number;
-  moisture?: number;
-  moisture_max?: number;
-  moisture_min?: number;
-  moisture_raw?: number;
-  reading_id?: number;
-  signal?: number;
-  temperature?: number;
+  hub_id: number | null;
+  light: number | null;
+  moisture: number | null;
+  moisture_max: number | null;
+  moisture_min: number | null;
+  moisture_raw: number | null;
+  reading_id: number | null;
+  signal: number | null;
+  temperature: number | null;
   timestamp: Date;
 };
 
 export type NotificationEntity = {
   body: string;
   created_at: Date;
-  device_id?: number;
+  device_id: number | null;
   id: string;
-  sent_at?: Date;
+  sent_at: Date | null;
   title: string;
   type: NotificationType;
   user_id: number;
 };
 
 export type ReadingEntity = {
-  battery_voltage?: number;
+  battery_voltage: number | null;
   device_id: number;
-  hub_id?: number;
-  light?: number;
-  moisture?: number;
-  moisture_max?: number;
-  moisture_min?: number;
-  moisture_raw?: number;
-  reading_id?: number;
-  signal?: number;
-  temperature?: number;
+  hub_id: number | null;
+  light: number | null;
+  moisture: number | null;
+  moisture_max: number | null;
+  moisture_min: number | null;
+  moisture_raw: number | null;
+  reading_id: number | null;
+  signal: number | null;
+  temperature: number | null;
   timestamp: Date;
 };
 
 export type UserSettingEntity = {
   name: string;
-  user_id?: number;
+  user_id: number | null;
   value: string;
 };
 
@@ -85,12 +85,12 @@ export type UserEntity = {
 };
 
 export type UsersAccessKeyEntity = {
-  access_key?: string;
-  roles?: Array<string>;
-  user_id?: number;
+  access_key: string | null;
+  roles: Array<string> | null;
+  user_id: number | null;
 };
 
 export type UsersDeviceEntity = {
-  device_id?: number;
-  user_id?: number;
+  device_id: number | null;
+  user_id: number | null;
 };
