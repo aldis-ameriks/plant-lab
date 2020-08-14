@@ -5725,10 +5725,10 @@ saxes@^5.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-schema-typegen@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/schema-typegen/-/schema-typegen-1.1.0.tgz#5a68f52a81eecd04329791b91aec9dc79d79393f"
-  integrity sha512-Ppr/gO2lL/ALgFf7WAnN71b+oCO4I6TLTLcxvro0bmSktFKuM7l0hX+fCfFwjRL44bfnGr+1xprCpeybk4GO0Q==
+schema-typegen@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/schema-typegen/-/schema-typegen-2.3.0.tgz#9f1ee2083089a11336eab2977055a4fce430fcf7"
+  integrity sha512-LruJygli5S5UFuoOCVcZmhmrYSvsbrRKoKvDZNU9HHo8nOU4JhuE2w7pEWMkEDh6lVjpXd8sv242NwJ4qUTJnQ==
   dependencies:
     cross-argv "^1.0.0"
     minimist "^1.2.5"
