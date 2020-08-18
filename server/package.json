@@ -34,7 +34,7 @@
     "graphql-jit": "0.4.3",
     "graphql-query-complexity": "0.7.0",
     "knex": "0.21.5",
-    "pg": "8.3.0",
+    "pg": "8.3.2",
     "pino-pretty": "4.1.0",
     "reflect-metadata": "0.1.13",
     "tiny-lru": "7.0.6",
