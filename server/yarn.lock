@@ -1882,6 +1882,11 @@ commander@^6.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.0.0.tgz#2b270da94f8fb9014455312f829a1129dbf8887e"
   integrity sha512-s7EA+hDtTYNhuXkTlhqew4txMZVdszBmKWSPEMxGr8ru8JXR7bLUFIAtPhcSuFdJQ0ILMxnJi8GkQL0yvDy/YA==
 
+commander@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
+  integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+
 compare-versions@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-3.6.0.tgz#1a5689913685e5a87637b8d3ffca75514ec41d62"
@@ -1970,11 +1975,6 @@ cron@1.8.2:
   integrity sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==
   dependencies:
     moment-timezone "^0.5.x"
-
-cross-argv@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/cross-argv/-/cross-argv-1.0.0.tgz#e7221e9ff73092a80496c699c8c45efb20f6486c"
-  integrity sha512-uAVe/bgNHlPdP1VE4Sk08u9pAJ7o1x/tVQtX77T5zlhYhuwOWtVkPBEtHdvF5cq48VzeCG5i1zN4dQc8pwLYrw==
 
 cross-spawn@^6.0.0:
   version "6.0.5"
@@ -5744,13 +5744,12 @@ saxes@^5.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-schema-typegen@2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/schema-typegen/-/schema-typegen-2.5.1.tgz#104964394b3ae57c58cbed21cd4198d8ce1f7cca"
-  integrity sha512-Lrs6DHBT8k2sKobUvQ7fqKm2QtaZeSEZwBrt7EJ7UT2IW0yQZ6MMorD+fzReIU7If7a8+NnBpGRISbvbOkkmYA==
+schema-typegen@2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/schema-typegen/-/schema-typegen-2.6.3.tgz#20a547f33144429d94fe94f30d75f937ee543cf7"
+  integrity sha512-AFKWZ/hRpuhVayFrgRLvbJIJvv1VcO4l+JDho1vevPvVZbyqTzeWCbOQt1bBlO/zTz9K232ZepsaHaxODaN8kA==
   dependencies:
-    cross-argv "^1.0.0"
-    minimist "^1.2.5"
+    commander "^6.1.0"
     postgres "^2.0.0-beta.0"
 
 secure-json-parse@^2.1.0:
