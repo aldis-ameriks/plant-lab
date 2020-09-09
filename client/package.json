@@ -7,7 +7,7 @@
     "@apollo/react-hooks": "3.1.5",
     "apexcharts": "3.20.1",
     "apollo-boost": "0.4.9",
-    "date-fns": "2.16.0",
+    "date-fns": "2.16.1",
     "graphql": "15.3.0",
     "graphql-tag": "2.10.4",
     "react": "16.13.1",
