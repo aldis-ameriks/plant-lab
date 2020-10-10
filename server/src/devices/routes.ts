@@ -41,7 +41,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
         return reply.code(400).send('failed');
       }
 
-      if (req.context.user.id === device.user_id) {
+      if (req.ctx.user.id === device.user_id) {
         return reply.send(formatSuccessResponse(device.type, 'paired'));
       }
 
@@ -73,7 +73,7 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
         }
       }
 
-      const address = req.context.isLocal ? '127.0.0.1' : req.ip;
+      const address = req.ctx.isLocal ? '127.0.0.1' : req.ip;
       await knex('devices')
         .update({ address, last_seen_at: new Date(), status: DeviceStatus.pairing })
         .where('id', deviceId);
@@ -100,13 +100,13 @@ export function devicesRoutes(fastify: FastifyInstance, opts, done) {
     },
     async (req, reply) => {
       req.log.info('Pairing confirm request', req.body);
-      if (!req.context.user) {
+      if (!req.ctx.user) {
         return reply.code(400).send('failed');
       }
 
       const device = await knex('devices')
         .innerJoin('users_devices', 'users_devices.device_id', 'devices.id')
-        .where('users_devices.user_id', req.context.user.id)
+        .where('users_devices.user_id', req.ctx.user.id)
         .andWhere('devices.id', req.body)
         .first();
 

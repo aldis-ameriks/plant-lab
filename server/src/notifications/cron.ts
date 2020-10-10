@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import { Logger } from 'fastify';
+import { Logger } from 'pino';
 import { Inject, Service } from 'typedi';
 
 import { NotificationType, ReadingEntity } from 'common/types/entities';

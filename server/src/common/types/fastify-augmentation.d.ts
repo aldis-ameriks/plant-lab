@@ -12,6 +12,6 @@ declare module 'fastify' {
     Headers = DefaultHeaders,
     Body = DefaultBody
   > {
-    context: Context;
+    ctx: Context;
   }
 }

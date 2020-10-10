@@ -1,5 +1,5 @@
-import { Logger } from 'fastify';
 import Knex from 'knex';
+import { Logger } from 'pino';
 import { Inject, Service } from 'typedi';
 
 import { NewDeviceInput } from './models';

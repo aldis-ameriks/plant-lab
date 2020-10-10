@@ -1,4 +1,4 @@
-import { Logger } from 'fastify';
+import { Logger } from 'pino';
 
 type User = {
   id: string;

@@ -37,7 +37,7 @@ import { userRoutes } from 'user/routes';
 
   const apolloServer = new ApolloServer({
     schema,
-    context: async (req) => req.context,
+    context: async (req) => req.ctx,
     executor: executor(schema),
     formatError: (err) => {
       console.error(JSON.stringify(err));
@@ -90,9 +90,9 @@ import { userRoutes } from 'user/routes';
   initJsonSchema();
   Container.get(NotificationsCron).start();
 
-  app.decorateRequest('context', {});
+  app.decorateRequest('ctx', {});
   app.addHook('preHandler', async (req) => {
-    req.context = await createRequestContext(req.log, req.headers, req.ip, req.hostname);
+    req.ctx = await createRequestContext(req.log, req.headers, req.ip, req.hostname);
   });
 
   app.head('/', async () => 'head');

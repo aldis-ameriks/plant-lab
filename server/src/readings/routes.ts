@@ -10,11 +10,11 @@ export function readingsRoutes(fastify: FastifyInstance, opts, done) {
   const deviceService = Container.get(DeviceService);
   const readingService = Container.get(ReadingService);
 
-  fastify.post(
+  fastify.post<{ Body: string }>(
     '/reading',
     {
       preHandler: async (req, reply) => {
-        if (!req.context.user || !req.context.user.roles.includes('HUB')) {
+        if (!req.ctx.user || !req.ctx.user.roles.includes('HUB')) {
           reply.code(403).type('text/plain').send('Forbidden');
         }
       },
@@ -76,7 +76,7 @@ export function readingsRoutes(fastify: FastifyInstance, opts, done) {
         reply.code(400).send('Invalid input');
       }
 
-      const userId = req.context.user.id;
+      const userId = req.ctx.user.id;
       await deviceService.verifyUserOwnsDevice(device_id, userId);
       await readingService.saveReading(readingInput);
 

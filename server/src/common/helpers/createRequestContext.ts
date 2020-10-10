@@ -1,15 +1,16 @@
-import { Logger } from 'fastify';
+import { IncomingHttpHeaders } from 'http';
 
-import { ACCESS_KEY } from '../config';
-import { getUserByAccessKey } from './getUserByAccessKey';
+import { Logger } from 'pino';
 
+import { ACCESS_KEY } from 'common/config';
+import { getUserByAccessKey } from 'common/helpers/getUserByAccessKey';
 import { isRequestWithinLocalNetwork } from 'common/helpers/isRequestWithinLocalNetwork';
 import { Context } from 'common/types/context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createRequestContext(
   log: Logger,
-  headers: { [key: string]: string },
+  headers: IncomingHttpHeaders,
   ip: string,
   hostname: string
 ): Promise<Context> {

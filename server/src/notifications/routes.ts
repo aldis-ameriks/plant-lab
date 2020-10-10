@@ -13,7 +13,7 @@ export function notificationRoutes(fastify: FastifyInstance, opts, done) {
     '/notifications/new',
     {
       preHandler: async (req) => {
-        if (!req.context.user) {
+        if (!req.ctx.user) {
           throw new ForbiddenError();
         }
       },
@@ -24,7 +24,7 @@ export function notificationRoutes(fastify: FastifyInstance, opts, done) {
       },
     },
     async (req, reply) => {
-      const result = await notificationsService.getUnsentNotifications(req.context.user.id);
+      const result = await notificationsService.getUnsentNotifications(req.ctx.user.id);
       const notifications = result.map((entry) => Notification.from(entry));
       const response = new NotificationResponse(notifications);
       reply.send(response);
