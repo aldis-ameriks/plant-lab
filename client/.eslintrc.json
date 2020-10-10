@@ -18,6 +18,7 @@
     "@typescript-eslint/camelcase": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/naming-convention": 0,
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -32,6 +33,7 @@
       }
     ],
     "@typescript-eslint/prefer-interface": 0,
+    "@typescript-eslint/no-unused-expressions": 0,
     "class-methods-use-this": 0,
     "import/extensions": [
       "error",
@@ -68,13 +70,7 @@
     "max-classes-per-file": 0,
     "no-console": 0,
     "no-unused-expressions": 0,
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false,
-        "classes": false
-      }
-    ],
+    "no-use-before-define": 0,
     "react/prop-types": 0,
     "react/jsx-one-expression-per-line": 0,
     "react/jsx-props-no-spreading": 0

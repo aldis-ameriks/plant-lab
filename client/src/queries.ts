@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 gql`
   query Readings($deviceId: ID!, $date: String) {
