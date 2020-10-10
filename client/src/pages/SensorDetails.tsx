@@ -102,7 +102,7 @@ export const ImageWrapper = styled.div`
 `;
 
 export const SensorDetails = () => {
-  const { id = '4' } = useParams();
+  const { id = '4' } = useParams<{ id: string }>();
   const { data, loading, error } = useReadingsQuery({ variables: { deviceId: id } });
 
   if (loading) {
