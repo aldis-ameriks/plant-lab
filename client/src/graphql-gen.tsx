@@ -1,8 +1,8 @@
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -156,10 +156,10 @@ export type UserSettingInput = {
   value: Scalars['String'];
 };
 
-export type ReadingsQueryVariables = {
+export type ReadingsQueryVariables = Exact<{
   deviceId: Scalars['ID'];
   date?: Maybe<Scalars['String']>;
-};
+}>;
 
 export type ReadingsQuery = { __typename?: 'Query' } & {
   readings: Array<
@@ -170,9 +170,9 @@ export type ReadingsQuery = { __typename?: 'Query' } & {
   >;
 };
 
-export type LastReadingQueryVariables = {
+export type LastReadingQueryVariables = Exact<{
   deviceId: Scalars['ID'];
-};
+}>;
 
 export type LastReadingQuery = { __typename?: 'Query' } & {
   lastReading?: Maybe<
@@ -183,9 +183,9 @@ export type LastReadingQuery = { __typename?: 'Query' } & {
   >;
 };
 
-export type LastWateredTimeQueryVariables = {
+export type LastWateredTimeQueryVariables = Exact<{
   deviceId: Scalars['ID'];
-};
+}>;
 
 export type LastWateredTimeQuery = { __typename?: 'Query' } & Pick<Query, 'lastWateredTime'>;
 
@@ -219,19 +219,15 @@ export const ReadingsDocument = gql`
  *   },
  * });
  */
-export function useReadingsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<ReadingsQuery, ReadingsQueryVariables>
-) {
-  return ApolloReactHooks.useQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
+export function useReadingsQuery(baseOptions?: Apollo.QueryHookOptions<ReadingsQuery, ReadingsQueryVariables>) {
+  return Apollo.useQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
 }
-export function useReadingsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ReadingsQuery, ReadingsQueryVariables>
-) {
-  return ApolloReactHooks.useLazyQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
+export function useReadingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReadingsQuery, ReadingsQueryVariables>) {
+  return Apollo.useLazyQuery<ReadingsQuery, ReadingsQueryVariables>(ReadingsDocument, baseOptions);
 }
 export type ReadingsQueryHookResult = ReturnType<typeof useReadingsQuery>;
 export type ReadingsLazyQueryHookResult = ReturnType<typeof useReadingsLazyQuery>;
-export type ReadingsQueryResult = ApolloReactCommon.QueryResult<ReadingsQuery, ReadingsQueryVariables>;
+export type ReadingsQueryResult = Apollo.QueryResult<ReadingsQuery, ReadingsQueryVariables>;
 export const LastReadingDocument = gql`
   query LastReading($deviceId: ID!) {
     lastReading(deviceId: $deviceId) {
@@ -262,18 +258,18 @@ export const LastReadingDocument = gql`
  * });
  */
 export function useLastReadingQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<LastReadingQuery, LastReadingQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<LastReadingQuery, LastReadingQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<LastReadingQuery, LastReadingQueryVariables>(LastReadingDocument, baseOptions);
+  return Apollo.useQuery<LastReadingQuery, LastReadingQueryVariables>(LastReadingDocument, baseOptions);
 }
 export function useLastReadingLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LastReadingQuery, LastReadingQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<LastReadingQuery, LastReadingQueryVariables>
 ) {
-  return ApolloReactHooks.useLazyQuery<LastReadingQuery, LastReadingQueryVariables>(LastReadingDocument, baseOptions);
+  return Apollo.useLazyQuery<LastReadingQuery, LastReadingQueryVariables>(LastReadingDocument, baseOptions);
 }
 export type LastReadingQueryHookResult = ReturnType<typeof useLastReadingQuery>;
 export type LastReadingLazyQueryHookResult = ReturnType<typeof useLastReadingLazyQuery>;
-export type LastReadingQueryResult = ApolloReactCommon.QueryResult<LastReadingQuery, LastReadingQueryVariables>;
+export type LastReadingQueryResult = Apollo.QueryResult<LastReadingQuery, LastReadingQueryVariables>;
 export const LastWateredTimeDocument = gql`
   query LastWateredTime($deviceId: ID!) {
     lastWateredTime(deviceId: $deviceId)
@@ -297,24 +293,15 @@ export const LastWateredTimeDocument = gql`
  * });
  */
 export function useLastWateredTimeQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<LastWateredTimeQuery, LastWateredTimeQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<LastWateredTimeQuery, LastWateredTimeQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<LastWateredTimeQuery, LastWateredTimeQueryVariables>(
-    LastWateredTimeDocument,
-    baseOptions
-  );
+  return Apollo.useQuery<LastWateredTimeQuery, LastWateredTimeQueryVariables>(LastWateredTimeDocument, baseOptions);
 }
 export function useLastWateredTimeLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LastWateredTimeQuery, LastWateredTimeQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<LastWateredTimeQuery, LastWateredTimeQueryVariables>
 ) {
-  return ApolloReactHooks.useLazyQuery<LastWateredTimeQuery, LastWateredTimeQueryVariables>(
-    LastWateredTimeDocument,
-    baseOptions
-  );
+  return Apollo.useLazyQuery<LastWateredTimeQuery, LastWateredTimeQueryVariables>(LastWateredTimeDocument, baseOptions);
 }
 export type LastWateredTimeQueryHookResult = ReturnType<typeof useLastWateredTimeQuery>;
 export type LastWateredTimeLazyQueryHookResult = ReturnType<typeof useLastWateredTimeLazyQuery>;
-export type LastWateredTimeQueryResult = ApolloReactCommon.QueryResult<
-  LastWateredTimeQuery,
-  LastWateredTimeQueryVariables
->;
+export type LastWateredTimeQueryResult = Apollo.QueryResult<LastWateredTimeQuery, LastWateredTimeQueryVariables>;

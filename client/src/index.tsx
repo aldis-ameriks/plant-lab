@@ -1,6 +1,5 @@
-import ApolloClient from 'apollo-boost';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import { createGlobalStyle } from 'styled-components';
@@ -14,6 +13,7 @@ if (process.env.REACT_APP_GA_TRACKING_ID) {
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URL,
+  cache: new InMemoryCache(),
 });
 
 const GlobalStyle = createGlobalStyle`
