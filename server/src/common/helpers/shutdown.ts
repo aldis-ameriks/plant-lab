@@ -16,7 +16,7 @@ export function shutdown(close: () => void) {
   });
 }
 
-async function initiateShutdown(event, err: {} | null | undefined | Error, close: () => void) {
+async function initiateShutdown(event, err: any, close: () => void) {
   console.error(err);
 
   if (shuttingDown) {

@@ -1,16 +1,13 @@
-import * as http from 'http';
-
-import { DefaultBody, DefaultHeaders, DefaultParams, DefaultQuery } from 'fastify';
+import { RouteGenericInterface } from 'fastify/types/route';
+import { RawRequestDefaultExpression, RawServerBase, RawServerDefault } from 'fastify/types/utils';
 
 import { Context } from 'common/types/context';
 
 declare module 'fastify' {
   interface FastifyRequest<
-    HttpRequest = http.IncomingMessage,
-    Query = DefaultQuery,
-    Params = DefaultParams,
-    Headers = DefaultHeaders,
-    Body = DefaultBody
+    RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
+    RawServer extends RawServerBase = RawServerDefault,
+    RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>
   > {
     ctx: Context;
   }
