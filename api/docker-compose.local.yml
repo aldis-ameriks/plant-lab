@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  database:
+    image: timescale/timescaledb:latest-pg14
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - "5432"
+    ports:
+      - "5433:5432"

@@ -1,0 +1,30 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "collectCoverageFrom": [
+    "**/*.ts",
+    "!src/test-helpers/*",
+    "!src/types/*"
+  ],
+  "collectCoverage": false,
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "transform": {
+    "^.+\\.(t|j)sx?$": ["ts-jest", {
+      "isolatedModules": true
+    }]
+  },
+  "roots": ["<rootDir>/src"],
+  "modulePaths": ["<rootDir>/src"],
+  "testPathIgnorePatterns": [".js"],
+  "watchPathIgnorePatterns": [".js"],
+  "setupFiles": ["dotenv/config"],
+  "globalSetup": "<rootDir>/src/test-helpers/globalSetup.ts",
+  "globalTeardown": "<rootDir>/src/test-helpers/globalTeardown.ts"
+}

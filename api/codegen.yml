@@ -1,0 +1,12 @@
+overwrite: true
+
+generates:
+  ./src/types/schema.ts:
+    schema: ./src/**/types.graphql
+    config:
+      contextType: ../helpers/context#RequestContext
+    plugins:
+      - typescript
+      - typescript-resolvers
+      - add:
+          content: '/* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any */'

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2020",
+    "outDir": "build/src",
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "useUnknownInCatchVariables": false,
+    "allowJs": true
+  },
+  "include": ["src/**/*"]
+}
