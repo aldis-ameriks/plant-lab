@@ -1,5 +1,5 @@
 import { Knex } from 'knex'
-import { DeviceEntity, DeviceStatus, DeviceType, DeviceVersion } from '../types/entities'
+import { DeviceEntity, DeviceStatus, DeviceType, DeviceVersion, ReadingEntity } from '../types/entities'
 
 export const device: DeviceEntity = {
   address: '127.0.0.1',
@@ -11,6 +11,21 @@ export const device: DeviceEntity = {
   status: DeviceStatus.new,
   type: DeviceType.sensor,
   version: DeviceVersion.sensor_10
+}
+
+export const reading: ReadingEntity = {
+  battery_voltage: '1',
+  device_id: device.id,
+  hub_id: null,
+  light: '2',
+  moisture: '3',
+  moisture_max: '4',
+  moisture_min: '5',
+  moisture_raw: '6',
+  reading_id: '100',
+  signal: '7',
+  temperature: '8',
+  time: new Date()
 }
 
 export async function insertSeeds(knex: Knex): Promise<void> {
