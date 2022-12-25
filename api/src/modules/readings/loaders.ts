@@ -11,9 +11,7 @@ export default {
         .orderBy('device_id')
         .orderBy('time', 'desc')
 
-      return queries.map((query) => {
-        return lastReadings.find((lastReading) => lastReading.device_id === query.obj.id)
-      })
+      return queries.map((query) => lastReadings.find((lastReading) => lastReading.device_id === query.obj.id))
     },
     lastWateredTime: async (queries, context) => {
       const deviceIds = queries.map((query) => query.obj.id)
@@ -36,9 +34,7 @@ export default {
         )
         .then((result) => result.rows)
 
-      return queries.map((query) => {
-        return result.find((entry) => entry.device_id === query.obj.id)?.time
-      })
+      return queries.map((query) => result.find((entry) => entry.device_id === query.obj.id)?.time)
     },
     readings: async (queries, context) => {
       const deviceIds = queries.map((query) => query.obj.id)
@@ -66,9 +62,7 @@ export default {
         )
         .then((result) => result.rows)
 
-      return queries.map((query) => {
-        return result.filter((entry) => entry.device_id === query.obj.id)
-      })
+      return queries.map((query) => result.filter((entry) => entry.device_id === query.obj.id))
     }
   }
 }
