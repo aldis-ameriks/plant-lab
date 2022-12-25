@@ -15,9 +15,8 @@ export function setupRoutes(routes: (fastify: FastifyInstance) => Promise<void>)
 
   app.register(routes)
 
-  app.addHook('preHandler', (req, reply, done) => {
+  app.addHook('preHandler', async (req, _reply) => {
     req.ctx = createRequestContext({ ...result.context, headers: req.headers, ip: req.ip, reqId: '0' })
-    done()
   })
 
   beforeEach(async () => {

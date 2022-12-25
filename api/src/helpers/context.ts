@@ -3,6 +3,11 @@ import { IncomingHttpHeaders } from 'http'
 import { Knex } from 'knex'
 import type { config } from './config'
 
+type User = {
+  id: string
+  roles: string[]
+}
+
 export type Context = {
   knex: Knex
   log: FastifyBaseLogger
@@ -10,6 +15,7 @@ export type Context = {
 }
 
 export type RequestContext = Context & {
+  user?: User
   ip: string
   headers: IncomingHttpHeaders
   reqId: string

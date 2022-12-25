@@ -116,14 +116,13 @@ async function init() {
   routes.forEach(app.register)
 
   app.decorateRequest('ctx', null)
-  app.addHook('preHandler', (req, reply, done) => {
+  app.addHook('preHandler', async (req, _reply) => {
     if (req.body) {
       req.log.debug({ body: req.body }, 'request body')
     }
 
     req.ctx = createRequestContext(Object.assign({}, context, { headers: req.headers, ip: req.ip, reqId: req.id }))
     req.ctx.log = req.log as pino.Logger
-    done()
   })
 
   app.register(

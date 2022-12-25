@@ -9,5 +9,5 @@ export const regex = {
 
 export const ajv = addFormats(new Ajv({ strictRequired: true, allErrors: true }).addFormat('number', regex.number), {
   mode: 'fast',
-  formats: ['email']
+  formats: ['email', 'date']
 })
