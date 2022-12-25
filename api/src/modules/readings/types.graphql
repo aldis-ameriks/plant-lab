@@ -1,0 +1,13 @@
+extend type Device {
+    readings: [Reading!]!
+    lastReading: Reading
+    lastWateredTime: DateTime
+}
+
+type Reading {
+    time: DateTime!
+    light: Float
+    moisture: Float!
+    temperature: Float!
+    batteryVoltage: Float!
+}

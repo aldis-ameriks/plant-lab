@@ -5,13 +5,13 @@ import fastifyRateLimit from '@fastify/rate-limit'
 import underPressure from '@fastify/under-pressure'
 import fastify from 'fastify'
 import mercurius from 'mercurius'
+import mercuriusAuth from 'mercurius-auth'
 import pino from 'pino'
 import { handleAbuse } from './helpers/abuse'
 
 import { config, isLocal } from './helpers/config'
 import { createContext, createRequestContext } from './helpers/context'
 import { knex } from './helpers/db'
-import { UserInputError } from './helpers/errors'
 import { shutdown } from './helpers/shutdown'
 import modules, { Job } from './modules'
 import { captureError } from './modules/errors/helpers/captureError'
@@ -84,9 +84,7 @@ async function init() {
     errorFormatter: (err, ctx: any) => {
       app.log.error({ err }, 'error occurred')
       const response = mercurius.defaultErrorFormatter(err, ctx)
-      if (err.errors?.[0]?.originalError instanceof UserInputError) {
-        response.statusCode = 200
-      } else if (response.response?.errors && Array.isArray(response.response.errors)) {
+      if (response.response?.errors && Array.isArray(response.response.errors)) {
         response.response.errors.forEach((error) => {
           if (error.message !== 'Unknown query') {
             captureError(context, 'api', new Error(error.message), { ip: ctx?.ip, headers: ctx?.headers })
@@ -97,6 +95,20 @@ async function init() {
       return response
     },
     context: (req) => req.ctx
+  })
+
+  app.register(mercuriusAuth, {
+    async authContext(_context) {
+      // let accessKey = context.reply.request.headers['x-access-key']
+      return {
+        user: null
+      }
+    },
+    async applyPolicy(authDirectiveAST, parent, args, context, _info) {
+      const role = authDirectiveAST.arguments[0]?.value.value
+      return context.auth?.user.roles.includes(role)
+    },
+    authDirective: 'auth'
   })
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

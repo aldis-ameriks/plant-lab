@@ -1,0 +1,30 @@
+extend type Query {
+    device(id: ID!): Device!
+    devices: [Device!]!
+}
+
+type Device {
+  id: ID!
+  name: String!
+  room: String
+  firmware: String!
+  type: DeviceType!
+  version: DeviceVersion!
+}
+
+enum DeviceType {
+  hub
+  sensor
+}
+
+enum DeviceVersion {
+  hub_10
+  sensor_10
+}
+
+enum DeviceStatus {
+  new
+  paired
+  pairing
+  reset
+}

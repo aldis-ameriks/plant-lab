@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import { Knex } from 'knex'
 import mercurius from 'mercurius'
+import mercuriusAuth from 'mercurius-auth'
 import pino from 'pino'
 import { config } from '../helpers/config'
 import { Context, createContext, createRequestContext } from '../helpers/context'
@@ -19,6 +20,20 @@ export function setupGraphql() {
     resolvers,
     loaders,
     context: (req) => createRequestContext({ ...result.context, headers: req.headers, ip: req.ip, reqId: '0' })
+  })
+
+  app.register(mercuriusAuth, {
+    async authContext(_context) {
+      // let accessKey = context.reply.request.headers['x-access-key']
+      return {
+        user: null
+      }
+    },
+    async applyPolicy(authDirectiveAST, parent, args, context, _info) {
+      const role = authDirectiveAST.arguments[0]?.value.value
+      return context.auth?.user.roles.includes(role)
+    },
+    authDirective: 'auth'
   })
 
   beforeEach(async () => {

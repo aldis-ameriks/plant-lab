@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   database:
-    image: timescale/timescaledb:latest-pg14
+    image: timescale/timescaledb-ha:pg14-latest
     environment:
       - POSTGRES_PASSWORD=postgres
     expose:

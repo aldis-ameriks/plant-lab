@@ -36,6 +36,7 @@
     "graphql-tag": "2.12.6",
     "knex": "2.3.0",
     "mercurius": "11.4.0",
+    "mercurius-auth": "3.0.0",
     "pg": "8.8.0",
     "pino": "8.8.0",
     "tiny-lru": "10.0.1"
