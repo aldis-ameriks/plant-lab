@@ -59,7 +59,7 @@ export default function readings(fastify: FastifyInstance) {
       }
     },
     async (req, reply) => {
-      req.log.info('Received input:', req.body)
+      req.log.info(`received input: ${req.body}`)
       const parsedInput = req.body.split(';')
       const device_id = parsedInput[0]
       const moisture_raw = parsedInput[1]
@@ -90,6 +90,7 @@ export default function readings(fastify: FastifyInstance) {
 
       const isValid = validator([input])
       if (!isValid) {
+        req.log.error(`received invalid input: ${validator.errors?.join(', ')}`)
         reply.code(400).send('Invalid input')
       }
 
@@ -100,6 +101,7 @@ export default function readings(fastify: FastifyInstance) {
         .first()
 
       if (!userDevice) {
+        req.log.error(`user: ${req.ctx.user?.id} does not own device: ${device_id}`)
         return reply.code(403).send('Forbidden')
       }
 
