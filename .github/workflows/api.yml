@@ -1,0 +1,84 @@
+name: api
+
+on:
+  push:
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/api.yml'
+
+jobs:
+  lint:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '19'
+
+      - name: Lint Dockerfile
+        run: docker run --rm -i hadolint/hadolint < ./apps/api/Dockerfile
+
+      - run: |
+          cd apps/api
+          npm ci
+          npm run lint
+    env:
+      CI: true
+
+  test:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '19'
+
+      - run: |
+          cd apps/api
+          npm ci
+          npm run coverage
+    env:
+      CI: true
+
+  build:
+    needs: [lint, test]
+    if: github.ref == 'refs/heads/master' || contains(github.ref, 'refs/tags/')
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '19'
+
+      - name: Log into registry
+        run: echo "$CI_REGISTRY_PASSWORD" | docker login registry.kataldi.com -u $CI_REGISTRY_USER --password-stdin
+
+      - run: |
+          cd apps/api
+          npm run docker:build
+
+      - name: Run vulnerability scanner
+        uses: aquasecurity/trivy-action@0.2.0
+        with:
+          image-ref: 'registry.kataldi.com/pm-api'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
+
+      - name: Tag image
+        if: contains(github.ref, 'refs/tags/')
+        run: |
+          docker tag registry.kataldi.com/pm-api:latest registry.kataldi.com/pm-api:${GITHUB_REF#refs/tags/}
+          docker push registry.kataldi.com/pm-api:${GITHUB_REF#refs/tags/}
+
+
+      - run: |
+          cd apps/api
+          npm run docker:push
+
+    env:
+      CI: true
