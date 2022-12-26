@@ -10,7 +10,7 @@ import pino from 'pino'
 import { handleAbuse } from './helpers/abuse'
 
 import { config, isLocal } from './helpers/config'
-import { createContext, createRequestContext } from './helpers/context'
+import { createContext, createRequestContext, RequestContext } from './helpers/context'
 import { knex } from './helpers/db'
 import { shutdown } from './helpers/shutdown'
 import modules, { Job } from './modules'
@@ -100,7 +100,7 @@ async function init() {
   app.register(mercuriusAuth, {
     async applyPolicy(authDirectiveAST, parent, args, context, _info) {
       const role = authDirectiveAST.arguments[0]?.value.value
-      return context.auth?.user.roles.includes(role)
+      return (context as unknown as RequestContext).user?.roles.includes(role) === true
     },
     authDirective: 'auth'
   })
