@@ -78,6 +78,17 @@ services:
     networks:
       - nginx-proxy
 
+  runner:
+    image: tcardonne/github-runner:latest
+    restart: always
+    env_file: .env
+    environment:
+      - RUNNER_NAME=pm-runner
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - nginx-proxy
+
 networks:
   nginx-proxy:
     external: true
