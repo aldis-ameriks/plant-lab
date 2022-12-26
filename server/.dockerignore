@@ -1,8 +1,0 @@
-*
-!tsconfig.json
-!package.json
-!yarn.lock
-!src/
-!migrations/
-!config/default.json
-!config/test.json
