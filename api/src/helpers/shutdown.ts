@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 import util from 'util'
+import { Job } from '../modules'
 import { captureError } from '../modules/errors/helpers/captureError'
 import { Context } from './context'
 
@@ -10,7 +11,7 @@ let shuttingDown = false
 export function shutdown(
   context: Context,
   close: () => Promise<void>,
-  jobs?: any[],
+  jobs?: Job[],
   opts?: { timeoutMs: number }
 ): void {
   const { log } = context
