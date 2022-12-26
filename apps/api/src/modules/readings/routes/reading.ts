@@ -70,7 +70,7 @@ export default function readings(fastify: FastifyInstance) {
       const battery_voltage = parsedInput[7]
       const signal = parsedInput[8]
       const reading_id = parsedInput[9]
-      const firmware = parsedInput[10]
+      // const firmware = parsedInput[10]
 
       // hub_id is found by looking at devices
       const input: Omit<ReadingEntity, 'hub_id'> = {

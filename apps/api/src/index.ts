@@ -81,6 +81,8 @@ async function init() {
     queryDepth: 20,
     graphiql: isLocal,
     subscription: true,
+    // TODO: Fix mercurius types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     errorFormatter: (err, ctx: any) => {
       app.log.error({ err }, 'error occurred')
       const response = mercurius.defaultErrorFormatter(err, ctx)

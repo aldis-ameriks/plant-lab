@@ -1,21 +1,19 @@
 import { FastifyInstance } from 'fastify'
 import { Knex } from 'knex'
-import { Context } from '../../../helpers/context'
+import assert from 'node:assert'
+import * as seeds from '../../../test-helpers/seeds'
 import { device, user } from '../../../test-helpers/seeds'
 import { setupRoutes } from '../../../test-helpers/setupRoutes'
 import { DeviceEntity, UsersDeviceEntity } from '../../../types/entities'
 import readingsRoutes from '../routes'
-import * as seeds from '../../../test-helpers/seeds'
 
 const route = setupRoutes(readingsRoutes)
 
 let knex: Knex
-let context: Context
 let app: FastifyInstance
 
 beforeEach(async () => {
   knex = route.knex
-  context = route.context
   app = route.app
 
   await knex('user_access_keys')
@@ -186,7 +184,7 @@ test('updates device last seen at', async () => {
   expect(res.statusCode).toBe(200)
 
   let device = await knex<DeviceEntity>('devices').where('id', seeds.device.id).first()
-  expect(device!.last_seen_at!).toBeTruthy()
+  expect(device?.last_seen_at).toBeTruthy()
 
   const past = new Date()
   past.setDate(past.getDate() - 30)
@@ -202,5 +200,6 @@ test('updates device last seen at', async () => {
   expect(res.statusCode).toBe(200)
 
   device = await knex<DeviceEntity>('devices').where('id', seeds.device.id).first()
-  expect(new Date(device!.last_seen_at!) > past).toBeTruthy()
+  assert.ok(device?.last_seen_at)
+  expect(new Date(device.last_seen_at) > past).toBeTruthy()
 })
