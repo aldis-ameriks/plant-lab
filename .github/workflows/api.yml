@@ -27,7 +27,7 @@ jobs:
       CI: true
 
   test:
-    runs-on: self-hosted
+    runs-on: [self-hosted, pm-runner]
 
     steps:
       - uses: actions/checkout@v2
@@ -45,7 +45,7 @@ jobs:
   build:
     needs: [lint, test]
     if: github.ref == 'refs/heads/master' || contains(github.ref, 'refs/tags/')
-    runs-on: self-hosted
+    runs-on: [self-hosted, pm-runner]
 
     steps:
       - uses: actions/checkout@v2
