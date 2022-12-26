@@ -28,7 +28,7 @@ test('checks user auth', async () => {
 
   let res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain' },
     payload: 'body'
   })
@@ -37,7 +37,7 @@ test('checks user auth', async () => {
 
   res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload: 'body'
   })
@@ -46,7 +46,7 @@ test('checks user auth', async () => {
 
   res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': 'unknown-key' },
     payload: 'body'
   })
@@ -59,7 +59,7 @@ test('checks user auth', async () => {
 
   res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload: 'body'
   })
@@ -70,7 +70,7 @@ test('checks user auth', async () => {
 test('validates payload', async () => {
   const res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload: 'invalid payload'
   })
@@ -84,7 +84,7 @@ test('verifies that user owns device', async () => {
   const payload = '1;2;3;4;5;6;7;8;9;10;11'
   let res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
@@ -96,7 +96,7 @@ test('verifies that user owns device', async () => {
 
   res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
@@ -110,7 +110,7 @@ test('saves reading', async () => {
   let payload = '1;2;3;4;5;6;7;8;9;10;11'
   let res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
@@ -136,7 +136,7 @@ test('saves reading', async () => {
   payload = '1;22;33;44;55;66;77;88;99;1010;1111'
   res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
@@ -179,7 +179,7 @@ test('updates device last seen at', async () => {
 
   let res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
@@ -195,7 +195,7 @@ test('updates device last seen at', async () => {
 
   res = await app.inject({
     method: 'POST',
-    path: '/readings',
+    path: '/reading',
     headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })

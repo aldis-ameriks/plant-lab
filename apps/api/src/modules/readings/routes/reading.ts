@@ -45,7 +45,7 @@ const validator = ajv.compile(schema)
 
 export default function readings(fastify: FastifyInstance) {
   fastify.post<{ Body: string }>(
-    '/readings',
+    '/reading',
     {
       preHandler: async (req, reply) => {
         if (!req.ctx.user || !req.ctx.user.roles.includes('HUB')) {
