@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+  database:
+    image: timescale/timescaledb-ha:pg14-latest
+    restart: always
+    env_file: .env
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    networks:
+      - nginx-proxy
+    expose:
+      - "5432"
+    ports:
+      - 20001:5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+
+  api:
+    image: registry.kataldi.com/pm-api:latest
+    restart: always
+    depends_on:
+      - database
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    env_file: .env
+    environment:
+      - VIRTUAL_PORT=4000
+      - VIRTUAL_HOST=api.plant.kataldi.com
+      - LETSENCRYPT_HOST=api.plant.kataldi.com
+      - LETSENCRYPT_EMAIL=aldis.ameriks@gmail.com
+      - HTTPS_METHOD=noredirect
+    expose:
+      - "4000"
+    networks:
+      - nginx-proxy
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "10m"
+
+  migration:
+    image: registry.kataldi.com/pm-api:latest
+    restart: "no"
+    env_file: .env
+    depends_on:
+      - database
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    command: node ./node_modules/.bin/knex migrate:latest --knexfile ./build/src/helpers/knexfile.js
+    networks:
+      - nginx-proxy
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+
+  web:
+    image: registry.kataldi.com/pm-web:latest
+    restart: always
+    env_file: .env
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=plant.kataldi.com
+      - LETSENCRYPT_HOST=plant.kataldi.com
+      - LETSENCRYPT_EMAIL=aldis.ameriks@gmail.com
+    expose:
+      - "3000"
+    networks:
+      - nginx-proxy
+
+networks:
+  nginx-proxy:
+    external: true
