@@ -23,12 +23,6 @@ export function setupGraphql() {
   })
 
   app.register(mercuriusAuth, {
-    async authContext(_context) {
-      // let accessKey = context.reply.request.headers['x-access-key']
-      return {
-        user: null
-      }
-    },
     async applyPolicy(authDirectiveAST, parent, args, context, _info) {
       const role = authDirectiveAST.arguments[0]?.value.value
       return context.auth?.user.roles.includes(role)

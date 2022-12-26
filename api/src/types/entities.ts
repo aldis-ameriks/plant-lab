@@ -1,6 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export type Tables = 'abusers' | 'crons' | 'devices' | 'errors' | 'readings'
+export type Tables =
+  | 'abusers'
+  | 'crons'
+  | 'devices'
+  | 'errors'
+  | 'readings'
+  | 'user_access_keys'
+  | 'users'
+  | 'users_devices'
 
 export enum DeviceStatus {
   new = 'new',
@@ -125,4 +133,34 @@ export type ReadingInsertEntity = {
   signal?: string | null
   temperature?: string | null
   time: Date
+}
+
+export type UserAccessKeyEntity = {
+  access_key: string
+  roles: Array<string>
+  user_id: string
+}
+
+export type UserAccessKeyInsertEntity = {
+  access_key: string
+  roles: Array<string>
+  user_id: string
+}
+
+export type UserEntity = {
+  id: string
+}
+
+export type UserInsertEntity = {
+  id?: string
+}
+
+export type UsersDeviceEntity = {
+  device_id: string
+  user_id: string
+}
+
+export type UsersDeviceInsertEntity = {
+  device_id: string
+  user_id: string
 }

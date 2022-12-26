@@ -1,7 +1,7 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifyInstance } from 'fastify'
 import { ajv } from '../../../helpers/validations'
-import { ReadingEntity } from '../../../types/entities'
+import { ReadingEntity, UsersDeviceEntity } from '../../../types/entities'
 
 const schema: JSONSchemaType<ReadingEntity[]> = {
   type: 'array',
@@ -48,10 +48,9 @@ export default function readings(fastify: FastifyInstance) {
     '/readings',
     {
       preHandler: async (req, reply) => {
-        // TODO: Check auth
-        // if (!req.ctx.user || !req.ctx.user.roles.includes('HUB')) {
-        //   reply.code(403).type('text/plain').send('Forbidden')
-        // }
+        if (!req.ctx.user || !req.ctx.user.roles.includes('HUB')) {
+          reply.code(403).type('text/plain').send('Forbidden')
+        }
       },
       schema: {
         body: {
@@ -60,8 +59,6 @@ export default function readings(fastify: FastifyInstance) {
       }
     },
     async (req, reply) => {
-      // return reply.send('success')
-
       req.log.info('Received input:', req.body)
       const parsedInput = req.body.split(';')
       const device_id = parsedInput[0]
@@ -96,10 +93,17 @@ export default function readings(fastify: FastifyInstance) {
         reply.code(400).send('Invalid input')
       }
 
-      // TODO: Verify user owns device
-      // await deviceService.verifyUserOwnsDevice(device_id, userId)
+      const userDevice = await req.ctx
+        .knex<UsersDeviceEntity>('users_devices')
+        .where('user_id', req.ctx.user?.id)
+        .where('device_id', device_id)
+        .first()
 
-      await req.ctx.knex('readings').insert(input)
+      if (!userDevice) {
+        return reply.code(403).send('Forbidden')
+      }
+
+      await req.ctx.knex<ReadingEntity>('readings').insert(input)
 
       return reply.send('success')
     }

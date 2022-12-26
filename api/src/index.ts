@@ -98,12 +98,6 @@ async function init() {
   })
 
   app.register(mercuriusAuth, {
-    async authContext(_context) {
-      // let accessKey = context.reply.request.headers['x-access-key']
-      return {
-        user: null
-      }
-    },
     async applyPolicy(authDirectiveAST, parent, args, context, _info) {
       const role = authDirectiveAST.arguments[0]?.value.value
       return context.auth?.user.roles.includes(role)
@@ -121,7 +115,9 @@ async function init() {
       req.log.debug({ body: req.body }, 'request body')
     }
 
-    req.ctx = createRequestContext(Object.assign({}, context, { headers: req.headers, ip: req.ip, reqId: req.id }))
+    req.ctx = await createRequestContext(
+      Object.assign({}, context, { headers: req.headers, ip: req.ip, reqId: req.id })
+    )
     req.ctx.log = req.log as pino.Logger
   })
 

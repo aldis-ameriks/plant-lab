@@ -1,7 +1,9 @@
 import { FastifyInstance } from 'fastify'
 import { Knex } from 'knex'
 import { Context } from '../../../helpers/context'
+import { device, user } from '../../../test-helpers/seeds'
 import { setupRoutes } from '../../../test-helpers/setupRoutes'
+import { UsersDeviceEntity } from '../../../types/entities'
 import readingsRoutes from '../routes'
 import * as seeds from '../../../test-helpers/seeds'
 
@@ -11,20 +13,57 @@ let knex: Knex
 let context: Context
 let app: FastifyInstance
 
-beforeEach(() => {
+beforeEach(async () => {
   knex = route.knex
   context = route.context
   app = route.app
+
+  await knex('user_access_keys')
+    .update({ roles: ['HUB'] })
+    .where('access_key', seeds.userAccessKey.access_key)
 })
 
-// TODO: Add user auth
 test('checks user auth', async () => {
-  //
-})
+  await knex('user_access_keys').update({ roles: [] }).where('access_key', seeds.userAccessKey.access_key)
 
-test('validates that body must be a string', async () => {
-  const res = await app.inject({ method: 'POST', path: '/readings', payload: {} })
-  expect(res.body).toContain('body must be string')
+  let res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain' },
+    payload: 'body'
+  })
+  expect(res.body).toContain('Forbidden')
+  expect(res.statusCode).toBe(403)
+
+  res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
+    payload: 'body'
+  })
+  expect(res.body).toContain('Forbidden')
+  expect(res.statusCode).toBe(403)
+
+  res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': 'unknown-key' },
+    payload: 'body'
+  })
+  expect(res.body).toContain('Forbidden')
+  expect(res.statusCode).toBe(403)
+
+  await knex('user_access_keys')
+    .update({ roles: ['HUB'] })
+    .where('access_key', seeds.userAccessKey.access_key)
+
+  res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
+    payload: 'body'
+  })
+  expect(res.body).toContain('Invalid input')
   expect(res.statusCode).toBe(400)
 })
 
@@ -32,16 +71,38 @@ test('validates payload', async () => {
   const res = await app.inject({
     method: 'POST',
     path: '/readings',
-    headers: { 'content-type': 'text/plain' },
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload: 'invalid payload'
   })
   expect(res.body).toEqual('Invalid input')
   expect(res.statusCode).toBe(400)
 })
 
-// TODO: Add user devices
 test('verifies that user owns device', async () => {
-  //
+  await knex('users_devices').where('user_id', seeds.user.id).del()
+  await knex('readings').where('device_id', seeds.device.id).del()
+  const payload = '1;2;3;4;5;6;7;8;9;10;11'
+  let res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
+    payload
+  })
+  expect(res.statusCode).toBe(403)
+  let readings = await knex('readings').where('device_id', seeds.device.id)
+  expect(readings.length).toBe(0)
+
+  await knex<UsersDeviceEntity>('users_devices').insert({ user_id: user.id, device_id: device.id })
+
+  res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
+    payload
+  })
+  expect(res.statusCode).toBe(200)
+  readings = await knex('readings').where('device_id', seeds.device.id)
+  expect(readings.length).toBe(1)
 })
 
 test('saves reading', async () => {
@@ -50,7 +111,7 @@ test('saves reading', async () => {
   let res = await app.inject({
     method: 'POST',
     path: '/readings',
-    headers: { 'content-type': 'text/plain' },
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
   expect(res.statusCode).toBe(200)
@@ -76,7 +137,7 @@ test('saves reading', async () => {
   res = await app.inject({
     method: 'POST',
     path: '/readings',
-    headers: { 'content-type': 'text/plain' },
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
     payload
   })
   expect(res.statusCode).toBe(200)
