@@ -1,0 +1,16 @@
+schema: http://127.0.0.1:4000/graphql
+documents: ./src/**/*.graphql
+generates:
+  src/graphql/graphql-gen.tsx:
+    plugins:
+      - add:
+          content: '/* eslint-disable @typescript-eslint/no-explicit-any, no-use-before-define, @typescript-eslint/explicit-module-boundary-types */'
+      - typescript
+      - typescript-operations
+      - typescript-urql
+    config:
+      withComponent: false
+      withHOC: false
+      withHooks: true
+      maybeValue: T | null | undefined
+

@@ -1,0 +1,192 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, no-use-before-define, @typescript-eslint/explicit-module-boundary-types */
+import gql from 'graphql-tag'
+import * as Urql from 'urql'
+export type Maybe<T> = T | null | undefined
+export type InputMaybe<T> = T | null | undefined
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: string
+  String: string
+  Boolean: boolean
+  Int: number
+  Float: number
+  DateTime: any
+}
+
+export type Device = {
+  __typename?: 'Device'
+  firmware: Scalars['String']
+  id: Scalars['ID']
+  lastReading?: Maybe<Reading>
+  lastWateredTime?: Maybe<Scalars['DateTime']>
+  name: Scalars['String']
+  readings: Array<Reading>
+  room?: Maybe<Scalars['String']>
+  type: DeviceType
+  version: DeviceVersion
+}
+
+export enum DeviceStatus {
+  New = 'new',
+  Paired = 'paired',
+  Pairing = 'pairing',
+  Reset = 'reset'
+}
+
+export enum DeviceType {
+  Hub = 'hub',
+  Sensor = 'sensor'
+}
+
+export enum DeviceVersion {
+  Hub_10 = 'hub_10',
+  Sensor_10 = 'sensor_10'
+}
+
+export type Mutation = {
+  __typename?: 'Mutation'
+  _?: Maybe<Scalars['Boolean']>
+  saveReading: Scalars['String']
+}
+
+export type MutationSaveReadingArgs = {
+  input: Scalars['String']
+}
+
+export type Query = {
+  __typename?: 'Query'
+  _?: Maybe<Scalars['Boolean']>
+  device: Device
+  devices: Array<Device>
+}
+
+export type QueryDeviceArgs = {
+  id: Scalars['ID']
+}
+
+export type Reading = {
+  __typename?: 'Reading'
+  batteryVoltage: Scalars['Float']
+  light?: Maybe<Scalars['Float']>
+  moisture: Scalars['Float']
+  temperature: Scalars['Float']
+  time: Scalars['DateTime']
+}
+
+export enum Role {
+  Admin = 'ADMIN',
+  Hub = 'HUB',
+  User = 'USER'
+}
+
+export type ReadingFieldsFragment = {
+  __typename?: 'Reading'
+  temperature: number
+  moisture: number
+  time: any
+  light?: number | null | undefined
+  batteryVoltage: number
+}
+
+export type DeviceQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type DeviceQuery = {
+  __typename?: 'Query'
+  device: {
+    __typename?: 'Device'
+    id: string
+    lastWateredTime?: any | null | undefined
+    lastReading?:
+      | {
+          __typename?: 'Reading'
+          temperature: number
+          moisture: number
+          time: any
+          light?: number | null | undefined
+          batteryVoltage: number
+        }
+      | null
+      | undefined
+    readings: Array<{
+      __typename?: 'Reading'
+      temperature: number
+      moisture: number
+      time: any
+      light?: number | null | undefined
+      batteryVoltage: number
+    }>
+  }
+}
+
+export type DevicesQueryVariables = Exact<{ [key: string]: never }>
+
+export type DevicesQuery = {
+  __typename?: 'Query'
+  devices: Array<{
+    __typename?: 'Device'
+    id: string
+    lastWateredTime?: any | null | undefined
+    lastReading?:
+      | {
+          __typename?: 'Reading'
+          temperature: number
+          moisture: number
+          time: any
+          light?: number | null | undefined
+          batteryVoltage: number
+        }
+      | null
+      | undefined
+  }>
+}
+
+export const ReadingFieldsFragmentDoc = gql`
+  fragment readingFields on Reading {
+    temperature
+    moisture
+    time
+    light
+    batteryVoltage
+  }
+`
+export const DeviceDocument = gql`
+  query Device($id: ID!) {
+    device(id: $id) {
+      id
+      lastReading {
+        ...readingFields
+      }
+      lastWateredTime
+      readings {
+        ...readingFields
+      }
+    }
+  }
+  ${ReadingFieldsFragmentDoc}
+`
+
+export function useDeviceQuery(options: Omit<Urql.UseQueryArgs<DeviceQueryVariables>, 'query'>) {
+  return Urql.useQuery<DeviceQuery, DeviceQueryVariables>({ query: DeviceDocument, ...options })
+}
+export const DevicesDocument = gql`
+  query Devices {
+    devices {
+      id
+      lastReading {
+        ...readingFields
+      }
+      lastWateredTime
+    }
+  }
+  ${ReadingFieldsFragmentDoc}
+`
+
+export function useDevicesQuery(options?: Omit<Urql.UseQueryArgs<DevicesQueryVariables>, 'query'>) {
+  return Urql.useQuery<DevicesQuery, DevicesQueryVariables>({ query: DevicesDocument, ...options })
+}

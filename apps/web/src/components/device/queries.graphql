@@ -1,0 +1,20 @@
+fragment readingFields on Reading {
+  temperature
+  moisture
+  time
+  light
+  batteryVoltage
+}
+
+query Device($id: ID!) {
+  device(id: $id) {
+    id
+    lastReading {
+      ...readingFields
+    }
+    lastWateredTime
+    readings {
+      ...readingFields
+    }
+  }
+}
