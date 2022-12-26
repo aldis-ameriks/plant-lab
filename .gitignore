@@ -1,6 +1,2 @@
 .idea
-.vscode
 node_modules
-results
-.DS_Store
-.todo
