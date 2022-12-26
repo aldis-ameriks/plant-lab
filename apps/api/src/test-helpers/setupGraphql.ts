@@ -4,7 +4,7 @@ import mercurius from 'mercurius'
 import mercuriusAuth from 'mercurius-auth'
 import pino from 'pino'
 import { config } from '../helpers/config'
-import { Context, createContext, createRequestContext } from '../helpers/context'
+import { Context, createContext, createRequestContext, RequestContext } from '../helpers/context'
 import modules from '../modules'
 import { getTestKnex } from './getTestKnex'
 
@@ -25,7 +25,7 @@ export function setupGraphql() {
   app.register(mercuriusAuth, {
     async applyPolicy(authDirectiveAST, parent, args, context, _info) {
       const role = authDirectiveAST.arguments[0]?.value.value
-      return context.auth?.user.roles.includes(role)
+      return (context as unknown as RequestContext).user?.roles.includes(role) === true
     },
     authDirective: 'auth'
   })
