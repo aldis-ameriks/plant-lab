@@ -237,21 +237,12 @@ describe('Device.readings', () => {
 
     const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query } })
     const parsedBody = JSON.parse(result.body)
-    expect(parsedBody).toEqual({
-      data: {
-        device: {
-          id,
-          readings: [
-            {
-              batteryVoltage: 1.5,
-              light: 150,
-              moisture: 15,
-              temperature: 30,
-              time: '2022-12-25T00:00:00.000Z'
-            }
-          ]
-        }
-      }
+    expect(parsedBody.data.device.readings.length).toBeGreaterThan(1)
+    expect(parsedBody.data.device.readings[0]).toMatchObject({
+      batteryVoltage: 1.5,
+      light: 150,
+      moisture: 15,
+      temperature: 30
     })
   })
 })
