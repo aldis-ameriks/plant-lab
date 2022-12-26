@@ -22,7 +22,7 @@ export type RequestContext = Context & {
 }
 
 export async function createRequestContext(context: RequestContext): Promise<RequestContext> {
-  const accessKey = context.headers['x-access-key']
+  const accessKey = context.headers['x-access-key'] || context.headers['access-key']
   if (accessKey) {
     context.user = await context
       .knex('user_access_keys')

@@ -1,3 +1,7 @@
+extend type Mutation {
+    saveReading(input: String!): String! @auth(requires: HUB)
+}
+
 extend type Device {
     readings: [Reading!]!
     lastReading: Reading

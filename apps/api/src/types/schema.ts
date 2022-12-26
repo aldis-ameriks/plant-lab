@@ -50,6 +50,11 @@ export enum DeviceVersion {
 export type Mutation = {
   __typename?: 'Mutation'
   _?: Maybe<Scalars['Boolean']>
+  saveReading: Scalars['String']
+}
+
+export type MutationSaveReadingArgs = {
+  input: Scalars['String']
 }
 
 export type Query = {
@@ -66,11 +71,16 @@ export type QueryDeviceArgs = {
 export type Reading = {
   __typename?: 'Reading'
   batteryVoltage: Scalars['Float']
-  id: Scalars['ID']
   light?: Maybe<Scalars['Float']>
   moisture: Scalars['Float']
   temperature: Scalars['Float']
   time: Scalars['DateTime']
+}
+
+export enum Role {
+  Admin = 'ADMIN',
+  Hub = 'HUB',
+  User = 'USER'
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -156,6 +166,7 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
   Reading: ResolverTypeWrapper<Reading>
+  Role: Role
   String: ResolverTypeWrapper<Scalars['String']>
 }
 
@@ -171,6 +182,17 @@ export type ResolversParentTypes = {
   Reading: Reading
   String: Scalars['String']
 }
+
+export type AuthDirectiveArgs = {
+  requires?: Maybe<Role>
+}
+
+export type AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = RequestContext,
+  Args = AuthDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime'
@@ -197,6 +219,12 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
+  saveReading?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSaveReadingArgs, 'input'>
+  >
 }
 
 export type QueryResolvers<
@@ -213,7 +241,6 @@ export type ReadingResolvers<
   ParentType extends ResolversParentTypes['Reading'] = ResolversParentTypes['Reading']
 > = {
   batteryVoltage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   light?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
   moisture?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   temperature?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
@@ -227,4 +254,8 @@ export type Resolvers<ContextType = RequestContext> = {
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Reading?: ReadingResolvers<ContextType>
+}
+
+export type DirectiveResolvers<ContextType = RequestContext> = {
+  auth?: AuthDirectiveResolver<any, any, ContextType>
 }

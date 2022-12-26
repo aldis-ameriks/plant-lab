@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { ajv } from '../../../helpers/validations'
 import { DeviceEntity, ReadingEntity, UsersDeviceEntity } from '../../../types/entities'
 
-const schema: JSONSchemaType<ReadingEntity[]> = {
+export const readingsSchema: JSONSchemaType<ReadingEntity[]> = {
   type: 'array',
   items: {
     type: 'object',
@@ -34,14 +34,13 @@ const schema: JSONSchemaType<ReadingEntity[]> = {
       'light',
       'signal',
       'device_id',
-      'reading_id',
       'time'
     ],
     additionalProperties: false
   }
 }
 
-const validator = ajv.compile(schema)
+const validator = ajv.compile(readingsSchema)
 
 export default function readings(fastify: FastifyInstance) {
   fastify.post<{ Body: string }>(
