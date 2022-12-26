@@ -1,7 +1,7 @@
 import { JSONSchemaType } from 'ajv'
 import { FastifyInstance } from 'fastify'
 import { ajv } from '../../../helpers/validations'
-import { ReadingEntity, UsersDeviceEntity } from '../../../types/entities'
+import { DeviceEntity, ReadingEntity, UsersDeviceEntity } from '../../../types/entities'
 
 const schema: JSONSchemaType<ReadingEntity[]> = {
   type: 'array',
@@ -105,6 +105,7 @@ export default function readings(fastify: FastifyInstance) {
         return reply.code(403).send('Forbidden')
       }
 
+      await req.ctx.knex<DeviceEntity>('devices').update({ last_seen_at: new Date() }).where('id', device_id)
       await req.ctx.knex<ReadingEntity>('readings').insert(input)
 
       return reply.send('success')

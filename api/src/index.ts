@@ -159,8 +159,8 @@ async function init() {
   })
 
   const address = await app.listen(process.env.API_SERVER_PORT ? +process.env.API_SERVER_PORT : 4000, '0.0.0.0')
-  app.log.info(`Server started, listening on ${address} for incoming requests.`)
-  app.log.info(`Using environment: ${config.env}`)
+  app.log.info(`server started, listening on ${address} for incoming requests.`)
+  app.log.info(`using environment: ${config.env}`)
 
   let cronJobs: Job[] = []
   if (config.worker.isCronEnabled && crons.length > 0) {

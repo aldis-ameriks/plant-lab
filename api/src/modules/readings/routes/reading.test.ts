@@ -3,7 +3,7 @@ import { Knex } from 'knex'
 import { Context } from '../../../helpers/context'
 import { device, user } from '../../../test-helpers/seeds'
 import { setupRoutes } from '../../../test-helpers/setupRoutes'
-import { UsersDeviceEntity } from '../../../types/entities'
+import { DeviceEntity, UsersDeviceEntity } from '../../../types/entities'
 import readingsRoutes from '../routes'
 import * as seeds from '../../../test-helpers/seeds'
 
@@ -170,4 +170,37 @@ test('saves reading', async () => {
       reading_id: '10'
     }
   ])
+})
+
+test('updates device last seen at', async () => {
+  await knex<DeviceEntity>('devices').update({ last_seen_at: null }).where('id', seeds.device.id)
+
+  const payload = '1;2;3;4;5;6;7;8;9;10;11'
+
+  let res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
+    payload
+  })
+  expect(res.statusCode).toBe(200)
+
+  let device = await knex<DeviceEntity>('devices').where('id', seeds.device.id).first()
+  expect(device!.last_seen_at!).toBeTruthy()
+
+  const past = new Date()
+  past.setDate(past.getDate() - 30)
+
+  await knex<DeviceEntity>('devices').update({ last_seen_at: past }).where('id', seeds.device.id)
+
+  res = await app.inject({
+    method: 'POST',
+    path: '/readings',
+    headers: { 'content-type': 'text/plain', 'x-access-key': seeds.userAccessKey.access_key },
+    payload
+  })
+  expect(res.statusCode).toBe(200)
+
+  device = await knex<DeviceEntity>('devices').where('id', seeds.device.id).first()
+  expect(new Date(device!.last_seen_at!) > past).toBeTruthy()
 })
