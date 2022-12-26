@@ -3,7 +3,7 @@ import { ErrorEntity } from '../../../types/entities'
 
 export async function captureError(
   { knex, log }: Pick<Context, 'knex' | 'log'>,
-  source: 'api' | 'frontend',
+  source: 'api' | 'web',
   payload: Record<string, unknown> | Error | string,
   rest?: Partial<Omit<ErrorEntity, 'id' | 'time' | 'source' | 'content' | 'sent_at'>>
 ) {
