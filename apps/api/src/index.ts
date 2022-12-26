@@ -15,6 +15,7 @@ import { knex } from './helpers/db'
 import { shutdown } from './helpers/shutdown'
 import modules, { Job } from './modules'
 import { captureError } from './modules/errors/helpers/captureError'
+import { sendTelegram } from './modules/errors/helpers/sendTelegram'
 import { CronEntity } from './types/entities'
 
 const { crons, loaders, resolvers, routes, schema } = modules
@@ -175,6 +176,14 @@ async function init() {
   }
 
   await shutdown(context, app.close, cronJobs)
+
+  if (!isLocal) {
+    try {
+      await sendTelegram(context, 'api started')
+    } catch (e) {
+      context.log.error(e)
+    }
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-extra-semi
