@@ -1,6 +1,6 @@
 import { config } from '../config'
 
-let errors: Array<Record<string, any>> = []
+let errors: Array<Record<string, unknown>> = []
 let sending = false
 
 export function captureError(err: unknown): void {

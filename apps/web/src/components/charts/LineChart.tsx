@@ -12,7 +12,9 @@ type Props = {
 }
 
 type State = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   series: any
 }
 

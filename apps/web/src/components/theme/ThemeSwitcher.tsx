@@ -7,8 +7,8 @@ export const ThemeSwitcher = memo(() => {
   const { setSelectedTheme } = useTheme()
 
   const changeTheme = useCallback(
-    (e: any) => {
-      setSelectedTheme(e.target.value)
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedTheme(e.target.value as Theme)
     },
     [setSelectedTheme]
   )

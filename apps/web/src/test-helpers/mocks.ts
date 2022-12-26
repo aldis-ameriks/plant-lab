@@ -1,4 +1,4 @@
-import { graphql, setupWorker, SetupWorkerApi } from 'msw'
+import { setupWorker, SetupWorkerApi } from 'msw'
 
 export const handlers = []
 
