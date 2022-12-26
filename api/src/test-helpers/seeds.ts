@@ -18,7 +18,8 @@ export const device: DeviceEntity = {
   room: null,
   status: DeviceStatus.new,
   type: DeviceType.sensor,
-  version: DeviceVersion.sensor_10
+  version: DeviceVersion.sensor_10,
+  test: false
 }
 
 export const reading: ReadingEntity = {

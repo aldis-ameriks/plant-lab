@@ -67,6 +67,7 @@ export type DeviceEntity = {
   name: string
   room: string | null
   status: DeviceStatus
+  test: boolean
   type: DeviceType
   version: DeviceVersion
 }
@@ -79,6 +80,7 @@ export type DeviceInsertEntity = {
   name: string
   room?: string | null
   status?: DeviceStatus
+  test?: boolean
   type: DeviceType
   version: DeviceVersion
 }

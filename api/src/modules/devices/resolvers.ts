@@ -4,6 +4,6 @@ import { getDeviceQuery } from './helpers/getDeviceQuery'
 export default {
   Query: {
     device: (_, args, context) => getDeviceQuery(context.knex).where('id', args.id).first(),
-    devices: (_, args, context) => getDeviceQuery(context.knex)
+    devices: (_, args, context) => getDeviceQuery(context.knex).whereNot('test', true)
   }
 } as Resolvers
