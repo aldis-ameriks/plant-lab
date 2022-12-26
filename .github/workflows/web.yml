@@ -1,0 +1,86 @@
+name: web
+
+on:
+  push:
+    paths:
+      - 'apps/web/**'
+      - '.github/workflows/web.yml'
+
+jobs:
+  lint:
+    runs-on: [self-hosted, pm-runner]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+
+      - name: Lint Dockerfile
+        run: docker run --rm -i hadolint/hadolint < ./apps/api/Dockerfile
+
+      - run: |
+          cd apps/web
+          npm ci
+          npm run lint
+    env:
+      CI: true
+
+  test:
+    runs-on: [self-hosted, pm-runner]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+
+      - run: |
+          cd apps/web
+          npm ci
+          npm run coverage
+    env:
+      CI: true
+
+  build:
+    needs: [lint, test]
+    if: github.ref == 'refs/heads/master' || contains(github.ref, 'refs/tags/')
+    runs-on: [self-hosted, pm-runner]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+
+      - name: Log into registry
+        run: echo "$CI_REGISTRY_PASSWORD" | docker login registry.kataldi.com -u $CI_REGISTRY_USER --password-stdin
+
+      - run: |
+          cd apps/web
+          docker build \
+          --build-arg NEXT_PUBLIC_COMMIT_HASH=${{ github.sha }} \
+          --tag registry.kataldi.com/pm-web .
+
+      - name: Run vulnerability scanner
+        uses: aquasecurity/trivy-action@0.2.0
+        with:
+          image-ref: 'registry.kataldi.com/pm-web'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
+
+      - name: Tag image
+        if: contains(github.ref, 'refs/tags/')
+        run: |
+          docker tag registry.kataldi.com/pm-web:latest registry.kataldi.com/pm-web:${GITHUB_REF#refs/tags/}
+          docker push registry.kataldi.com/pm-web:${GITHUB_REF#refs/tags/}
+
+
+      - run: |
+          cd apps/web
+          npm run docker:push
+
+    env:
+      CI: true
