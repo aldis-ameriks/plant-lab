@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Device } from '../../components/device/device'
+import { Device } from '../../components/device/Device'
 import { DeviceDocument } from '../../helpers/graphql'
 import { initializeGraphqlClient } from '../../helpers/graphqlClient'
 

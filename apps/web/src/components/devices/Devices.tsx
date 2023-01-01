@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
 import { useDevicesQuery } from '../../helpers/graphql'
-import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from '../device/device'
+import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from '../device/Device'
 import { Spinner } from '../Spinner'
 
 const SensorReadings = dynamic(() => import('../SensorReadings'), { ssr: false })
