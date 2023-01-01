@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
 import { useDevicesQuery } from '../../helpers/graphql'
-import { Card, CardSection, CardWrapper, Header, ImageWrapper, Title, Image } from '../device/device'
+import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from '../device/device'
 import { Spinner } from '../Spinner'
 
 const SensorReadings = dynamic(() => import('../SensorReadings'), { ssr: false })
@@ -39,7 +39,6 @@ const ListCardSection = styled(CardSection)`
 
 const Devices = () => {
   const [{ data, error, fetching }] = useDevicesQuery()
-  const router = useRouter()
 
   if (fetching) {
     return <Spinner />
@@ -53,22 +52,24 @@ const Devices = () => {
     <List>
       {data?.devices.map((device) => (
         <ListCardWrapper key={device.id}>
-          <ListCard onClick={() => router.push(`/devices/${device.id}`)}>
-            <ListCardSection>
-              <Header>
-                <Title>
-                  <h3>Rubber tree</h3>
-                  <h5>sensor id: {device.id}</h5>
-                </Title>
+          <Link href={`/devices/${device.id}`}>
+            <ListCard>
+              <ListCardSection>
+                <Header>
+                  <Title>
+                    <h3>Rubber tree</h3>
+                    <h5>sensor id: {device.id}</h5>
+                  </Title>
 
-                <ImageWrapper>
-                  <Image src="/plant.jpg" alt="" />
-                </ImageWrapper>
-              </Header>
+                  <ImageWrapper>
+                    <Image src="/plant.jpg" alt="" />
+                  </ImageWrapper>
+                </Header>
 
-              <SensorReadings reading={device.lastReading} lastWateredTime={device.lastWateredTime} />
-            </ListCardSection>
-          </ListCard>
+                <SensorReadings reading={device.lastReading} lastWateredTime={device.lastWateredTime} />
+              </ListCardSection>
+            </ListCard>
+          </Link>
         </ListCardWrapper>
       ))}
     </List>
