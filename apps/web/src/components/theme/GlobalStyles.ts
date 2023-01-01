@@ -16,4 +16,13 @@ export const GlobalStyles = createGlobalStyle`
   * {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
   }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    :hover {
+      text-decoration: none;
+    }
+  }
 `

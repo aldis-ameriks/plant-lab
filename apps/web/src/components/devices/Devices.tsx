@@ -19,7 +19,7 @@ const ListCardWrapper = styled(CardWrapper)`
   max-width: 600px;
 `
 
-const ListCard = styled(Card)`
+const ListCard = styled(Card).attrs(() => ({ as: Link }))<{ href: string }>`
   cursor: pointer;
 
   @media (min-width: 350px) {
@@ -52,24 +52,22 @@ const Devices = () => {
     <List>
       {data?.devices.map((device) => (
         <ListCardWrapper key={device.id}>
-          <Link href={`/devices/${device.id}`}>
-            <ListCard>
-              <ListCardSection>
-                <Header>
-                  <Title>
-                    <h3>Rubber tree</h3>
-                    <h5>sensor id: {device.id}</h5>
-                  </Title>
+          <ListCard href={`/devices/${device.id}`}>
+            <ListCardSection>
+              <Header>
+                <Title>
+                  <h3>Rubber tree</h3>
+                  <h5>sensor id: {device.id}</h5>
+                </Title>
 
-                  <ImageWrapper>
-                    <Image src="/plant.jpg" alt="" />
-                  </ImageWrapper>
-                </Header>
+                <ImageWrapper>
+                  <Image src="/plant.jpg" alt="" />
+                </ImageWrapper>
+              </Header>
 
-                <SensorReadings reading={device.lastReading} lastWateredTime={device.lastWateredTime} />
-              </ListCardSection>
-            </ListCard>
-          </Link>
+              <SensorReadings reading={device.lastReading} lastWateredTime={device.lastWateredTime} />
+            </ListCardSection>
+          </ListCard>
         </ListCardWrapper>
       ))}
     </List>
