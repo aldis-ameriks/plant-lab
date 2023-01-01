@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styled from 'styled-components'
 
-import { config } from '../config'
+import { config } from '../helpers/config'
 
 const Wrapper = styled.div`
   display: none;

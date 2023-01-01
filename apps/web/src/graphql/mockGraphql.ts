@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import React from 'react'
 
-import { config } from '../config'
+import { config } from '../helpers/config'
 import { setupMockWorkers } from '../test-helpers/mocks'
 
 export function mockGraphql(Component: React.ComponentType): React.ComponentType {

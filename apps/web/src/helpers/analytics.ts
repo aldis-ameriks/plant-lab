@@ -1,4 +1,4 @@
-import { config } from '../config'
+import { config } from './config'
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export function pageview(url: string): void {

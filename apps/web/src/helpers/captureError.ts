@@ -1,4 +1,4 @@
-import { config } from '../config'
+import { config } from './config'
 
 let errors: Array<Record<string, unknown>> = []
 let sending = false

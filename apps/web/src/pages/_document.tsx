@@ -5,7 +5,7 @@ import React from 'react'
 import { ServerStyleSheet } from 'styled-components'
 
 import { GlobalStyles } from '../components/theme/GlobalStyles'
-import { config } from '../config'
+import { config } from '../helpers/config'
 
 function cspHashOf(text: string): string {
   const hash = crypto.createHash('sha256')

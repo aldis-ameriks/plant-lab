@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { rest } from 'msw'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { config } from '../config'
+import { config } from '../helpers/config'
 import { server } from '../test-helpers/setupTests'
 import { NoData } from './NoData'
 
