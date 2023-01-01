@@ -22,7 +22,7 @@ export default {
               FROM (
                        SELECT device_id,
                               time,
-                              moisture - lead(moisture) OVER (ORDER BY time DESC) AS moisture_increase
+                              moisture - lead(moisture) OVER (PARTITION BY device_id ORDER BY time DESC) AS moisture_increase
                        FROM readings
                        WHERE device_id = ANY (:deviceIds)
                          AND time > now() - '90 days'::interval
