@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import styled from 'styled-components'
 
-import { useDeviceQuery } from '../../graphql/graphql-gen'
+import { useDeviceQuery } from '../../helpers/graphql'
 import { BackLink } from '../BackLink'
 import { Info } from '../info/Info'
 

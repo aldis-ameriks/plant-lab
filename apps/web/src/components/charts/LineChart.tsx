@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactApexChart from 'react-apexcharts'
 
-import { Reading } from '../../graphql/graphql-gen'
+import { Reading } from '../../helpers/graphql'
 
 type Props = {
   title: string

@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from 'date-fns'
 import React from 'react'
 import styled from 'styled-components'
-import { ReadingFieldsFragment } from '../graphql/graphql-gen'
+import { ReadingFieldsFragment } from '../helpers/graphql'
 import { RadialChart } from './charts/RadialChart'
 
 const RowWrapper = styled.div`

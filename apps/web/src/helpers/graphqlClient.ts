@@ -3,8 +3,8 @@ import { IncomingHttpHeaders } from 'http'
 import { useMemo } from 'react'
 import { cacheExchange, Client, createClient, dedupExchange, errorExchange, fetchExchange, ssrExchange } from 'urql'
 
-import { config } from '../helpers/config'
-import { captureError } from '../helpers/captureError'
+import { config } from './config'
+import { captureError } from './captureError'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function createGraphqlClient(graphqlEndpoint: string, initialState?: any, headers?: IncomingHttpHeaders) {

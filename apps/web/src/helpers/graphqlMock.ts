@@ -1,10 +1,10 @@
 import dynamic from 'next/dynamic'
 import React from 'react'
 
-import { config } from '../helpers/config'
+import { config } from './config'
 import { setupMockWorkers } from '../test-helpers/mocks'
 
-export function mockGraphql(Component: React.ComponentType): React.ComponentType {
+export function graphqlMock(Component: React.ComponentType): React.ComponentType {
   let ComponentToRender = Component
 
   if (config.mockGraphql) {

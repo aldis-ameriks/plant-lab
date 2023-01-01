@@ -11,7 +11,7 @@
     "format": "prettier --write --ignore-path .gitignore .",
     "test": "jest",
     "coverage": "jest --coverage",
-    "generate": "gql-gen -r dotenv/config && eslint --fix src/graphql/graphql-gen.tsx && prettier --write src/graphql/graphql-gen.tsx",
+    "generate": "gql-gen -r dotenv/config && eslint --fix src/helpers/graphql.tsx && prettier --write src/graphql/graphql-gen.tsx",
     "docker:build": "docker build -t registry.kataldi.com/pm-web .",
     "docker:build:mac": "docker buildx build --platform linux/amd64 --push -t registry.kataldi.com/pm-web .",
     "docker:push": "docker push registry.kataldi.com/pm-web",

@@ -1,7 +1,7 @@
 schema: http://127.0.0.1:4000/graphql
 documents: ./src/**/*.graphql
 generates:
-  src/graphql/graphql-gen.tsx:
+  src/helpers/graphql.tsx:
     plugins:
       - add:
           content: '/* eslint-disable @typescript-eslint/no-explicit-any, no-use-before-define, @typescript-eslint/explicit-module-boundary-types */'

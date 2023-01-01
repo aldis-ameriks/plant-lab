@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import { useDevicesQuery } from '../../graphql/graphql-gen'
+import { useDevicesQuery } from '../../helpers/graphql'
 import { Card, CardSection, CardWrapper, Header, ImageWrapper, Title, Image } from '../device/device'
 import { Spinner } from '../Spinner'
 
