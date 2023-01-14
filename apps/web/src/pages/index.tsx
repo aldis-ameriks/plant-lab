@@ -1,10 +1,10 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import React from 'react'
-import Devices from '../components/devices/Devices'
+import { Devices } from '../components/devices/Devices'
 import { DevicesDocument } from '../helpers/graphql'
 import { initializeGraphqlClient } from '../helpers/graphqlClient'
 
-const Index: React.FC = () => {
+const Index = () => {
   return <Devices />
 }
 

@@ -27,7 +27,7 @@ type Props = {
   setVisibility: (isVisible: boolean) => void
 }
 
-export const InfoToggle: React.FC<Props> = ({ isVisible, setVisibility }) => (
+export const InfoToggle = ({ isVisible, setVisibility }: Props) => (
   <InfoToggleWrapper isVisible={isVisible} onClick={() => setVisibility(!isVisible)} tabIndex={0} role="button">
     {isVisible ? <TimesIcon color="#8c8c8d" /> : <InfoIcon color="#8c8c8d" />}
   </InfoToggleWrapper>

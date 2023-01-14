@@ -7,4 +7,4 @@ const Error = styled.p`
   }
 `
 
-export const TechnicalError: React.FC = () => <Error>Technical Error</Error>
+export const TechnicalError = () => <Error>Technical Error</Error>

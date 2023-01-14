@@ -22,4 +22,4 @@ const Wrapper = styled.div`
   animation: ${rotate} 0.75s linear infinite;
 `
 
-export const Spinner = (props: HTMLAttributes<HTMLDivElement>): JSX.Element => <Wrapper {...props} />
+export const Spinner = (props: HTMLAttributes<HTMLDivElement>) => <Wrapper {...props} />

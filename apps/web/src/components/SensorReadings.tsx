@@ -55,7 +55,7 @@ type Props = {
   lastWateredTime?: Date | null
 }
 
-export const SensorReadings: React.FC<Props> = ({ reading, lastWateredTime }) => {
+export const SensorReadings = ({ reading, lastWateredTime }: Props) => {
   if (!reading || typeof window === 'undefined') {
     return null
   }

@@ -106,7 +106,7 @@ type Props = {
   id: string
 }
 
-export const Device: React.FC<Props> = ({ id }) => {
+export const Device = ({ id }: Props) => {
   const [{ data, fetching, error }] = useDeviceQuery({ variables: { id } })
 
   if (fetching) {

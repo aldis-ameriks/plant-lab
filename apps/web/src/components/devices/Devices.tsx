@@ -37,7 +37,7 @@ const ListCardSection = styled(CardSection)`
   }
 `
 
-const Devices = () => {
+export const Devices = () => {
   const [{ data, error, fetching }] = useDevicesQuery()
 
   if (fetching) {
@@ -73,5 +73,3 @@ const Devices = () => {
     </List>
   )
 }
-
-export default Devices

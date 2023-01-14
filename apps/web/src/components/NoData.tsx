@@ -6,7 +6,7 @@ type Props = {
   errorKey: string
 } & HTMLAttributes<HTMLDivElement>
 
-export const NoData = memo(({ errorKey, ...rest }: Props): JSX.Element => {
+export const NoData = memo(({ errorKey, ...rest }: Props) => {
   const router = useRouter()
 
   useEffect(() => {

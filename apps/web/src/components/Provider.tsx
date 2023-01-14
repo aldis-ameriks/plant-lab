@@ -9,7 +9,7 @@ type Props = PropsWithChildren<{
   client?: UrqlClient
 }>
 
-export const Provider: React.FC<Props> = memo(({ children, initialGraphqlState, client }) => {
+export const Provider = memo(({ children, initialGraphqlState, client }: Props) => {
   const graphqlClient = useGraphqlClient(initialGraphqlState ? JSON.parse(initialGraphqlState) : undefined)
   return (
     <div data-testid="provider">
