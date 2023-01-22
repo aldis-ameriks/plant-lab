@@ -4,7 +4,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { useDevicesQuery } from '../../helpers/graphql'
 import { Card, CardSection, CardWrapper, Header, Image, ImageWrapper, Title } from '../device/Device'
-import { Spinner } from '../Spinner'
 
 const SensorReadings = dynamic(() => import('../SensorReadings'), { ssr: false })
 
@@ -41,7 +40,7 @@ export const Devices = () => {
   const [{ data, error, fetching }] = useDevicesQuery()
 
   if (fetching) {
-    return <Spinner />
+    return null
   }
 
   if (error) {
