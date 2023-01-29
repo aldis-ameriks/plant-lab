@@ -4,7 +4,7 @@
 #define REGULATOR_V 3.31
 #define SEND_DATA true
 #define SLEEP true
-#define DEBUG true
+#define DEBUG false
 #define EEPROM_STATE_ADDRESS 0
 #define EEPROM_EK_ADDRESS 50
 
