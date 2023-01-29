@@ -160,7 +160,7 @@ void sendData(char* data, uint8_t retries) {
     retries++;
 
     if (retries > 1) {
-        delay(100);
+        delay(200);
     }
 
     if (!radio.write(data, sizeof(payload))) {
