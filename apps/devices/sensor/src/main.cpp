@@ -257,10 +257,10 @@ float readBatteryVoltage() {
 void enterSleep() {
     delay(DELAY_BEFORE_SLEEP);  // delay to avoid cutting off serial output
 
-    // 30 minutes = 60x30 = 1800s
-    // 1800 s / 8 s = 225
+    // 60 minutes = 60x60 = 3600 s
+    // 3600 s / 8 s = 450
     unsigned int sleepCounter;
-    for (sleepCounter = 255; sleepCounter > 0; sleepCounter--) {
+    for (sleepCounter = 450; sleepCounter > 0; sleepCounter--) {
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
     }
 }
