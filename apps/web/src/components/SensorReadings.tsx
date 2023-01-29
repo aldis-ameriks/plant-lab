@@ -85,9 +85,9 @@ export const SensorReadings = ({ reading, lastWateredTime }: Props) => {
 
       <RowWrapper>
         <ReadingWrapper>Last reading {lastReadingRelativeTime} ago</ReadingWrapper>
-        {lastWateredTime ? (
-          <ReadingWrapper>Last watered {formatDistanceToNow(new Date(lastWateredTime))} ago</ReadingWrapper>
-        ) : null}
+        <ReadingWrapper>
+          Last watered {lastWateredTime ? `${formatDistanceToNow(new Date(lastWateredTime))} ago` : '---'}
+        </ReadingWrapper>
       </RowWrapper>
     </div>
   )
