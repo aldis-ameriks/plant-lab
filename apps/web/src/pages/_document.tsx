@@ -74,6 +74,7 @@ export default class MyDocument extends Document<{ isProduction: boolean }> {
     return (
       <Html lang="en">
         <Head>
+          <title>Plants</title>
           <meta httpEquiv="Content-Security-Policy" content={csp} />
           {config.analytics.gtmId && <script dangerouslySetInnerHTML={{ __html: getGtmScript() }} />}
           {config.analytics.trackingId && (
