@@ -61,7 +61,7 @@ jobs:
           npm run docker:build
 
       - name: Run vulnerability scanner
-        uses: aquasecurity/trivy-action@0.2.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'registry.kataldi.com/pm-api'
           format: 'table'
