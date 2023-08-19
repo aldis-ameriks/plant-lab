@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import fastifyCors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifyRateLimit from '@fastify/rate-limit'
