@@ -34,7 +34,6 @@
     "fast-glob": "3.3.1",
     "fastify": "4.21.0",
     "graphql": "16.8.0",
-    "graphql-tag": "2.12.6",
     "knex": "2.5.1",
     "mercurius": "13.1.0",
     "mercurius-auth": "4.0.0",
