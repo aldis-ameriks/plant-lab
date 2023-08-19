@@ -18,6 +18,7 @@
     "generate:entities": "ts-node scripts/generateEntities.ts && npm run lint:fix && prettier src/types/entities.ts --write",
     "generate:schema": "graphql-codegen && prettier --write **/schema.ts && eslint --fix **/schema.ts",
     "docker:build": "docker build -t registry.kataldi.com/pm-api .",
+    "docker:build:mac": "docker buildx build --platform linux/amd64 --push -t registry.kataldi.com/pm-api .",
     "docker:push": "docker push registry.kataldi.com/pm-api",
     "docker:build:push": "npm run docker:build && npm run docker:push",
     "docker:run": "docker run -p 4000:4000 --name pm-api --rm registry.kataldi.com/pm-api"
