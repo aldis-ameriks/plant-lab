@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+
 import { FastifyInstance } from 'fastify'
 import mercurius from 'mercurius'
 import mercuriusAuth from 'mercurius-auth'
