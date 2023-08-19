@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import util from 'util'
-import { Job } from '../modules'
 import { captureError } from '../modules/errors/helpers/captureError'
 import { Context } from './context'
+import { Job } from './initModules'
 
 const sleep = util.promisify(setTimeout)
 

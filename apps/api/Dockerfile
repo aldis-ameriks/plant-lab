@@ -1,11 +1,11 @@
-FROM node:19-alpine3.17 as builder
+FROM node:20-alpine3.18 as builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . ./
 RUN npm run build
 
-FROM node:19-alpine3.17
+FROM node:20-alpine3.18
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--max-old-space-size=256

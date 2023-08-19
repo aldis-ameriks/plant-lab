@@ -1,17 +1,17 @@
 extend type Mutation {
-    saveReading(input: String!): String! @auth(requires: HUB)
+  saveReading(input: String!): String! @auth(requires: HUB)
 }
 
 extend type Device {
-    readings: [Reading!]!
-    lastReading: Reading
-    lastWateredTime: DateTime
+  readings: [Reading!]!
+  lastReading: Reading
+  lastWateredTime: DateTime
 }
 
 type Reading {
-    time: DateTime!
-    light: Float
-    moisture: Float!
-    temperature: Float!
-    batteryVoltage: Float!
+  time: DateTime!
+  light: Float
+  moisture: Float!
+  temperature: Float!
+  batteryVoltage: Float!
 }

@@ -1,3 +1,4 @@
+import { PartialDeep } from 'type-fest'
 import { Resolvers } from '../../types/schema'
 import { getDeviceQuery } from './helpers/getDeviceQuery'
 
@@ -6,4 +7,4 @@ export default {
     device: (_, args, context) => getDeviceQuery(context.knex).where('id', args.id).first(),
     devices: (_, args, context) => getDeviceQuery(context.knex).whereNot('test', true).orderBy('id')
   }
-} as Resolvers
+} as PartialDeep<Resolvers>

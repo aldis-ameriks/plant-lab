@@ -1,6 +1,13 @@
 import nock from 'nock'
 import { request } from './request'
 
+test('defaults to get request', async () => {
+  nock('http://request:1234').get('/').reply(200, { foo: 'bar' })
+  const result = await request('http://request:1234')
+  expect(result.data).toBe(JSON.stringify({ foo: 'bar' }))
+  expect(result.statusCode).toBe(200)
+})
+
 test('success - get json response', async () => {
   nock('http://request:1234').get('/').reply(200, { foo: 'bar' })
   const result = await request('http://request:1234', { method: 'GET' })
@@ -8,16 +15,9 @@ test('success - get json response', async () => {
   expect(result.statusCode).toBe(200)
 })
 
-test('success - https', async () => {
+test('success - get https json response', async () => {
   nock('https://request:1234').get('/').reply(200, { foo: 'bar' })
   const result = await request('https://request:1234', { method: 'GET' })
-  expect(result.data).toBe(JSON.stringify({ foo: 'bar' }))
-  expect(result.statusCode).toBe(200)
-})
-
-test('success - default args', async () => {
-  nock('https://request:1234').get('/').reply(200, { foo: 'bar' })
-  const result = await request('https://request:1234')
   expect(result.data).toBe(JSON.stringify({ foo: 'bar' }))
   expect(result.statusCode).toBe(200)
 })
@@ -63,14 +63,12 @@ test('error', async () => {
 })
 
 test('unsuccessful status code', async () => {
-  const url = 'http://request:1234'
-
-  nock(url).get('/').reply(400, { foo: 'bar' })
+  nock('http://request:1234').get('/').reply(400, { foo: 'bar' })
   try {
-    await request(url, { method: 'GET' })
+    await request('http://request:1234', { method: 'GET' })
     fail()
   } catch (e) {
-    expect(e.message).toBe(`request (${url}) failed (400)`)
+    expect(e.message).toBe('request (http://request:1234) failed (400)')
   }
 })
 

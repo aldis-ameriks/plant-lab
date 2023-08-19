@@ -1,24 +1,16 @@
 /* istanbul ignore file */
 import { join } from 'path'
-
-const KNEX = {
-  HOST: process.env.API_DATABASE_HOST || 'localhost',
-  PORT: +(process.env.API_DATABASE_PORT || '5432'),
-  USERNAME: process.env.API_DATABASE_USERNAME || 'postgres',
-  PASSWORD: process.env.API_DATABASE_PASSWORD || 'postgres',
-  DATABASE: process.env.API_DATABASE_NAME || 'db',
-  SSL: process.env.API_DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false
-}
+import { config } from './config'
 
 export const client = 'pg'
 
 export const connection = {
-  host: KNEX.HOST,
-  user: KNEX.USERNAME,
-  password: KNEX.PASSWORD,
-  port: KNEX.PORT,
-  database: KNEX.DATABASE,
-  ssl: KNEX.SSL
+  host: config.db.host,
+  port: config.db.port,
+  user: config.db.username,
+  password: config.db.password,
+  database: config.db.database,
+  ssl: config.db.ssl
 }
 
 export const pool = {

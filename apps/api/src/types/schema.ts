@@ -6,26 +6,28 @@ export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never }
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
-  DateTime: any
+  ID: { input: string; output: string }
+  String: { input: string; output: string }
+  Boolean: { input: boolean; output: boolean }
+  Int: { input: number; output: number }
+  Float: { input: number; output: number }
+  DateTime: { input: any; output: any }
 }
 
 export type Device = {
   __typename?: 'Device'
-  firmware: Scalars['String']
-  id: Scalars['ID']
+  firmware: Scalars['String']['output']
+  id: Scalars['ID']['output']
   lastReading?: Maybe<Reading>
-  lastWateredTime?: Maybe<Scalars['DateTime']>
-  name: Scalars['String']
+  lastWateredTime?: Maybe<Scalars['DateTime']['output']>
+  name: Scalars['String']['output']
   readings: Array<Reading>
-  room?: Maybe<Scalars['String']>
+  room?: Maybe<Scalars['String']['output']>
   type: DeviceType
   version: DeviceVersion
 }
@@ -49,32 +51,32 @@ export enum DeviceVersion {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  _?: Maybe<Scalars['Boolean']>
-  saveReading: Scalars['String']
+  _?: Maybe<Scalars['Boolean']['output']>
+  saveReading: Scalars['String']['output']
 }
 
 export type MutationSaveReadingArgs = {
-  input: Scalars['String']
+  input: Scalars['String']['input']
 }
 
 export type Query = {
   __typename?: 'Query'
-  _?: Maybe<Scalars['Boolean']>
+  _?: Maybe<Scalars['Boolean']['output']>
   device: Device
   devices: Array<Device>
 }
 
 export type QueryDeviceArgs = {
-  id: Scalars['ID']
+  id: Scalars['ID']['input']
 }
 
 export type Reading = {
   __typename?: 'Reading'
-  batteryVoltage: Scalars['Float']
-  light?: Maybe<Scalars['Float']>
-  moisture: Scalars['Float']
-  temperature: Scalars['Float']
-  time: Scalars['DateTime']
+  batteryVoltage: Scalars['Float']['output']
+  light?: Maybe<Scalars['Float']['output']>
+  moisture: Scalars['Float']['output']
+  temperature: Scalars['Float']['output']
+  time: Scalars['DateTime']['output']
 }
 
 export enum Role {
@@ -155,32 +157,32 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>
   Device: ResolverTypeWrapper<Device>
   DeviceStatus: DeviceStatus
   DeviceType: DeviceType
   DeviceVersion: DeviceVersion
-  Float: ResolverTypeWrapper<Scalars['Float']>
-  ID: ResolverTypeWrapper<Scalars['ID']>
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
   Reading: ResolverTypeWrapper<Reading>
   Role: Role
-  String: ResolverTypeWrapper<Scalars['String']>
+  String: ResolverTypeWrapper<Scalars['String']['output']>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Boolean: Scalars['Boolean']
-  DateTime: Scalars['DateTime']
+  Boolean: Scalars['Boolean']['output']
+  DateTime: Scalars['DateTime']['output']
   Device: Device
-  Float: Scalars['Float']
-  ID: Scalars['ID']
+  Float: Scalars['Float']['output']
+  ID: Scalars['ID']['output']
   Mutation: {}
   Query: {}
   Reading: Reading
-  String: Scalars['String']
+  String: Scalars['String']['output']
 }
 
 export type AuthDirectiveArgs = {

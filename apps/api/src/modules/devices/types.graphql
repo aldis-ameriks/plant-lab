@@ -1,6 +1,6 @@
 extend type Query {
-    device(id: ID!): Device!
-    devices: [Device!]!
+  device(id: ID!): Device!
+  devices: [Device!]!
 }
 
 type Device {

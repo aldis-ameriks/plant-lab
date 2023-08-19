@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 import { CronJob } from 'cron'
 import { randomUUID } from 'crypto'
-import { Job } from '../modules'
 import { captureError } from '../modules/errors/helpers/captureError'
 import { Context } from './context'
+import { Job } from './initModules'
 
 type JobType = CronJob & Job
 
@@ -31,6 +31,18 @@ export function createCronJob(
       }
 
       try {
+        const cron = await context
+          .knex('crons')
+          .insert({ id: `${jobId}`, name: jobName, next_execution_at: job.nextDate().toJSDate() })
+          .onConflict('id')
+          .merge()
+          .returning('*')
+          .then((rows) => rows[0])
+
+        if (!cron.enabled) {
+          return
+        }
+
         this.executing = true
 
         await jobContext.knex.transaction(async (trx) => {
@@ -39,21 +51,33 @@ export function createCronJob(
             .then((result) => result.rows[0])
 
           if (!result.pg_try_advisory_xact_lock) {
-            // TODO: Capture error for multiple consecutive fails
-            context.log.error(`failed to acquire lock for: ${jobName} (${jobId})`)
+            const error = new Error(`failed to acquire lock for: ${jobName} (${jobId})`)
+            context.log.error(error)
+            await captureError(context, 'api', error)
             return
           }
 
           await run(jobContext)
           await trx('crons')
-            .insert({ id: jobId, name: jobName, executed_at: new Date(), next_execution_at: job.nextDate() })
+            .insert({
+              id: `${jobId}`,
+              name: jobName,
+              executed_at: new Date(),
+              next_execution_at: job.nextDate().toJSDate()
+            })
             .onConflict('id')
             .merge()
         })
       } catch (e) {
         let err = e
         if (e.isAxiosError) {
-          err = new Error(e.message)
+          let message = e.message
+
+          if (e.response?.data) {
+            message += ` response: ${JSON.stringify(e.response.data)}`
+          }
+
+          err = new Error(message)
         }
 
         jobContext.log.error(err, `${jobName} cron job failed`)

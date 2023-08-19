@@ -1,6 +1,5 @@
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import nock from 'nock'
-dotenv.config()
 
 nock.disableNetConnect()
 

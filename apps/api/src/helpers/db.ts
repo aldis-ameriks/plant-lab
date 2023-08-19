@@ -2,4 +2,5 @@
 import { knex as Knex } from 'knex'
 import * as knexfile from './knexfile'
 
-export const knex = Knex(knexfile)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const knex = Knex<any, any>(knexfile)

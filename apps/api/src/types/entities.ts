@@ -30,6 +30,9 @@ export enum DeviceVersion {
 export type AbuserEntity = {
   created_at: Date
   headers: any
+  /**
+   * PRIMARY KEY
+   */
   id: string
   ip: string
   method: string
@@ -39,6 +42,9 @@ export type AbuserEntity = {
 export type AbuserInsertEntity = {
   created_at?: Date
   headers: any
+  /**
+   * PRIMARY KEY
+   */
   id?: string
   ip: string
   method: string
@@ -46,14 +52,22 @@ export type AbuserInsertEntity = {
 }
 
 export type CronEntity = {
+  enabled: boolean | null
   executed_at: Date
+  /**
+   * PRIMARY KEY
+   */
   id: string
   name: string
   next_execution_at: Date
 }
 
 export type CronInsertEntity = {
+  enabled?: boolean | null
   executed_at?: Date
+  /**
+   * PRIMARY KEY
+   */
   id: string
   name: string
   next_execution_at: Date
@@ -62,6 +76,9 @@ export type CronInsertEntity = {
 export type DeviceEntity = {
   address: string | null
   firmware: string
+  /**
+   * PRIMARY KEY
+   */
   id: string
   last_seen_at: Date | null
   name: string
@@ -75,6 +92,9 @@ export type DeviceEntity = {
 export type DeviceInsertEntity = {
   address?: string | null
   firmware: string
+  /**
+   * PRIMARY KEY
+   */
   id: string
   last_seen_at?: Date | null
   name: string
@@ -88,6 +108,9 @@ export type DeviceInsertEntity = {
 export type ErrorEntity = {
   content: any
   headers: any | null
+  /**
+   * PRIMARY KEY
+   */
   id: string
   ip: string | null
   req_id: string | null
@@ -99,6 +122,9 @@ export type ErrorEntity = {
 export type ErrorInsertEntity = {
   content: any
   headers?: any | null
+  /**
+   * PRIMARY KEY
+   */
   id?: string
   ip?: string | null
   req_id?: string | null
@@ -116,7 +142,7 @@ export type ReadingEntity = {
   moisture_max: string | null
   moisture_min: string | null
   moisture_raw: string | null
-  reading_id: string
+  reading_id: string | null
   signal: string | null
   temperature: string | null
   time: Date
@@ -131,7 +157,7 @@ export type ReadingInsertEntity = {
   moisture_max?: string | null
   moisture_min?: string | null
   moisture_raw?: string | null
-  reading_id: string
+  reading_id?: string | null
   signal?: string | null
   temperature?: string | null
   time: Date
@@ -150,19 +176,55 @@ export type UserAccessKeyInsertEntity = {
 }
 
 export type UserEntity = {
+  /**
+   * PRIMARY KEY
+   */
   id: string
 }
 
 export type UserInsertEntity = {
+  /**
+   * PRIMARY KEY
+   */
   id?: string
 }
 
 export type UsersDeviceEntity = {
+  /**
+   * PRIMARY KEY
+   */
   device_id: string
+  /**
+   * PRIMARY KEY
+   */
   user_id: string
 }
 
 export type UsersDeviceInsertEntity = {
+  /**
+   * PRIMARY KEY
+   */
   device_id: string
+  /**
+   * PRIMARY KEY
+   */
   user_id: string
+}
+
+import { Knex } from 'knex'
+declare module 'knex/types/tables' {
+  interface Tables {
+    abusers: Knex.CompositeTableType<AbuserEntity, AbuserInsertEntity, Partial<AbuserEntity>>
+    crons: Knex.CompositeTableType<CronEntity, CronInsertEntity, Partial<CronEntity>>
+    devices: Knex.CompositeTableType<DeviceEntity, DeviceInsertEntity, Partial<DeviceEntity>>
+    errors: Knex.CompositeTableType<ErrorEntity, ErrorInsertEntity, Partial<ErrorEntity>>
+    readings: Knex.CompositeTableType<ReadingEntity, ReadingInsertEntity, Partial<ReadingEntity>>
+    user_access_keys: Knex.CompositeTableType<
+      UserAccessKeyEntity,
+      UserAccessKeyInsertEntity,
+      Partial<UserAccessKeyEntity>
+    >
+    users: Knex.CompositeTableType<UserEntity, UserInsertEntity, Partial<UserEntity>>
+    users_devices: Knex.CompositeTableType<UsersDeviceEntity, UsersDeviceInsertEntity, Partial<UsersDeviceEntity>>
+  }
 }
