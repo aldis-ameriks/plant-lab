@@ -1,4 +1,4 @@
-FROM node:19-alpine3.17 as builder
+FROM node:20-alpine3.18 as builder
 WORKDIR /app
 
 ARG NEXT_PUBLIC_API_GRAPHQL_ENDPOINT=https://api.plant.kataldi.com/graphql
@@ -15,7 +15,7 @@ RUN npm ci
 COPY . ./
 
 # Necessary to build with node 17
-# TODO: Check if still necessary with node 19
+# TODO: Check if still necessary with node 20
 ENV NODE_OPTIONS="${NODE_OPTIONS} --openssl-legacy-provider"
 
 RUN touch .env.production \
@@ -30,7 +30,7 @@ RUN touch .env.production \
  && cat .env.production \
  && npm run build
 
-FROM node:19-alpine3.17
+FROM node:20-alpine3.18
 WORKDIR /app
 
 ENV NODE_ENV=production
