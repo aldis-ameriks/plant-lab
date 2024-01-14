@@ -12,6 +12,6 @@ export function getTestContext(): (config?: Partial<typeof globalConfig>) => Con
     createContext({
       knex: result.knex,
       log: pino({ enabled: false }),
-      config: JSON.parse(JSON.stringify({ ...globalConfig, ...config }))
+      config: structuredClone({ ...globalConfig, ...config })
     })
 }
