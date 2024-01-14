@@ -27,7 +27,8 @@ export function initGraphql(app: FastifyInstance) {
       if (response.response?.errors && Array.isArray(response.response.errors)) {
         response.response.errors.forEach((error) => {
           if (error.message !== 'Unknown query') {
-            captureError(ctx, 'api', new Error(error.message), { ip: ctx?.ip, headers: ctx?.headers })
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            captureError(ctx, 'api', new Error(error.message), { ip: ctx?.ip, headers: ctx?.headers }).catch(() => {})
           }
           error.message = 'Technical Error'
         })
