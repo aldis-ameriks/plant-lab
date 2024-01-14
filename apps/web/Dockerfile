@@ -1,12 +1,12 @@
 FROM node:20-alpine3.18 as builder
 WORKDIR /app
 
-ARG NEXT_PUBLIC_API_GRAPHQL_ENDPOINT=https://api.plant.kataldi.com/graphql
-ARG NEXT_PUBLIC_API_GRAPHQL_WS_ENDPOINT=wss://api.plant.kataldi.com/graphql
+ARG NEXT_PUBLIC_API_GRAPHQL_ENDPOINT=https://api.plant.aldisameriks.dev/graphql
+ARG NEXT_PUBLIC_API_GRAPHQL_WS_ENDPOINT=wss://api.plant.aldisameriks.dev/graphql
 ARG NEXT_PUBLIC_MOCK_GRAPHQL
 ARG NEXT_PUBLIC_GA_TRACKING_ID
 ARG NEXT_PUBLIC_GTM_ID
-ARG NEXT_PUBLIC_API_BASE_URL=https://api.plant.kataldi.com
+ARG NEXT_PUBLIC_API_BASE_URL=https://api.plant.aldisameriks.dev
 ARG NEXT_PUBLIC_CAPTURE_ERRORS=true
 ARG NEXT_PUBLIC_COMMIT_HASH
 

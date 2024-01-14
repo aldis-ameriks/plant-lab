@@ -54,18 +54,18 @@ jobs:
           node-version: '20'
 
       - name: Log into registry
-        run: echo "$CI_REGISTRY_PASSWORD" | docker login registry.kataldi.com -u $CI_REGISTRY_USER --password-stdin
+        run: echo "$CI_REGISTRY_PASSWORD" | docker login registry.aldisameriks.dev -u $CI_REGISTRY_USER --password-stdin
 
       - run: |
           cd apps/web
           docker build \
           --build-arg NEXT_PUBLIC_COMMIT_HASH=${{ github.sha }} \
-          --tag registry.kataldi.com/pm-web .
+          --tag registry.aldisameriks.dev/pm-web .
 
       - name: Run vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'registry.kataldi.com/pm-web'
+          image-ref: 'registry.aldisameriks.dev/pm-web'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -74,8 +74,8 @@ jobs:
       - name: Tag image
         if: contains(github.ref, 'refs/tags/')
         run: |
-          docker tag registry.kataldi.com/pm-web:latest registry.kataldi.com/pm-web:${GITHUB_REF#refs/tags/}
-          docker push registry.kataldi.com/pm-web:${GITHUB_REF#refs/tags/}
+          docker tag registry.aldisameriks.dev/pm-web:latest registry.aldisameriks.dev/pm-web:${GITHUB_REF#refs/tags/}
+          docker push registry.aldisameriks.dev/pm-web:${GITHUB_REF#refs/tags/}
 
 
       - run: |

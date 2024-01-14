@@ -65,7 +65,7 @@ export default class MyDocument extends Document<{ isProduction: boolean }> {
     const hashes = `${cspHashOf(inlineScriptSource)} ${cspHashOf(getGtmScript())}`
 
     const analyticsSources = 'https://www.googletagmanager.com https://www.google-analytics.com'
-    const domains = '*.kataldi.com wss://*.kataldi.com'
+    const domains = '*.aldisameriks.dev wss://*.aldisameriks.dev'
     let csp = `default-src 'self' ${domains} data:; img-src 'self' data: blob: ${domains} ${analyticsSources} https://*.digitaloceanspaces.com; connect-src 'self' ${domains} ${analyticsSources} https://*.sentry.io https://sentry.io; script-src 'self' ${domains} ${analyticsSources} ${hashes}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com;`
     if (process.env.NODE_ENV !== 'production') {
       csp = `default-src 'self' localhost:* ${domains} data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' localhost:* data: https://*.digitaloceanspaces.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'unsafe-eval' 'self' ${analyticsSources} ${hashes}; connect-src 'self' ws://localhost:* http://localhost:* ${domains} ${analyticsSources} https://*.sentry.io https://sentry.io`

@@ -22,7 +22,7 @@ services:
         max-size: "10m"
 
   api:
-    image: registry.kataldi.com/pm-api:latest
+    image: registry.aldisameriks.dev/pm-api:latest
     restart: always
     depends_on:
       - database
@@ -31,8 +31,8 @@ services:
     env_file: .env
     environment:
       - VIRTUAL_PORT=4000
-      - VIRTUAL_HOST=api.plant.kataldi.com
-      - LETSENCRYPT_HOST=api.plant.kataldi.com
+      - VIRTUAL_HOST=api.plant.aldisameriks.dev
+      - LETSENCRYPT_HOST=api.plant.aldisameriks.dev
       - LETSENCRYPT_EMAIL=aldis.ameriks@gmail.com
       - HTTPS_METHOD=noredirect
     expose:
@@ -46,7 +46,7 @@ services:
         max-size: "10m"
 
   migration:
-    image: registry.kataldi.com/pm-api:latest
+    image: registry.aldisameriks.dev/pm-api:latest
     restart: "no"
     env_file: .env
     depends_on:
@@ -63,15 +63,15 @@ services:
         max-size: "10m"
 
   web:
-    image: registry.kataldi.com/pm-web:latest
+    image: registry.aldisameriks.dev/pm-web:latest
     restart: always
     env_file: .env
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:
       - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=plant.kataldi.com
-      - LETSENCRYPT_HOST=plant.kataldi.com
+      - VIRTUAL_HOST=plant.aldisameriks.dev
+      - LETSENCRYPT_HOST=plant.aldisameriks.dev
       - LETSENCRYPT_EMAIL=aldis.ameriks@gmail.com
     expose:
       - "3000"

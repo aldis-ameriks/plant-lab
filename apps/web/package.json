@@ -12,11 +12,11 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "generate": "graphql-codegen -r dotenv/config && eslint --fix src/helpers/graphql.tsx && prettier --write src/helpers/graphql.tsx",
-    "docker:build": "docker build -t registry.kataldi.com/pm-web .",
-    "docker:build:mac": "docker buildx build --platform linux/amd64 --push -t registry.kataldi.com/pm-web .",
-    "docker:push": "docker push registry.kataldi.com/pm-web",
+    "docker:build": "docker build -t registry.aldisameriks.dev/pm-web .",
+    "docker:build:mac": "docker buildx build --platform linux/amd64 --push -t registry.aldisameriks.dev/pm-web .",
+    "docker:push": "docker push registry.aldisameriks.dev/pm-web",
     "docker:build:push": "npm run docker:build && npm run docker:push",
-    "docker:run": "docker run -p 3000:3000 --name pm-web --rm registry.kataldi.com/pm-web"
+    "docker:run": "docker run -p 3000:3000 --name pm-web --rm registry.aldisameriks.dev/pm-web"
   },
   "dependencies": {
     "@urql/exchange-retry": "1.0.0",

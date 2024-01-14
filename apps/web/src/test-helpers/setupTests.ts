@@ -15,7 +15,7 @@ process.env = {
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [],
     iconSizes: [],
-    domains: ['plant.kataldi.com'],
+    domains: ['plant.aldisameriks.dev'],
     path: '/_next/image',
     loader: 'default'
   }
