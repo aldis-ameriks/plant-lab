@@ -8,7 +8,7 @@ RUN npm run build
 FROM node:20-alpine3.18
 WORKDIR /app
 ENV NODE_ENV=production
-ENV NODE_OPTIONS=--max-old-space-size=256
+ENV NODE_OPTIONS="--max-old-space-size=256"
 
 COPY --from=builder --chown=node:node /app/build /app/build
 COPY --from=builder --chown=node:node /app/migrations /app/build/migrations
