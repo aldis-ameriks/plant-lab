@@ -18,9 +18,9 @@ export function createCronJob(
   jobName: string,
   run: (context: Context) => Promise<void>
 ): JobType {
-  const job = new CronJob(
-    schedule,
-    async function (this: JobType) {
+  const job = CronJob.from({
+    cronTime: schedule,
+    onTick: async function (this: JobType) {
       // if exponential backoff enabled, check if cron should run
       const jobContext = Object.assign({}, context, {
         log: context.log.child({ job: jobName, executionId: randomUUID() })
@@ -86,14 +86,11 @@ export function createCronJob(
         this.executing = false
       }
     },
-    null,
-    true,
-    'UTC'
-  ) as JobType
+    timeZone: 'UTC',
+    start: true
+  })
 
-  job.name = jobName
-  job.id = jobId
-  job.executing = false
+  Object.assign(job, { name: jobName, id: jobId, executing: false })
 
-  return job
+  return job as unknown as JobType
 }
