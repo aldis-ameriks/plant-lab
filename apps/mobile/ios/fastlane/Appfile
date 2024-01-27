@@ -1,8 +1,0 @@
-app_identifier("com.plantlab.app") # The bundle identifier of your app
-apple_id("aldis.ameriks@gmail.com") # Your Apple email address
-
-itc_team_id("121467875") # App Store Connect Team ID
-team_id("Z5HRBBB3YX") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile

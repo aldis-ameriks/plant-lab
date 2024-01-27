@@ -1,0 +1,29 @@
+fragment DeviceFields on Device {
+  id
+  room
+  name
+  type
+  version
+  firmware
+  lastWateredTime
+  lastReading {
+    time
+    batteryVoltage
+    light
+    moisture
+    temperature
+  }
+}
+
+query Device($id: ID!) {
+  device(id: $id) {
+    ...DeviceFields
+    readings {
+      time
+      batteryVoltage
+      light
+      moisture
+      temperature
+    }
+  }
+}
