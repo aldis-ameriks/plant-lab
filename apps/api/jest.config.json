@@ -1,5 +1,4 @@
 {
-  "preset": "ts-jest",
   "testEnvironment": "node",
   "collectCoverageFrom": [
     "**/*.ts",
@@ -16,9 +15,7 @@
     }
   },
   "transform": {
-    "^.+\\.(t|j)sx?$": ["ts-jest", {
-      "isolatedModules": true
-    }]
+    "^.+\\.(t|j)sx?$": "@swc/jest"
   },
   "roots": ["<rootDir>/src"],
   "modulePaths": ["<rootDir>/src"],
