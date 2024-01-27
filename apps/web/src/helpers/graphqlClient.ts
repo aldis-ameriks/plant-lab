@@ -30,7 +30,7 @@ function createGraphqlClient(graphqlEndpoint: string, initialState?: any, header
       onError: (error) => {
         console.log(error)
         if (error.graphQLErrors) {
-          const isTechnicalError = error.graphQLErrors.find((entry) => entry.message.includes('Technical Error'))
+          const isTechnicalError = error.graphQLErrors.some((entry) => entry.message.includes('Technical Error'))
           if (isTechnicalError) {
             captureError(error.graphQLErrors)
           }
