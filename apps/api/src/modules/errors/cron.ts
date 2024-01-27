@@ -3,8 +3,7 @@ import { createCronJob, getRandomSchedule } from '../../helpers/cron'
 import { ErrorEntity } from '../../types/entities'
 import { sendTelegram } from './helpers/sendTelegram'
 
-/* istanbul ignore next */
-export default function start(context) {
+export default /* istanbul ignore next */ function start(context) {
   return createCronJob(context, `${getRandomSchedule()} * * * * *`, 1004, 'errors', run)
 }
 
