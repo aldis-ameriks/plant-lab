@@ -1,10 +1,10 @@
-import { setupWorker, SetupWorkerApi } from 'msw'
+import { setupWorker, SetupWorker } from 'msw/browser'
 
 export const handlers = []
 
-let worker: SetupWorkerApi
+let worker: SetupWorker
 
-export const setupMockWorkers = (): SetupWorkerApi => {
+export const setupMockWorkers = (): SetupWorker => {
   if (!worker) {
     worker = setupWorker(...handlers)
   }
