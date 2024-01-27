@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { config } from '../helpers/config'
@@ -16,9 +16,9 @@ beforeEach(() => {
 test('capture error is disabled', async () => {
   const captureErrorMock = jest.fn()
   server.use(
-    rest.post<{ error: string }>(`${config.api.baseUrl}/error`, (req, res, ctx) => {
-      captureErrorMock(req.body.error)
-      return res(ctx.json({}))
+    http.post(`${config.api.baseUrl}/error`, ({ request }) => {
+      captureErrorMock(JSON.stringify(request.body))
+      return HttpResponse.json({})
     })
   )
 
@@ -37,9 +37,9 @@ test('capture error is disabled', async () => {
 test('captures error', async () => {
   const captureErrorMock = jest.fn()
   server.use(
-    rest.post<{ error: string }>(`${config.api.baseUrl}/error`, (req, res, ctx) => {
-      captureErrorMock(JSON.stringify(req.body))
-      return res(ctx.json({}))
+    http.post(`${config.api.baseUrl}/error`, async ({ request }) => {
+      captureErrorMock(await request.json())
+      return HttpResponse.json({})
     })
   )
 
@@ -54,9 +54,9 @@ test('captures error', async () => {
   await waitFor(
     () => {
       expect(captureErrorMock).toHaveBeenCalledTimes(1)
-      expect(captureErrorMock).toHaveBeenCalledWith(
-        '[{"error":"Error: Unexpected rendering of no data, errorKey: key, path: some-path"}]'
-      )
+      expect(captureErrorMock).toHaveBeenCalledWith([
+        { error: 'Error: Unexpected rendering of no data, errorKey: key, path: some-path' }
+      ])
     },
     { timeout: 1000 }
   )

@@ -2,6 +2,7 @@
   "testEnvironment": "jsdom",
   "collectCoverageFrom": ["**/*.{js,jsx,ts,tsx}", "!**/*.d.ts", "!**/node_modules/**"],
   "setupFilesAfterEnv": ["<rootDir>/src/test-helpers/setupTests.ts"],
+  "setupFiles": ["<rootDir>/jest.polyfills.ts"],
   "transform": {
     "^.+\\.(t|j)sx?$": "babel-jest"
   },
@@ -12,5 +13,8 @@
   "moduleNameMapper": {
     "\\.(css|less|sass|scss)$": "<rootDir>/src/test-helpers/styleMock.ts",
     "\\.(gif|ttf|eot|svg)$": "<rootDir>/src/test-helpers/fileMock.ts"
+  },
+  "testEnvironmentOptions": {
+    "customExportConditions": [""]
   }
 }

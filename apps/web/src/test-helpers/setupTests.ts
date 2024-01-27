@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import fetch from 'cross-fetch'
 import { setupServer } from 'msw/node'
 
@@ -38,3 +38,5 @@ afterAll(() => {
   // Clean up once the tests are done.
   server.close()
 })
+
+global.structuredClone = (val) => val
