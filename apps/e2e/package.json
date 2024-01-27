@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "license": "GPL-3.0",
   "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "test": "playwright test",
+    "test:interactive": "playwright test --ui"
   },
   "devDependencies": {
-    "cypress": "5.3.0"
+    "@playwright/test": "^1.41.1",
+    "@types/node": "^20.11.7",
+    "prettier": "3.2.4"
   }
 }
