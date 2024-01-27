@@ -6,8 +6,8 @@ export const TimesIcon = ({ ...props }) => (
     fill="currentColor"
     strokeWidth="0"
     viewBox="0 0 352 512"
-    height="1.5rem"
-    width="1.5rem"
+    height="24px"
+    width="24px"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
