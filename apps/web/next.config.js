@@ -9,5 +9,8 @@ module.exports = withBundleAnalyzer({
     path: '/_next/image',
     loader: 'default'
   },
-  poweredByHeader: false
+  poweredByHeader: false,
+  compiler: {
+    styledComponents: true
+  }
 })
