@@ -4,7 +4,7 @@
   "setupFilesAfterEnv": ["<rootDir>/src/test-helpers/setupTests.ts"],
   "setupFiles": ["<rootDir>/jest.polyfills.ts"],
   "transform": {
-    "^.+\\.(t|j)sx?$": "babel-jest"
+    "^.+\\.(t|j)sx?$": "@swc/jest"
   },
   "roots": ["<rootDir>/src"],
   "modulePaths": ["<rootDir>/src"],

@@ -1,10 +1,7 @@
 import '@testing-library/jest-dom'
-import fetch from 'cross-fetch'
 import { setupServer } from 'msw/node'
 
 import { handlers } from './mocks'
-
-global.fetch = fetch as typeof global.fetch
 
 // https://github.com/vercel/next.js/discussions/18373
 process.env = {
@@ -39,4 +36,5 @@ afterAll(() => {
   server.close()
 })
 
+// https://github.com/jsdom/jsdom/issues/3363
 global.structuredClone = (val) => val
