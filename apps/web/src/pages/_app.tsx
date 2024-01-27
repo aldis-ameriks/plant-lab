@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app'
+import Head from 'next/head'
 import React from 'react'
 
 import { BuildVersion } from '../components/BuildVersion'
@@ -8,10 +9,15 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const ComponentToRender = Component
 
   return (
-    <Provider initialGraphqlState={pageProps.initialGraphqlState}>
-      <BuildVersion />
-      <ComponentToRender {...pageProps} />
-    </Provider>
+    <>
+      <Head>
+        <title>Plants</title>
+      </Head>
+      <Provider initialGraphqlState={pageProps.initialGraphqlState}>
+        <BuildVersion />
+        <ComponentToRender {...pageProps} />
+      </Provider>
+    </>
   )
 }
 
