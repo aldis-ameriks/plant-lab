@@ -10,7 +10,7 @@ let knex: Knex
 let app: FastifyInstance
 
 beforeEach(() => {
-  knex = route.knex
+  knex = route.context.knex
   app = route.app
 })
 

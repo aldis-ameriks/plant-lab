@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { Knex } from 'knex'
-import { setupGraphql } from '../../test-helpers/setupGraphql'
 import * as seeds from '../../test-helpers/seeds'
+import { setupGraphql } from '../../test-helpers/setupGraphql'
 import { ReadingEntity, UsersDeviceEntity } from '../../types/entities'
 
 const gql = setupGraphql()
@@ -11,7 +11,7 @@ let knex: Knex
 
 beforeEach(async () => {
   app = gql.app
-  knex = gql.knex
+  knex = gql.context.knex
 
   await knex('user_access_keys')
     .update({ roles: ['HUB'] })

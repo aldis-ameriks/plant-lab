@@ -1,30 +1,32 @@
-import fastify, { FastifyInstance } from 'fastify'
-import { Knex } from 'knex'
+import { FastifyInstance } from 'fastify'
 import nock from 'nock'
 import pino from 'pino'
 import { config } from '../helpers/config'
-import { Context, createContext, createRequestContext } from '../helpers/context'
+import { Context, createContext } from '../helpers/context'
+import { initApp } from '../helpers/initApp'
 import { getTestKnex } from './getTestKnex'
 
 nock.disableNetConnect()
 
 export function setupRoutes(routes: (fastify: FastifyInstance) => Promise<void>) {
-  const app = fastify({ trustProxy: true })
-  const result = { app, context: {} as Context, knex: {} as Knex }
+  const context = {
+    config: structuredClone(config),
+    log: pino({ enabled: false })
+  } as Context
+
+  const app = initApp({ context })
+  const result = { app, context }
+
   const knexResult = getTestKnex()
 
   app.register(routes)
 
-  app.addHook('preValidation', async (req) => {
-    req.ctx = await createRequestContext({ ...result.context, headers: req.headers, ip: req.ip, reqId: '0' })
-  })
-
-  beforeEach(async () => {
-    result.knex = knexResult.knex
+  beforeEach(() => {
+    context.knex = knexResult.knex
     result.context = createContext({
-      knex: result.knex,
-      log: pino({ enabled: false }),
-      config: JSON.parse(JSON.stringify({ ...config }))
+      ...context,
+      knex: knexResult.knex,
+      config: structuredClone(config)
     })
   })
 

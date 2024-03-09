@@ -11,7 +11,7 @@ let knex: Knex
 
 beforeEach(() => {
   app = gql.app
-  knex = gql.knex
+  knex = gql.context.knex
 })
 
 const id = seeds.device.id

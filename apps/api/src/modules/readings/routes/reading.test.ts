@@ -13,7 +13,7 @@ let knex: Knex
 let app: FastifyInstance
 
 beforeEach(async () => {
-  knex = route.knex
+  knex = route.context.knex
   app = route.app
 
   await knex('user_access_keys')

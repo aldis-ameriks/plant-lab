@@ -1,6 +1,6 @@
-import { FastifyBaseLogger } from 'fastify/types/logger'
 import { IncomingHttpHeaders } from 'http'
 import { Knex } from 'knex'
+import { Logger } from 'pino'
 import type { config } from './config'
 
 type User = {
@@ -10,7 +10,7 @@ type User = {
 
 export type Context = {
   knex: Knex
-  log: FastifyBaseLogger
+  log: Logger
   config: typeof config
 }
 

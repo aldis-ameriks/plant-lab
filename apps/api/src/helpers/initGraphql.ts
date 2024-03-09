@@ -10,7 +10,11 @@ import { RequestContext } from './context'
 
 const { loaders, resolvers, schema } = modules
 
-export function initGraphql(app: FastifyInstance) {
+type Opts = {
+  app: FastifyInstance
+}
+
+export function initGraphql({ app }: Opts) {
   app.register(mercurius, {
     schema,
     resolvers,
@@ -30,7 +34,14 @@ export function initGraphql(app: FastifyInstance) {
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             captureError(ctx, 'api', new Error(error.message), { ip: ctx?.ip, headers: ctx?.headers }).catch(() => {})
           }
-          error.message = 'Technical Error'
+
+          if (
+            !error.message.includes('Failed auth policy') &&
+            !error.message.includes('Forbidden') &&
+            !error.message.includes('Invalid input')
+          ) {
+            error.message = 'Technical Error'
+          }
         })
       }
       return response

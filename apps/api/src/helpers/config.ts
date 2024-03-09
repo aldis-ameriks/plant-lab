@@ -2,7 +2,9 @@
 
 // TODO: Add json schema validation for config
 export const config = {
+  name: 'plant-lab',
   env: process.env.API_ENV || 'local',
+  port: process.env.API_SERVER_PORT ? +process.env.API_SERVER_PORT : 4000,
   maxHeap: process.env.API_MAX_HEAP ? +process.env.API_MAX_HEAP : undefined,
   maxRss: process.env.API_MAX_RSS ? +process.env.API_MAX_RSS : undefined,
 

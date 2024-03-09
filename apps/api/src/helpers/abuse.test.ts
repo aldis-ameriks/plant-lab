@@ -9,7 +9,7 @@ let knex: Knex
 let log
 let context
 
-beforeEach(async () => {
+beforeEach(() => {
   context = getContext()
   knex = context.knex
   log = context.log

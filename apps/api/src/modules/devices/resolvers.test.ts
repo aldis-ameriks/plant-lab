@@ -19,7 +19,7 @@ const expectedDevice = {
 
 beforeEach(() => {
   app = gql.app
-  knex = gql.knex
+  knex = gql.context.knex
 })
 
 const devicesQuery = `

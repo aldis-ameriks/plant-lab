@@ -1,41 +1,28 @@
-import fastify from 'fastify'
-import { Knex } from 'knex'
-import mercurius from 'mercurius'
-import mercuriusAuth from 'mercurius-auth'
 import pino from 'pino'
 import { config } from '../helpers/config'
-import { Context, createContext, createRequestContext, RequestContext } from '../helpers/context'
-import modules from '../modules'
+import { Context, createContext } from '../helpers/context'
+import { initApp } from '../helpers/initApp'
+import { initGraphql } from '../helpers/initGraphql'
 import { getTestKnex } from './getTestKnex'
 
-const { loaders, resolvers, schema } = modules
-
 export function setupGraphql() {
-  const app = fastify()
-  const result = { app, context: {} as Context, knex: {} as Knex }
+  const context = {
+    config: structuredClone(config),
+    log: pino({ enabled: false })
+  } as Context
+
+  const app = initApp({ context })
+  const result = { app, context }
   const knexResult = getTestKnex()
 
-  app.register(mercurius, {
-    schema,
-    resolvers,
-    loaders,
-    context: (req) => createRequestContext({ ...result.context, headers: req.headers, ip: req.ip, reqId: '0' })
-  })
-
-  app.register(mercuriusAuth, {
-    async applyPolicy(authDirectiveAST, parent, args, context, _info) {
-      const role = authDirectiveAST.arguments[0]?.value.value
-      return (context as unknown as RequestContext).user?.roles.includes(role) === true
-    },
-    authDirective: 'auth'
-  })
+  initGraphql({ app })
 
   beforeEach(async () => {
-    result.knex = knexResult.knex
+    context.knex = knexResult.knex
     result.context = createContext({
-      knex: result.knex,
-      log: pino({ enabled: false }),
-      config: JSON.parse(JSON.stringify({ ...config }))
+      ...result.context,
+      knex: knexResult.knex,
+      config: structuredClone(config)
     })
   })
 
