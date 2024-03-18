@@ -42,6 +42,7 @@
   "devDependencies": {
     "@graphql-codegen/add": "5.0.2",
     "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/schema-ast": "4.0.2",
     "@graphql-codegen/typescript": "4.0.6",
     "@graphql-codegen/typescript-resolvers": "4.0.6",
     "@swc/core": "1.4.8",

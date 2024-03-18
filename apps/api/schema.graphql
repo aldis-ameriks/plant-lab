@@ -1,0 +1,57 @@
+directive @auth(requires: Role = ADMIN) on FIELD_DEFINITION | OBJECT
+
+scalar DateTime
+
+type Device {
+  firmware: String!
+  id: ID!
+  lastReading: Reading
+  lastWateredTime: DateTime
+  name: String!
+  readings: [Reading!]!
+  room: String
+  type: DeviceType!
+  version: DeviceVersion!
+}
+
+enum DeviceStatus {
+  new
+  paired
+  pairing
+  reset
+}
+
+enum DeviceType {
+  hub
+  sensor
+}
+
+enum DeviceVersion {
+  hub_10
+  sensor_10
+}
+
+type Mutation {
+  _: Boolean
+  saveReading(input: String!): String!
+}
+
+type Query {
+  _: Boolean
+  device(id: ID!): Device!
+  devices: [Device!]!
+}
+
+type Reading {
+  batteryVoltage: Float!
+  light: Float
+  moisture: Float!
+  temperature: Float!
+  time: DateTime!
+}
+
+enum Role {
+  ADMIN
+  HUB
+  USER
+}
