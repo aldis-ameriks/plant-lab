@@ -7,7 +7,7 @@ export default async function errorRoutes(fastify: FastifyInstance) {
 
     for (const error of req.body) {
       await captureError(req.ctx, 'web', error, {
-        req_id: req.id,
+        reqId: req.id,
         ip: req.ip,
         headers: JSON.stringify(req.headers)
       })

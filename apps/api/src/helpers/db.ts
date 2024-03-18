@@ -1,6 +1,17 @@
 /* istanbul ignore file */
-import { knex as Knex } from 'knex'
-import * as knexfile from './knexfile'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import Postgres from 'postgres'
+import * as schema from './schema'
+import { config } from './config'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const knex = Knex<any, any>(knexfile)
+export const postgres = Postgres({
+  host: config.db.host,
+  port: config.db.port,
+  username: config.db.username,
+  password: config.db.password,
+  database: config.db.database,
+  ssl: config.db.ssl,
+  max: config.db.pool
+})
+
+export const db = drizzle(postgres, { schema })

@@ -1,15 +1,20 @@
+import { eq } from 'drizzle-orm'
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js/driver'
 import { IncomingHttpHeaders } from 'http'
-import { Knex } from 'knex'
 import { Logger } from 'pino'
+import Postgres from 'postgres'
 import type { config } from './config'
+import { userAccessKeys } from './schema'
+import * as schema from './schema'
 
 type User = {
-  id: string
-  roles: string[]
+  id: (typeof userAccessKeys.$inferSelect)['userId']
+  roles: (typeof userAccessKeys.$inferSelect)['roles']
 }
 
 export type Context = {
-  knex: Knex
+  postgres: Postgres.Sql
+  db: PostgresJsDatabase<typeof schema>
   log: Logger
   config: typeof config
 }
@@ -23,16 +28,25 @@ export type RequestContext = Context & {
 
 export async function createRequestContext(context: RequestContext): Promise<RequestContext> {
   const accessKey = context.headers['x-access-key'] || context.headers['access-key']
-  if (accessKey) {
-    context.user = await context
-      .knex('user_access_keys')
-      .select({ id: 'user_access_keys.user_id', roles: 'user_access_keys.roles' })
-      .where('user_access_keys.access_key', accessKey)
-      .first()
+
+  if (accessKey && typeof accessKey === 'string') {
+    context.user = (
+      await context.db
+        .select({ id: userAccessKeys.userId, roles: userAccessKeys.roles })
+        .from(userAccessKeys)
+        .where(eq(userAccessKeys.accessKey, accessKey))
+        .limit(1)
+    )[0]
   }
+
   return context
 }
 
-export function createContext({ knex, log, config }: Pick<Context, 'knex' | 'log' | 'config'>): Context {
-  return { log, knex, config }
+export function createContext({
+  postgres,
+  db,
+  log,
+  config
+}: Pick<Context, 'postgres' | 'db' | 'log' | 'config'>): Context {
+  return { log, db, postgres, config }
 }

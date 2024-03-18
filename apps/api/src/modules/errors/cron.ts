@@ -1,6 +1,8 @@
+import { eq, isNull } from 'drizzle-orm'
+import { inArray } from 'drizzle-orm/sql/expressions/conditions'
 import { Context } from '../../helpers/context'
 import { createCronJob, getRandomSchedule } from '../../helpers/cron'
-import { ErrorEntity } from '../../types/entities'
+import { errors } from '../../helpers/schema'
 import { sendTelegram } from './helpers/sendTelegram'
 
 export default /* istanbul ignore next */ function start(context) {
@@ -8,19 +10,20 @@ export default /* istanbul ignore next */ function start(context) {
 }
 
 export async function run(context: Context) {
-  const { knex, log, config } = context
-  const errors = await knex<ErrorEntity>('errors').where('sent_at', null)
-  if (errors.length) {
-    log.warn(`found ${errors.length} unsent errors`)
+  const { db, log, config } = context
+  const unsentErrors = await db.query.errors.findMany({ where: isNull(errors.sentAt) })
 
-    if (errors.length > 5) {
-      await sendTelegram(context, `[${config.env}]: there are ${errors.length} errors`)
-      const errorIds = errors.map((error) => error.id)
-      await knex<ErrorEntity>('errors').update('sent_at', new Date()).whereIn('id', errorIds)
+  if (unsentErrors.length) {
+    log.warn(`found ${unsentErrors.length} unsent errors`)
+
+    if (unsentErrors.length > 5) {
+      await sendTelegram(context, `[${config.env}]: there are ${unsentErrors.length} errors`)
+      const errorIds = unsentErrors.map((error) => error.id)
+      await db.update(errors).set({ sentAt: new Date() }).where(inArray(errors.id, errorIds))
     } else {
-      for (const error of errors) {
+      for (const error of unsentErrors) {
         await sendTelegram(context, `[${error.source ?? 'unknown'}-${config.env}]: ${JSON.stringify(error.content)}`)
-        await knex<ErrorEntity>('errors').update('sent_at', new Date()).where('id', error.id)
+        await db.update(errors).set({ sentAt: new Date() }).where(eq(errors.id, error.id))
       }
     }
   }

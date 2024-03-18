@@ -3,7 +3,7 @@ import { config } from '../helpers/config'
 import { Context, createContext } from '../helpers/context'
 import { initApp } from '../helpers/initApp'
 import { initGraphql } from '../helpers/initGraphql'
-import { getTestKnex } from './getTestKnex'
+import { getTestDb } from './getTestDb'
 
 export function setupGraphql() {
   const context = {
@@ -13,15 +13,16 @@ export function setupGraphql() {
 
   const app = initApp({ context })
   const result = { app, context }
-  const knexResult = getTestKnex()
+  const dbResult = getTestDb()
 
   initGraphql({ app })
 
   beforeEach(async () => {
-    context.knex = knexResult.knex
+    context.db = dbResult.db
+    context.postgres = dbResult.sql
     result.context = createContext({
       ...result.context,
-      knex: knexResult.knex,
+      db: dbResult.db,
       config: structuredClone(config)
     })
   })

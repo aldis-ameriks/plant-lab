@@ -1,11 +1,11 @@
 import { Context } from '../../../helpers/context'
-import { ErrorEntity } from '../../../types/entities'
+import { errors } from '../../../helpers/schema'
 
 export async function captureError(
-  { knex, log }: Pick<Context, 'knex' | 'log'>,
+  { db, log }: Pick<Context, 'db' | 'log'>,
   source: 'api' | 'web',
   payload: Record<string, unknown> | Error | string,
-  rest?: Partial<Omit<ErrorEntity, 'id' | 'time' | 'source' | 'content' | 'sent_at'>>
+  rest?: Pick<typeof errors.$inferInsert, 'reqId' | 'headers' | 'ip'>
 ) {
   let content
   if (payload instanceof Error) {
@@ -18,7 +18,8 @@ export async function captureError(
 
   try {
     // TODO: May want to consider buffering and inserting errors in batches.
-    await knex<ErrorEntity>('errors').insert(Object.assign({}, { source, content }, rest))
+    const value = Object.assign({}, { source, content }, rest)
+    await db.insert(errors).values(value)
   } catch (e) {
     log.error(e, 'failed to capture error')
   }

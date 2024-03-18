@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2020",
-    "outDir": "build/src",
+    "target": "ESNext",
+    "outDir": "build",
     "esModuleInterop": true,
     "noImplicitAny": false,
     "strict": true,
     "skipLibCheck": true,
     "incremental": true,
     "isolatedModules": true,
-    "useUnknownInCatchVariables": false,
-    "allowJs": true
+    "useUnknownInCatchVariables": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "scripts"]
 }

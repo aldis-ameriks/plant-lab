@@ -1,37 +1,36 @@
 import { randomUUID } from 'crypto'
-import { Knex } from 'knex'
+import { eq } from 'drizzle-orm'
 import nock from 'nock'
+import { Context } from '../../helpers/context'
+import { errors } from '../../helpers/schema'
 import { getTestContext } from '../../test-helpers/getTestContext'
-import { ErrorEntity } from '../../types/entities'
 import { run } from './cron'
 
 const getContext = getTestContext()
-let knex: Knex
 
 beforeEach(async () => {
   context = getContext()
-  knex = context.knex
 })
 
 let source
-let context
+let context: Context
 
 beforeEach(async () => {
   source = randomUUID()
   context.config.telegram.receiver = 'tg-receiver'
   context.config.telegram.accessKey = 'tg-access-key'
-  await knex('errors').del()
+  await context.db.delete(errors)
 })
 
 test('no errors', async () => {
-  await knex('errors').del()
+  await context.db.delete(errors)
   await run(context)
 })
 
 test('more than 5 errors and missing tg receiver', async () => {
   context.config.telegram.receiver = ''
 
-  await knex<ErrorEntity>('errors').insert([
+  await context.db.insert(errors).values([
     { content: {}, source },
     { content: {}, source },
     { content: {}, source },
@@ -41,17 +40,17 @@ test('more than 5 errors and missing tg receiver', async () => {
     { content: {}, source }
   ])
   await run(context)
-  const res = await knex<ErrorEntity>('errors').where('source', source)
+  const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
   expect(res.length).toBe(7)
   for (const error of res) {
-    expect(error.sent_at).toBeTruthy()
+    expect(error.sentAt).toBeTruthy()
   }
 })
 
 test('more than 5 errors and missing tg access key', async () => {
   context.config.telegram.accessKey = ''
 
-  await knex<ErrorEntity>('errors').insert([
+  await context.db.insert(errors).values([
     { content: {}, source },
     { content: {}, source },
     { content: {}, source },
@@ -61,11 +60,11 @@ test('more than 5 errors and missing tg access key', async () => {
     { content: {}, source }
   ])
   await run(context)
-  const res = await knex<ErrorEntity>('errors').where('source', source)
+  const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
   expect(res.length).toBe(7)
 
   for (const error of res) {
-    expect(error.sent_at).toBeTruthy()
+    expect(error.sentAt).toBeTruthy()
   }
 })
 
@@ -77,7 +76,7 @@ test('more than 5 errors', async () => {
     })
     .reply(200)
 
-  await knex<ErrorEntity>('errors').insert([
+  await context.db.insert(errors).values([
     { content: {}, source },
     { content: {}, source },
     { content: {}, source },
@@ -88,11 +87,11 @@ test('more than 5 errors', async () => {
   ])
   await run(context)
   scope.done()
-  const res = await knex<ErrorEntity>('errors').where('source', source)
+  const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
   expect(res.length).toBe(7)
 
   for (const error of res) {
-    expect(error.sent_at).toBeTruthy()
+    expect(error.sentAt).toBeTruthy()
   }
 })
 
@@ -105,17 +104,17 @@ test('less than 5 errors', async () => {
     .times(3)
     .reply(200)
 
-  await knex<ErrorEntity>('errors').insert([
+  await context.db.insert(errors).values([
     { content: {}, source },
     { content: {}, source },
     { content: {}, source }
   ])
   await run(context)
   scope.done()
-  const res = await knex<ErrorEntity>('errors').where('source', source)
+  const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
   expect(res.length).toBe(3)
   for (const error of res) {
-    expect(error.sent_at).toBeTruthy()
+    expect(error.sentAt).toBeTruthy()
   }
 })
 
@@ -128,16 +127,16 @@ test('unknown error source', async () => {
     .times(3)
     .reply(200)
 
-  await knex<ErrorEntity>('errors').insert([
+  await context.db.insert(errors).values([
     { content: {}, source: undefined },
     { content: {}, source: undefined },
     { content: {}, source: undefined }
   ])
   await run(context)
   scope.done()
-  const res = await knex<ErrorEntity>('errors')
+  const res = await context.db.query.errors.findMany()
   expect(res.length).toBe(3)
   for (const error of res) {
-    expect(error.sent_at).toBeTruthy()
+    expect(error.sentAt).toBeTruthy()
   }
 })

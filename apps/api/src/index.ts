@@ -2,16 +2,17 @@
 import pino from 'pino'
 import { config, isLocal } from './helpers/config'
 import { createContext } from './helpers/context'
-import { knex } from './helpers/db'
+import { db, postgres } from './helpers/db'
 import { initApp } from './helpers/initApp'
 import { initCron } from './helpers/initCron'
 import { initGraphql } from './helpers/initGraphql'
+import { initRoutes } from './helpers/initRoutes'
 import { shutdown } from './helpers/shutdown'
 import { sendTelegram } from './modules/errors/helpers/sendTelegram'
-import { initRoutes } from './helpers/initRoutes'
+
 ;(async () => {
   const log = pino({ level: 'debug', timestamp: pino.stdTimeFunctions.isoTime })
-  const context = createContext({ knex, log, config })
+  const context = createContext({ db, postgres, log, config })
   const app = initApp({ context })
   initRoutes({ app })
   initGraphql({ app })

@@ -1,67 +1,52 @@
-import { Knex } from 'knex'
-import {
-  DeviceEntity,
-  DeviceStatus,
-  DeviceType,
-  DeviceVersion,
-  ReadingEntity,
-  UserAccessKeyEntity,
-  UserEntity
-} from '../types/entities'
+import { Context } from '../helpers/context'
+import { devices, readings, userAccessKeys, users, usersDevices } from '../helpers/schema'
 
-export const device: DeviceEntity = {
+export const device: typeof devices.$inferInsert = {
   address: '127.0.0.1',
   firmware: 'firmware',
-  id: '1',
-  last_seen_at: null,
+  id: 1,
+  lastSeenAt: null,
   name: 'sensor name',
   room: null,
-  status: DeviceStatus.new,
-  type: DeviceType.sensor,
-  version: DeviceVersion.sensor_10,
+  status: 'new',
+  type: 'sensor',
+  version: 'sensor_10',
   test: false
 }
 
-export const reading: ReadingEntity = {
-  battery_voltage: '1',
-  device_id: device.id,
-  hub_id: null,
+export const reading: typeof readings.$inferInsert = {
+  batteryVoltage: '1',
+  deviceId: device.id!,
+  hubId: null,
   light: '2',
   moisture: '3',
-  moisture_max: '4',
-  moisture_min: '5',
-  moisture_raw: '6',
-  reading_id: '100',
+  moistureMax: '4',
+  moistureMin: '5',
+  moistureRaw: '6',
+  readingId: '100',
   signal: '7',
   temperature: '8',
   time: new Date()
 }
 
-export const user: UserEntity = {
-  id: '10000'
+export const user: typeof users.$inferInsert = {
+  id: 10000
 }
 
-export const userAccessKey: UserAccessKeyEntity = {
-  user_id: user.id,
-  access_key: 'access-key',
+export const userAccessKey: typeof userAccessKeys.$inferInsert = {
+  userId: user.id!,
+  accessKey: 'access-key',
   roles: []
 }
 
-export async function insertSeeds(knex: Knex): Promise<void> {
-  await knex('devices').del()
-  await knex('users').del()
-  await knex('user_access_keys').del()
-  await knex('users_devices').del()
+export async function insertSeeds(db: Context['db']): Promise<void> {
+  await db.delete(devices)
+  await db.delete(users)
+  await db.delete(userAccessKeys)
+  await db.delete(usersDevices)
 
-  await knex('devices').insert(device)
-  await insertWithIdentityColumn(knex, 'users', user)
-  await knex('user_access_keys').insert(userAccessKey)
-  await knex('users_devices').insert({ user_id: user.id, device_id: device.id })
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function insertWithIdentityColumn(knex: Knex, table: string, value: Record<string, unknown>): Promise<void> {
-  const sql = await knex(table).insert(value).toSQL()
-  sql.sql = sql.sql.replace(' values ', ' overriding system value values ')
-  await knex.raw(sql.sql, sql.bindings)
+  await db.insert(devices).values(device)
+  await db.insert(users).values(user)
+  await db.insert(userAccessKeys).values(userAccessKey)
+  await db.insert(usersDevices).values({ userId: user.id!, deviceId: device.id! })
 }

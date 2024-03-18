@@ -40,7 +40,7 @@ export function initGraphql({ app }: Opts) {
             !error.message.includes('Forbidden') &&
             !error.message.includes('Invalid input')
           ) {
-            error.message = 'Technical Error'
+            // error.message = 'Technical Error'
           }
         })
       }

@@ -76,7 +76,7 @@ async function initiateShutdown(context: Context, event, err: any, close: () => 
     await close()
 
     log.info('Closing connection pool')
-    await context.knex.destroy()
+    await context.postgres.end()
   } catch (e) {
     log.error(e, 'Failed to close server')
     process.exit(1)

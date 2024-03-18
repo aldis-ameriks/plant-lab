@@ -106,7 +106,7 @@ export function initApp({ context, origins }: Opts) {
       await captureError(request.ctx, 'api', error, {
         ip: request.ip,
         headers: request.headers,
-        req_id: request.id
+        reqId: request.id
       })
       request.log.error(error.toString())
       reply.send(new Error('Something went wrong'))

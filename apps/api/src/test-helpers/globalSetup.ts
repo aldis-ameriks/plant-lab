@@ -1,27 +1,29 @@
 import 'dotenv/config'
 import nock from 'nock'
-
-nock.disableNetConnect()
-
 import {
-  dropDatabase,
   createDatabase,
+  dropDatabase,
+  getTestDbClient,
+  getTestDbWithoutDatabase,
   runMigrations,
-  getTestKnexClient,
-  getTestKnexWithoutDatabase,
   runSeeds
 } from './setupDb'
 
+nock.disableNetConnect()
+;(BigInt.prototype as any).toJSON = function () {
+  return this.toString()
+}
+
 export default async function globalSetup(): Promise<void> {
-  let knex = getTestKnexWithoutDatabase()
+  const { sqlWithoutDatabase } = getTestDbWithoutDatabase()
 
   try {
-    await dropDatabase(knex)
+    await dropDatabase(sqlWithoutDatabase)
     // eslint-disable-next-line no-empty
   } catch (e) {}
 
-  await createDatabase(knex)
-  knex = getTestKnexClient()
-  await runMigrations(knex)
-  await runSeeds(knex)
+  await createDatabase(sqlWithoutDatabase)
+  const { sql, db } = getTestDbClient()
+  await runMigrations(sql, db)
+  await runSeeds(db)
 }

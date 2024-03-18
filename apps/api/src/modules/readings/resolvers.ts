@@ -1,5 +1,7 @@
+import { and, eq } from 'drizzle-orm'
+import assert from 'node:assert/strict'
+import { devices, readings, usersDevices } from '../../helpers/schema'
 import { ajv } from '../../helpers/validations'
-import { DeviceEntity, ReadingEntity, UsersDeviceEntity } from '../../types/entities'
 import { Resolvers } from '../../types/schema'
 import { readingsSchema } from './routes/reading'
 
@@ -8,6 +10,8 @@ const validator = ajv.compile(readingsSchema)
 export default {
   Mutation: {
     saveReading: async (_, args, context) => {
+      assert.ok(context.user?.id)
+
       // ** DEPRECATED **
       context.log.info(`received input: ${args.input}`)
       const parsedInput = args.input.split(';')
@@ -23,18 +27,20 @@ export default {
       const reading_id = parsedInput[9]
       // const firmware = parsedInput[10]
 
+      assert.ok(device_id)
+
       // hub_id is found by looking at devices
-      const input: Omit<ReadingEntity, 'hub_id'> = {
-        device_id,
+      const input: Omit<typeof readings.$inferInsert, 'hub_id'> = {
+        deviceId: +device_id,
         moisture,
-        moisture_max,
-        moisture_min,
-        moisture_raw,
+        moistureMax: moisture_max,
+        moistureMin: moisture_min,
+        moistureRaw: moisture_raw,
         temperature,
         light,
-        battery_voltage,
+        batteryVoltage: battery_voltage,
         signal,
-        reading_id,
+        readingId: reading_id,
         time: new Date()
       }
 
@@ -44,19 +50,17 @@ export default {
         throw new Error('Invalid input')
       }
 
-      const userDevice = await context
-        .knex<UsersDeviceEntity>('users_devices')
-        .where('user_id', context.user?.id)
-        .where('device_id', device_id)
-        .first()
+      const userDevice = await context.db.query.usersDevices.findFirst({
+        where: and(eq(usersDevices.userId, context.user.id), eq(usersDevices.deviceId, +device_id))
+      })
 
       if (!userDevice) {
         context.log.error(`user: ${context.user?.id} does not own device: ${device_id}`)
         throw new Error('Forbidden')
       }
 
-      await context.knex<DeviceEntity>('devices').update({ last_seen_at: new Date() }).where('id', device_id)
-      await context.knex<ReadingEntity>('readings').insert(input)
+      await context.db.update(devices).set({ lastSeenAt: new Date() }).where(eq(devices.id, +device_id))
+      await context.db.insert(readings).values(input)
 
       return 'success'
     }

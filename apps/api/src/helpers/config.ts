@@ -14,7 +14,8 @@ export const config = {
     username: process.env.API_DATABASE_USERNAME || 'postgres',
     password: process.env.API_DATABASE_PASSWORD || 'postgres',
     database: process.env.API_DATABASE_NAME || 'db',
-    ssl: process.env.API_DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false
+    ssl: process.env.API_DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
+    pool: 5
   },
 
   api: {

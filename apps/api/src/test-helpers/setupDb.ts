@@ -1,103 +1,93 @@
-import { Knex, knex as initKnex } from 'knex'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import { migrate } from 'drizzle-orm/postgres-js/migrator'
+import { join } from 'node:path'
+import Postgres from 'postgres'
+import { config } from '../helpers/config'
+import { Context } from '../helpers/context'
+import * as schema from '../helpers/schema'
 
-import * as knexfile from '../helpers/knexfile'
 import { insertSeeds } from './seeds'
 
-const testDatabaseName = `test_${knexfile.connection.database}`
+const testDatabaseName = `test_${config.db.database}`
 
-let knexWithoutDatabase: Knex
-let knex: Knex
+let sqlWithoutDatabase: Postgres.Sql | null = null
+let sql: Postgres.Sql | null = null
 
-export async function dropConnections(knex: Knex): Promise<void> {
-  await knex.raw(
-    `
+export async function dropConnections(sql: Postgres.Sql): Promise<void> {
+  await sql`
         SELECT pg_terminate_backend(pg_stat_activity.pid)
         FROM pg_stat_activity
-        WHERE pg_stat_activity.datname = :database
+        WHERE pg_stat_activity.datname = ${testDatabaseName}
           AND pid <> pg_backend_pid();
-    `,
-    { database: testDatabaseName }
-  )
+    `
 }
 
-export async function dropDatabase(knex: Knex): Promise<void> {
-  await dropConnections(knex)
-  await knex.raw('DROP DATABASE :database:', { database: testDatabaseName })
+export async function dropDatabase(sql: Postgres.Sql): Promise<void> {
+  await dropConnections(sql)
+  await sql`DROP DATABASE ${sql(testDatabaseName)}`
 }
 
-export async function createDatabase(knex: Knex): Promise<void> {
-  await knex.raw('CREATE DATABASE :database:', { database: testDatabaseName })
+export async function createDatabase(sql: Postgres.Sql): Promise<void> {
+  await sql`CREATE DATABASE ${sql(testDatabaseName)}`
 }
 
-export async function runMigrations(knex: Knex): Promise<void> {
-  let result = await knex
-    .raw(
-      `SELECT tablename
-          FROM pg_tables
-          WHERE schemaname = 'public'`
-    )
-    .then((res) => res.rows.map((row) => row.tablename))
+export async function runMigrations(sql: Postgres.Sql, db: Context['db']): Promise<void> {
+  let result = await sql`SELECT tablename
+                           FROM pg_tables
+                           WHERE schemaname = 'public'
+    `.then((res) => res.map((row) => row.tablename))
 
   if (result.length) {
     throw new Error('Existing tables before migration')
   }
 
-  await knex.migrate.latest()
+  await migrate(db, { migrationsFolder: join(__dirname, '../../migrations') })
 
-  result = await knex
-    .raw(
-      `SELECT tablename
-          FROM pg_tables
-          WHERE schemaname = 'public'`
-    )
-    .then((res) => res.rows.map((row) => row.tablename))
+  result = await sql`SELECT tablename
+                       FROM pg_tables
+                       WHERE schemaname = 'public'`.then((res) => res.map((row) => row.tablename))
   if (!result.length) {
     throw new Error('No tables after migration')
   }
 }
 
-export function runSeeds(knex: Knex): Promise<void> {
-  return insertSeeds(knex)
+export function runSeeds(db: Context['db']): Promise<void> {
+  return insertSeeds(db)
 }
 
-function getTestKnexConfig(database?: string) {
+function getTestDbConfig(database?: string) {
   return {
-    ...knexfile,
-    pool: {
-      afterCreate: function (conn, done) {
-        conn.on('notice', function (msg) {
-          // Migrations are causing these notices, e.g. drop if exists. Ignoring to reduce spam.
-          if (!msg.message.includes('does not exist') && !msg.message.includes('truncate cascade')) {
-            console.log('received notice', msg.message)
-          }
-        })
-        done(null, conn)
-      }
-    },
-    connection: { ...knexfile.connection, database }
+    host: config.db.host,
+    port: config.db.port,
+    username: config.db.username,
+    password: config.db.password,
+    database,
+    ssl: config.db.ssl,
+    max: 1
   }
 }
 
-export function getTestKnexWithoutDatabase(): Knex {
-  if (knexWithoutDatabase) {
-    if (!knexWithoutDatabase.client.pool || knexWithoutDatabase.client.pool.destroyed) {
-      knexWithoutDatabase.initialize()
-    }
-    return knexWithoutDatabase
+export function getTestDbWithoutDatabase() {
+  if (sqlWithoutDatabase) {
+    // Return existing client
+    return { sqlWithoutDatabase, db: drizzle(sqlWithoutDatabase, { schema }) }
   }
 
-  knexWithoutDatabase = initKnex(getTestKnexConfig())
-  return knexWithoutDatabase
+  sqlWithoutDatabase = Postgres(getTestDbConfig())
+  return { sqlWithoutDatabase, db: drizzle(sqlWithoutDatabase, { schema }) }
 }
 
-export function getTestKnexClient(): Knex {
-  if (knex) {
-    if (!knex.client.pool || knex.client.pool.destroyed) {
-      knex.initialize()
-    }
-    return knex
+export function getTestDbClient() {
+  if (sql) {
+    // Return existing client
+    return { sql, db: drizzle(sql, { schema }) }
   }
 
-  knex = initKnex(getTestKnexConfig(testDatabaseName))
-  return knex
+  sql = Postgres(getTestDbConfig(testDatabaseName))
+  return { sql, db: drizzle(sql, { schema }) }
+}
+
+export function clearTestDb() {
+  sql = null
+  sqlWithoutDatabase = null
 }

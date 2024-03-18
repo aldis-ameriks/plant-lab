@@ -4,7 +4,7 @@ import pino from 'pino'
 import { config } from '../helpers/config'
 import { Context, createContext } from '../helpers/context'
 import { initApp } from '../helpers/initApp'
-import { getTestKnex } from './getTestKnex'
+import { getTestDb } from './getTestDb'
 
 nock.disableNetConnect()
 
@@ -17,15 +17,15 @@ export function setupRoutes(routes: (fastify: FastifyInstance) => Promise<void>)
   const app = initApp({ context })
   const result = { app, context }
 
-  const knexResult = getTestKnex()
+  const dbResult = getTestDb()
 
   app.register(routes)
 
   beforeEach(() => {
-    context.knex = knexResult.knex
+    context.db = dbResult.db
     result.context = createContext({
       ...context,
-      knex: knexResult.knex,
+      db: dbResult.db,
       config: structuredClone(config)
     })
   })

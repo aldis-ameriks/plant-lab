@@ -1,11 +1,6 @@
-import { Knex } from 'knex'
+import { Context } from '../../../helpers/context'
+import { readings } from '../../../helpers/schema'
 
-export function getReadingQuery(knex: Knex) {
-  return knex('readings').select({
-    time: 'readings.time',
-    moisture: 'readings.moisture',
-    temperature: 'readings.temperature',
-    light: 'readings.light',
-    batteryVoltage: 'readings.battery_voltage'
-  })
+export function getReadingQuery(db: Context['db']) {
+  return db.select().from(readings).$dynamic()
 }

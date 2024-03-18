@@ -1,7 +1,11 @@
-import { getTestKnexClient, getTestKnexWithoutDatabase } from './setupDb'
+import { clearTestDb, getTestDbClient, getTestDbWithoutDatabase } from './setupDb'
 
 export default async function globalTeardown(): Promise<void> {
-  const knex1 = getTestKnexWithoutDatabase()
-  const knex2 = getTestKnexClient()
-  await Promise.all([knex1.destroy(), knex2.destroy()])
+  const { sqlWithoutDatabase } = getTestDbWithoutDatabase()
+  const { sql } = getTestDbClient()
+  try {
+    await Promise.all([sql.end(), sqlWithoutDatabase.end()])
+  } finally {
+    clearTestDb()
+  }
 }

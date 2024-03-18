@@ -1,20 +1,21 @@
+import { eq } from 'drizzle-orm'
 import { FastifyInstance } from 'fastify'
-import { Knex } from 'knex'
+import { Context } from '../../helpers/context'
+import { devices, readings } from '../../helpers/schema'
 import * as seeds from '../../test-helpers/seeds'
 import { setupGraphql } from '../../test-helpers/setupGraphql'
-import { ReadingEntity } from '../../types/entities'
 
 const gql = setupGraphql()
 
 let app: FastifyInstance
-let knex: Knex
+let context: Context
 
 beforeEach(() => {
   app = gql.app
-  knex = gql.context.knex
+  context = gql.context
 })
 
-const id = seeds.device.id
+const id = `${seeds.device.id}`
 const lastReadingQuery = `
       query {
         device(id: "${id}") {
@@ -71,7 +72,7 @@ test('Device.lastReading - returns last reading', async () => {
   const reading = {
     ...seeds.reading,
     time: new Date(),
-    battery_voltage: '1',
+    batteryVoltage: '1',
     light: '2',
     moisture: '3',
     temperature: '4'
@@ -81,13 +82,13 @@ test('Device.lastReading - returns last reading', async () => {
   const reading2 = {
     ...seeds.reading,
     time: past,
-    battery_voltage: '11',
+    batteryVoltage: '11',
     light: '22',
     moisture: '33',
     temperature: '44'
   }
 
-  await knex<ReadingEntity>('readings').insert([reading, reading2])
+  await context.db.insert(readings).values([reading, reading2])
 
   let result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastReadingQuery } })
   let parsedBody = JSON.parse(result.body)
@@ -96,7 +97,7 @@ test('Device.lastReading - returns last reading', async () => {
       device: {
         id,
         lastReading: {
-          batteryVoltage: parseFloat(reading.battery_voltage),
+          batteryVoltage: parseFloat(reading.batteryVoltage),
           light: parseFloat(reading.light),
           moisture: parseFloat(reading.moisture),
           temperature: parseFloat(reading.temperature),
@@ -109,12 +110,12 @@ test('Device.lastReading - returns last reading', async () => {
   const reading3 = {
     ...seeds.reading,
     time: new Date(),
-    battery_voltage: '111',
+    batteryVoltage: '111',
     light: '222',
     moisture: '333',
     temperature: '444'
   }
-  await knex<ReadingEntity>('readings').insert(reading3)
+  await context.db.insert(readings).values(reading3)
 
   result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastReadingQuery } })
   parsedBody = JSON.parse(result.body)
@@ -123,7 +124,7 @@ test('Device.lastReading - returns last reading', async () => {
       device: {
         id,
         lastReading: {
-          batteryVoltage: parseFloat(reading3.battery_voltage),
+          batteryVoltage: parseFloat(reading3.batteryVoltage),
           light: parseFloat(reading3.light),
           moisture: parseFloat(reading3.moisture),
           temperature: parseFloat(reading3.temperature),
@@ -156,7 +157,7 @@ test('Device.lastWateredTime - has been watered very long ago', async () => {
   time2.setDate(time2.getDate() - 360)
   const reading2 = { ...seeds.reading, time: time2, moisture: '40' }
 
-  await knex('readings').insert([reading1, reading2])
+  await context.db.insert(readings).values([reading1, reading2])
 
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastWateredQuery } })
   const parsedBody = JSON.parse(result.body)
@@ -170,6 +171,50 @@ test('Device.lastWateredTime - has been watered very long ago', async () => {
   })
 })
 
+test('Devices.lastWateredTime - has been watered very long ago', async () => {
+  await context.db.insert(devices).values({ ...seeds.device, id: 999 })
+
+  const time1 = new Date()
+  time1.setDate(time1.getDate() - 361)
+  const reading1 = { ...seeds.reading, time: time1, moisture: '1' }
+
+  const time2 = new Date()
+  time2.setDate(time2.getDate() - 360)
+  const reading2 = { ...seeds.reading, time: time2, moisture: '40' }
+
+  await context.db.insert(readings).values([reading1, reading2])
+
+  const result = await app.inject({
+    method: 'POST',
+    url: '/graphql',
+    payload: {
+      query: `
+      query {
+        devices {
+          id
+          lastWateredTime
+        }
+      }
+  `
+    }
+  })
+  const parsedBody = JSON.parse(result.body)
+  expect(parsedBody).toEqual({
+    data: {
+      devices: [
+        {
+          id,
+          lastWateredTime: null
+        },
+        {
+          id: '999',
+          lastWateredTime: null
+        }
+      ]
+    }
+  })
+})
+
 test('Device.lastWateredTime - has been watered', async () => {
   const time1 = new Date()
   time1.setDate(time1.getDate() - 11)
@@ -179,7 +224,7 @@ test('Device.lastWateredTime - has been watered', async () => {
   time2.setDate(time2.getDate() - 10)
   const reading2 = { ...seeds.reading, time: time2, moisture: '40' }
 
-  await knex('readings').insert([reading1, reading2])
+  await context.db.insert(readings).values([reading1, reading2])
 
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastWateredQuery } })
   const parsedBody = JSON.parse(result.body)
@@ -194,7 +239,7 @@ test('Device.lastWateredTime - has been watered', async () => {
 })
 
 test('Device.readings - works when there are no readings', async () => {
-  await knex('readings').where('device_id', seeds.device.id).del()
+  await context.db.delete(readings).where(eq(readings.deviceId, seeds.device.id!))
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: readingsQuery } })
   const parsedBody = JSON.parse(result.body)
   expect(parsedBody).toEqual({
@@ -208,7 +253,7 @@ test('Device.readings - works when there are no readings', async () => {
 })
 
 test('Device.readings - returns time bucketed daily readings', async () => {
-  await knex('readings').where('device_id', seeds.device.id).del()
+  await context.db.delete(readings).where(eq(readings.deviceId, seeds.device.id!))
 
   const time = new Date()
   time.setDate(time.getDate() - 3)
@@ -217,7 +262,7 @@ test('Device.readings - returns time bucketed daily readings', async () => {
     ...seeds.reading,
     time,
     moisture: '10',
-    battery_voltage: '1',
+    batteryVoltage: '1',
     light: '100',
     temperature: '20'
   }
@@ -226,11 +271,11 @@ test('Device.readings - returns time bucketed daily readings', async () => {
     ...seeds.reading,
     time,
     moisture: '20',
-    battery_voltage: '2',
+    batteryVoltage: '2',
     light: '200',
     temperature: '40'
   }
-  await knex('readings').insert([reading1, reading2])
+  await context.db.insert(readings).values([reading1, reading2])
 
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: readingsQuery } })
   const parsedBody = JSON.parse(result.body)

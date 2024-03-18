@@ -1,28 +1,32 @@
+import { eq } from 'drizzle-orm'
 import { FastifyRequest } from 'fastify'
-import { Knex } from 'knex'
 import { getTestContext } from '../test-helpers/getTestContext'
-import { AbuserEntity } from '../types/entities'
 import { handleAbuse } from './abuse'
+import { Context } from './context'
+import { abusers } from './schema'
 
 const getContext = getTestContext()
-let knex: Knex
-let log
-let context
+let context: Context
 
 beforeEach(() => {
   context = getContext()
-  knex = context.knex
-  log = context.log
 })
 
 test('stores abuser', async () => {
+  await context.db.insert(abusers).values({
+    headers: {},
+    ip: '127.0.0.1',
+    method: '',
+    url: ''
+  })
+
   const ip = '127.0.3.1'
-  let result = await knex<AbuserEntity>('abusers').where('ip', ip)
-  expect(result.length).toBe(0)
+  let result = await context.db.query.abusers.findFirst({ where: eq(abusers.ip, ip) })
+  expect(result).toBeUndefined()
 
   const params = {
     ip,
-    log,
+    log: context.log,
     url: '/url',
     method: 'POST',
     headers: { 'content-type': 'application/json' }
@@ -30,12 +34,12 @@ test('stores abuser', async () => {
 
   await handleAbuse(context, params)
 
-  result = await knex<AbuserEntity>('abusers').where('ip', ip)
-  expect(result.length).toBe(1)
-  const createdAt = result[0].created_at
+  result = await context.db.query.abusers.findFirst({ where: eq(abusers.ip, ip) })
+  expect(result?.createdAt).not.toBeUndefined()
+  const createdAt = result?.createdAt
   await handleAbuse(context, params)
 
-  result = await knex<AbuserEntity>('abusers').where('ip', ip)
-  expect(result.length).toBe(1)
-  expect(result[0].created_at).toEqual(createdAt)
+  result = await context.db.query.abusers.findFirst({ where: eq(abusers.ip, ip) })
+  expect(result?.createdAt).not.toBeUndefined()
+  expect(result?.createdAt).toEqual(createdAt)
 })

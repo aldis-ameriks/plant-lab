@@ -1,26 +1,26 @@
+import { count, eq } from 'drizzle-orm'
 import { FastifyInstance } from 'fastify'
-import { Knex } from 'knex'
+import { Context } from '../../helpers/context'
+import { errors } from '../../helpers/schema'
 import { setupRoutes } from '../../test-helpers/setupRoutes'
-import { ErrorEntity } from '../../types/entities'
 import errorRoutes from './routes'
 
 const route = setupRoutes(errorRoutes)
 
-let knex: Knex
+let context: Context
 let app: FastifyInstance
 
 beforeEach(() => {
-  knex = route.context.knex
   app = route.app
+  context = route.context
 })
 
 test('posting error works', async () => {
-  const count = await knex('errors')
-    .where('source', 'web')
-    .count()
-    .first()
-    .then((res) => (res ? +res.count : 0))
-  expect(count).toBe(0)
+  const result1 = await context.db
+    .select({ count: count() })
+    .from(errors)
+    .then((result) => result[0].count)
+  expect(result1).toBe(0)
 
   const response = await app.inject({
     url: '/error',
@@ -31,11 +31,10 @@ test('posting error works', async () => {
   expect(response.body).toBe('OK')
   expect(response.statusCode).toBe(200)
 
-  const errors = await knex<ErrorEntity>('errors').where('source', 'web')
-  expect(errors.length).toBe(2)
-
-  expect(errors[0].content).toEqual({ foo: 'bar' })
-  expect(errors[0].source).toBe('web')
-  expect(errors[1].content).toEqual({ foo: 'bar2' })
-  expect(errors[1].source).toBe('web')
+  const result2 = await context.db.query.errors.findMany({ where: eq(errors.source, 'web') })
+  expect(result2.length).toBe(2)
+  expect(result2[0].content).toEqual({ foo: 'bar' })
+  expect(result2[0].source).toBe('web')
+  expect(result2[1].content).toEqual({ foo: 'bar2' })
+  expect(result2[1].source).toBe('web')
 })
