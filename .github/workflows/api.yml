@@ -75,8 +75,9 @@ jobs:
           docker tag registry.aldisameriks.dev/pm-api:latest registry.aldisameriks.dev/pm-api:${GITHUB_REF#refs/tags/}
           docker push registry.aldisameriks.dev/pm-api:${GITHUB_REF#refs/tags/}
 
-
-      - run: |
+      - name: Push latest
+        if: github.ref == 'refs/heads/master'
+        run: |
           cd apps/api
           npm run docker:push
 
