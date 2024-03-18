@@ -84,6 +84,7 @@ services:
     env_file: .env
     environment:
       - RUNNER_NAME=pm-runner
+      - RUNNER_LABELS=pm-runner
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
