@@ -10,9 +10,6 @@ import {
 } from './setupDb'
 
 nock.disableNetConnect()
-;(BigInt.prototype as any).toJSON = function () {
-  return this.toString()
-}
 
 export default async function globalSetup(): Promise<void> {
   const { sqlWithoutDatabase } = getTestDbWithoutDatabase()
