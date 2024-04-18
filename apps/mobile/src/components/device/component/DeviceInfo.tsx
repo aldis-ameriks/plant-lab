@@ -15,7 +15,7 @@ type Props = {
 export const DeviceInfo = ({ item }: Props) => (
   <View style={{ flexDirection: 'row', gap: 24, alignItems: 'center' }}>
     <Image style={{ width: 40, height: 240, resizeMode: 'contain' }} source={versionToImageSourceMap[item.version]} />
-    <View>
+    <View style={{ flexDirection: 'column', gap: 4 }}>
       <Text>Id: {item.id}</Text>
       <Text>Name: {item.name}</Text>
       <Text>Room: {item.room}</Text>
