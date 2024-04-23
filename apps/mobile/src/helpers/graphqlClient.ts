@@ -1,11 +1,10 @@
 import { retryExchange } from '@urql/exchange-retry'
-import { cacheExchange, createClient, dedupExchange, errorExchange, fetchExchange } from 'urql'
+import { cacheExchange, createClient, errorExchange, fetchExchange } from 'urql'
 import { config } from './config'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function createGraphqlClient(graphqlEndpoint: string) {
   const exchanges = [
-    dedupExchange,
     cacheExchange,
     retryExchange({
       initialDelayMs: 1000,
