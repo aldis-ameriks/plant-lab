@@ -1,7 +1,7 @@
 import { retryExchange } from '@urql/exchange-retry'
 import { IncomingHttpHeaders } from 'http'
 import { useMemo } from 'react'
-import { cacheExchange, Client, createClient, dedupExchange, errorExchange, fetchExchange, ssrExchange } from 'urql'
+import { cacheExchange, Client, createClient, errorExchange, fetchExchange, ssrExchange } from 'urql'
 
 import { config } from './config'
 import { captureError } from './captureError'
@@ -16,7 +16,6 @@ function createGraphqlClient(graphqlEndpoint: string, initialState?: any, header
   })
 
   const exchanges = [
-    dedupExchange,
     cacheExchange,
     ssr, // Add `ssr` in front of the `fetchExchange`
     retryExchange({
