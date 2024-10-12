@@ -1,12 +1,12 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1710799926122,
-      "tag": "0000_numerous_bloodstorm",
+      "version": "7",
+      "when": 1728760482649,
+      "tag": "0000_dark_flatman",
       "breakpoints": true
     }
   ]

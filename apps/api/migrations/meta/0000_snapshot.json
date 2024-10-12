@@ -1,10 +1,10 @@
 {
-  "id": "bd820591-26c0-446c-a782-08d05d7d6110",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "abusers": {
+    "public.abusers": {
       "name": "abusers",
       "schema": "",
       "columns": {
@@ -51,7 +51,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "crons": {
+    "public.crons": {
       "name": "crons",
       "schema": "",
       "columns": {
@@ -93,79 +93,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "devices": {
-      "name": "devices",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigserial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "room": {
-          "name": "room",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "firmware": {
-          "name": "firmware",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "address": {
-          "name": "address",
-          "type": "inet",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_seen_at": {
-          "name": "last_seen_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "version": {
-          "name": "version",
-          "type": "device_version",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "device_status",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'new'"
-        },
-        "type": {
-          "name": "type",
-          "type": "device_type",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "test": {
-          "name": "test",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "errors": {
+    "public.errors": {
       "name": "errors",
       "schema": "",
       "columns": {
@@ -224,7 +152,82 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "readings": {
+    "public.devices": {
+      "name": "devices",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigserial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "room": {
+          "name": "room",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "firmware": {
+          "name": "firmware",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "inet",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_seen_at": {
+          "name": "last_seen_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version": {
+          "name": "version",
+          "type": "device_version",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "device_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'new'"
+        },
+        "type": {
+          "name": "type",
+          "type": "device_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "test": {
+          "name": "test",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.readings": {
       "name": "readings",
       "schema": "",
       "columns": {
@@ -305,18 +308,48 @@
         "readings_time_device_id_index": {
           "name": "readings_time_device_id_index",
           "columns": [
-            "time",
-            "device_id"
+            {
+              "expression": "time",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "device_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            }
           ],
-          "isUnique": false
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         },
         "readings_time_reading_id_index": {
           "name": "readings_time_reading_id_index",
           "columns": [
-            "time",
-            "reading_id"
+            {
+              "expression": "time",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "reading_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
           ],
-          "isUnique": false
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -324,6 +357,7 @@
           "name": "readings_device_id_devices_id_fk",
           "tableFrom": "readings",
           "tableTo": "devices",
+          "schemaTo": "public",
           "columnsFrom": [
             "device_id"
           ],
@@ -337,6 +371,7 @@
           "name": "readings_hub_id_devices_id_fk",
           "tableFrom": "readings",
           "tableTo": "devices",
+          "schemaTo": "public",
           "columnsFrom": [
             "hub_id"
           ],
@@ -350,7 +385,23 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user_access_keys": {
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigserial",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.user_access_keys": {
       "name": "user_access_keys",
       "schema": "",
       "columns": {
@@ -379,6 +430,7 @@
           "name": "user_access_keys_user_id_users_id_fk",
           "tableFrom": "user_access_keys",
           "tableTo": "users",
+          "schemaTo": "public",
           "columnsFrom": [
             "user_id"
           ],
@@ -392,31 +444,15 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "user_access_keys_access_key_unique": {
-          "name": "user_access_keys_access_key_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "access_key"
-          ]
+          ],
+          "nullsNotDistinct": false,
+          "name": "user_access_keys_access_key_unique"
         }
       }
     },
-    "users": {
-      "name": "users",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigserial",
-          "primaryKey": true,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "users_devices": {
+    "public.users_devices": {
       "name": "users_devices",
       "schema": "",
       "columns": {
@@ -435,12 +471,13 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "users_devices_user_id_users_id_fk": {
-          "name": "users_devices_user_id_users_id_fk",
+        "users_devices_device_id_devices_id_fk": {
+          "name": "users_devices_device_id_devices_id_fk",
           "tableFrom": "users_devices",
-          "tableTo": "users",
+          "tableTo": "devices",
+          "schemaTo": "public",
           "columnsFrom": [
-            "user_id"
+            "device_id"
           ],
           "columnsTo": [
             "id"
@@ -448,12 +485,13 @@
           "onDelete": "restrict",
           "onUpdate": "cascade"
         },
-        "users_devices_device_id_devices_id_fk": {
-          "name": "users_devices_device_id_devices_id_fk",
+        "users_devices_user_id_users_id_fk": {
+          "name": "users_devices_user_id_users_id_fk",
           "tableFrom": "users_devices",
-          "tableTo": "devices",
+          "tableTo": "users",
+          "schemaTo": "public",
           "columnsFrom": [
-            "device_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -475,34 +513,51 @@
     }
   },
   "enums": {
-    "device_status": {
+    "public.device_status": {
       "name": "device_status",
-      "values": {
-        "reset": "reset",
-        "paired": "paired",
-        "pairing": "pairing",
-        "new": "new"
-      }
+      "values": [
+        "reset",
+        "paired",
+        "pairing",
+        "new"
+      ],
+      "schema": "public"
     },
-    "device_type": {
+    "public.device_type": {
       "name": "device_type",
-      "values": {
-        "sensor": "sensor",
-        "hub": "hub"
-      }
+      "values": [
+        "sensor",
+        "hub"
+      ],
+      "schema": "public"
     },
-    "device_version": {
+    "public.device_version": {
       "name": "device_version",
-      "values": {
-        "sensor_10": "sensor_10",
-        "hub_10": "hub_10"
-      }
+      "values": [
+        "sensor_10",
+        "hub_10"
+      ],
+      "schema": "public"
     }
   },
   "schemas": {},
+  "sequences": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {
+      "user_access_keys": {
+        "columns": {
+          "roles": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "text"
+          }
+        }
+      }
+    }
   }
 }
