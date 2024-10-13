@@ -59,7 +59,7 @@ jobs:
       CI: true
 
   build:
-    needs: [lint, test]
+    needs: [typecheck, lint, test]
     if: github.ref == 'refs/heads/master' || contains(github.ref, 'refs/tags/')
     runs-on: [self-hosted, pm-runner]
 
