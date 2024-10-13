@@ -1,10 +1,10 @@
 import { eq } from 'drizzle-orm'
-import { PostgresJsDatabase } from 'drizzle-orm/postgres-js/driver'
+import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js/driver'
 import type { IncomingHttpHeaders } from 'node:http'
 import type { Logger } from 'pino'
-import Postgres from 'postgres'
+import type Postgres from 'postgres'
 import type { config } from './config.ts'
-import * as schema from './schema.ts'
+import type * as schema from './schema.ts'
 import { userAccessKeys } from './schema.ts'
 
 type User = {

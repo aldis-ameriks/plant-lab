@@ -1,5 +1,6 @@
 import type { Context } from '../helpers/context.ts'
-import { devices, readings, userAccessKeys, users, usersDevices } from '../helpers/schema.ts'
+import type { readings} from '../helpers/schema.ts';
+import { devices, userAccessKeys, users, usersDevices } from '../helpers/schema.ts'
 
 export const device: typeof devices.$inferInsert = {
   address: '127.0.0.1',
