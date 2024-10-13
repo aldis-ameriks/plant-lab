@@ -2,7 +2,7 @@ import { and, eq } from 'drizzle-orm'
 import assert from 'node:assert/strict'
 import { devices, readings, usersDevices } from '../../helpers/schema.ts'
 import { ajv } from '../../helpers/validations.ts'
-import { type Resolvers } from '../../types/schema.ts'
+import { type Resolvers } from '../../types/graphql.ts'
 import { readingsSchema } from './routes/reading.ts'
 
 const validator = ajv.compile(readingsSchema)

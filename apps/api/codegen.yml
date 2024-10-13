@@ -6,7 +6,7 @@ generates:
     plugins:
       - schema-ast
 
-  ./src/types/schema.ts:
+  ./src/types/graphql.ts:
     schema: ./src/**/types.graphql
     config:
       contextType: ../helpers/context.ts#RequestContext
