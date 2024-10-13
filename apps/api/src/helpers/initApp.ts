@@ -17,7 +17,7 @@ interface Opts {
 export function initApp({ context, origins }: Opts) {
   const app = fastify({
     trustProxy: true,
-    logger: context.log.child(
+    loggerInstance: context.log.child(
       {},
       {
         serializers: {
@@ -77,7 +77,6 @@ export function initApp({ context, origins }: Opts) {
   app.register(fastifyCors, { origin: origins ?? [], credentials: true })
   app.register(helmet, { hsts: false }) // nginx includes hsts
 
-  app.decorateRequest('ctx', null)
   app.addHook('preValidation', async (req) => {
     if (req.body) {
       req.log.debug({ body: req.body }, 'request body')
