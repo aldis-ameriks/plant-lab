@@ -127,6 +127,7 @@ test('saves reading', async () => {
   let result = await context.db.query.readings.findMany({ where: eq(readings.deviceId, seeds.device.id!) })
   assert.equal(result.length, 1)
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { time, ...data } = result[0]
 
   assert.deepEqual(data, {
