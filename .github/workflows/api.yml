@@ -54,7 +54,7 @@ jobs:
       - run: |
           cd apps/api
           npm ci
-          npm run coverage
+          npm run coverage:ci
     env:
       CI: true
 
