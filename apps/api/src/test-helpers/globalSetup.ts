@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import nock from 'nock'
 import {
   clearTestDb,
