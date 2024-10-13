@@ -1,5 +1,5 @@
-import http, { IncomingHttpHeaders, IncomingMessage, OutgoingHttpHeaders } from 'http'
-import https from 'https'
+import http, { type IncomingHttpHeaders, type IncomingMessage, type OutgoingHttpHeaders } from 'node:http'
+import https from 'node:https'
 
 class RequestError extends Error {
   statusCode?: number
@@ -47,14 +47,14 @@ export function request(
     const req = transport.request(opts, (res) => {
       res.setEncoding('utf-8')
 
-      /* istanbul ignore next */
+      /* node:coverage ignore next 3 */
       if (req.aborted) {
         return resolve({ data: undefined, headers: res.headers, statusCode: res.statusCode })
       }
 
       let data = ''
 
-      /* istanbul ignore next */
+      /* node:coverage ignore next 6 */
       res.on('error', (err) => {
         if (req.aborted) {
           return resolve({ data: undefined, headers: res.headers, statusCode: res.statusCode })

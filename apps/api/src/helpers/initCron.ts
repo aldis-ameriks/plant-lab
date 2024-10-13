@@ -1,8 +1,8 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 
-import modules from '../modules'
-import { Context } from './context'
-import { Job } from './initModules'
+import modules from '../modules/index.ts'
+import { type Context } from './context.ts'
+import { type Job } from './initModules.ts'
 
 const { crons } = modules
 

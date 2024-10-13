@@ -1,9 +1,11 @@
+import assert from 'node:assert/strict'
+import { beforeEach, test } from 'node:test'
 import { eq } from 'drizzle-orm'
-import { FastifyInstance } from 'fastify'
-import { Context } from '../../helpers/context'
-import { devices, readings } from '../../helpers/schema'
-import * as seeds from '../../test-helpers/seeds'
-import { setupGraphql } from '../../test-helpers/setupGraphql'
+import type { FastifyInstance } from 'fastify'
+import { type Context } from '../../helpers/context.ts'
+import { devices, readings } from '../../helpers/schema.ts'
+import * as seeds from '../../test-helpers/seeds.ts'
+import { setupGraphql } from '../../test-helpers/setupGraphql.ts'
 
 const gql = setupGraphql()
 
@@ -58,7 +60,7 @@ const readingsQuery = `
 test('Device.lastReading - returns null when there are no readings', async () => {
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastReadingQuery } })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -92,7 +94,7 @@ test('Device.lastReading - returns last reading', async () => {
 
   let result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastReadingQuery } })
   let parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -119,7 +121,7 @@ test('Device.lastReading - returns last reading', async () => {
 
   result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastReadingQuery } })
   parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -138,7 +140,7 @@ test('Device.lastReading - returns last reading', async () => {
 test('Device.lastWateredTime - has never been watered', async () => {
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastWateredQuery } })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -161,7 +163,7 @@ test('Device.lastWateredTime - has been watered very long ago', async () => {
 
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastWateredQuery } })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -199,7 +201,7 @@ test('Devices.lastWateredTime - has been watered very long ago', async () => {
     }
   })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       devices: [
         {
@@ -228,7 +230,7 @@ test('Device.lastWateredTime - has been watered', async () => {
 
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: lastWateredQuery } })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -242,7 +244,7 @@ test('Device.readings - works when there are no readings', async () => {
   await context.db.delete(readings).where(eq(readings.deviceId, seeds.device.id!))
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: readingsQuery } })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody).toEqual({
+  assert.deepEqual(parsedBody, {
     data: {
       device: {
         id,
@@ -255,7 +257,7 @@ test('Device.readings - works when there are no readings', async () => {
 test('Device.readings - returns time bucketed daily readings', async () => {
   await context.db.delete(readings).where(eq(readings.deviceId, seeds.device.id!))
 
-  const time = new Date()
+  const time = new Date('2024-10-13T14:01:36.798')
   time.setDate(time.getDate() - 3)
 
   const reading1 = {
@@ -279,11 +281,12 @@ test('Device.readings - returns time bucketed daily readings', async () => {
 
   const result = await app.inject({ method: 'POST', url: '/graphql', payload: { query: readingsQuery } })
   const parsedBody = JSON.parse(result.body)
-  expect(parsedBody.data.device.readings.length).toBeGreaterThan(1)
-  expect(parsedBody.data.device.readings[0]).toMatchObject({
+  assert.ok(parsedBody.data.device.readings.length > 1)
+  assert.deepEqual(parsedBody.data.device.readings[0], {
     batteryVoltage: 1.5,
     light: 150,
     moisture: 15,
-    temperature: 30
+    temperature: 30,
+    time: '2024-10-10 00:00:00+00'
   })
 })

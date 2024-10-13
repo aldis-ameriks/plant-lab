@@ -1,5 +1,5 @@
-import { FastifyInstance } from 'fastify'
-import { captureError } from './helpers/captureError'
+import { type FastifyInstance } from 'fastify'
+import { captureError } from './helpers/captureError.ts'
 
 export default async function errorRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: Array<Record<string, string>> }>('/error', async (req, res) => {

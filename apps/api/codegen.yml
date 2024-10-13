@@ -9,7 +9,8 @@ generates:
   ./src/types/schema.ts:
     schema: ./src/**/types.graphql
     config:
-      contextType: ../helpers/context#RequestContext
+      contextType: ../helpers/context.ts#RequestContext
+      enumsAsTypes: true
     plugins:
       - typescript
       - typescript-resolvers

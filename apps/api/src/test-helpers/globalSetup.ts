@@ -1,26 +1,29 @@
 import 'dotenv/config'
 import nock from 'nock'
 import {
+  clearTestDb,
   createDatabase,
   dropDatabase,
   getTestDbClient,
   getTestDbWithoutDatabase,
   runMigrations,
   runSeeds
-} from './setupDb'
+} from './setupDb.ts'
 
 nock.disableNetConnect()
 
-export default async function globalSetup(): Promise<void> {
-  const { sqlWithoutDatabase } = getTestDbWithoutDatabase()
+const { sqlWithoutDatabase } = getTestDbWithoutDatabase()
 
-  try {
-    await dropDatabase(sqlWithoutDatabase)
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
+try {
+  await dropDatabase(sqlWithoutDatabase)
+  // eslint-disable-next-line no-empty
+} catch (e) {}
 
-  await createDatabase(sqlWithoutDatabase)
-  const { sql, db } = getTestDbClient()
-  await runMigrations(sql, db)
-  await runSeeds(db)
-}
+await createDatabase(sqlWithoutDatabase)
+await sqlWithoutDatabase.end()
+
+const { sql, db } = getTestDbClient()
+await runMigrations(sql, db)
+await runSeeds(db)
+await sql.end()
+clearTestDb()

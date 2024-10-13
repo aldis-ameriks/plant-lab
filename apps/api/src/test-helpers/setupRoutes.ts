@@ -1,10 +1,11 @@
-import { FastifyInstance } from 'fastify'
+import { type FastifyInstance } from 'fastify'
+import { beforeEach, after } from 'node:test'
 import nock from 'nock'
 import pino from 'pino'
-import { config } from '../helpers/config'
-import { Context, createContext } from '../helpers/context'
-import { initApp } from '../helpers/initApp'
-import { getTestDb } from './getTestDb'
+import { config } from '../helpers/config.ts'
+import { type Context, createContext } from '../helpers/context.ts'
+import { initApp } from '../helpers/initApp.ts'
+import { getTestDb } from './getTestDb.ts'
 
 nock.disableNetConnect()
 
@@ -30,7 +31,7 @@ export function setupRoutes(routes: (fastify: FastifyInstance) => Promise<void>)
     })
   })
 
-  afterAll(async () => {
+  after(async () => {
     await app.close()
   })
 

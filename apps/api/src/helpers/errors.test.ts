@@ -1,30 +1,32 @@
-import { Forbidden, TechnicalError, UserInputError } from './errors'
+import assert from 'node:assert/strict'
+import { test } from 'node:test'
+import { Forbidden, TechnicalError, UserInputError } from './errors.ts'
 
 test('UserInputError', () => {
   const error = new UserInputError()
-  expect(error instanceof UserInputError).toBeTruthy()
+  assert.ok(error instanceof UserInputError)
 })
 
 test('TechnicalError', () => {
   const error = new TechnicalError()
-  expect(error instanceof TechnicalError).toBeTruthy()
-  expect(error.message).toBe('Technical Error')
+  assert.ok(error instanceof TechnicalError)
+  assert.equal(error.message, 'Technical Error')
 })
 
 test('TechnicalError custom message', () => {
   const error = new TechnicalError('foo')
-  expect(error instanceof TechnicalError).toBeTruthy()
-  expect(error.message).toBe('foo')
+  assert.ok(error instanceof TechnicalError)
+  assert.equal(error.message, 'foo')
 })
 
 test('Forbidden error', () => {
   const error = new Forbidden()
-  expect(error instanceof Forbidden).toBeTruthy()
-  expect(error.message).toBe('Forbidden')
+  assert.ok(error instanceof Forbidden)
+  assert.equal(error.message, 'Forbidden')
 })
 
 test('Forbidden error with custom error', () => {
   const error = new Forbidden('foo')
-  expect(error instanceof Forbidden).toBeTruthy()
-  expect(error.message).toBe('foo')
+  assert.ok(error instanceof Forbidden)
+  assert.equal(error.message, 'foo')
 })

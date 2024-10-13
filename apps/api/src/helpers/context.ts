@@ -1,11 +1,11 @@
 import { eq } from 'drizzle-orm'
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js/driver'
-import { IncomingHttpHeaders } from 'http'
-import { Logger } from 'pino'
+import type { IncomingHttpHeaders } from 'node:http'
+import type { Logger } from 'pino'
 import Postgres from 'postgres'
-import type { config } from './config'
-import { userAccessKeys } from './schema'
-import * as schema from './schema'
+import type { config } from './config.ts'
+import * as schema from './schema.ts'
+import { userAccessKeys } from './schema.ts'
 
 type User = {
   id: (typeof userAccessKeys.$inferSelect)['userId']

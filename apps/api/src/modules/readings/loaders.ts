@@ -1,7 +1,7 @@
 import { desc, sql } from 'drizzle-orm'
 import { inArray } from 'drizzle-orm/sql/expressions/conditions'
-import { Context } from '../../helpers/context'
-import { readings } from '../../helpers/schema'
+import { type Context } from '../../helpers/context.ts'
+import { readings } from '../../helpers/schema.ts'
 
 export default {
   Device: {

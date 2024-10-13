@@ -1,4 +1,4 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 
 // TODO: Add json schema validation for config
 export const config = {

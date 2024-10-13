@@ -1,4 +1,4 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 import {
   bigint,
   bigserial,
@@ -20,7 +20,7 @@ export const deviceType = pgEnum('device_type', ['sensor', 'hub'])
 export const deviceVersion = pgEnum('device_version', ['sensor_10', 'hub_10'])
 
 export const abusers = pgTable('abusers', {
-  id: bigserial('id', { mode: 'number' }).primaryKey().notNull(),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   ip: inet('ip').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).defaultNow().notNull(),
   url: text('url').notNull(),
@@ -29,7 +29,7 @@ export const abusers = pgTable('abusers', {
 })
 
 export const crons = pgTable('crons', {
-  id: bigserial('id', { mode: 'number' }).primaryKey().notNull(),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   name: text('name').notNull(),
   executedAt: timestamp('executed_at', { withTimezone: true, mode: 'date' }).defaultNow().notNull(),
   nextExecutionAt: timestamp('next_execution_at', { withTimezone: true, mode: 'date' }).notNull(),
@@ -37,7 +37,7 @@ export const crons = pgTable('crons', {
 })
 
 export const devices = pgTable('devices', {
-  id: bigserial('id', { mode: 'number' }).primaryKey().notNull(),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   name: text('name').notNull(),
   room: text('room'),
   firmware: text('firmware').notNull(),
@@ -50,7 +50,7 @@ export const devices = pgTable('devices', {
 })
 
 export const errors = pgTable('errors', {
-  id: bigserial('id', { mode: 'number' }).primaryKey().notNull(),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   time: timestamp('time', { withTimezone: true, mode: 'date' }).defaultNow().notNull(),
   sentAt: timestamp('sent_at', { withTimezone: true, mode: 'date' }),
   source: text('source'),

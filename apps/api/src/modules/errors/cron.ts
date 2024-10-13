@@ -1,11 +1,12 @@
 import { eq, isNull } from 'drizzle-orm'
 import { inArray } from 'drizzle-orm/sql/expressions/conditions'
-import { Context } from '../../helpers/context'
-import { createCronJob, getRandomSchedule } from '../../helpers/cron'
-import { errors } from '../../helpers/schema'
-import { sendTelegram } from './helpers/sendTelegram'
+import { type Context } from '../../helpers/context.ts'
+import { createCronJob, getRandomSchedule } from '../../helpers/cron.ts'
+import { errors } from '../../helpers/schema.ts'
+import { sendTelegram } from './helpers/sendTelegram.ts'
 
-export default /* istanbul ignore next */ function start(context) {
+/* node:coverage ignore next 3 */
+export default function start(context) {
   return createCronJob(context, `${getRandomSchedule()} * * * * *`, 1004, 'errors', run)
 }
 

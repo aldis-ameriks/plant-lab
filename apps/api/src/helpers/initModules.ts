@@ -1,27 +1,26 @@
-/* istanbul ignore file */
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* node:coverage disable */
 
 import fg from 'fast-glob'
-import { FastifyInstance } from 'fastify'
-import { readFileSync } from 'fs'
-import { join } from 'path'
-import { Context } from './context'
-import { mergeDeep } from './mergeDeep'
+import { type FastifyInstance } from 'fastify'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { type Context } from './context.ts'
+import { mergeDeep } from './mergeDeep.ts'
 
 export type Job = { executing: boolean; running: boolean; name: string; id: number; stop: () => void }
 export type JobInit = (context: Context) => Job
 
-export function initModules() {
+export async function initModules() {
   const files = fg.sync(
     [
-      join(__dirname, '../modules/**/types.graphql'),
-      join(__dirname, '../modules/**/*cron.(t|j)s'),
-      join(__dirname, '../modules/**/resolvers.(t|j)s'),
-      join(__dirname, '../modules/**/loaders.(t|j)s'),
-      join(__dirname, '../modules/**/routes.(t|j)s')
+      join(import.meta.dirname, '../modules/**/types.graphql'),
+      join(import.meta.dirname, '../modules/**/*cron.(t|j)s'),
+      join(import.meta.dirname, '../modules/**/resolvers.(t|j)s'),
+      join(import.meta.dirname, '../modules/**/loaders.(t|j)s'),
+      join(import.meta.dirname, '../modules/**/routes.(t|j)s')
     ],
     {
-      ignore: [join(__dirname, '../modules/**/*test.(t|j)s')],
+      ignore: [join(import.meta.dirname, '../modules/**/*test.(t|j)s')],
       absolute: true
     }
   )
@@ -42,7 +41,7 @@ export function initModules() {
     if (file.includes('types.graphql')) {
       types.push(readFileSync(file).toString())
     } else if (file.includes('cron')) {
-      const cron = require(file)
+      const cron = await import(file)
       if (cron.only) {
         cronOnlyModeEnabled = true
       }
@@ -52,11 +51,11 @@ export function initModules() {
 
       cronFns.push(cron)
     } else if (file.includes('resolvers')) {
-      resolvers.push(require(file).default)
+      resolvers.push((await import(file)).default)
     } else if (file.includes('loaders')) {
-      loaders.push(require(file).default)
+      loaders.push((await import(file)).default)
     } else if (file.includes('routes')) {
-      routes.push(require(file).default)
+      routes.push((await import(file)).default)
     }
   }
 

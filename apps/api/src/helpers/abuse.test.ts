@@ -1,9 +1,11 @@
 import { eq } from 'drizzle-orm'
-import { FastifyRequest } from 'fastify'
-import { getTestContext } from '../test-helpers/getTestContext'
-import { handleAbuse } from './abuse'
-import { Context } from './context'
-import { abusers } from './schema'
+import { type FastifyRequest } from 'fastify'
+import assert from 'node:assert/strict'
+import { beforeEach, test } from 'node:test'
+import { getTestContext } from '../test-helpers/getTestContext.ts'
+import { handleAbuse } from './abuse.ts'
+import { type Context } from './context.ts'
+import { abusers } from './schema.ts'
 
 const getContext = getTestContext()
 let context: Context
@@ -22,7 +24,7 @@ test('stores abuser', async () => {
 
   const ip = '127.0.3.1'
   let result = await context.db.query.abusers.findFirst({ where: eq(abusers.ip, ip) })
-  expect(result).toBeUndefined()
+  assert.ok(result === undefined)
 
   const params = {
     ip,
@@ -35,11 +37,11 @@ test('stores abuser', async () => {
   await handleAbuse(context, params)
 
   result = await context.db.query.abusers.findFirst({ where: eq(abusers.ip, ip) })
-  expect(result?.createdAt).not.toBeUndefined()
+  assert.ok(result?.createdAt)
   const createdAt = result?.createdAt
   await handleAbuse(context, params)
 
   result = await context.db.query.abusers.findFirst({ where: eq(abusers.ip, ip) })
-  expect(result?.createdAt).not.toBeUndefined()
-  expect(result?.createdAt).toEqual(createdAt)
+  assert.ok(result?.createdAt)
+  assert.equal(result?.createdAt.getTime(), createdAt.getTime())
 })

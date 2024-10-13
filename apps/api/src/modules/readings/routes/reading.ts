@@ -1,9 +1,9 @@
-import { JSONSchemaType } from 'ajv'
+import { type JSONSchemaType } from 'ajv'
 import { and, eq } from 'drizzle-orm'
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import assert from 'node:assert/strict'
-import { devices, readings, usersDevices } from '../../../helpers/schema'
-import { ajv } from '../../../helpers/validations'
+import { devices, readings, usersDevices } from '../../../helpers/schema.ts'
+import { ajv } from '../../../helpers/validations.ts'
 
 export const readingsSchema: JSONSchemaType<Array<typeof readings.$inferInsert>> = {
   type: 'array',

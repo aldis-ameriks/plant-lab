@@ -1,9 +1,11 @@
 import { count, eq } from 'drizzle-orm'
-import { FastifyInstance } from 'fastify'
-import { Context } from '../../helpers/context'
-import { errors } from '../../helpers/schema'
-import { setupRoutes } from '../../test-helpers/setupRoutes'
-import errorRoutes from './routes'
+import type { FastifyInstance } from 'fastify'
+import assert from 'node:assert/strict'
+import { beforeEach, test } from 'node:test'
+import { type Context } from '../../helpers/context.ts'
+import { errors } from '../../helpers/schema.ts'
+import { setupRoutes } from '../../test-helpers/setupRoutes.ts'
+import errorRoutes from './routes.ts'
 
 const route = setupRoutes(errorRoutes)
 
@@ -20,7 +22,7 @@ test('posting error works', async () => {
     .select({ count: count() })
     .from(errors)
     .then((result) => result[0].count)
-  expect(result1).toBe(0)
+  assert.equal(result1, 0)
 
   const response = await app.inject({
     url: '/error',
@@ -28,13 +30,13 @@ test('posting error works', async () => {
     payload: [{ foo: 'bar' }, { foo: 'bar2' }]
   })
 
-  expect(response.body).toBe('OK')
-  expect(response.statusCode).toBe(200)
+  assert.equal(response.body, 'OK')
+  assert.equal(response.statusCode, 200)
 
   const result2 = await context.db.query.errors.findMany({ where: eq(errors.source, 'web') })
-  expect(result2.length).toBe(2)
-  expect(result2[0].content).toEqual({ foo: 'bar' })
-  expect(result2[0].source).toBe('web')
-  expect(result2[1].content).toEqual({ foo: 'bar2' })
-  expect(result2[1].source).toBe('web')
+  assert.equal(result2.length, 2)
+  assert.deepEqual(result2[0].content, { foo: 'bar' })
+  assert.equal(result2[0].source, 'web')
+  assert.deepEqual(result2[1].content, { foo: 'bar2' })
+  assert.equal(result2[1].source, 'web')
 })

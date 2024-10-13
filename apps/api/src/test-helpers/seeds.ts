@@ -1,5 +1,5 @@
-import { Context } from '../helpers/context'
-import { devices, readings, userAccessKeys, users, usersDevices } from '../helpers/schema'
+import type { Context } from '../helpers/context.ts'
+import { devices, readings, userAccessKeys, users, usersDevices } from '../helpers/schema.ts'
 
 export const device: typeof devices.$inferInsert = {
   address: '127.0.0.1',
@@ -40,10 +40,10 @@ export const userAccessKey: typeof userAccessKeys.$inferInsert = {
 }
 
 export async function insertSeeds(db: Context['db']): Promise<void> {
-  await db.delete(devices)
-  await db.delete(users)
-  await db.delete(userAccessKeys)
   await db.delete(usersDevices)
+  await db.delete(devices)
+  await db.delete(userAccessKeys)
+  await db.delete(users)
 
   await db.insert(devices).values(device)
   await db.insert(users).values(user)

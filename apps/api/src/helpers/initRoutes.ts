@@ -1,7 +1,7 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 
-import { FastifyInstance } from 'fastify'
-import modules from '../modules'
+import { type FastifyInstance } from 'fastify'
+import modules from '../modules/index.ts'
 
 const { routes } = modules
 

@@ -1,8 +1,8 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 import { drizzle } from 'drizzle-orm/postgres-js'
 import Postgres from 'postgres'
-import * as schema from './schema'
-import { config } from './config'
+import * as schema from './schema.ts'
+import { config } from './config.ts'
 
 export const postgres = Postgres({
   host: config.db.host,

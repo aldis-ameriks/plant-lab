@@ -2,11 +2,11 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { join } from 'node:path'
 import Postgres from 'postgres'
-import { config } from '../helpers/config'
-import { Context } from '../helpers/context'
-import * as schema from '../helpers/schema'
+import { config } from '../helpers/config.ts'
+import { type Context } from '../helpers/context.ts'
+import * as schema from '../helpers/schema.ts'
 
-import { insertSeeds } from './seeds'
+import { insertSeeds } from './seeds.ts'
 
 const testDatabaseName = `test_${config.db.database}`
 
@@ -41,7 +41,7 @@ export async function runMigrations(sql: Postgres.Sql, db: Context['db']): Promi
     throw new Error('Existing tables before migration')
   }
 
-  await migrate(db, { migrationsFolder: join(__dirname, '../../migrations') })
+  await migrate(db, { migrationsFolder: join(import.meta.dirname, '../../migrations') })
 
   result = await sql`SELECT tablename
                        FROM pg_tables

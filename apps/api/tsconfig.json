@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "ESNext",
-    "outDir": "build",
+    "moduleResolution": "node",
+    "noEmit": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "strict": true,
     "skipLibCheck": true,
-    "incremental": true,
-    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
     "useUnknownInCatchVariables": false
   },
   "include": ["src/**/*", "scripts"]

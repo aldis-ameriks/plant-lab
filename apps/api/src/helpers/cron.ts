@@ -1,11 +1,11 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 import { CronJob } from 'cron'
 import { randomUUID } from 'crypto'
 import { sql } from 'drizzle-orm'
-import { captureError } from '../modules/errors/helpers/captureError'
-import { Context } from './context'
-import { Job } from './initModules'
-import { crons } from './schema'
+import { captureError } from '../modules/errors/helpers/captureError.ts'
+import { type Context } from './context.ts'
+import { type Job } from './initModules.ts'
+import { crons } from './schema.ts'
 
 type JobType = CronJob & Job
 

@@ -1,8 +1,8 @@
-/* istanbul ignore file */
-import util from 'util'
-import { captureError } from '../modules/errors/helpers/captureError'
-import { Context } from './context'
-import { Job } from './initModules'
+/* node:coverage disable */
+import util from 'node:util'
+import { captureError } from '../modules/errors/helpers/captureError.ts'
+import { type Context } from './context.ts'
+import { type Job } from './initModules.ts'
 
 const sleep = util.promisify(setTimeout)
 

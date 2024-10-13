@@ -2,7 +2,7 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { join } from 'node:path'
 import Postgres from 'postgres'
-import { config } from '../src/helpers/config'
+import { config } from '../src/helpers/config.ts'
 
 export const postgres = Postgres({
   host: config.db.host,
@@ -16,7 +16,5 @@ export const postgres = Postgres({
 
 const db = drizzle(postgres)
 
-;(async () => {
-  await migrate(db, { migrationsFolder: join(__dirname, '../migrations') })
-  await postgres.end()
-})()
+await migrate(db, { migrationsFolder: join(import.meta.dirname, '../migrations') })
+await postgres.end()

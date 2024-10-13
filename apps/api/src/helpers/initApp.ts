@@ -1,13 +1,13 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 
 import fastifyCors from '@fastify/cors'
 import helmet from '@fastify/helmet'
 import fastifyRateLimit from '@fastify/rate-limit'
 import underPressure from '@fastify/under-pressure'
-import fastify, { FastifyBaseLogger } from 'fastify'
-import { captureError } from '../modules/errors/helpers/captureError'
-import { handleAbuse } from './abuse'
-import { Context, createRequestContext } from './context'
+import fastify, { type FastifyBaseLogger } from 'fastify'
+import { captureError } from '../modules/errors/helpers/captureError.ts'
+import { handleAbuse } from './abuse.ts'
+import { type Context, createRequestContext } from './context.ts'
 
 interface Opts {
   context: Context

@@ -1,8 +1,8 @@
 import { eq, ne } from 'drizzle-orm'
-import { PartialDeep } from 'type-fest'
-import { devices } from '../../helpers/schema'
-import { Resolvers } from '../../types/schema'
-import { getDeviceQuery } from './helpers/getDeviceQuery'
+import type { PartialDeep } from 'type-fest'
+import { devices } from '../../helpers/schema.ts'
+import { type Resolvers } from '../../types/schema.ts'
+import { getDeviceQuery } from './helpers/getDeviceQuery.ts'
 
 export default {
   Query: {

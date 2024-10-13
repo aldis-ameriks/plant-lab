@@ -1,8 +1,8 @@
 import nock from 'nock'
 import pino from 'pino'
-import { config as globalConfig } from '../helpers/config'
-import { Context, createContext } from '../helpers/context'
-import { getTestDb } from './getTestDb'
+import { config as globalConfig } from '../helpers/config.ts'
+import { type Context, createContext } from '../helpers/context.ts'
+import { getTestDb } from './getTestDb.ts'
 
 nock.disableNetConnect()
 

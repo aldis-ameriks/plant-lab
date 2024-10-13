@@ -1,5 +1,5 @@
-import { initModules } from '../helpers/initModules'
+import { initModules } from '../helpers/initModules.ts'
 
-const modules = initModules()
+const modules = await initModules()
 
 export default modules

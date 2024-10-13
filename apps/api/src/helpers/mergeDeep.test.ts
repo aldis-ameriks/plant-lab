@@ -1,40 +1,40 @@
-import { mergeDeep } from './mergeDeep'
+import assert from 'node:assert/strict'
+import { test } from 'node:test'
+import { mergeDeep } from './mergeDeep.ts'
 
 test('multiple objects', () => {
   const result = mergeDeep({ foo: 'bar' }, { bar: 'foo' })
-  expect(result).toEqual({ foo: 'bar', bar: 'foo' })
+  assert.deepEqual(result, { foo: 'bar', bar: 'foo' })
 })
 
 test('single objects', () => {
   const result = mergeDeep({ foo: 'bar' })
-  expect(result).toEqual({ foo: 'bar' })
+  assert.deepEqual(result, { foo: 'bar' })
 })
 
 test('same object', () => {
   const result = mergeDeep({ foo: 'bar' }, { foo: 'bar' })
-  expect(result).toEqual({ foo: 'bar' })
+  assert.deepEqual(result, { foo: 'bar' })
 })
 
 test('overwrites', () => {
   const result = mergeDeep({ foo: 'bar' }, { foo: 'bar2' })
-  expect(result).toEqual({ foo: 'bar2' })
+  assert.deepEqual(result, { foo: 'bar2' })
 })
 
 test('nested objects', () => {
   const result = mergeDeep({ foo: { one: 'one' } }, { foo: { two: 'two' } })
-  expect(result).toEqual({ foo: { one: 'one', two: 'two' } })
+  assert.deepEqual(result, { foo: { one: 'one', two: 'two' } })
 })
 
 test('not an object', () => {
-  expect(() => {
-    mergeDeep({ foo: { one: 'one' } }, 'string')
-  }).toThrow('Not an object')
+  assert.throws(() => mergeDeep({ foo: { one: 'one' } }, 'string'), /Not an object/)
 })
 
 test('merging arrays', () => {
   let result = mergeDeep({ foo: ['one'] }, { bar: ['two'] })
-  expect(result).toEqual({ foo: ['one'], bar: ['two'] })
+  assert.deepEqual(result, { foo: ['one'], bar: ['two'] })
 
   result = mergeDeep({ foo: ['one'] }, { foo: ['two'] })
-  expect(result).toEqual({ foo: ['one', 'two'] })
+  assert.deepEqual(result, { foo: ['one', 'two'] })
 })

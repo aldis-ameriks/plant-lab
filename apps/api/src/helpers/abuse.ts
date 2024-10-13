@@ -1,8 +1,8 @@
-import { FastifyRequest } from 'fastify'
+import { type FastifyRequest } from 'fastify'
 import { lru } from 'tiny-lru'
-import { captureError } from '../modules/errors/helpers/captureError'
-import { Context } from './context'
-import { abusers } from './schema'
+import { captureError } from '../modules/errors/helpers/captureError.ts'
+import { type Context } from './context.ts'
+import { abusers } from './schema.ts'
 
 const period = 15 * 60 * 1000 // 15 minutes
 const abusersCache = lru(1024, period)

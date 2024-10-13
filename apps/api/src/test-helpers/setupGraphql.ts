@@ -1,9 +1,10 @@
 import pino from 'pino'
-import { config } from '../helpers/config'
-import { Context, createContext } from '../helpers/context'
-import { initApp } from '../helpers/initApp'
-import { initGraphql } from '../helpers/initGraphql'
-import { getTestDb } from './getTestDb'
+import { beforeEach, after } from 'node:test'
+import { config } from '../helpers/config.ts'
+import { type Context, createContext } from '../helpers/context.ts'
+import { initApp } from '../helpers/initApp.ts'
+import { initGraphql } from '../helpers/initGraphql.ts'
+import { getTestDb } from './getTestDb.ts'
 
 export function setupGraphql() {
   const context = {
@@ -27,7 +28,7 @@ export function setupGraphql() {
     })
   })
 
-  afterAll(async () => {
+  after(async () => {
     await app.close()
   })
 

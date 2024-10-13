@@ -1,11 +1,11 @@
-import { Context } from '../../../helpers/context'
-import { errors } from '../../../helpers/schema'
+import { type Context } from '../../../helpers/context.ts'
+import { errors } from '../../../helpers/schema.ts'
 
 export async function captureError(
   { db, log }: Pick<Context, 'db' | 'log'>,
   source: 'api' | 'web',
   payload: Record<string, unknown> | Error | string,
-  rest?: Pick<typeof errors.$inferInsert, 'reqId' | 'headers' | 'ip'>
+  rest?: Partial<Pick<typeof errors.$inferInsert, 'reqId' | 'headers' | 'ip'>>
 ) {
   let content
   if (payload instanceof Error) {

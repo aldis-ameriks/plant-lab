@@ -1,5 +1,5 @@
-import { Context } from '../../../helpers/context'
-import { request } from '../../../helpers/request'
+import { type Context } from '../../../helpers/context.ts'
+import { request } from '../../../helpers/request.ts'
 
 export function sendTelegram(context: Pick<Context, 'config'>, text: string) {
   const { config } = context

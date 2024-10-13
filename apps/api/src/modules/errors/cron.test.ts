@@ -1,10 +1,12 @@
+import assert from 'node:assert/strict'
+import { beforeEach, test } from 'node:test'
 import { randomUUID } from 'crypto'
 import { eq } from 'drizzle-orm'
 import nock from 'nock'
-import { Context } from '../../helpers/context'
-import { errors } from '../../helpers/schema'
-import { getTestContext } from '../../test-helpers/getTestContext'
-import { run } from './cron'
+import { type Context } from '../../helpers/context.ts'
+import { errors } from '../../helpers/schema.ts'
+import { getTestContext } from '../../test-helpers/getTestContext.ts'
+import { run } from './cron.ts'
 
 const getContext = getTestContext()
 
@@ -41,9 +43,9 @@ test('more than 5 errors and missing tg receiver', async () => {
   ])
   await run(context)
   const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
-  expect(res.length).toBe(7)
+  assert.equal(res.length, 7)
   for (const error of res) {
-    expect(error.sentAt).toBeTruthy()
+    assert.ok(error.sentAt)
   }
 })
 
@@ -61,10 +63,10 @@ test('more than 5 errors and missing tg access key', async () => {
   ])
   await run(context)
   const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
-  expect(res.length).toBe(7)
+  assert.equal(res.length, 7)
 
   for (const error of res) {
-    expect(error.sentAt).toBeTruthy()
+    assert.ok(error.sentAt)
   }
 })
 
@@ -88,10 +90,10 @@ test('more than 5 errors', async () => {
   await run(context)
   scope.done()
   const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
-  expect(res.length).toBe(7)
+  assert.equal(res.length, 7)
 
   for (const error of res) {
-    expect(error.sentAt).toBeTruthy()
+    assert.ok(error.sentAt)
   }
 })
 
@@ -112,9 +114,9 @@ test('less than 5 errors', async () => {
   await run(context)
   scope.done()
   const res = await context.db.query.errors.findMany({ where: eq(errors.source, source) })
-  expect(res.length).toBe(3)
+  assert.equal(res.length, 3)
   for (const error of res) {
-    expect(error.sentAt).toBeTruthy()
+    assert.ok(error.sentAt)
   }
 })
 
@@ -135,8 +137,8 @@ test('unknown error source', async () => {
   await run(context)
   scope.done()
   const res = await context.db.query.errors.findMany()
-  expect(res.length).toBe(3)
+  assert.equal(res.length, 3)
   for (const error of res) {
-    expect(error.sentAt).toBeTruthy()
+    assert.ok(error.sentAt)
   }
 })

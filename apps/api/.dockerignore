@@ -5,3 +5,7 @@
 !src/
 !scripts/
 !migrations/
+
+**/*.test.ts
+**/*.d.ts
+**/test-helpers

@@ -1,20 +1,26 @@
-import { getTestDbClient } from './setupDb'
+import { beforeEach, afterEach, after, before } from 'node:test'
+import { getTestDbClient } from './setupDb.ts'
 
 export function getTestDb() {
-  const dbClient = getTestDbClient()
-  const result = { db: dbClient.db, sql: dbClient.sql }
+  const result = {} as ReturnType<typeof getTestDbClient>
+
+  before(() => {
+    const dbClient = getTestDbClient()
+    result.db = dbClient.db
+    result.sql = dbClient.sql
+  })
 
   beforeEach(async () => {
-    await dbClient.sql`BEGIN;`
+    await result.sql`BEGIN;`
   })
 
   afterEach(async () => {
-    await dbClient.sql`ROLLBACK;`
+    await result.sql`ROLLBACK;`
   })
 
-  afterAll(async () => {
+  after(async () => {
     // Not sure if this will be stable. Multiple testing destroying the same client?
-    await dbClient.sql.end()
+    await result.sql.end()
   })
 
   return result

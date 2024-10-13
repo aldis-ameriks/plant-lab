@@ -1,12 +1,12 @@
-/* istanbul ignore file */
+/* node:coverage disable */
 
-import { FastifyInstance } from 'fastify'
+import { type FastifyInstance } from 'fastify'
 import mercurius from 'mercurius'
 import mercuriusAuth from 'mercurius-auth'
-import modules from '../modules'
-import { captureError } from '../modules/errors/helpers/captureError'
-import { isLocal } from './config'
-import { RequestContext } from './context'
+import modules from '../modules/index.ts'
+import { captureError } from '../modules/errors/helpers/captureError.ts'
+import { isLocal } from './config.ts'
+import { type RequestContext } from './context.ts'
 
 const { loaders, resolvers, schema } = modules
 

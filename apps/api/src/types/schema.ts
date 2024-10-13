@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any */
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
-import { RequestContext } from '../helpers/context'
+import type { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
+import type { RequestContext } from '../helpers/context.ts'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -32,22 +32,11 @@ export type Device = {
   version: DeviceVersion
 }
 
-export enum DeviceStatus {
-  New = 'new',
-  Paired = 'paired',
-  Pairing = 'pairing',
-  Reset = 'reset'
-}
+export type DeviceStatus = 'new' | 'paired' | 'pairing' | 'reset'
 
-export enum DeviceType {
-  Hub = 'hub',
-  Sensor = 'sensor'
-}
+export type DeviceType = 'hub' | 'sensor'
 
-export enum DeviceVersion {
-  Hub_10 = 'hub_10',
-  Sensor_10 = 'sensor_10'
-}
+export type DeviceVersion = 'hub_10' | 'sensor_10'
 
 export type Mutation = {
   __typename?: 'Mutation'
@@ -79,11 +68,7 @@ export type Reading = {
   time: Scalars['DateTime']['output']
 }
 
-export enum Role {
-  Admin = 'ADMIN',
-  Hub = 'HUB',
-  User = 'USER'
-}
+export type Role = 'ADMIN' | 'HUB' | 'USER'
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
 
