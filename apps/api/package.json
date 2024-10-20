@@ -11,8 +11,8 @@
     "test:setup": "node --no-warnings=ExperimentalWarning --experimental-strip-types --env-file=.env src/test-helpers/globalSetup.ts",
     "coverage": "node --no-warnings=ExperimentalWarning --experimental-strip-types src/test-helpers/globalSetup.ts && node --test --env-file=.env --experimental-strip-types --no-warnings=ExperimentalWarning --experimental-test-isolation=process --experimental-test-coverage --experimental-test-snapshots --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-include='src/**/*.ts' --test-coverage-exclude='src/**/*.test.ts' --test-coverage-exclude='src/test-helpers/**' **/*.test.ts",
     "coverage:ci": "node --no-warnings=ExperimentalWarning --experimental-strip-types src/test-helpers/globalSetup.ts && node --test --experimental-strip-types --no-warnings=ExperimentalWarning --experimental-test-isolation=process --experimental-test-coverage --experimental-test-snapshots --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-include='src/**/*.ts' --test-coverage-exclude='src/**/*.test.ts' --test-coverage-exclude='src/test-helpers/**' **/*.test.ts",
-    "lint": "eslint . --ext .ts --ignore-path .gitignore --ignore-pattern migrations/",
-    "lint:fix": "eslint . --ext .ts --ignore-path .gitignore --ignore-pattern migrations/ --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "migrate:generate": "drizzle-kit generate --config src/helpers/drizzle.ts",
     "migrate:make": "drizzle-kit generate --custom --config src/helpers/drizzle.ts",
     "migrate": "export $(grep -v '^#' .env | xargs) && node --experimental-strip-types --no-warnings=ExperimentalWarning scripts/migrate.ts",
@@ -42,21 +42,21 @@
     "tiny-lru": "11.2.11"
   },
   "devDependencies": {
+    "@eslint/js": "9.13.0",
     "@graphql-codegen/add": "5.0.3",
     "@graphql-codegen/cli": "5.0.3",
     "@graphql-codegen/schema-ast": "4.1.0",
     "@graphql-codegen/typescript": "4.1.0",
     "@graphql-codegen/typescript-resolvers": "4.3.0",
     "@types/node": "22.7.7",
-    "@typescript-eslint/eslint-plugin": "7.7.1",
-    "@typescript-eslint/parser": "7.7.1",
     "drizzle-kit": "0.26.2",
-    "eslint": "8.57.0",
+    "eslint": "9.13.0",
     "eslint-config-prettier": "9.1.0",
     "nock": "13.5.5",
     "nodemon": "3.1.7",
     "prettier": "3.3.3",
     "type-fest": "4.26.1",
-    "typescript": "5.6.3"
+    "typescript": "5.6.3",
+    "typescript-eslint": "8.10.0"
   }
 }

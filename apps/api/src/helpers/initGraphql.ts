@@ -31,7 +31,6 @@ export function initGraphql({ app }: Opts) {
       if (response.response?.errors && Array.isArray(response.response.errors)) {
         response.response.errors.forEach((error) => {
           if (error.message !== 'Unknown query') {
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
             captureError(ctx, 'api', new Error(error.message), { ip: ctx?.ip, headers: ctx?.headers }).catch(() => {})
           }
 

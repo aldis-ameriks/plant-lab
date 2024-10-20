@@ -15,4 +15,4 @@ generates:
       - typescript
       - typescript-resolvers
       - add:
-          content: '/* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any */'
+          content: '/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */'

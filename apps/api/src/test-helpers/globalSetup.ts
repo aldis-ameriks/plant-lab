@@ -16,7 +16,7 @@ const { sqlWithoutDatabase } = getTestDbWithoutDatabase()
 try {
   await dropDatabase(sqlWithoutDatabase)
   // eslint-disable-next-line no-empty
-} catch (e) {}
+} catch {}
 
 await createDatabase(sqlWithoutDatabase)
 await sqlWithoutDatabase.end()

@@ -63,7 +63,6 @@ export function initApp({ context, origins }: Opts) {
   if (!context.config.api.rateLimitDisabled) {
     app.register(fastifyRateLimit, {
       errorResponseBuilder: (req, ctx) => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         handleAbuse(context, req).catch(() => {})
         return {
           statusCode: 429,

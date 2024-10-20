@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type */
 import type { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
 import type { RequestContext } from '../helpers/context.ts'
 export type Maybe<T> = T | null

@@ -80,7 +80,6 @@ export function request(
     })
 
     req.setTimeout(timeout, () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       req.once('error', () => {})
       req.abort()
       reject(new RequestError('request timeout'))
