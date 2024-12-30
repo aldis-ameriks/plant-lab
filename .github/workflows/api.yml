@@ -8,7 +8,7 @@ on:
 
 jobs:
   typecheck:
-    runs-on: [self-hosted, pm-runner]
+    runs-on: [self-hosted, arm-1]
 
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
       CI: true
 
   lint:
-    runs-on: [self-hosted, pm-runner]
+    runs-on: [self-hosted, arm-1]
 
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +43,7 @@ jobs:
       CI: true
 
   test:
-    runs-on: [self-hosted, pm-runner]
+    runs-on: [self-hosted, arm-1]
 
     steps:
       - uses: actions/checkout@v4
@@ -61,7 +61,7 @@ jobs:
   build:
     needs: [typecheck, lint, test]
     if: github.ref == 'refs/heads/master' || contains(github.ref, 'refs/tags/')
-    runs-on: [self-hosted, pm-runner]
+    runs-on: [self-hosted, arm-1]
 
     steps:
       - uses: actions/checkout@v4
