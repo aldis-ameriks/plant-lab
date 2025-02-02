@@ -53,7 +53,7 @@ services:
       - database
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-    command: node build/scripts/migrate.js
+    command: node scripts/migrate.ts
     networks:
       - nginx-proxy
     logging:
