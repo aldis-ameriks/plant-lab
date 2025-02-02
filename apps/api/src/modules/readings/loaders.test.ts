@@ -257,7 +257,7 @@ test('Device.readings - works when there are no readings', async () => {
 test('Device.readings - returns time bucketed daily readings', async () => {
   await context.db.delete(readings).where(eq(readings.deviceId, seeds.device.id!))
 
-  const time = new Date('2024-10-13T14:01:36.798')
+  const time = new Date()
   time.setDate(time.getDate() - 3)
 
   const reading1 = {
@@ -287,6 +287,6 @@ test('Device.readings - returns time bucketed daily readings', async () => {
     light: 150,
     moisture: 15,
     temperature: 30,
-    time: '2024-10-10 00:00:00+00'
+    time: `${time.toISOString().split('T')[0]} 00:00:00+00`
   })
 })
