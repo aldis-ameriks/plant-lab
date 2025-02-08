@@ -5,9 +5,11 @@ import helmet from '@fastify/helmet'
 import fastifyRateLimit from '@fastify/rate-limit'
 import underPressure from '@fastify/under-pressure'
 import fastify, { type FastifyBaseLogger } from 'fastify'
+import type pino from 'pino'
 import { captureError } from '../modules/errors/helpers/captureError.ts'
 import { handleAbuse } from './abuse.ts'
 import { type Context, createRequestContext } from './context.ts'
+import { TechnicalError } from './errors'
 
 interface Opts {
   context: Context
@@ -32,7 +34,6 @@ export function initApp({ context, origins }: Opts) {
           },
           res(res) {
             return {
-              foo: 'bar',
               statusCode: res.statusCode,
               operationName:
                 !!res.request?.body && typeof res.request.body === 'object' && 'operationName' in res.request.body
@@ -85,8 +86,7 @@ export function initApp({ context, origins }: Opts) {
       Object.assign({}, context, { headers: req.headers, ip: req.ip, reqId: req.id })
     )
 
-    // may not need to reassign
-    // req.ctx.log = req.log as pino.Logger
+    req.ctx.log = req.log as pino.Logger
   })
 
   app.register(
@@ -107,7 +107,7 @@ export function initApp({ context, origins }: Opts) {
         reqId: request.id
       })
       request.log.error(error.toString())
-      reply.send(new Error('Something went wrong'))
+      reply.send(new TechnicalError('Something went wrong'))
     } else {
       reply.send(error)
     }

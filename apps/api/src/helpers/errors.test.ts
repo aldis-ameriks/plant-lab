@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { Forbidden, TechnicalError, UserInputError } from './errors.ts'
+import { ForbiddenError, TechnicalError, UserInputError } from './errors.ts'
 
 test('UserInputError', () => {
-  const error = new UserInputError()
+  const error = new UserInputError('foo')
   assert.ok(error instanceof UserInputError)
 })
 
@@ -20,13 +20,13 @@ test('TechnicalError custom message', () => {
 })
 
 test('Forbidden error', () => {
-  const error = new Forbidden()
-  assert.ok(error instanceof Forbidden)
+  const error = new ForbiddenError()
+  assert.ok(error instanceof ForbiddenError)
   assert.equal(error.message, 'Forbidden')
 })
 
 test('Forbidden error with custom error', () => {
-  const error = new Forbidden('foo')
-  assert.ok(error instanceof Forbidden)
+  const error = new ForbiddenError('foo')
+  assert.ok(error instanceof ForbiddenError)
   assert.equal(error.message, 'foo')
 })

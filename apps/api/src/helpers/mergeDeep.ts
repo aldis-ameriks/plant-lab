@@ -1,3 +1,5 @@
+import { UserInputError } from './errors'
+
 function isObject(obj) {
   return obj && typeof obj === 'object'
 }
@@ -7,7 +9,7 @@ export function mergeDeep(...objects) {
 
   for (const object of objects) {
     if (!isObject(object)) {
-      throw new Error('Not an object')
+      throw new UserInputError('Not an object')
     }
 
     Object.keys(object).forEach((key) => {

@@ -49,7 +49,7 @@ export function initGraphql({ app }: Opts) {
   })
 
   app.register(mercuriusAuth, {
-    async applyPolicy(authDirectiveAST, parent, args, context, _info) {
+    async applyPolicy(authDirectiveAST, _parent, _args, context, _info) {
       const role = authDirectiveAST.arguments[0]?.value.value
       return (context as unknown as RequestContext).user?.roles.includes(role) === true
     },

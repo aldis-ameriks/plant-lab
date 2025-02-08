@@ -1,5 +1,6 @@
 import { and, eq } from 'drizzle-orm'
 import assert from 'node:assert/strict'
+import { ForbiddenError, UserInputError } from '../../helpers/errors'
 import { devices, readings, usersDevices } from '../../helpers/schema.ts'
 import { ajv } from '../../helpers/validations.ts'
 import { type Resolvers } from '../../types/graphql.ts'
@@ -47,7 +48,7 @@ export default {
       const isValid = validator([input])
       if (!isValid) {
         context.log.error(`received invalid input: ${validator.errors?.join(', ')}`)
-        throw new Error('Invalid input')
+        throw new UserInputError('Invalid input')
       }
 
       const userDevice = await context.db.query.usersDevices.findFirst({
@@ -56,7 +57,7 @@ export default {
 
       if (!userDevice) {
         context.log.error(`user: ${context.user?.id} does not own device: ${device_id}`)
-        throw new Error('Forbidden')
+        throw new ForbiddenError()
       }
 
       await context.db.update(devices).set({ lastSeenAt: new Date() }).where(eq(devices.id, +device_id))
