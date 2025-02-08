@@ -1,4 +1,4 @@
-import { UserInputError } from './errors'
+import { UserInputError } from './errors.ts'
 
 function isObject(obj) {
   return obj && typeof obj === 'object'

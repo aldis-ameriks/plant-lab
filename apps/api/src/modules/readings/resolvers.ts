@@ -1,6 +1,6 @@
 import { and, eq } from 'drizzle-orm'
 import assert from 'node:assert/strict'
-import { ForbiddenError, UserInputError } from '../../helpers/errors'
+import { ForbiddenError, UserInputError } from '../../helpers/errors.ts'
 import { devices, readings, usersDevices } from '../../helpers/schema.ts'
 import { ajv } from '../../helpers/validations.ts'
 import { type Resolvers } from '../../types/graphql.ts'

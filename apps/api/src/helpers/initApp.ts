@@ -9,7 +9,7 @@ import type pino from 'pino'
 import { captureError } from '../modules/errors/helpers/captureError.ts'
 import { handleAbuse } from './abuse.ts'
 import { type Context, createRequestContext } from './context.ts'
-import { TechnicalError } from './errors'
+import { TechnicalError } from './errors.ts'
 
 interface Opts {
   context: Context
