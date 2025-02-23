@@ -11,7 +11,7 @@ export function getTestContext(): (config?: Partial<typeof globalConfig>) => Con
   return (config?: Partial<typeof globalConfig>) =>
     createContext({
       db: result.db,
-      postgres: result.sql,
+      sql: result.sql,
       log: pino({ enabled: false }),
       config: structuredClone({ ...globalConfig, ...config })
     })
