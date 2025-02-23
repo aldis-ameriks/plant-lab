@@ -20,7 +20,7 @@ export function setupGraphql() {
 
   beforeEach(async () => {
     context.db = dbResult.db
-    context.postgres = dbResult.sql
+    context.sql = dbResult.sql
     result.context = createContext({
       ...result.context,
       db: dbResult.db,

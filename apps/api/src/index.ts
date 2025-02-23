@@ -11,7 +11,7 @@ import { shutdown } from './helpers/shutdown.ts'
 import { sendTelegram } from './modules/errors/helpers/sendTelegram.ts'
 
 const log = pino({ level: 'debug', timestamp: pino.stdTimeFunctions.isoTime })
-const context = createContext({ db, postgres, log, config })
+const context = createContext({ db, sql: postgres, log, config })
 const app = initApp({ context })
 initRoutes({ app })
 initGraphql({ app })

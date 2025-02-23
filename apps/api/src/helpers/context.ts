@@ -13,7 +13,7 @@ type User = {
 }
 
 export type Context = {
-  postgres: Postgres.Sql
+  sql: Postgres.Sql
   db: PostgresJsDatabase<typeof schema>
   log: Logger
   config: typeof config
@@ -42,11 +42,6 @@ export async function createRequestContext(context: RequestContext): Promise<Req
   return context
 }
 
-export function createContext({
-  postgres,
-  db,
-  log,
-  config
-}: Pick<Context, 'postgres' | 'db' | 'log' | 'config'>): Context {
-  return { log, db, postgres, config }
+export function createContext({ sql, db, log, config }: Pick<Context, 'sql' | 'db' | 'log' | 'config'>): Context {
+  return { log, db, sql, config }
 }
